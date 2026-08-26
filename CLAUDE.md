@@ -33,7 +33,7 @@ Run `npm run build` and fix every error before proposing a commit.
 Next.js 16 App Router (static generation throughout) · TypeScript strict · Tailwind CSS v4 ·
 shadcn/ui · next-intl with a `[locale]` segment (English and Igbo) · Lenis · GSAP with
 ScrollTrigger · Decap CMS · Zod · TanStack Query · Axios via `src/lib/api/*` ·
-Teko and Manrope through `next/font/google`.
+Teko (display) and Host Grotesk (body) through `next/font/google`.
 
 ## Hard rules
 

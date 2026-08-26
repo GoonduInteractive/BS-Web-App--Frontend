@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  ALL theme tokens live here. This is Tailwind v4 — there is no tailwind.config.ts.
+  Source of truth for these values: context/project-overview.md section 8.
+  The palette grows section by section. Never invent a colour; ask for the hex.
+*/
+
+@theme {
+  /* ---- Colour: confirmed, from Figma exports and the human ---- */
+  --color-ink: #000000;           /* base ground */
+  --color-nav: #0f1010d1;         /* top nav bar, #0F1010 at 82% */
+  --color-menu: #1a1a1a;          /* menu overlay background */
+  --color-menu-fg: #fbfbfb;       /* menu text */
+  --color-graphite: #1e1e1e;      /* button text and borders on light ground */
+  --color-signal: #fb0b01;        /* primary button fill, CTAs, active states */
+  --color-ember: #800c00;         /* primary button hover, and the torn wipe */
+  --color-blush: #ffe4e1;         /* secondary and tertiary hover fill */
+  --color-disabled: #f1f5f9;      /* disabled fill */
+  --color-disabled-fg: #a0a4a8;   /* disabled text and icon */
+
+  /* ---- Colour: high confidence, sampled from the prototype recording ---- */
+  /* Confirm against Figma before these are used on a shipped surface. */
+  --color-oxblood: #310400;       /* story section field */
+  --color-clot: #680500;          /* character and creature card name plates */
+  --color-bone: #e5deb5;          /* Souls of the Arena, Answer the Summons field */
+  --color-char: #200404;          /* entry screen gradient, bottom stop */
+
+  /* ---- Colour: BLOCKED ---- */
+  /* --color-gild — Onu Uzo chip and active rail dot. Samples ranged #D6A645 to
+     #FBD762. Deliberately absent until Design confirms. See overview risk 6. */
+
+  /* ---- Type scale (overview section 8) ---- */
+  --text-h1: 3.4375rem;           /* 55 / 64  Teko SemiBold */
+  --text-h1--line-height: 4rem;
+  --text-h2: 3rem;                /* 48 / 56  Teko SemiBold */
+  --text-h2--line-height: 3.5rem;
+  --text-h3: 2.25rem;             /* 36 / 40  Teko SemiBold */
+  --text-h3--line-height: 2.5rem;
+  --text-h4: 2.25rem;             /* 36 / 40  Teko SemiBold — identical to h3, see risk 5 */
+  --text-h4--line-height: 2.5rem;
+  --text-h5: 1.5rem;              /* 24 / 28  Teko SemiBold */
+  --text-h5--line-height: 1.75rem;
+  --text-h6: 1.25rem;             /* 20 / 28  Teko SemiBold */
+  --text-h6--line-height: 1.75rem;
+  --text-h7: 1.125rem;            /* 18       Teko Bold, no line height specified */
+  --text-body: 1rem;              /* 16 / 25.9  Host Grotesk */
+  --text-body--line-height: 1.61875rem;
+  --text-body-sm: 0.875rem;       /* 14 / 22.7  Host Grotesk Regular */
+  --text-body-sm--line-height: 1.41875rem;
+  --text-button: 0.875rem;        /* 14 / 22.7  Teko 700 (sheet says "Heavy") */
+  --text-button--line-height: 1.41875rem;
+  --text-caption: 0.75rem;        /* 12 / 16.2  Teko 400 (sheet says "Roman") */
+  --text-caption--line-height: 1.0125rem;
+  --text-overline: 0.625rem;      /* 10 / 16.2  Teko 400 */
+  --text-overline--line-height: 1.0125rem;
+
+  /* PROVISIONAL. The scale tops out at 55px but gate titles run near viewport
+     width in the prototype. Replace when Design supplies a real value. Risk 3. */
+  --text-gate: clamp(3.5rem, 11vw, 9rem);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /*
+    Display: Teko. Body: Host Grotesk. Both per Figma.
+
+    "Noto Sans" is a deliberate stopgap, not decoration. Neither Teko nor Host
+    Grotesk ships glyphs for the Igbo characters this design depends on
+    (U+1ECB, U+1ECC, U+1ECD, U+1EE4, U+1EE5) - both stop at latin-ext, whose
+    range skips U+1EA0-U+1EF1. Without a named fallback the browser picks an
+    arbitrary system face per glyph. Remove once Design picks a real face.
+  */
+  --font-display: var(--font-teko), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-host-grotesk), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Entry screen ground: linear-gradient(180deg, #000000 0%, #200404 100%) per Figma. */
+@utility bg-entry {
+  background-image: linear-gradient(180deg, var(--color-ink) 0%, var(--color-char) 100%);
+}
+
+/* ==========================================================================
+   Nsibidi marquee
+   Four horizontal rows on the entry screen, alternating left and right.
+   Transform-only so the animation stays on the compositor and never paints.
+   ========================================================================== */
+
+.nsibidi-track {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+  animation: var(--row-anim) var(--row-duration) linear infinite;
+}
+
+/* Rightward rows start shifted left by one set so they scroll into frame
+   rather than revealing an empty edge on the first pass. */
+.nsibidi-track[data-direction="right"] {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.nsibidi-tile {
+  flex: none;
+  height: 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+@keyframes nsibidi-left {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes nsibidi-right {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@layer base {
+  html {
+    /* Motion moment 5 (ghosted section titles) causes horizontal scroll without this. */
+    overflow-x: hidden;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-menu-fg);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Nothing is rounded in this design system. */
+  button,
+  input,
+  select,
+  textarea {
+    border-radius: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

@@ -41,5 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # local working context (see context/project-overview.md §11)
-context/
+# context/
 # temporary-screenshots/
