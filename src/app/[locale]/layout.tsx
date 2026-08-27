@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Host_Grotesk, Teko } from "next/font/google";
 import { notFound } from "next/navigation";
 
+import { SiteChrome } from "@/components/chrome/SiteChrome";
+import { TransitionProvider } from "@/components/transition/TransitionProvider";
 import { isLocale, LOCALES } from "@/lib/utils/locales";
+import { getMessages } from "@/lib/utils/messages";
 import "../globals.css";
 
 /**
@@ -49,8 +52,20 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${teko.variable} ${hostGrotesk.variable}`}>
-      {/* SiteHeader, MenuOverlay, SoundToggle and TransitionProvider mount here in chunk 1. */}
-      <body>{children}</body>
+      <body>
+        <TransitionProvider>
+          {children}
+          {/*
+            Chrome mounts here rather than inside a page so it survives the tear.
+            The gate rail in particular MUST persist: if it remounted per route
+            it could flash on either side of the wipe, and its active item would
+            not already be correct when the screen reopens.
+
+            SiteChrome renders nothing on the entry screen.
+          */}
+          <SiteChrome messages={getMessages(locale)} />
+        </TransitionProvider>
+      </body>
     </html>
   );
 }

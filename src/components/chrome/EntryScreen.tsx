@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { NsibidiField } from "@/components/chrome/NsibidiField";
 import { SoundToggle } from "@/components/chrome/SoundToggle";
-import { BracketButton } from "@/components/ui/BracketButton";
+import { EnterButton } from "@/components/chrome/EnterButton";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
@@ -15,7 +15,7 @@ import type { Messages } from "@/lib/utils/messages";
  *    NNOO *and* WELCOME choice. Awaiting the second frame.
  *  - the transition from here into the gate sequence
  */
-export function EntryScreen({ messages }: { messages: Messages }) {
+export function EntryScreen({ messages, locale }: { messages: Messages; locale: string }) {
   const t = messages.entry;
 
   return (
@@ -30,11 +30,11 @@ export function EntryScreen({ messages }: { messages: Messages }) {
           width={336}
           height={46}
           priority
-          className="h-auto w-40 select-none md:w-[13.875rem]"
+          className="h-auto w-40 select-none md:w-55.5"
         />
       </header>
 
-      <div className="relative z-10 flex flex-col items-center justify-center gap-15 px-6 pb-20">
+      <div className="relative z-10 flex flex-col items-center justify-center gap-15 px-6 pt-20">
         <Image
           src="/assets/brand/trial-of-the-gods.png"
           alt={t.lockupAlt}
@@ -42,13 +42,13 @@ export function EntryScreen({ messages }: { messages: Messages }) {
           height={1563}
           priority
           sizes="(max-width: 767px) 88vw, 42vw"
-          className="h-auto w-full max-w-[37.5rem] select-none"
+          className="h-auto w-full max-w-150 select-none"
         />
-        <BracketButton>{t.enter}</BracketButton>
+        <EnterButton href={`/${locale}/the-game`} label={t.enterIgbo} hoverLabel={t.enterEnglish} />
       </div>
 
       {/* Absolutely placed so it never pushes the centred block off-centre. */}
-      <footer className="absolute bottom-20 left-6 z-10 md:bottom-35 md:left-22.5">
+      <footer className="absolute bottom-20 left-6 z-10 md:bottom-15 md:left-22.5">
         <SoundToggle onLabel={t.soundOn} offLabel={t.soundOff} />
       </footer>
     </main>

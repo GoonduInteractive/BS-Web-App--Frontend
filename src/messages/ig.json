@@ -1,9 +1,66 @@
 {
   "entry": {
-    "enter": "NNỌỌ",
+    "enterIgbo": "NNỌỌ",
+    "enterEnglish": "WELCOME",
     "wordmarkAlt": "Goondu Games",
     "lockupAlt": "Beyond Service: Trial of the Gods",
     "soundOn": "TODO ig: Turn sound on",
     "soundOff": "TODO ig: Turn sound off"
+  },
+  "nav": {
+    "menu": "TODO ig: Menu",
+    "openMenu": "TODO ig: Open menu",
+    "closeMenu": "TODO ig: Close menu",
+    "wordmarkAlt": "Beyond Service",
+    "account": "TODO ig: Account",
+    "comics": "TODO ig: Comics",
+    "news": "TODO ig: News",
+    "merch": "TODO ig: Merch Store"
+  },
+  "menu": {
+    "label": "TODO ig: Main menu",
+    "about": "TODO ig: ABOUT GOONDU"
+  },
+  "gates": {
+    "railLabel": "TODO ig: Gates",
+    "theGame": {
+      "chip": "ỌNỤ ỤZỌ 1",
+      "title": "TODO ig: THE GAME",
+      "rail": "TODO ig: The Game",
+      "menu": "TODO ig: THE GAME",
+      "cta": "TODO ig: DISCOVER THE GAME",
+      "plateAlt": "TODO ig: The stone gate in the forest of trials"
+    },
+    "characters": {
+      "chip": "ỌNỤ ỤZỌ 2",
+      "title": "TODO ig: THE CHARACTERS",
+      "rail": "TODO ig: The Characters",
+      "menu": "TODO ig: THE CHARACTERS",
+      "cta": "TODO ig: DISCOVER THE CHARACTERS",
+      "plateAlt": "TODO ig: The spirit tree above the red canyon"
+    },
+    "community": {
+      "chip": "ỌNỤ ỤZỌ 3",
+      "title": "TODO ig: COMMUNITY",
+      "rail": "TODO ig: Community",
+      "menu": "TODO ig: COMMUNITY",
+      "cta": "TODO ig: DISCOVER THE COMMUNITY",
+      "plateAlt": "TODO ig: The gathering circle beneath the falls"
+    },
+    "competition": {
+      "chip": "ỌNỤ ỤZỌ 4",
+      "title": "TODO ig: COMPETITION",
+      "rail": "TODO ig: Competition",
+      "menu": "TODO ig: COMPETITION",
+      "cta": "TODO ig: DISCOVER THE COMPETITION",
+      "plateAlt": "TODO ig: The pillars of the arena at dusk"
+    },
+    "cue": {
+      "theGame": "TODO ig: DISCOVER THE GAME",
+      "characters": "TODO ig: DISCOVER CHARACTERS",
+      "community": "TODO ig: DISCOVER COMMUNITY",
+      "competition": "TODO ig: DISCOVER COMPETITION"
+    },
+    "characterAlt": "Soma"
   }
 }

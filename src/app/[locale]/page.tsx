@@ -11,5 +11,5 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  return <EntryScreen messages={getMessages(locale)} />;
+  return <EntryScreen messages={getMessages(locale)} locale={locale} />;
 }

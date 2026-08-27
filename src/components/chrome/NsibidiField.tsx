@@ -42,19 +42,26 @@ const ROWS: NsibidiRow[] = [
   { src: "/assets/brand/nsibidi-row-2.svg", tileAspect: 1581 / 160, duration: 88 },
   { src: "/assets/brand/nsibidi-row-3.svg", tileAspect: 1584 / 147, duration: 78 },
   { src: "/assets/brand/nsibidi-row-4.svg", tileAspect: 1568 / 158, duration: 94 },
+  // The same four strips again. Durations are deliberately different from their
+  // twins above: identical duration *and* direction would put a row in lockstep
+  // with the one four above it, which is exactly the mechanical read to avoid.
+  { src: "/assets/brand/nsibidi-row-1.svg", tileAspect: 1581 / 150, duration: 66 },
+  { src: "/assets/brand/nsibidi-row-2.svg", tileAspect: 1581 / 160, duration: 96 },
+  { src: "/assets/brand/nsibidi-row-3.svg", tileAspect: 1584 / 147, duration: 84 },
+  { src: "/assets/brand/nsibidi-row-4.svg", tileAspect: 1568 / 158, duration: 102 },
 ];
 
 /**
  * Tiles per set. One set must be wider than the widest viewport it covers or
  * the loop shows an empty gap.
  *
- * The feature note assumed a 2.43 tile and called for six. These strips are
- * roughly 10:1, so a single tile is already about ten times the row height —
- * four times wider than that assumption. Three per set covers the worst
- * realistic case (3840px wide against a short 768px viewport, where the row is
- * only 192px tall) with room to spare, at half the layer count of six.
+ * This is a function of row height, so it changed when the field went from four
+ * rows to eight: rows are now half as tall, so each tile is half as wide. At the
+ * worst realistic case (3840px across a short 768px viewport) an eighth-height
+ * row is only 96px tall, which puts the narrowest tile at ~949px. Three per set
+ * would leave a gap there. Five clears it with margin. Verified, not assumed.
  */
-const TILES_PER_SET = 3;
+const TILES_PER_SET = 5;
 
 /**
  * PROVISIONAL. The strips are FAF9F9 at full opacity, so the wash is applied
@@ -71,7 +78,7 @@ export function NsibidiField({ rows = ROWS }: { rows?: NsibidiRow[] }) {
         const direction = i % 2 === 0 ? "left" : "right";
 
         return (
-          <div key={row.src} className="flex-1 overflow-hidden">
+          <div key={`${row.src}-${i}`} className="flex-1 overflow-hidden">
             <div
               className="nsibidi-track"
               data-direction={direction}

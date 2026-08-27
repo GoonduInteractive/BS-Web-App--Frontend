@@ -1,9 +1,66 @@
 {
   "entry": {
-    "enter": "WELCOME",
+    "enterIgbo": "NNỌỌ",
+    "enterEnglish": "WELCOME",
     "wordmarkAlt": "Goondu Games",
     "lockupAlt": "Beyond Service: Trial of the Gods",
     "soundOn": "Turn sound on",
     "soundOff": "Turn sound off"
+  },
+  "nav": {
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "wordmarkAlt": "Beyond Service",
+    "account": "Account",
+    "comics": "Comics",
+    "news": "News",
+    "merch": "Merch Store"
+  },
+  "menu": {
+    "label": "Main menu",
+    "about": "ABOUT GOONDU"
+  },
+  "gates": {
+    "railLabel": "Gates",
+    "theGame": {
+      "chip": "ỌNỤ ỤZỌ 1",
+      "title": "THE GAME",
+      "rail": "The Game",
+      "menu": "THE GAME",
+      "cta": "DISCOVER THE GAME",
+      "plateAlt": "The stone gate in the forest of trials"
+    },
+    "characters": {
+      "chip": "ỌNỤ ỤZỌ 2",
+      "title": "THE CHARACTERS",
+      "rail": "The Characters",
+      "menu": "THE CHARACTERS",
+      "cta": "DISCOVER THE CHARACTERS",
+      "plateAlt": "The spirit tree above the red canyon"
+    },
+    "community": {
+      "chip": "ỌNỤ ỤZỌ 3",
+      "title": "COMMUNITY",
+      "rail": "Community",
+      "menu": "COMMUNITY",
+      "cta": "DISCOVER THE COMMUNITY",
+      "plateAlt": "The gathering circle beneath the falls"
+    },
+    "competition": {
+      "chip": "ỌNỤ ỤZỌ 4",
+      "title": "COMPETITION",
+      "rail": "Competition",
+      "menu": "COMPETITION",
+      "cta": "DISCOVER THE COMPETITION",
+      "plateAlt": "The pillars of the arena at dusk"
+    },
+    "cue": {
+      "theGame": "DISCOVER THE GAME",
+      "characters": "DISCOVER CHARACTERS",
+      "community": "DISCOVER COMMUNITY",
+      "competition": "DISCOVER COMPETITION"
+    },
+    "characterAlt": "Soma"
   }
 }
