@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
 
+import { useGateEntry } from "@/components/gates/GateEntry";
 import { cn } from "@/lib/utils/cn";
 import { GATES, gateFromPathname, gateHref, type GateId } from "@/lib/gates";
 
@@ -15,6 +15,13 @@ import { GATES, gateFromPathname, gateHref, type GateId } from "@/lib/gates";
  * straight to Competition is a normal interaction. So there is no previous/next
  * logic here and no directional variation in the tear — every jump looks
  * identical regardless of distance or direction.
+ *
+ * IT BELONGS TO THE GATE, NOT TO THE SITE. Verified against the prototype at
+ * five points down The Game page, where it is present at the gate and absent at
+ * every section below it. Once you are through the door it gets out of the way,
+ * which is now a plain read of `entered` — it used to be a ScrollTrigger fading
+ * the rail as the hero left the viewport, and that had nothing left to watch
+ * once the gate stopped being something you could scroll past.
  *
  * WHY IT LIVES IN THE LAYOUT
  *
@@ -46,79 +53,17 @@ export function GateRail({
 }) {
   const pathname = usePathname();
   const active = gateFromPathname(pathname);
-  const railRef = useRef<HTMLElement>(null);
-
-  /**
-   * Fade the rail out once the gate hero leaves the viewport.
-   *
-   * The rail is part of the gate, not persistent site navigation — verified
-   * against the prototype at five points down The Game page, where it is present
-   * at the hero and absent at every content section below it. Once the user
-   * starts reading, it gets out of the way.
-   *
-   * ScrollTrigger is imported dynamically for the same reason GSAP core is in
-   * TransitionProvider: this is a content site on metered Nigerian data, and
-   * ~11KB gzipped should not sit in the initial bundle for a fade.
-   *
-   * INERT UNTIL CHUNK 2 — there is no content below the hero yet, so there is
-   * nothing to scroll. Verified with a temporary spacer instead.
-   */
-  useEffect(() => {
-    if (!active) return;
-    const rail = railRef.current;
-    if (!rail) return;
-
-    let trigger: { kill: () => void } | undefined;
-    let cancelled = false;
-
-    void (async () => {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      if (cancelled) return;
-      gsap.registerPlugin(ScrollTrigger);
-
-      const hero = document.querySelector("[data-gate-hero]");
-      if (!hero) return;
-
-      const set = (visible: boolean) => {
-        gsap.to(rail, {
-          opacity: visible ? 1 : 0,
-          duration: 0.2,
-          ease: "power2.out",
-          overwrite: true,
-          // Opacity and pointer-events only. Never width, height or position.
-          onStart: () => {
-            rail.style.pointerEvents = visible ? "" : "none";
-          },
-        });
-      };
-
-      trigger = ScrollTrigger.create({
-        trigger: hero,
-        start: "bottom bottom",
-        onEnter: () => set(false),
-        onLeaveBack: () => set(true),
-      });
-    })();
-
-    return () => {
-      cancelled = true;
-      trigger?.kill();
-    };
-    // Re-created per route: a new page means a new [data-gate-hero] element.
-  }, [active, pathname]);
+  const { entered } = useGateEntry();
 
   // Not on a gate route — which is also how the entry screen gets no rail
-  // without this component knowing the entry screen exists.
-  if (!active) return null;
+  // without this component knowing the entry screen exists. And no rail once the
+  // gate has been opened: past the door it is not this page's navigation.
+  if (!active || entered) return null;
 
   const locale = pathname.split("/").filter(Boolean)[0] ?? "en";
 
   return (
     <nav
-      ref={railRef}
       aria-label={railLabel}
       // Desktop only, and the breakpoint MUST be written out literally here.
       // Tailwind v4 scans source statically, so a class assembled at runtime —

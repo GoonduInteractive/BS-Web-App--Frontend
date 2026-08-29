@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "./useReducedMotion";
 
 /**
- * Two-layer pointer drift — motion moment 4.
+ * Pointer drift — motion moment 4.
  *
  * This is what replaces the 3D environment that was evaluated and cut (overview
  * section 4). It only works because the character ships on its OWN layer:
@@ -14,6 +14,12 @@ import { useReducedMotion } from "./useReducedMotion";
  *
  * Translating the two layers by different amounts against the cursor reads as
  * real depth for about thirty lines and no dependency.
+ *
+ * EITHER LAYER MAY BE ABSENT, and one caller needs that. The gates wire both.
+ * The Game page hero wires only the back one: its plate is a single render with
+ * the shrine figure baked in, so there is no second layer to separate and it
+ * leans as one piece at the environment's depth. Passing only the ref you have
+ * is the whole API for that.
  *
  * Written to the letter of the coding standard's rule for pointer-driven motion:
  *
@@ -53,7 +59,7 @@ export function usePointerDrift<F extends HTMLElement, B extends HTMLElement>() 
 
     const front = frontRef.current;
     const back = backRef.current;
-    if (!front || !back) return;
+    if (!front && !back) return;
 
     /** Normalised cursor offset from centre, -1 to 1. Written by the event. */
     const target = { x: 0, y: 0 };
@@ -76,8 +82,8 @@ export function usePointerDrift<F extends HTMLElement, B extends HTMLElement>() 
       const bx = -current.x * spanX * DEPTH.back;
       const by = -current.y * spanY * DEPTH.back;
 
-      front.style.transform = `translate3d(${fx}px, ${fy}px, 0)`;
-      back.style.transform = `translate3d(${bx}px, ${by}px, 0)`;
+      if (front) front.style.transform = `translate3d(${fx}px, ${fy}px, 0)`;
+      if (back) back.style.transform = `translate3d(${bx}px, ${by}px, 0)`;
     };
 
     const tick = () => {
@@ -127,8 +133,8 @@ export function usePointerDrift<F extends HTMLElement, B extends HTMLElement>() 
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerleave", onPointerLeave);
       cancelAnimationFrame(raf);
-      front.style.transform = "";
-      back.style.transform = "";
+      if (front) front.style.transform = "";
+      if (back) back.style.transform = "";
     };
   }, [reduced]);
 

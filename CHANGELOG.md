@@ -13,8 +13,52 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ## [Unreleased]
 
+Chunk 2, content pages. The Game page is built; The Characters page, the character detail route
+and the News CMS are still to come.
+
 ### Added
 
+- The Game page, reached by opening Ọnụ Ụzọ 1. Six sections in sequence: the hero with ASCEND.
+  SURVIVE. COMPETE. and Watch Trailer, The Story, Two Paths. One Ascension., Master Your Chi,
+  Souls of the Arena, and Answer the Summons with the cue on to The Characters.
+- The Story. The chip, the heading, Soma's account either side of him, and JOIN THE TRIAL. Soma
+  stands in the middle of the field with the torn ground cutting across him, and rises against the
+  scroll as you read, so he reads as climbing out of it. The heading, the two columns of copy and
+  the button arrive in turn as the section comes into view.
+- Two Paths. One Ascension., with Survive the Trials and Dominate the Arena either side of the red
+  rule. The rule turns on its side and sits between the two on a phone.
+- Master Your Chi. The fighter, the machete and the spear each drift at their own speed as you
+  scroll, and the two weapons turn slowly against one another, so the group reads as having depth.
+- Souls of the Arena is a carousel. On a phone one card fills the screen with the next peeking past
+  the edge; swipe to move through the roster. On a laptop the three cards sit in a row as before.
+- Pointing at either end of the Souls carousel turns the cursor into an arrow, and clicking there
+  moves to the next card. The arrow only appears when there is somewhere to go.
+
+Every animation on this page holds still for anyone who has asked for reduced motion.
+
+### Changed
+
+- The Souls of the Arena heading now breaks over two lines on a phone, at the size the design gives
+  it. It was running small on one line.
+- The Story now runs the full height the design gives it, with the torn edges above and below in
+  the right places. The section previously began and ended on a straight line, and Soma stood
+  clear of the ground rather than being cut by it.
+- Soma is much larger in The Story, and the heading, copy columns and button sit where the design
+  puts them at both desktop and phone widths.
+
+---
+
+## Release history
+
+## [0.1.0] - 2026-08-29
+
+Chunk 1, the shell. The landing experience is navigable end to end.
+
+### Added
+
+- Entry screen at `/en` and `/ig`: the Goondu Games wordmark, the Beyond Service lockup, the
+  Nsibidi pattern ground, the language button and the sound toggle.
+- Localised routing. The site opens at `/en` by default and `/ig` serves the Igbo entry.
 - All four gates are live: The Game, The Characters, Community and Competition, each on its own
   page with its environment plate, the Ọnụ Ụzọ chip, the title, the call to action and the cue to
   the next gate. Competition leads back round to The Game.
@@ -29,17 +73,13 @@ blockers live in local working notes and are deliberately not repeated here.
 - The gate plates now drift slowly and continuously, and the character and the scene behind him
   move by different amounts as you move the cursor, so the gate reads as having depth. Both hold
   still for anyone who has asked for reduced motion.
-- Entry screen at `/en` and `/ig`: the Goondu Games wordmark, the Beyond Service lockup, the
-  Nsibidi pattern ground, the language button and the sound toggle.
-- Localised routing. The site opens at `/en` by default and `/ig` serves the Igbo entry.
+- The Nsibidi symbols behind the entry screen now drift continuously, four rows deep, each row
+  moving against the one above it. They hold still for anyone who has asked for reduced motion.
+- The arrow at the foot of every gate now rises and falls gently, so it reads as something you
+  can follow rather than a marking. It sits still for anyone who has asked for reduced motion.
 - Project structure and design system foundation: palette, type scale and motion tokens in
   `src/app/globals.css`.
 - Teko and Host Grotesk, self-hosted at build time.
-- The Nsibidi symbols behind the entry screen now drift continuously, four rows deep, each row
-  moving against the one above it. They hold still for anyone who has asked for reduced motion.
-
-- The arrow at the foot of every gate now rises and falls gently, so it reads as something you
-  can follow rather than a marking. It sits still for anyone who has asked for reduced motion.
 
 ### Changed
 
@@ -61,23 +101,3 @@ blockers live in local working notes and are deliberately not repeated here.
   those widths they live in the menu instead.
 - Menu items no longer run onto two lines and push the Comics, News and Merch Store links off the
   bottom of the screen on tablets and small laptops.
-
----
-
-## Release history
-
-<!--
-  Move entries out of Unreleased and under a version heading when a chunk ships.
-
-  ## [0.1.0] - YYYY-MM-DD
-
-  ### Added
-  - Entry screen with English and Igbo language selection
-  - Gate sequence covering The Game, The Characters, Community and Competition
-  - Site header, menu overlay and sound toggle
-  - Page transition system
-
-  ### Changed
-  ### Fixed
-  ### Removed
--->

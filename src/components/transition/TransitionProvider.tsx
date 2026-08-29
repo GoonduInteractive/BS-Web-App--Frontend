@@ -18,8 +18,22 @@ import { ALL_TEAR_SOURCES } from "./tear-variants";
 
 type Phase = "idle" | "closing" | "covered" | "opening";
 
+type PageTransition = {
+  /** Play the tear, change route, reveal the new page. */
+  navigate: (href: string) => void;
+  /**
+   * Play the tear over a change that is NOT a route change.
+   *
+   * `commit` runs while the screen is fully covered, so whatever it does — a
+   * scroll jump, a state swap — is never seen happening. The gate CTA uses this:
+   * a gate and the page it opens onto share one route, so there is no href to
+   * push, but the passage between them still has to be the tear.
+   */
+  reveal: (commit: () => void) => void;
+};
+
 /** Named to avoid collision with React's own useTransition. */
-const PageTransitionContext = createContext<{ navigate: (href: string) => void } | null>(null);
+const PageTransitionContext = createContext<PageTransition | null>(null);
 
 export function usePageTransition() {
   const ctx = useContext(PageTransitionContext);
@@ -186,6 +200,48 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   );
 
   /**
+   * Same-route tear. Close, run `commit` under full cover, reveal.
+   *
+   * It cannot lean on the pathname effect the way `navigate` does — the route
+   * never changes, so that effect never fires — so it calls `openTear` itself
+   * once the commit is in. The failsafe is armed before `commit` runs, because a
+   * throw inside it must not leave the screen red.
+   */
+  const reveal = useCallback(
+    (commit: () => void) => {
+      if (phase.current !== "idle") return; // swallow rapid repeat clicks
+
+      phase.current = "closing";
+      setActive(true);
+
+      void (async () => {
+        try {
+          const tear = await loadTear();
+          const tl = tear.createTear(panels(), { reduced });
+          timeline.current = tl;
+          await new Promise((resolve) => {
+            tl.eventCallback("onComplete", () => resolve(null));
+            tl.timeScale(1).play();
+          });
+        } catch {
+          // The change is the priority, the animation is decoration.
+          phase.current = "idle";
+          setActive(false);
+          commit();
+          return;
+        }
+
+        phase.current = "covered";
+        coveredAt.current = performance.now();
+        failsafe.current = setTimeout(() => void openTear(), FAILSAFE_MS);
+        commit();
+        void openTear();
+      })();
+    },
+    [openTear, panels, reduced],
+  );
+
+  /**
    * Back and forward play the transition too, per Design.
    *
    * popstate cannot be cancelled and the browser has already begun rendering the
@@ -252,7 +308,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   }, [navigate]);
 
   return (
-    <PageTransitionContext.Provider value={{ navigate }}>
+    <PageTransitionContext.Provider value={{ navigate, reveal }}>
       {children}
       <TransitionOverlay leftRef={leftRef} rightRef={rightRef} active={active} />
     </PageTransitionContext.Provider>

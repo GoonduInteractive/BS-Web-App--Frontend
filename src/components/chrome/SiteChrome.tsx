@@ -52,7 +52,7 @@ export function SiteChrome({ messages }: { messages: Messages }) {
       <GateRail railLabel={messages.gates.railLabel} labels={railLabels} />
 
       {/* Bottom-left, matching the gate frames. */}
-      <div className="fixed bottom-4 left-4 z-30 md:bottom-31 md:left-24">
+      <div className="fixed bottom-4 left-4 z-30 md:bottom-10 md:left-24">
         <SoundToggle onLabel={messages.entry.soundOn} offLabel={messages.entry.soundOff} />
       </div>
     </>

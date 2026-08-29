@@ -62,5 +62,67 @@
       "competition": "TODO ig: DISCOVER COMPETITION"
     },
     "characterAlt": "Soma"
+  },
+  "theGame": {
+    "backToGate": "BACK TO ỤZỌ",
+    "hero": {
+      "title": "TODO ig: ASCEND. SURVIVE. COMPETE.",
+      "tagline": "TODO ig: Death is not the end.",
+      "body": "TODO ig: Summoned into the realm of Ogbun'abali, the Igbo deity of punishment and games, champions from the living world are forced to compete in a divine spectacle where survival is entertainment and power is earned through trial.",
+      "aside": "TODO ig: Fight through relentless dungeons. Master your chi. Challenge rival ascendants. Rise through the ranks and earn your place among the gods.",
+      "cta": "TODO ig: WATCH TRAILER",
+      "plateAlt": "TODO ig: A shrine figure beneath the stone gate in the forest of trials"
+    },
+    "story": {
+      "chip": "TODO ig: THE STORY",
+      "title": "TODO ig: SOMA WAS NEVER MEANT TO BECOME A HERO",
+      "body1": "TODO ig: Soma was an ordinary youth corps member whose life ended during a violent ambush.",
+      "body2": "TODO ig: Caught between life and death, he was offered a second chance by Ogbun'abali, the god of punishment and games. Resurrected with awakened chi abilities, Soma is thrust into a world where gods, spirits, and hidden forces shape the fate of nations.",
+      "aside": "TODO ig: Now summoned to the Tournament of the Gods, he must prove himself worthy of ascension while uncovering truths that were never meant to be revealed.",
+      "cta": "TODO ig: JOIN THE TRIAL",
+      "characterAlt": "TODO ig: Soma"
+    },
+    "twoPaths": {
+      "titleMuted": "TODO ig: TWO PATHS.",
+      "title": "TODO ig: ONE ASCENSION.",
+      "body": "TODO ig: The journey to greatness follows two interconnected paths.",
+      "trialsTitle": "TODO ig: SURVIVE THE TRIALS",
+      "trialsBody": "TODO ig: Fight through wave-based dungeons filled with mythological enemies and powerful bosses. Earn rewards, unlock abilities, and climb through twelve divine ranks.",
+      "arenaTitle": "TODO ig: DOMINATE THE ARENA",
+      "arenaBody": "TODO ig: Take your customized champion into fast-paced 1v1 and 2v2 PvP battles. Master your skills, outplay your opponents, and compete for a place on the leaderboards."
+    },
+    "chi": {
+      "title": "TODO ig: MASTER YOUR CHI",
+      "body": "TODO ig: Unlock and upgrade powerful abilities that shape your combat style. Experiment with different builds, discover unique combinations, and develop a champion that reflects how you choose to fight.",
+      "bodyOutro": "TODO ig: Every victory brings new opportunities for growth.",
+      "characterAlt": "TODO ig: Soma channelling his chi",
+      "macheteAlt": "TODO ig: A curved machete",
+      "spearAlt": "TODO ig: A ceremonial spear"
+    },
+    "souls": {
+      "intro": "TODO ig: Meet a growing roster of ascendants, each with their own abilities, stories, and connection to the world of Beyond Service.",
+      "title": "TODO ig: SOULS OF THE",
+      "titleMuted": "TODO ig: ARENA",
+      "cta": "TODO ig: EXPLORE CHARACTERS",
+      "soma": {
+        "name": "SOMA",
+        "role": "TODO ig: The Chosen"
+      },
+      "kaira": {
+        "name": "KAIRA",
+        "role": "TODO ig: Lady Koi Koi"
+      },
+      "ogbunabali": {
+        "name": "OGBUN'ABALI",
+        "role": "TODO ig: The God of Punishment and Games"
+      }
+    },
+    "summons": {
+      "title": "TODO ig: ANSWER THE SUMMONS",
+      "body": "TODO ig: The Tournament of the Gods has begun.\nThe arena awaits. The gods are watching.\nWill you survive the trials and earn your place among the ascendants?",
+      "cta": "TODO ig: JOIN THE TRIAL",
+      "cue": "TODO ig: SCROLL TO GO NEXT",
+      "imageAlt": "TODO ig: An ascendant standing ready"
+    }
   }
 }

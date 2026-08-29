@@ -43,18 +43,44 @@ import { cn } from "@/lib/utils/cn";
  * NOTE: overview section 8 gives Button as "Teko Heavy 14/22.7", but Figma and
  * the human both put the entry label in Host Grotesk. Following Figma. Raised.
  */
+/**
+ * The two delivered bracket artworks, and which side each one is drawn facing.
+ *
+ * Design shipped these as two files rather than one recolourable shape, so the
+ * choice is a file swap. `field` names the SURFACE the button sits on, not the
+ * bracket colour, because that is the thing a caller actually knows: on the dark
+ * grounds the brackets are near-white, on the bone field they are the dark red
+ * of --color-scar.
+ *
+ * THE TWO FILES FACE OPPOSITE WAYS. `button-bracket.svg` is drawn as the LEFT
+ * bracket and `red-button-bracket.svg` as the RIGHT one — the paths are mirrors
+ * of each other, not one path in two colours. So which side needs CSS mirroring
+ * depends on which file is in use, which is why `drawn` is recorded here rather
+ * than assumed.
+ */
+const BRACKET_ART = {
+  dark: { src: "/assets/ornaments/button-bracket.svg", drawn: "left" },
+  light: { src: "/assets/ornaments/red-button-bracket.svg", drawn: "right" },
+} as const;
+
 export function BracketButton({
   children,
   hoverLabel,
+  field = "dark",
   className,
   ...props
 }: ComponentPropsWithoutRef<"button"> & {
   /** Optional second label revealed on hover or keyboard focus. */
   hoverLabel?: string;
+  /**
+   * The ground the button sits on. Dark takes the near-white brackets, light
+   * takes the red ones. Defaults to dark, which is most of this site.
+   */
+  field?: keyof typeof BRACKET_ART;
 }) {
   return (
     <span className="group inline-flex items-center gap-4">
-      <Bracket />
+      <Bracket field={field} />
       <button
         type="button"
         className={cn(
@@ -98,24 +124,38 @@ export function BracketButton({
           children
         )}
       </button>
-      <Bracket mirrored />
+      <Bracket field={field} side="right" />
     </span>
   );
 }
 
+function Bracket({
+  field,
+  side = "left",
+}: {
+  field: keyof typeof BRACKET_ART;
+  side?: "left" | "right";
+}) {
+  const art = BRACKET_ART[field];
+  // Mirror only when the artwork is drawn facing the other way. Deriving this
+  // from the ART rather than from the side is what lets the two files disagree
+  // about which bracket they are, which they do.
+  const mirrored = art.drawn !== side;
 
-function Bracket({ mirrored = false }: { mirrored?: boolean }) {
   return (
     <Image
-      src="/assets/ornaments/button-bracket.svg"
+      src={art.src}
       alt=""
       aria-hidden
       width={12}
       height={36}
       className={cn(
         "h-9 w-3 select-none transition-transform duration-300 ease-out",
-        mirrored
-          ? "-scale-x-100 group-hover:-translate-x-2.5 group-has-focus-visible:-translate-x-2.5"
+        mirrored && "-scale-x-100",
+        // The spread always goes OUTWARD from the button, whichever way the
+        // artwork faces, so it keys off the side and not off the mirroring.
+        side === "right"
+          ? "group-hover:-translate-x-2.5 group-has-focus-visible:-translate-x-2.5"
           : "group-hover:translate-x-2.5 group-has-focus-visible:translate-x-2.5",
       )}
     />

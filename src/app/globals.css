@@ -34,6 +34,22 @@
      was close. Used for the chip plate and the active gate rail dot. */
   --color-gild: #e1d3a0;
 
+  /* Gradient end of the Two Paths / Master Your Chi field. Read from the
+     delivered ornaments/torn-section.svg, whose linearGradient runs
+     #200404 (--color-char) to #0E0000. Not sampled. */
+  --color-void: #0e0000;
+
+  /* The darker of the two card reds, and the bracket colour on light fields.
+     Literal fill of ornaments/red-button-bracket.svg, which Design delivered as
+     the counterpart to the near-white button-bracket.svg. The Souls of the Arena
+     frame reads the same #330500 across the character cards' portrait field, so
+     one token covers both uses.
+
+     It is NOT --color-oxblood (#310400), which it sits two steps from. They are
+     separate values in separate places — the story field versus this — and are
+     kept as separate tokens until Design says otherwise. */
+  --color-scar: #330500;
+
   /* ---- Type scale (overview section 8) ---- */
   --text-h1: 3.4375rem;           /* 55 / 64  Teko SemiBold */
   --text-h1--line-height: 4rem;
@@ -76,6 +92,42 @@
      Floor and ceiling are extrapolated, not measured — there is no 380px gate
      frame. */
   --text-gate: clamp(3.75rem, 8.18vw, 7.57rem);
+
+  /* The Game page's hero title — ASCEND. SURVIVE. COMPETE.
+     Distinct from --text-gate: the gate title and this one are different sizes
+     in the frames, so they cannot share a token.
+
+     MEASURED AT BOTH ENDS, which no other display token here can claim. The
+     1440 frame sets a 63px cap on an 80px line pitch; the 361 frame sets 40 on
+     54. Teko's cap lands at 0.6366 of its font size (established for
+     --text-gate), so those are 99/80 and 63/54, and the vw terms interpolate
+     between the two real frames rather than extrapolating from one.
+
+     Same caveat as --text-gate: the frame's display face is NOT Teko. Matched on
+     cap height, Teko sets these about 10% wide, and the component closes the
+     rest with negative tracking. Overview risk 3 stays open. */
+  --text-game-hero: clamp(3.9375rem, 3.185rem + 3.336vw, 6.1875rem);
+  --text-game-hero--line-height: clamp(3.375rem, 2.83rem + 2.41vw, 5rem);
+
+  /* The Story's heading — SOMA WAS NEVER MEANT TO BECOME A HERO.
+     A third display size, and it has to be its own token for the same reason
+     --text-game-hero does: it is measurably neither the gate title nor the hero.
+
+     MEASURED AT BOTH ENDS. The 1440 frame sets a 50px cap on an 80px line
+     pitch; the 361 frame sets 35 on 54. Teko's cap lands at 0.6366 of its font
+     size (established for --text-gate), so those are 78.5/80 and 55/54, and the
+     vw terms interpolate between the two real frames.
+
+     The line pitch is IDENTICAL to --text-game-hero's at both ends, 80 and 54,
+     which is why the two line-height clamps are the same expression. The sizes
+     are not: the hero runs 99/63 against this heading's 78.5/55, so they cannot
+     share one token however alike the leading looks.
+
+     Same caveat as every display token here: the frame's face is NOT Teko.
+     Matched on cap height, Teko sets the first line ~10% wide, and the component
+     closes the rest with negative tracking. Overview risk 3 stays open. */
+  --text-story-title: clamp(3.4375rem, 2.946rem + 2.178vw, 4.90625rem);
+  --text-story-title--line-height: clamp(3.375rem, 2.83rem + 2.41vw, 5rem);
 
   /* Menu overlay links. Cap height measures 50px in the 651-wide menu frame;
      77.8px is what puts TEKO's cap height there.
@@ -197,8 +249,71 @@
    the two compose instead of fighting: the arrow keeps bobbing while it lifts.
    ========================================================================== */
 
+/* ==========================================================================
+   Section heading size
+   Deliberately NOT a `text-*` utility. twMerge cannot resolve this project's
+   custom `--text-*` scale or `--color-*` names, so it lumps `text-h2` and
+   `text-menu-fg` into one group and drops one of them — which silently rendered
+   every SectionTitle at the inherited 16px. An arbitrary `text-[2.5rem]` hit the
+   same collision. A plain class name sidesteps the merger entirely, so the size
+   can never be stripped by a colour passed from a caller.
+   ========================================================================== */
+
+.section-title {
+  font-size: 2.5rem;
+  line-height: 0.95;
+}
+
+@media (width >= 48rem) {
+  .section-title {
+    font-size: 3.5rem;
+  }
+}
+
 .scroll-cue-bob {
   animation: scroll-cue-bob 1.9s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Reveal on enter
+   Section content rises and fades as it comes into view, once, then stays.
+
+   DELIBERATELY NOT GSAP. This is a one-shot state change, not a timeline: there
+   is nothing to seek, reverse or scrub. An IntersectionObserver flips one
+   attribute and CSS does the rest, which keeps ScrollTrigger out of the initial
+   bundle — it is currently loaded lazily for the gate rail alone, and wrapping
+   every heading and paragraph on the page in it would undo that.
+
+   Transform and opacity only, so it stays on the compositor. Stagger within a
+   section comes from `transition-delay`, set per element by the Reveal wrapper,
+   which is the same mechanism the menu overlay uses.
+
+   `translate` rather than `transform`, so it never collides with a `transform`
+   written by the pointer-drift hook or a Ken Burns animation on the same node.
+   ========================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+  translate: 0 1.75rem;
+  transition:
+    opacity 700ms var(--ease-gate),
+    translate 700ms var(--ease-gate);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Reduced motion gets the content, never the movement. Stated explicitly rather
+   than left to the global duration collapse, so the copy is legible even if the
+   observer never runs. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
 }
 
 @keyframes scroll-cue-bob {

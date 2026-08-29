@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import { useGateEntry } from "@/components/gates/GateEntry";
 import { ScrollCue } from "@/components/gates/ScrollCue";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { Chip } from "@/components/ui/Chip";
@@ -50,13 +51,10 @@ export function GateSection({
 }) {
   // front = character, back = environment plate. 3% and 1% respectively.
   const { frontRef, backRef } = usePointerDrift<HTMLDivElement, HTMLDivElement>();
+  const { enter } = useGateEntry();
 
   return (
     <section
-      // The rail's ScrollTrigger resolves this attribute to know when the hero
-      // has left the viewport. It is a contract between two files, so it must
-      // not be renamed on one side only.
-      data-gate-hero
       className="relative flex h-dvh flex-col items-center overflow-hidden"
     >
       {/* ---- Environment plate. Drifts 1%. ---- */}
@@ -139,7 +137,7 @@ export function GateSection({
         </div>
 
         <div className="mt-auto flex flex-col items-center gap-[6.8dvh] pb-[3.35dvh]">
-          <BracketButton onClick={scrollToContent} className="text-body leading-none tracking-[0.04em] px-4.5">
+          <BracketButton onClick={() => openGate(enter)} className="text-body leading-none tracking-[0.04em] px-4.5">
             {cta}
           </BracketButton>
           <ScrollCue href={cueHref} label={cueLabel} />
@@ -150,16 +148,20 @@ export function GateSection({
 }
 
 /**
- * The CTA reveals this gate's own content, it does not navigate — on /the-game
- * the button reads DISCOVER THE GAME and you are already there.
+ * The CTA opens the gate onto the page behind it.
  *
- * INERT UNTIL CHUNK 2. The content sections below each hero (The Story, Two
- * Paths, Master Your Chi and so on, overview section 5) are not built, so there
- * is nothing to scroll to yet and this is a deliberate no-op rather than a
- * broken link. It starts working the moment a [data-gate-content] element
- * exists, with no change here.
+ * IT IS A DOOR, NOT A SCROLL. It used to smooth-scroll down to the content,
+ * which read as one long page with a tall hero on top. It is not one page: the
+ * gate is the entrance and the page is what lies beyond it, so the passage
+ * between them is the tear, and the page is the first thing you see when the
+ * tear opens. `GateEntry` owns that swap; all this does is ask for it.
+ *
+ * NO CONTENT, NO TEAR. Gates 2 to 4 have nothing behind them yet, so there is
+ * nothing to open onto and the CTA stays a deliberate no-op rather than tearing
+ * to a blank screen. Each starts working the moment its route passes children to
+ * GatePage, with no change here.
  */
-function scrollToContent() {
-  const content = document.querySelector("[data-gate-content]");
-  content?.scrollIntoView({ behavior: "smooth", block: "start" });
+function openGate(enter: () => void) {
+  if (!document.querySelector("[data-gate-content]")) return;
+  enter();
 }
