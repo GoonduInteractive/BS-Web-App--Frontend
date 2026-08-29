@@ -26,9 +26,29 @@
   --color-bone: #e5deb5;          /* Souls of the Arena, Answer the Summons field */
   --color-char: #200404;          /* entry screen gradient, bottom stop */
 
-  /* ---- Colour: BLOCKED ---- */
-  /* --color-gild — Onu Uzo chip and active rail dot. Samples ranged #D6A645 to
-     #FBD762. Deliberately absent until Design confirms. See overview risk 6. */
+  /* ---- Colour: confirmed, read from a delivered asset ---- */
+  /* CLOSES overview risk 6. This was never sampled from a screenshot: it is the
+     literal fill of ornaments/Rectangle 2.svg, the torn Onu Uzo chip plate that
+     Design delivered. The gate 1, 3 and 4 frames read #E1D3A0 at the chip centre,
+     matching the asset exactly. Neither value risk 6 guessed (#D6A645, #FBD762)
+     was close. Used for the chip plate and the active gate rail dot. */
+  --color-gild: #e1d3a0;
+
+  /* Gradient end of the Two Paths / Master Your Chi field. Read from the
+     delivered ornaments/torn-section.svg, whose linearGradient runs
+     #200404 (--color-char) to #0E0000. Not sampled. */
+  --color-void: #0e0000;
+
+  /* The darker of the two card reds, and the bracket colour on light fields.
+     Literal fill of ornaments/red-button-bracket.svg, which Design delivered as
+     the counterpart to the near-white button-bracket.svg. The Souls of the Arena
+     frame reads the same #330500 across the character cards' portrait field, so
+     one token covers both uses.
+
+     It is NOT --color-oxblood (#310400), which it sits two steps from. They are
+     separate values in separate places — the story field versus this — and are
+     kept as separate tokens until Design says otherwise. */
+  --color-scar: #330500;
 
   /* ---- Type scale (overview section 8) ---- */
   --text-h1: 3.4375rem;           /* 55 / 64  Teko SemiBold */
@@ -55,9 +75,83 @@
   --text-overline: 0.625rem;      /* 10 / 16.2  Teko 400 */
   --text-overline--line-height: 1.0125rem;
 
-  /* PROVISIONAL. The scale tops out at 55px but gate titles run near viewport
-     width in the prototype. Replace when Design supplies a real value. Risk 3. */
-  --text-gate: clamp(3.5rem, 11vw, 9rem);
+  /* STILL PROVISIONAL, but now provisional against a measurement rather than a
+     guess. The gate title's ink measures 357 x 75 (cap height) in the 1440-wide
+     game frame, and the cap height is 74-75 in all four.
+
+     8.18vw resolves to 117.8px at 1440, which is what puts TEKO's cap height at
+     the measured 75. Note that is NOT the ~104px a 0.71 cap ratio would predict:
+     Teko renders a smaller cap per em than the frame's face does.
+
+     Which is the real finding here — THE FRAME IS NOT SET IN TEKO. Matched on
+     cap height, Teko sets "THE GAME" 393px wide against the frame's 357, so the
+     frame's face is about 10% more condensed. The component compensates with
+     negative tracking; see GateSection. Overview risk 3 stays open, and now has
+     a second part: the face itself.
+
+     Floor and ceiling are extrapolated, not measured — there is no 380px gate
+     frame. */
+  --text-gate: clamp(3.75rem, 8.18vw, 7.57rem);
+
+  /* The Game page's hero title — ASCEND. SURVIVE. COMPETE.
+     Distinct from --text-gate: the gate title and this one are different sizes
+     in the frames, so they cannot share a token.
+
+     MEASURED AT BOTH ENDS, which no other display token here can claim. The
+     1440 frame sets a 63px cap on an 80px line pitch; the 361 frame sets 40 on
+     54. Teko's cap lands at 0.6366 of its font size (established for
+     --text-gate), so those are 99/80 and 63/54, and the vw terms interpolate
+     between the two real frames rather than extrapolating from one.
+
+     Same caveat as --text-gate: the frame's display face is NOT Teko. Matched on
+     cap height, Teko sets these about 10% wide, and the component closes the
+     rest with negative tracking. Overview risk 3 stays open. */
+  --text-game-hero: clamp(3.9375rem, 3.185rem + 3.336vw, 6.1875rem);
+  --text-game-hero--line-height: clamp(3.375rem, 2.83rem + 2.41vw, 5rem);
+
+  /* The Story's heading — SOMA WAS NEVER MEANT TO BECOME A HERO.
+     A third display size, and it has to be its own token for the same reason
+     --text-game-hero does: it is measurably neither the gate title nor the hero.
+
+     MEASURED AT BOTH ENDS. The 1440 frame sets a 50px cap on an 80px line
+     pitch; the 361 frame sets 35 on 54. Teko's cap lands at 0.6366 of its font
+     size (established for --text-gate), so those are 78.5/80 and 55/54, and the
+     vw terms interpolate between the two real frames.
+
+     The line pitch is IDENTICAL to --text-game-hero's at both ends, 80 and 54,
+     which is why the two line-height clamps are the same expression. The sizes
+     are not: the hero runs 99/63 against this heading's 78.5/55, so they cannot
+     share one token however alike the leading looks.
+
+     Same caveat as every display token here: the frame's face is NOT Teko.
+     Matched on cap height, Teko sets the first line ~10% wide, and the component
+     closes the rest with negative tracking. Overview risk 3 stays open. */
+  --text-story-title: clamp(3.4375rem, 2.946rem + 2.178vw, 4.90625rem);
+  --text-story-title--line-height: clamp(3.375rem, 2.83rem + 2.41vw, 5rem);
+
+  /* Menu overlay links. Cap height measures 50px in the 651-wide menu frame;
+     77.8px is what puts TEKO's cap height there.
+
+     Same story as --text-gate: matched on cap height, Teko sets these ~11% wider
+     than the frame does, so the component pairs this with tracking-[-0.05em].
+     Two independent measurements now agree that the frame's display face is not
+     Teko.
+
+     FLUID, capped at the design value. The panel is a fixed 45.2% of the
+     viewport, so a fixed 77.8px overflowed it on every screen below ~1440: at
+     1024 the panel is 463px and "THE CHARACTERS" is 415px before padding, so
+     the links wrapped to two lines and pushed the utility links off-screen.
+     5.4vw reaches 77.8px at exactly 1441px and steps down proportionally below
+     it. The floor is the mobile size, where the panel goes full-width. */
+  --text-menu-link: clamp(2.75rem, 5.4vw, 4.8625rem);
+  --text-menu-link--line-height: 1;
+
+  /* ---- Motion tokens ---- */
+  /* Shared by the gate rail's scroll fade and the menu overlay's staggered
+     reveal, so neither carries a magic number. */
+  --ease-gate: cubic-bezier(0.33, 1, 0.68, 1);   /* ease-out-cubic */
+  --duration-gate: 200ms;
+  --duration-gate-slow: 400ms;
 }
 
 @theme inline {
@@ -113,6 +207,148 @@
 @keyframes nsibidi-right {
   from { transform: translate3d(-50%, 0, 0); }
   to { transform: translate3d(0, 0, 0); }
+}
+
+/* ==========================================================================
+   Ken Burns on the gate plates — motion moment 3
+   Scale 1.0 to 1.06 over 20s, alternating so it breathes rather than snapping
+   back. `transform-origin` alternates per gate, which is what makes the drift
+   run a different way on each one; the scale itself is identical.
+
+   This is what replaces parallax (overview section 4). Transform-only, so it
+   stays on the compositor and never repaints, and the global reduced-motion
+   block in @layer base freezes it for free — the same mechanism NsibidiField
+   already relies on. Nothing extra is needed for moment 3 to degrade.
+
+   IMPORTANT: this element must NOT also carry the pointer-drift transform.
+   A CSS transform animation and a JS transform write clobber each other, so
+   GateSection nests them: drift on the outer layer, Ken Burns on the inner.
+   ========================================================================== */
+
+.ken-burns {
+  will-change: transform;
+  transform-origin: var(--kb-origin, center);
+  animation: ken-burns 20s ease-in-out infinite alternate;
+}
+
+@keyframes ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+
+/* ==========================================================================
+   Scroll cue bob
+   The arrow at the foot of every gate rises and falls so it reads as something
+   you can act on rather than a static ornament. Requested by Design after the
+   gates were built; the original build deliberately had no bob.
+
+   Transform-only, so it stays on the compositor, and the global reduced-motion
+   block in @layer base collapses it to a standstill for free.
+
+   The hover lift on the cue writes `translate`, a separate property in v4, so
+   the two compose instead of fighting: the arrow keeps bobbing while it lifts.
+   ========================================================================== */
+
+/* ==========================================================================
+   Section heading size
+   Deliberately NOT a `text-*` utility. twMerge cannot resolve this project's
+   custom `--text-*` scale or `--color-*` names, so it lumps `text-h2` and
+   `text-menu-fg` into one group and drops one of them — which silently rendered
+   every SectionTitle at the inherited 16px. An arbitrary `text-[2.5rem]` hit the
+   same collision. A plain class name sidesteps the merger entirely, so the size
+   can never be stripped by a colour passed from a caller.
+   ========================================================================== */
+
+.section-title {
+  font-size: 2.5rem;
+  line-height: 0.95;
+}
+
+@media (width >= 48rem) {
+  .section-title {
+    font-size: 3.5rem;
+  }
+}
+
+.scroll-cue-bob {
+  animation: scroll-cue-bob 1.9s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Reveal on enter
+   Section content rises and fades as it comes into view, once, then stays.
+
+   DELIBERATELY NOT GSAP. This is a one-shot state change, not a timeline: there
+   is nothing to seek, reverse or scrub. An IntersectionObserver flips one
+   attribute and CSS does the rest, which keeps ScrollTrigger out of the initial
+   bundle — it is currently loaded lazily for the gate rail alone, and wrapping
+   every heading and paragraph on the page in it would undo that.
+
+   Transform and opacity only, so it stays on the compositor. Stagger within a
+   section comes from `transition-delay`, set per element by the Reveal wrapper,
+   which is the same mechanism the menu overlay uses.
+
+   `translate` rather than `transform`, so it never collides with a `transform`
+   written by the pointer-drift hook or a Ken Burns animation on the same node.
+   ========================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+  translate: 0 1.75rem;
+  transition:
+    opacity 700ms var(--ease-gate),
+    translate 700ms var(--ease-gate);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Reduced motion gets the content, never the movement. Stated explicitly rather
+   than left to the global duration collapse, so the copy is legible even if the
+   observer never runs. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+}
+
+@keyframes scroll-cue-bob {
+  0%,
+  100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ==========================================================================
+   Tear panels start invisible
+   The two panels are each 100vw and overlap by design, so with no transform at
+   all they cover the entire viewport in ember. TransitionProvider parks them
+   with gsap.set inside a requestIdleCallback, which on a slow device can be
+   delayed well past first paint — and until it ran, every route painted solid
+   red. That is exactly the mid-tier Android on a metered network this project
+   targets, so the resting state is seeded in CSS rather than left to JS.
+
+   OPACITY, NOT TRANSFORM, AND THAT DISTINCTION MATTERS.
+
+   Seeding `transform: translateX(-100%)` here looked equivalent and was not.
+   GSAP does not overwrite transform blindly — it PARSES the existing one and
+   composes `xPercent` on top of it. So the seed and the animation added up: the
+   panels parked at -200% and their "fully closed" position landed at -100%,
+   which is still a whole viewport off-screen. The wipe ran its full timeline
+   and covered nothing, on every navigation.
+
+   Opacity is safe because GSAP's own `autoAlpha` writes it on the first set, so
+   control transfers cleanly. It also fails safe: if the animation chunk never
+   loads, the panels stay invisible instead of stranding the page under red.
+   Unlike `visibility: hidden` it keeps the panels rasterised, so it does not
+   undo the idle warm-up of the displacement filter.
+   ========================================================================== */
+
+.tear-panel {
+  opacity: 0;
 }
 
 @layer base {

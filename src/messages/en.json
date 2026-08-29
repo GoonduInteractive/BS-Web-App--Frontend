@@ -1,9 +1,128 @@
 {
   "entry": {
-    "enter": "WELCOME",
+    "enterIgbo": "NNỌỌ",
+    "enterEnglish": "WELCOME",
     "wordmarkAlt": "Goondu Games",
     "lockupAlt": "Beyond Service: Trial of the Gods",
     "soundOn": "Turn sound on",
     "soundOff": "Turn sound off"
+  },
+  "nav": {
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "wordmarkAlt": "Beyond Service",
+    "account": "Account",
+    "comics": "Comics",
+    "news": "News",
+    "merch": "Merch Store"
+  },
+  "menu": {
+    "label": "Main menu",
+    "about": "ABOUT GOONDU"
+  },
+  "gates": {
+    "railLabel": "Gates",
+    "theGame": {
+      "chip": "ỌNỤ ỤZỌ 1",
+      "title": "THE GAME",
+      "rail": "The Game",
+      "menu": "THE GAME",
+      "cta": "DISCOVER THE GAME",
+      "plateAlt": "The stone gate in the forest of trials"
+    },
+    "characters": {
+      "chip": "ỌNỤ ỤZỌ 2",
+      "title": "THE CHARACTERS",
+      "rail": "The Characters",
+      "menu": "THE CHARACTERS",
+      "cta": "DISCOVER THE CHARACTERS",
+      "plateAlt": "The spirit tree above the red canyon"
+    },
+    "community": {
+      "chip": "ỌNỤ ỤZỌ 3",
+      "title": "COMMUNITY",
+      "rail": "Community",
+      "menu": "COMMUNITY",
+      "cta": "DISCOVER THE COMMUNITY",
+      "plateAlt": "The gathering circle beneath the falls"
+    },
+    "competition": {
+      "chip": "ỌNỤ ỤZỌ 4",
+      "title": "COMPETITION",
+      "rail": "Competition",
+      "menu": "COMPETITION",
+      "cta": "DISCOVER THE COMPETITION",
+      "plateAlt": "The pillars of the arena at dusk"
+    },
+    "cue": {
+      "theGame": "DISCOVER THE GAME",
+      "characters": "DISCOVER CHARACTERS",
+      "community": "DISCOVER COMMUNITY",
+      "competition": "DISCOVER COMPETITION"
+    },
+    "characterAlt": "Soma"
+  },
+  "theGame": {
+    "backToGate": "BACK TO ỤZỌ",
+    "hero": {
+      "title": "ASCEND. SURVIVE. COMPETE.",
+      "tagline": "Death is not the end.",
+      "body": "Summoned into the realm of Ogbun'abali, the Igbo deity of punishment and games, champions from the living world are forced to compete in a divine spectacle where survival is entertainment and power is earned through trial.",
+      "aside": "Fight through relentless dungeons. Master your chi. Challenge rival ascendants. Rise through the ranks and earn your place among the gods.",
+      "cta": "WATCH TRAILER",
+      "plateAlt": "A shrine figure beneath the stone gate in the forest of trials"
+    },
+    "story": {
+      "chip": "THE STORY",
+      "title": "SOMA WAS NEVER MEANT TO BECOME A HERO",
+      "body1": "Soma was an ordinary youth corps member whose life ended during a violent ambush.",
+      "body2": "Caught between life and death, he was offered a second chance by Ogbun'abali, the god of punishment and games. Resurrected with awakened chi abilities, Soma is thrust into a world where gods, spirits, and hidden forces shape the fate of nations.",
+      "aside": "Now summoned to the Tournament of the Gods, he must prove himself worthy of ascension while uncovering truths that were never meant to be revealed.",
+      "cta": "JOIN THE TRIAL",
+      "characterAlt": "Soma"
+    },
+    "twoPaths": {
+      "titleMuted": "TWO PATHS.",
+      "title": "ONE ASCENSION.",
+      "body": "The journey to greatness follows two interconnected paths.",
+      "trialsTitle": "SURVIVE THE TRIALS",
+      "trialsBody": "Fight through wave-based dungeons filled with mythological enemies and powerful bosses. Earn rewards, unlock abilities, and climb through twelve divine ranks.",
+      "arenaTitle": "DOMINATE THE ARENA",
+      "arenaBody": "Take your customized champion into fast-paced 1v1 and 2v2 PvP battles. Master your skills, outplay your opponents, and compete for a place on the leaderboards."
+    },
+    "chi": {
+      "title": "MASTER YOUR CHI",
+      "body": "Unlock and upgrade powerful abilities that shape your combat style. Experiment with different builds, discover unique combinations, and develop a champion that reflects how you choose to fight.",
+      "bodyOutro": "Every victory brings new opportunities for growth.",
+      "characterAlt": "Soma channelling his chi",
+      "macheteAlt": "A curved machete",
+      "spearAlt": "A ceremonial spear"
+    },
+    "souls": {
+      "intro": "Meet a growing roster of ascendants, each with their own abilities, stories, and connection to the world of Beyond Service.",
+      "title": "SOULS OF THE",
+      "titleMuted": "ARENA",
+      "cta": "EXPLORE CHARACTERS",
+      "soma": {
+        "name": "SOMA",
+        "role": "The Chosen"
+      },
+      "kaira": {
+        "name": "KAIRA",
+        "role": "Lady Koi Koi"
+      },
+      "ogbunabali": {
+        "name": "OGBUN'ABALI",
+        "role": "The God of Punishment and Games"
+      }
+    },
+    "summons": {
+      "title": "ANSWER THE SUMMONS",
+      "body": "The Tournament of the Gods has begun.\nThe arena awaits. The gods are watching.\nWill you survive the trials and earn your place among the ascendants?",
+      "cta": "JOIN THE TRIAL",
+      "cue": "SCROLL TO GO NEXT",
+      "imageAlt": "An ascendant standing ready"
+    }
   }
 }
