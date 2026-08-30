@@ -10,34 +10,6 @@ import { TornDivider } from "@/components/ui/TornDivider";
 import { useGsapScene } from "@/hooks/useGsapScene";
 import type { Messages } from "@/lib/utils/messages";
 
-/**
- * Section 5 — Souls of the Arena. Figma:
- * `context/design/03-the-game/section-4.png`.
- *
- * The only light field on the site, torn top and bottom against the dark ground
- * either side. Three character cards, intro copy left, heading right.
- *
- * WHAT THE FRAME MEASURES, at 1440:
- *
- *   intro    x  94..416   y 183..269   four lines at 16/25
- *   title    x 884..1350  y 177..228   cap 52 -> 82px
- *   cards    x  78..488 / 513..923 / 948..1358, y 361..874   411 x 514, gap 25
- *   CTA box  x 1106..1329 y 940..995   (224 x 56)
- *   brackets x 1078 and 1347
- *
- * So the content box is 78..1358 — full-bleed with 80px side padding, which is
- * what the cards align to. The old centred `max-w-[86rem] px-13.5` put it at 86.
- *
- * THE CTA IS DARK HERE, AND THAT IS THE POINT. Every other button on the site is
- * signal red on a near-black plate; on the bone field the frame shows a black
- * button with white text AND the red brackets, which is what `field="light"`
- * selects. That is the first concrete answer to overview risk 1 (dark-surface
- * button variants), though it is an inversion of Primary rather than the
- * Secondary or Tertiary the sheet describes. Worth confirming.
- *
- * FLAGGED: --color-bone (#E5DEB5) is a sampled value, and this is the whole
- * field, so it is the most visible unconfirmed colour on the page.
- */
 export function SoulsSection({ messages }: { messages: Messages }) {
   const t = messages.theGame.souls;
   const root = useRef<HTMLElement>(null);
@@ -103,33 +75,27 @@ export function SoulsSection({ messages }: { messages: Messages }) {
   });
 
   return (
-    <section ref={root} className="relative">
+    <section ref={root} className="relative overflow-x-clip">
+      {/* The carousel track scrolls horizontally by design, inside its own
+        scroller. This clips what sits OUTSIDE that — a card whose
+        `w-[calc(100vw-3.4375rem)]` ran past the viewport at 768 and let the whole
+        page scroll with it. `clip` rather than `hidden` for the same reason as the
+        other two sections: it leaves the vertical axis alone. */}
       <TornDivider
         edge="top"
         seed={2274}
         className="text-bone relative z-10 -mb-px"
       />
 
-      <div className="bg-bone pt-[1.4375rem] pb-20 md:pt-[7.5rem] md:pb-[8.5rem]">
-        <div className="mx-auto max-w-[90rem] px-6 md:px-20">
-          {/*
-            The heading comes FIRST in the DOM because that is the mobile order
-            in full-page-mobile.png: heading, then the intro beneath it. On
-            desktop the frame puts the intro on the left and the heading on the
-            right, which `md:flex-row-reverse` gives without reordering the
-            markup or hurting the reading order.
-          */}
+      <div className="bg-bone pt-5.75 pb-20 md:pt-30 md:pb-34">
+        <div className="mx-auto max-w-360 px-6 md:px-20">
+  
           <div className="flex flex-col gap-1 md:flex-row-reverse md:items-start md:justify-between md:gap-16">
-            {/* The mask the title rides up out of. `pb-1` keeps descenders and
-                the tracking overhang from being clipped at rest. */}
+      
             <div data-souls-title className="overflow-hidden pb-1 md:-mt-7">
               <SectionTitle
                 mutedAfter={t.titleMuted}
-                // 58% ink over bone in the frame, against the shared 45% default.
                 mutedClassName="opacity-[0.58]"
-                // 64px on a 66 pitch at 361, breaking after THE — the frame
-                // sets this title over two lines on mobile and one on desktop,
-                // so the max-width IS the line break and not a safety margin.
                 className="text-ink max-w-64 text-[4rem] leading-[1.03] tracking-[-0.084em] md:max-w-none md:text-[5.125rem] md:leading-[0.95]"
               >
                 {t.title}
@@ -137,7 +103,7 @@ export function SoulsSection({ messages }: { messages: Messages }) {
             </div>
             <p
               data-souls-intro
-              className="text-ink/80 font-body text-body max-w-[20.25rem]"
+              className="text-ink/80 font-body text-body max-w-81"
             >
               {t.intro}
             </p>
@@ -158,17 +124,15 @@ export function SoulsSection({ messages }: { messages: Messages }) {
           */}
           <Carousel
             label={t.title}
-            className="mt-[1.875rem] md:mt-[5.75rem]"
+            className="mt-7.5 md:mt-23"
             trackClassName="-mx-6 gap-4 scroll-px-6 px-6 md:mx-0 md:scroll-px-0 md:px-0 lg:gap-[1.5625rem]"
             itemClassName="w-[calc(100vw-3.4375rem)] sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3.125rem)/3)]"
           >
             {cards.map((card) => (
-              // A WRAPPER, NOT THE CARD. GSAP normalises `translate`, `scale`
-              // and `rotate` onto its own transform and writes them `none`
-              // inline, which would kill the portrait's `group-hover:scale-105`.
-              // Tweening one level up leaves the card's own CSS untouched.
+
               <div data-souls-card key={card.name}>
                 <CharacterCard
+                  variant="roster"
                   name={card.name}
                   role={card.role}
                   image={card.image}
@@ -180,7 +144,7 @@ export function SoulsSection({ messages }: { messages: Messages }) {
 
           <div
             data-souls-cta
-            className="mt-12 flex justify-center md:mt-[2.75rem] md:justify-end"
+            className="mt-12 flex justify-center md:mt-11 md:justify-end"
           >
             {/* Inverted for the light field: graphite fill, bone text, and the
                 red brackets that come with `field="light"`. */}
@@ -193,10 +157,6 @@ export function SoulsSection({ messages }: { messages: Messages }) {
           </div>
         </div>
       </div>
-
-      {/* No bottom edge here. Answer the Summons draws the bone tearing into
-          its own top, because the frame has that tear cutting across the
-          ascendant — which only works if the divider is stacked above it. */}
     </section>
   );
 }

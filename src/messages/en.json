@@ -124,5 +124,536 @@
       "cue": "SCROLL TO GO NEXT",
       "imageAlt": "An ascendant standing ready"
     }
+  },
+  "characters": {
+    "backToGate": "BACK TO ỤZỌ",
+    "hero": {
+      "title": "THE SOULS THAT SHAPE THE REALM",
+      "body": "The world of Beyond Service is shaped by powerful individuals whose choices ripple across both the mortal and divine realms. Some fight for survival. Some seek power. Others exist to test those bold enough to enter the Trial.",
+      "aside": "Meet the champions, gods, and legendary figures whose stories define the Beyond Service universe.",
+      "cta": "JOIN THE TRIAL",
+      "plateAlt": "The spirit tree above the shrine, hung with nsibidi glyphs",
+      "bladeAlt": "A machete suspended before the spirit tree"
+    },
+    "roster": {
+      "champions": {
+        "heading": "CHAMPIONS"
+      },
+      "gods": {
+        "heading": "GODS"
+      },
+      "legends": {
+        "heading": "LEGENDS & ADVERSARIES"
+      },
+      "cast": {
+        "soma": {
+          "name": "SOMA",
+          "role": "The Chosen",
+          "alt": "Soma, seen from behind, the sun tattoo across his shoulder",
+          "bio": [
+            "Once an ordinary youth corps member, Soma’s life changed forever when he accepted a pact with Ogbun’abali after death. Resurrected with extraordinary chi abilities, he became one of the first ascendants to challenge the boundary between the mortal and divine worlds.",
+            "Versatile and adaptable, Soma excels at balancing offense, mobility, and crowd control, making him a reliable choice for both new and experienced players."
+          ],
+          "detail": {
+            "stats": {
+              "role": "BALANCED FIGHTER",
+              "difficulty": "MEDIUM"
+            },
+            "intro": [
+              "Soma is the all-rounder. He combines mobility, offense, crowd control, and adaptability, making him effective in almost any situation.",
+              "He's designed for players who want flexibility and the ability to respond to different combat scenarios without being locked into a single playstyle."
+            ],
+            "lore": [
+              "Soma never imagined that death would become the beginning of his story.",
+              "A recent university graduate serving his country through the National Youth Service Corps, Soma's life was cut short during a violent ambush while traveling home with his closest friends. In the moments between life and death, he encountered Ogbun'abali, the god of punishment and games, who offered him an impossible choice: remain among the dead or return to the world of the living and participate in a series of divine trials.",
+              "Soma chose to live.",
+              "Resurrected with extraordinary chi abilities and supernatural combat instincts, he set out to rescue his captured friends. What began as a personal mission quickly evolved into something much larger as he uncovered a hidden network of ritualists manipulating events from the shadows.",
+              "Despite the power he now possesses, Soma remains driven by loyalty, responsibility, and a deep desire to protect others. He carries the burden of both worlds on his shoulders, balancing his humanity against the growing influence of divine power."
+            ],
+            "abilities": [
+              {
+                "name": "FAST PUNCH",
+                "text": "A rapid series of electrified strikes that builds combo momentum and charges Soma's chi."
+              },
+              {
+                "name": "GROUND SLAM",
+                "text": "Channels chi through his gauntlet to create a localized shockwave that damages nearby enemies."
+              },
+              {
+                "name": "SPIRIT LOCK",
+                "text": "A grappling ability that launches opponents and creates openings for follow-up attacks."
+              },
+              {
+                "name": "IJE MMUO (SPIRIT PATH)",
+                "text": "Soma's ultimate ability. He summons ancestral spiritual energy in a devastating burst that overwhelms enemies in front of him."
+              }
+            ],
+            "variants": [
+              {
+                "name": "GAUNTLET VARIANT",
+                "text": "Soma's default fighting style combines close-range combat with powerful electrical chi abilities. Fast, versatile, and adaptable, it rewards players who enjoy balanced gameplay and fluid combos."
+              },
+              {
+                "name": "HATCHET VARIANT",
+                "text": "A more tactical combat style focused on precision, range, and battlefield control. By channeling ancestral energy through enchanted hatchets, Soma gains access to devastating mid-range attacks and powerful area denial abilities."
+              }
+            ]
+          }
+        },
+        "kaira": {
+          "name": "KAIRA",
+          "role": "Lady Koi Koi",
+          "alt": "Kaira in a corps jacket, arms spread",
+          "bio": [
+            "Known throughout the divine arena for her relentless aggression and overwhelming strength, Kaira has built a reputation as a warrior who refuses to retreat and rarely shows mercy. Every battle is an opportunity to prove her superiority, and every opponent is another obstacle standing between her and ascension.",
+            "Beneath her fierce exterior lies a disciplined fighter who has spent years mastering her chi and refining her combat techniques. Her connection to spiritual energy manifests through devastating shockwaves capable of disrupting entire battlefields."
+          ],
+          "detail": {
+            "stats": {
+              "role": "TRICKSTER",
+              "difficulty": "HARD"
+            },
+            "intro": [
+              "Kaira fights on her own terms. She controls space, punishes impatience, and turns a crowded arena into a corridor of her choosing.",
+              "She is built for players who would rather set a trap than win a trade, and who enjoy reading an opponent before touching them."
+            ],
+            "lore": [
+              "The corridors remember her before anyone else does.",
+              "Kaira was a boarding-school prefect with a reputation for knowing things she should not have known. When the trials took her, they took her at midnight, in a hallway that has not been used since.",
+              "She did not ask to come back. She asked to be believed.",
+              "What returned wears her uniform and her name, and it moves through the arena the way a rumour moves through a dormitory — never quite where you looked, always already ahead of you.",
+              "Kaira fights to be remembered correctly. Every opponent she leaves standing is one more mouth to carry the story she was denied."
+            ],
+            "abilities": [
+              {
+                "name": "KOI KOI",
+                "text": "A step that leaves an afterimage. Opponents who strike it are slowed and marked for her next attack."
+              },
+              {
+                "name": "HALL PASS",
+                "text": "Kaira opens a short corridor of space, pulling herself through it and anyone careless enough to be standing in the way."
+              },
+              {
+                "name": "LIGHTS OUT",
+                "text": "Dims the arena in a radius around her, cutting enemy vision while leaving her own untouched."
+              },
+              {
+                "name": "ROLL CALL",
+                "text": "Her ultimate. Kaira names every opponent she has marked, striking each of them at once wherever they stand."
+              }
+            ],
+            "variants": [
+              {
+                "name": "PREFECT VARIANT",
+                "text": "Her default style. Measured, punishing, and built around control — it rewards players who set the terms of an engagement before it begins."
+              },
+              {
+                "name": "MIDNIGHT VARIANT",
+                "text": "A faster, riskier style that trades her zoning tools for pursuit. Kaira gives up the corridor and hunts in the open instead."
+              }
+            ]
+          }
+        },
+        "ogbunabali": {
+          "name": "OGBUN'ABALI",
+          "role": "The God of Punishment and Games",
+          "alt": "Ogbun'abali enthroned in gold",
+          "bio": [
+            "Ancient, unpredictable, and endlessly fascinated by human nature, Ogbun'abali stands at the center of the Beyond Service universe. Known as the deity of punishment and games, he presides over a divine realm where trials determine the worth of mortals and ascendants alike. To some, he is a cruel manipulator who toys with human lives for entertainment. To others, he is a necessary force who reveals the true character of those he tests.",
+            "The Tournament of the Gods exists because of him. Every champion summoned into his arena becomes both competitor and spectacle. Every victory, defeat, and sacrifice unfolds beneath his watchful gaze.",
+            "Yet Ogbun'abali's motives remain largely unknown. Whether he seeks entertainment, justice, or something far greater is a mystery only the gods may understand.One thing is certain. No champion enters the Trial without his permission."
+          ],
+          "detail": {
+            "stats": {
+              "role": "JUDGE",
+              "difficulty": "VERY HARD"
+            },
+            "intro": [
+              "Ogbun'abali does not fight so much as rule. He sets conditions, and the arena enforces them.",
+              "He is the heaviest character in the roster and the least forgiving to play, built for people who want to win by making the rules rather than by moving faster."
+            ],
+            "lore": [
+              "He is the reason there is a game at all.",
+              "The god of punishment and games keeps no temple and takes no worship. He keeps a ledger. Every debt that goes unpaid in the living world is written into it, and every name in it is eventually called.",
+              "The trials are not a test. They are a collection.",
+              "Those who reach him find neither cruelty nor mercy, only arithmetic — a precise accounting of what was owed and what has been paid. He has never been known to make an error, and he has never been known to forgive one.",
+              "That he fights at all is a courtesy. He is settling an account either way."
+            ],
+            "abilities": [
+              {
+                "name": "THE LEDGER",
+                "text": "Marks an opponent with a debt. Damage they deal is recorded and returned to them when the mark expires."
+              },
+              {
+                "name": "SENTENCE",
+                "text": "A downward strike that pins an enemy in place for the duration of a count only he can hear."
+              },
+              {
+                "name": "COLLECTION",
+                "text": "Drags every marked opponent toward him, closing the distance he refuses to travel himself."
+              },
+              {
+                "name": "NIGHT COURT",
+                "text": "His ultimate. The arena darkens and every debt on the field is called in at once."
+              }
+            ],
+            "variants": [
+              {
+                "name": "THRONE VARIANT",
+                "text": "His default. Slow, immovable, and overwhelming at close range — it rewards players willing to hold ground and let opponents come to them."
+              },
+              {
+                "name": "ARBITER VARIANT",
+                "text": "Trades raw power for reach and marking speed, turning him from a wall into a presence that reaches across the whole arena."
+              }
+            ]
+          }
+        },
+        "nzeUgwuoke": {
+          "name": "NZE UGWUOKE",
+          "role": "The Fallen Chief Priest",
+          "alt": "Nze Ugwuoke in a red cap and ivory beads",
+          "bio": [
+            "Before he became one of the most feared figures in the Beyond Service universe, Nze Ugwuoke was celebrated as a spiritual leader, warrior, and guardian of sacred traditions. Respected throughout his community for his wisdom and influence, he devoted his life to protecting his people and preserving ancient knowledge. However, his desire to secure lasting power gradually led him down a darker path. Driven by ambition and fear of losing control, Ugwuoke entered into forbidden agreements with forces beyond mortal understanding. The power he gained transformed him into something far more dangerous than the enemies he once opposed.",
+            "Over time, the line between protector and tyrant disappeared.His actions unleashed devastating consequences that continue to affect both the mortal and spiritual worlds. Even after death, his influence remains, making him one of the most significant threats facing those who enter the divine trials. For many ascendants, defeating Nze Ugwuoke represents more than victory. It represents the confrontation of corruption, obsession, and the dangers of power pursued without restraint."
+          ],
+          "detail": {
+            "stats": {
+              "role": "BRAWLER",
+              "difficulty": "EASY"
+            },
+            "intro": [
+              "Nze Ugwuoke hits harder than anyone else on the roster and asks very little of the player in return.",
+              "He is the entry point to the game — direct, durable, and honest about what he intends to do next."
+            ],
+            "lore": [
+              "He was the last chief priest of a shrine that no longer has a village.",
+              "For forty years Nze Ugwuoke kept the rites, settled disputes, and buried the dead of a community that slowly stopped coming. When the road came through and the last family left, he stayed, because leaving would have meant admitting it was over.",
+              "The trials found him alone, still keeping a calendar nobody read.",
+              "He fights now with the same stubbornness that kept him at an empty shrine — not for glory, and not for return, but because putting something down is harder for him than carrying it."
+            ],
+            "abilities": [
+              {
+                "name": "OPENING RITE",
+                "text": "A heavy overhand strike that staggers an opponent and opens them to a follow-up."
+              },
+              {
+                "name": "STANDING GROUND",
+                "text": "Nze plants himself. Incoming damage is reduced sharply while he does not move."
+              },
+              {
+                "name": "OATH BREAKER",
+                "text": "A shoulder charge that carries an opponent across the arena and into whatever is behind them."
+              },
+              {
+                "name": "LAST RITES",
+                "text": "His ultimate. A sustained series of blows that cannot be interrupted once it begins."
+              }
+            ],
+            "variants": [
+              {
+                "name": "SHRINE VARIANT",
+                "text": "His default. Slow, heavy, and forgiving, with generous timing windows — the most straightforward style in the game."
+              },
+              {
+                "name": "ELDER VARIANT",
+                "text": "Sacrifices some of his durability for reach and speed, giving him answers to opponents who refuse to stand and trade."
+              }
+            ]
+          }
+        },
+        "lieutenant": {
+          "name": "LIEUTENANT",
+          "role": "The Broken Commander",
+          "alt": "The Lieutenant in a feathered war helm",
+          "bio": [
+            "Once a respected military leader and one of Ugwuoke's most trusted allies, The Lieutenant was known for his discipline, strategic brilliance, and unwavering loyalty. That loyalty ultimately became his downfall. As Ugwuoke descended deeper into darkness, The Lieutenant followed without question, sacrificing his principles in service of a cause he no longer fully understood. Years of conflict, bloodshed, and spiritual corruption transformed him into a ruthless enforcer feared across the battlefield.",
+            "Now he serves as one of the primary guardians of Ugwuoke's power. Cold, relentless, and highly skilled, The Lieutenant represents the danger of blind obedience and the cost of surrendering one's conscience to another person's ambition. Many challengers fall before ever reaching his master."
+          ],
+          "detail": {
+            "stats": {
+              "role": "COMMANDER",
+              "difficulty": "MEDIUM"
+            },
+            "intro": [
+              "The Lieutenant fights by formation. His strength is in position, timing, and denying an opponent the ground they need.",
+              "He suits players who think a move or two ahead and would rather shape a fight than react to one."
+            ],
+            "lore": [
+              "He gave an order he could not take back.",
+              "The Lieutenant commanded men who trusted him completely, right up to the moment that trust cost them everything. He does not dispute the account. He disputes only that it should have been him who survived it.",
+              "The trials offered him a command again. He accepted before hearing the terms.",
+              "He fights precisely, economically, and without any apparent interest in winning — as though the arena were a drill he intends to run correctly this time, whatever the result."
+            ],
+            "abilities": [
+              {
+                "name": "HOLD THE LINE",
+                "text": "Plants a marker. Allies and summons near it take reduced damage; enemies crossing it are slowed."
+              },
+              {
+                "name": "SUPPRESSING FIRE",
+                "text": "A ranged volley that denies an area rather than dealing heavy damage."
+              },
+              {
+                "name": "FLANK",
+                "text": "A short dash that repositions him behind an opponent and briefly turns them away from him."
+              },
+              {
+                "name": "FINAL ORDER",
+                "text": "His ultimate. Calls in the formation he lost, striking every enemy caught inside his markers."
+              }
+            ],
+            "variants": [
+              {
+                "name": "FIELD VARIANT",
+                "text": "His default. Balanced between ranged control and close defence, rewarding players who manage space deliberately."
+              },
+              {
+                "name": "BROKEN VARIANT",
+                "text": "Abandons his markers entirely for raw aggression — faster, far more fragile, and built for players who want the fight over quickly."
+              }
+            ]
+          }
+        },
+        "theBeast": {
+          "name": "THE BEAST",
+          "role": "The Hunter",
+          "alt": "The Beast in a horned mask and raffia collar",
+          "bio": [
+            "Little is known about the creature known simply as The Beast. Stories describe it as an ancient predator born from fear, rage, and spiritual corruption. Neither fully human nor entirely spirit, it exists as a terrifying force of destruction unleashed upon those who survive the early stages of the Trial.",
+            "The Beast does not negotiate. It does not reason. It hunts.",
+            "Its appearance signals the beginning of a far greater challenge, forcing champions to confront not only their enemies but also their deepest fears. Those who survive an encounter with The Beast are forever changed. Those who fail become part of its legend."
+          ],
+          "detail": {
+            "stats": {
+              "role": "HUNTER",
+              "difficulty": "HARD"
+            },
+            "intro": [
+              "The Beast is built around pursuit. Once it has a target, everything it does is in service of closing the distance.",
+              "It rewards players who commit, and punishes those who open a chase they cannot finish."
+            ],
+            "lore": [
+              "It was not summoned. It was released.",
+              "The mask predates the trials by a long way, and whatever wore it first is no longer distinguishable from what wears it now. The horns are not decoration. They are a count.",
+              "It does not speak, negotiate, or retreat.",
+              "What is known is behavioural: it selects one opponent at the start of every trial and does not deviate from that choice for any reason, including its own survival."
+            ],
+            "abilities": [
+              {
+                "name": "SCENT",
+                "text": "Marks a single opponent for the whole trial. The Beast gains speed while moving toward them."
+              },
+              {
+                "name": "GORE",
+                "text": "A charging horn strike that carries its target and pins them against terrain."
+              },
+              {
+                "name": "RUN THEM DOWN",
+                "text": "A sustained sprint that cannot be turned quickly but cannot easily be outpaced either."
+              },
+              {
+                "name": "THE COUNT",
+                "text": "Its ultimate. Damage against its marked target is massively increased for a short window."
+              }
+            ],
+            "variants": [
+              {
+                "name": "HORNED VARIANT",
+                "text": "Its default. Heavy, committed, and devastating in a straight line, with almost no ability to change direction mid-attack."
+              },
+              {
+                "name": "STALKING VARIANT",
+                "text": "Trades charge damage for patience — slower to commit, far harder to shake once it has."
+              }
+            ]
+          }
+        },
+        "ojiIsi": {
+          "name": "OJI ISI",
+          "alt": "Oji Isi, a hooded mass of hair on bound legs",
+          "detail": {
+            "stats": {
+              "role": "OMEN",
+              "difficulty": "VERY HARD"
+            },
+            "intro": [
+              "Oji Isi does not attack in any conventional sense. It arrives, and the arena changes around it.",
+              "The least explained character in the roster, and the one that asks players to unlearn the most."
+            ],
+            "lore": [
+              "Nobody has recorded it moving.",
+              "Oji Isi appears in places it was not, and the interval is never observed. Fighters who have faced it describe the encounter differently every time they are asked, including fighters describing the same encounter.",
+              "It has no recorded role in the trials and no known reason to be in them.",
+              "The one consistent account is this: it is always already there when you turn around, and it has never once been the first to act."
+            ],
+            "abilities": [
+              {
+                "name": "ELSEWHERE",
+                "text": "Oji Isi is briefly not where it appears to be. Attacks aimed at it during this window pass through."
+              },
+              {
+                "name": "STILL",
+                "text": "Halts an opponent mid-action. The effect ends the moment Oji Isi is looked at directly."
+              },
+              {
+                "name": "COLD FLOOR",
+                "text": "The ground beneath an opponent stops returning momentum, cancelling dashes and charges."
+              },
+              {
+                "name": "TURN AROUND",
+                "text": "Its ultimate. Oji Isi is behind every opponent on the field at once, for exactly as long as it takes them to react."
+              }
+            ],
+            "variants": [
+              {
+                "name": "OMEN VARIANT",
+                "text": "Its default. Almost entirely defensive, built on denial and timing rather than damage."
+              },
+              {
+                "name": "VIGIL VARIANT",
+                "text": "A slower, heavier style that trades its evasion for a persistent presence opponents must fight through."
+              }
+            ]
+          }
+        },
+        "ogbuagu": {
+          "name": "OGBUAGU",
+          "role": "The ghost",
+          "alt": "Ogbuagu, a pale spirit in a silver mask",
+          "detail": {
+            "stats": {
+              "role": "REVENANT",
+              "difficulty": "MEDIUM"
+            },
+            "intro": [
+              "Ogbuagu trades its own condition for pressure. It is strongest when it should already have lost.",
+              "Built for players comfortable running low and confident they can finish before the arithmetic catches up."
+            ],
+            "lore": [
+              "The mask is silver because the face beneath it was not left intact.",
+              "Ogbuagu and Mkpume came out of the same trial and the same failure, and the arena has never fully separated them since. They are counted as two. They have never behaved as two.",
+              "It fights in a way that suggests it does not expect to stop.",
+              "Damage registers. It simply does not appear to change anything about what happens next."
+            ],
+            "abilities": [
+              {
+                "name": "GRAVE DEBT",
+                "text": "Ogbuagu spends its own health to increase its damage for a short window."
+              },
+              {
+                "name": "PALE REACH",
+                "text": "An extended grab that pulls a distant opponent into close range."
+              },
+              {
+                "name": "SECOND BREATH",
+                "text": "Converts recent damage taken into a burst of movement speed."
+              },
+              {
+                "name": "TWIN RITE",
+                "text": "Its ultimate. Strikes the same point twice — once where the opponent is, and once where they are about to be."
+              }
+            ],
+            "variants": [
+              {
+                "name": "REVENANT VARIANT",
+                "text": "Its default. Aggressive and self-damaging, rewarding players who can close a fight before the cost lands."
+              },
+              {
+                "name": "MOURNING VARIANT",
+                "text": "A defensive style that banks damage taken rather than spending health, trading tempo for staying power."
+              }
+            ]
+          }
+        },
+        "mkpume": {
+          "name": "MKPUME",
+          "role": "The ghost",
+          "alt": "Mkpume, a pale spirit in a silver mask",
+          "detail": {
+            "stats": {
+              "role": "REVENANT",
+              "difficulty": "MEDIUM"
+            },
+            "intro": [
+              "Mkpume is the patient half. Where Ogbuagu spends, Mkpume waits, and the arena rarely notices the difference until late.",
+              "It suits players who want the same pressure without the same risk, and who are willing to take longer to apply it."
+            ],
+            "lore": [
+              "The second mask was made from the first, and the metal remembers it.",
+              "Mkpume came out of the trial that took Ogbuagu, wearing the same silver and answering to a different name. Which of them was there first is not settled, and neither of them has ever been asked.",
+              "It moves a fraction behind everything Ogbuagu does.",
+              "Fighters who have faced both report the same thing: you beat one of them, and the other was watching how."
+            ],
+            "abilities": [
+              {
+                "name": "STONE DEBT",
+                "text": "Stores incoming damage instead of taking it, releasing it on Mkpume's next strike."
+              },
+              {
+                "name": "COLD REACH",
+                "text": "A slower grab than Ogbuagu's with far greater range and no recovery window."
+              },
+              {
+                "name": "PATIENCE",
+                "text": "Standing still increases Mkpume's damage. The bonus is lost the instant it is hit."
+              },
+              {
+                "name": "TWIN ANSWER",
+                "text": "Its ultimate. Repeats the last ability used against it, at Mkpume's own strength."
+              }
+            ],
+            "variants": [
+              {
+                "name": "REVENANT VARIANT",
+                "text": "Its default. Deliberate and punishing, built for players who would rather absorb a fight than start one."
+              },
+              {
+                "name": "QUARRY VARIANT",
+                "text": "Gives up its stored damage for reach and mobility, turning it into a slower, heavier hunter."
+              }
+            ]
+          }
+        }
+      },
+      "modal": {
+        "cta": "SEE FULL DETAILS",
+        "close": "Close"
+      }
+    },
+    "detail": {
+      "back": "BACK",
+      "roleLabel": "ROLE",
+      "difficultyLabel": "DIFFICULTY",
+      "loreHeading": "{name}'S LORE",
+      "abilitiesHeading": "CORE ABILITIES",
+      "variantsHeading": "COMBAT VARIANTS",
+      "galleryHeading": "{name}'S GALLERY",
+      "otherHeading": "OTHER CHAMPIONS",
+      "galleryAlt": "{name} in the arena"
+    },
+    "more": {
+      "body": "The arena continues to grow. Future seasons will introduce new ascendants, combat styles, and stories, expanding the Beyond Service universe and offering new ways to compete for glory. Enter the arena. Master your champion. Ascend.",
+      "cta": "JOIN THE TRIAL",
+      "cue": "SCROLL TO GO NEXT",
+      "plateAlt": "A hooded ascendant wreathed in red light",
+      "titleLines": [
+        "MORE",
+        "CHAMPIONS",
+        "ARE COMING"
+      ]
+    }
+  },
+  "footer": {
+    "navLabel": "Footer",
+    "wordmarkAlt": "Beyond Service",
+    "studioAlt": "Goondu Games",
+    "copyright": "© 2026 goondugames.",
+    "createdBy": "Created by",
+    "links": {
+      "terms": "Terms of Use",
+      "privacy": "Privacy Policy",
+      "about": "About"
+    }
   }
 }
