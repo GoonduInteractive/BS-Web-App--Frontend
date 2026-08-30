@@ -3,13 +3,7 @@
 import { usePageTransition } from "@/components/transition/TransitionProvider";
 import { BracketButton } from "@/components/ui/BracketButton";
 
-/**
- * The entry screen's language gate, wired to the tear transition.
- *
- * This exists as a client boundary because EntryScreen is a Server Component
- * and cannot hand an onClick across. Importing BracketButton here pulls it into
- * the client bundle automatically, so BracketButton itself stays free of a
- * "use client" directive and remains usable from either side.
+/* The entry screen's language gate, wired to the tear transition.
  */
 export function EnterButton({
   href,

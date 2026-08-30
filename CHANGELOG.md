@@ -13,11 +13,44 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ## [Unreleased]
 
-Chunk 2, content pages. The Game page is built; The Characters page, the character detail route
-and the News CMS are still to come.
+Nothing yet. Next up: the News CMS, then the Community and Competition pages, both of which are
+waiting on designs.
+
+---
+
+## Release history
+
+## [0.2.0] - 2026-08-30
+
+Chunk 2, content pages. The Game page, The Characters page and a page for every character are
+built and navigable. The News CMS is still to come.
 
 ### Added
 
+- A page for every character, reached by SEE FULL DETAILS on their card. It opens on their name at
+  full height with their role, their standing in the arena and how hard they are to play, then
+  their lore, their four core abilities, their two combat variants, a gallery, and a row of other
+  champions to move on to. Each section arrives as you reach it, the headings drift against the
+  scroll, and the gallery plates settle as they cross the screen. All of it holds still for anyone
+  who has asked for reduced motion.
+- A footer, on the character pages: the Beyond Service lockup, Terms of Use, Privacy Policy and
+  About, and the Goondu Games credit.
+- MORE CHAMPIONS ARE COMING closes The Characters page, over the hooded ascendant and his red
+  wash, with what is still to come and JOIN THE TRIAL. The three lines of the heading rise one
+  after another as you reach them and the artwork drifts against the scroll behind them. The cue
+  on to Community follows.
+- The Characters page opens on THE SOULS THAT SHAPE THE REALM, reached by opening Ọnụ Ụzọ 2. The
+  chip, the heading, the account of who shapes the realm, the note on the right and JOIN THE TRIAL
+  each arrive in turn as the page appears.
+- The roster below it: CHAMPIONS, GODS, and LEGENDS & ADVERSARIES, nine cards in all. Each heading
+  and its row arrive as you reach them, and the ground darkens as you read down the page. The
+  boundary between the hero and the roster is torn rather than straight.
+- Clicking any character opens their card on a torn parchment panel, with the portrait, name, role,
+  their story and SEE FULL DETAILS. Close it with the ✕, the Escape key, or by clicking outside it;
+  it is fully keyboard operable and the page behind it stays put.
+- A machete hangs in front of the spirit tree on that hero. Move the cursor and the blade and the
+  clearing behind it lean by different amounts, so the two read as standing apart. Both hold still
+  for anyone who has asked for reduced motion.
 - The Game page, reached by opening Ọnụ Ụzọ 1. Six sections in sequence: the hero with ASCEND.
   SURVIVE. COMPETE. and Watch Trailer, The Story, Two Paths. One Ascension., Master Your Chi,
   Souls of the Arena, and Answer the Summons with the cue on to The Characters.
@@ -38,6 +71,13 @@ Every animation on this page holds still for anyone who has asked for reduced mo
 
 ### Changed
 
+- A character card opens on a panel that stays the same size however long their story is; the
+  writing scrolls inside it.
+- Kaira fills her card the way every other character does. She had been sitting small in the middle
+  of hers.
+- The rule under a character's role, and the one above the footer, are drawn with a turned tick at
+  each end rather than as plain lines.
+- The ROLE and DIFFICULTY tiles on a character page carry their marks.
 - The Souls of the Arena heading now breaks over two lines on a phone, at the size the design gives
   it. It was running small on one line.
 - The Story now runs the full height the design gives it, with the torn edges above and below in
@@ -46,9 +86,25 @@ Every animation on this page holds still for anyone who has asked for reduced mo
 - Soma is much larger in The Story, and the heading, copy columns and button sit where the design
   puts them at both desktop and phone widths.
 
----
+### Fixed
 
-## Release history
+- The Characters page and the character pages now hold together on a tablet. Both used to hold
+  their desktop layout down to 768, where headings broke mid-word, buttons wrapped onto three
+  lines and paragraphs ran hundreds of lines down a narrow gutter — one character page came out
+  more than twice its proper length. They now stack below 1024 and scale smoothly above it.
+- Every character card is the same size as every other, at every screen width. Cards in the
+  Champions, Gods and Legends rows used to come out three different widths on the same page.
+- The Characters page no longer scrolls sideways on a small laptop.
+- The Game page no longer scrolls sideways on a phone or a tablet. Soma, the Master Your Chi
+  fighter and weapons, and the Souls cards all reached past the edge of the screen and dragged the
+  page with them.
+- Two Paths. One Ascension. stacks its two paths on a tablet, with the rule turned on its side
+  between them. Below 1024 it had been holding the desktop arrangement, which ran the second path
+  off the side of the screen.
+- The artwork behind MORE CHAMPIONS ARE COMING fills the section on a phone and a tablet instead
+  of sitting small in the corner, and is eased back so the writing over it stays legible.
+
+---
 
 ## [0.1.0] - 2026-08-29
 
