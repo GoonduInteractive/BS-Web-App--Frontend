@@ -5,27 +5,6 @@ import Link from "next/link";
 
 import type { Messages } from "@/lib/utils/messages";
 
-/**
- * The top nav — inset translucent bar over the gate plate.
- *
- * Geometry is measured off context/design/07-menu-nav/top-nav.png, a 1386 x 92
- * frame, which is 1440 inset by about 27px each side:
- *
- *   hamburger  x 54,  34 x 24 of visible ink
- *   "Menu"     x 98,  cap 11  -> ~15px
- *   wordmark   dead centre, art 177 x 45
- *   links      x 1047-1253, cap 9 -> ~14px
- *   avatar     x 1297, 34 x 34 circle, 20 x 20 glyph
- *
- * THE WORDMARK BOX IS BIGGER THAN THE ART. `beyond-service-logo.png` is 2097x750
- * with the opaque art inset 13.2% at the top and 22% at the bottom. Rendering the
- * FILE at 194 x 69 puts the ART at 177 x 45, which is what the frame measures.
- * Sizing the file to 177 x 45 instead would render the art about a third too
- * small. The aspect check: art is 3.973, the frame's wordmark is 177/45 = 3.93.
- *
- * The bar is `--color-nav`, which already carries its own 82% alpha, so the
- * plate stays faintly visible behind it exactly as in the frames.
- */
 export function SiteHeader({
   messages,
   locale,

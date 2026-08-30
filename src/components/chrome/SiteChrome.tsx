@@ -12,20 +12,6 @@ import type { Messages } from "@/lib/utils/messages";
 
 /**
  * Global chrome — header, menu overlay, sound toggle and gate rail.
- *
- * Mounted once from `layout.tsx`, which is why this file exists at all: the
- * chrome needs `usePathname()` to know it is on the entry screen, and putting
- * that hook here keeps `layout.tsx` itself a Server Component.
- *
- * THE ENTRY SCREEN GETS NO CHROME. It is a full-screen gate before the site
- * proper and its frame shows no nav — so everything here is suppressed on
- * `/[locale]`. The rail needs no such rule; it returns null on its own whenever
- * the pathname is not a gate route.
- *
- * SoundToggle is mounted here for every non-entry route, at the position the
- * gate frames measure (x 97, 53 x 50). EntryScreen keeps its own instance: that
- * surface was already signed off across four screenshot rounds and its toggle
- * sits at a different offset, so it is deliberately not disturbed.
  */
 export function SiteChrome({ messages }: { messages: Messages }) {
   const pathname = usePathname();
