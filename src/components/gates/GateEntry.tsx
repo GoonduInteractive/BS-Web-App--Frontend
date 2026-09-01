@@ -32,6 +32,22 @@ const GateEntryContext = createContext<{
   entered: boolean;
   enter: () => void;
   leave: () => void;
+  /**
+   * Mark a route as already open, with NO transition of any kind.
+   *
+   * The gate pull-up needs this and nothing else does. `enter` and `leave` both
+   * go through the tear, because a click across the gate boundary is a jump and
+   * the tear is what a jump looks like. The pull-up is the opposite: the visitor
+   * has already travelled the distance by scrolling, and the panel they pulled
+   * up IS the destination, so anything played on arrival would be a transition
+   * to somewhere they can already see.
+   *
+   * It takes the route rather than assuming the current one, because it is
+   * called BEFORE the push lands. `entered` is derived from
+   * `openedRoute === pathname`, so seeding the incoming path means the new route
+   * renders its page face on its first paint instead of flashing its gate.
+   */
+  openRoute: (route: string) => void;
 } | null>(null);
 
 export function useGateEntry() {
@@ -77,9 +93,10 @@ export function GateEntryProvider({ children }: { children: ReactNode }) {
 
   const enter = useCallback(() => swap(pathname), [swap, pathname]);
   const leave = useCallback(() => swap(null), [swap]);
+  const openRoute = useCallback((route: string) => setOpenedRoute(route), []);
 
   return (
-    <GateEntryContext.Provider value={{ entered, enter, leave }}>
+    <GateEntryContext.Provider value={{ entered, enter, leave, openRoute }}>
       {children}
     </GateEntryContext.Provider>
   );

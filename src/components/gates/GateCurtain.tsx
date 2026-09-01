@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
 
+import { useGateEntry } from "@/components/gates/GateEntry";
 import { usePageTransition } from "@/components/transition/TransitionProvider";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
 
@@ -43,6 +44,7 @@ export function GateCurtain({
   preview,
   href,
   title,
+  entersPage = false,
 }: {
   /** The outgoing page's last section. Made sticky so the panel rides over it. */
   children: ReactNode;
@@ -51,10 +53,22 @@ export function GateCurtain({
   href: string;
   /** The next gate's name, ghosted across the seam. */
   title: string;
+  /**
+   * Land on the next route's PAGE rather than its gate.
+   *
+   * This is what the branch exists to try. With it set, `preview` should be that
+   * page's first section rather than its `GateSection`, and the route is marked
+   * open before the push so it paints the page face immediately.
+   *
+   * Only meaningful where the next gate HAS a page. Community and Competition
+   * have nothing behind them yet, so those seams keep the gate.
+   */
+  entersPage?: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { claim, busy } = usePageTransition();
+  const { openRoute } = useGateEntry();
 
   // Written in an effect, never during render: the scene is built once and its
   // ScrollTrigger outlives every later render, so it must not close over the
@@ -67,6 +81,12 @@ export function GateCurtain({
       const release = claim();
       if (!release) return;
 
+      // SEEDED BEFORE THE PUSH. `entered` is derived from
+      // `openedRoute === pathname`, so marking the incoming route open now means
+      // it paints its page face on its first render rather than showing its gate
+      // for a frame and swapping afterwards.
+      if (entersPage) openRoute(href);
+
       // STEP 4. `scroll: false` stops Next restoring a scroll position, then the
       // jump to the top happens while the panel still covers everything, so the
       // new route paints exactly what is already on screen.
@@ -75,7 +95,7 @@ export function GateCurtain({
       // Released on the next frame, once the push has been handed to React.
       requestAnimationFrame(() => release());
     };
-  }, [claim, router, href]);
+  }, [claim, router, href, entersPage, openRoute]);
 
   const scene = useCallback<SceneBuilder>(
     (gsap, q, host) => {
@@ -133,8 +153,8 @@ export function GateCurtain({
             { "--arch": "0%", ease: "none", duration: 1 },
             0,
           );
-          // The seam title, gone by 30% — before the gate.s own title arrives, so
-        // the two never read as one word printed twice.
+          // The seam title, gone by 30% — before the destination's own title
+          // arrives, so the two never read as one word printed twice.
           if (seam)
             timeline.to(seam, { opacity: 0, ease: "none", duration: 0.3 }, 0);
         },
