@@ -6,7 +6,8 @@ import { SoulsSection } from "@/components/game/SoulsSection";
 import { StorySection } from "@/components/game/StorySection";
 import { SummonsSection } from "@/components/game/SummonsSection";
 import { TwoPathsSection } from "@/components/game/TwoPathsSection";
-import { GatePage, gateMetadata } from "@/components/gates/GatePage";
+import { GateCurtain } from "@/components/gates/GateCurtain";
+import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
 import { gateHref, getGate } from "@/lib/gates";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -33,7 +34,9 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   const messages = getMessages(locale);
   // The page ends by handing on to the next gate, as the frame's cue says.
-  const nextHref = gateHref(locale, getGate("characters"));
+  const next = getGate("characters");
+  const nextHref = gateHref(locale, next);
+  const nextCopy = messages.gates[next.id];
 
   return (
     <GatePage id="theGame" params={params}>
@@ -41,7 +44,15 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <StorySection messages={messages} />
       <TwoPathsSection messages={messages} />
       <SoulsSection messages={messages} />
-      <SummonsSection messages={messages} nextHref={nextHref} />
+      {/* The last section is what the pull-up rides over, so it goes INSIDE the
+          curtain — which makes it sticky and puts the panel after it in flow. */}
+      <GateCurtain
+        preview={gatePreview(next, locale, messages)}
+        href={nextHref}
+        title={nextCopy.title}
+      >
+        <SummonsSection messages={messages} nextHref={nextHref} />
+      </GateCurtain>
     </GatePage>
   );
 }

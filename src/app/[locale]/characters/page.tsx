@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { CharactersHero } from "@/components/characters/CharactersHero";
 import { MoreChampionsSection } from "@/components/characters/MoreChampionsSection";
 import { RosterSection } from "@/components/characters/RosterSection";
-import { GatePage, gateMetadata } from "@/components/gates/GatePage";
+import { GateCurtain } from "@/components/gates/GateCurtain";
+import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
 import { gateHref, getGate, nextGate } from "@/lib/gates";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -41,14 +42,22 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   const messages = getMessages(locale);
   // The page ends by handing on to the next gate, as the frame's cue says.
-  const nextHref = gateHref(locale, nextGate(getGate("characters")));
+  const next = nextGate(getGate("characters"));
+  const nextHref = gateHref(locale, next);
+  const nextCopy = messages.gates[next.id];
 
   return (
     <GatePage id="characters" params={params}>
       <div className="bg-roster">
         <CharactersHero messages={messages} />
         <RosterSection messages={messages} locale={locale} />
-        <MoreChampionsSection messages={messages} nextHref={nextHref} />
+        <GateCurtain
+          preview={gatePreview(next, locale, messages)}
+          href={nextHref}
+          title={nextCopy.title}
+        >
+          <MoreChampionsSection messages={messages} nextHref={nextHref} />
+        </GateCurtain>
       </div>
     </GatePage>
   );

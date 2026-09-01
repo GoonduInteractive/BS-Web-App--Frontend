@@ -30,6 +30,19 @@ type PageTransition = {
    * push, but the passage between them still has to be the tear.
    */
   reveal: (commit: () => void) => void;
+  /**
+   * THE SHARED NAVIGATION LOCK.
+   *
+   * The gate pull-up is a second transition that owns the screen, and the two
+   * must never run together: a visitor who scrolls into the seam while a tear is
+   * mid-flight has to get one transition, not both.
+   *
+   * `claim` hands the screen to a non-tear transition and returns a release
+   * function, or null when the tear already holds it. `busy` is the read the
+   * pull-up uses to keep itself disabled while a tear is running.
+   */
+  claim: () => (() => void) | null;
+  busy: () => boolean;
 };
 
 /** Named to avoid collision with React's own useTransition. */
@@ -165,8 +178,28 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     void openTear();
   }, [pathname, isPending, openTear]);
 
+  /**
+   * Held while the pull-up owns the screen. Kept separate from `phase`, which
+   * describes the TEAR's own state machine — conflating them would have a
+   * pull-up driving the tear overlay.
+   */
+  const claimed = useRef(false);
+
+  const busy = useCallback(() => phase.current !== "idle" || claimed.current, []);
+
+  const claim = useCallback(() => {
+    if (phase.current !== "idle" || claimed.current) return null;
+    claimed.current = true;
+    return () => {
+      claimed.current = false;
+    };
+  }, []);
+
   const navigate = useCallback(
     (href: string) => {
+      // A claim held by the pull-up swallows link clicks: past its threshold the
+      // route is already changing, and a tear on top would be a second one.
+      if (claimed.current) return;
       if (phase.current !== "idle") return; // swallow rapid repeat clicks
       if (href === pathname) return; // same route would never fire the open
 
@@ -209,6 +242,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
    */
   const reveal = useCallback(
     (commit: () => void) => {
+      if (claimed.current) return;
       if (phase.current !== "idle") return; // swallow rapid repeat clicks
 
       phase.current = "closing";
@@ -308,7 +342,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   }, [navigate]);
 
   return (
-    <PageTransitionContext.Provider value={{ navigate, reveal }}>
+    <PageTransitionContext.Provider value={{ navigate, reveal, claim, busy }}>
       {children}
       <TransitionOverlay leftRef={leftRef} rightRef={rightRef} active={active} />
     </PageTransitionContext.Provider>

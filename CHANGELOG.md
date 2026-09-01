@@ -13,8 +13,17 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ## [Unreleased]
 
-Nothing yet. Next up: the News CMS, then the Community and Competition pages, both of which are
-waiting on designs.
+### Added
+
+- Every gate page now ends on a footer showing the next gate waiting underneath it, with its name
+  across the join. Keep scrolling and it is drawn up over the page you are on — its top edge
+  rounded like a sheet being lifted, squaring off as it arrives, and carrying enough weight that
+  it settles rather than stops. When it covers the screen you are simply on it. The cue above it
+  is still a link for anyone who would rather click, and that is what a phone and anyone who has
+  asked for reduced motion get.
+
+Next up: the News CMS, then the Community and Competition pages, both of which are waiting on
+designs.
 
 ---
 

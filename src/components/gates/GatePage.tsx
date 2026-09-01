@@ -2,9 +2,9 @@ import { notFound } from "next/navigation";
 
 import { GateSection } from "@/components/gates/GateSection";
 import { GateView } from "@/components/gates/GateView";
-import { gateHref, getGate, nextGate, type GateId } from "@/lib/gates";
-import { isLocale } from "@/lib/utils/locales";
-import { getMessages } from "@/lib/utils/messages";
+import { gateHref, getGate, nextGate, type Gate, type GateId } from "@/lib/gates";
+import { isLocale, type Locale } from "@/lib/utils/locales";
+import { getMessages, type Messages } from "@/lib/utils/messages";
 
 /**
  * Shared body of the four gate routes.
@@ -61,6 +61,32 @@ export async function GatePage({
         {children}
       </GateView>
     </main>
+  );
+}
+
+/**
+ * The gate hero as a standalone element, for the pull-up's preview panel.
+ *
+ * THE POINT IS THAT IT IS THE SAME COMPONENT, built from the same manifest and
+ * the same messages as the route it stands in for. The pull-up's swap is
+ * invisible only if what rises is pixel-identical to what the next route paints,
+ * and the reliable way to guarantee that is to render the thing itself rather
+ * than reproduce it. If `GateSection` changes, both change together.
+ */
+export function gatePreview(gate: Gate, locale: Locale, messages: Messages) {
+  const copy = messages.gates[gate.id];
+  const after = nextGate(gate);
+  return (
+    <GateSection
+      gate={gate}
+      chip={copy.chip}
+      title={copy.title}
+      cta={copy.cta}
+      plateAlt={copy.plateAlt}
+      characterAlt={messages.gates.characterAlt}
+      cueHref={gateHref(locale, after)}
+      cueLabel={messages.gates.cue[after.id]}
+    />
   );
 }
 
