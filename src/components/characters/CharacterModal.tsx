@@ -61,18 +61,48 @@ export function CharacterModal({
     };
 
     document.addEventListener("keydown", onKey);
-    // The page must not scroll behind an open dialog.
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
+
+    /**
+     * LOCKING THE PAGE BEHIND THE DIALOG, AND WHY THE OLD ONE LINE DID NOTHING.
+     *
+     * It set `document.body.style.overflow = "hidden"` and that failed twice
+     * over. The scrolling element on this site is the ROOT, not the body — the
+     * body has no height of its own — so an overflow on the body locks nothing.
+     * And Lenis does not read overflow at all: it listens for wheel events and
+     * calls `scrollTo` itself, so even a correct lock leaves it driving the page
+     * under the dialog. Which is exactly what happened — the wheel scrolled the
+     * roster behind the modal, and the only thing that moved the modal was
+     * dragging its scrollbar.
+     *
+     * So both are handled. `overflow: hidden` on the ROOT stops the document,
+     * and `data-lenis-prevent` on the overlay (below) stops Lenis claiming the
+     * wheel inside it, which hands those events back to the browser and lets the
+     * dialog's own scroll region work natively.
+     *
+     * The scroll position is pinned and restored, because locking the root
+     * collapses the scrollbar and the page would otherwise jump to the top
+     * behind the dialog and be somewhere else on close.
+     */
+    const root = document.documentElement;
+    const previous = root.style.overflow;
+    const y = window.scrollY;
+    root.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = overflow;
+      root.style.overflow = previous;
+      window.scrollTo({ top: y, behavior: "instant" });
     };
   }, [onClose]);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-center overflow-y-auto p-4 md:p-6"
+      // `data-lenis-prevent` is the whole fix for the wheel. Lenis walks up from
+      // the event target looking for it and, finding it, leaves the event to the
+      // browser — so the scroll region inside this overlay behaves natively
+      // instead of being swallowed and applied to the page behind.
+      data-lenis-prevent
+      className="scrollbar-none fixed inset-0 z-50 flex justify-center overflow-y-auto p-4 md:p-6"
       role="presentation"
 
       onClick={onClose}
@@ -142,7 +172,7 @@ export function CharacterModal({
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col md:max-h-99.75 md:overflow-y-auto md:overscroll-contain md:pr-4">
+          <div className="scrollbar-none flex min-w-0 flex-1 flex-col md:max-h-99.75 md:overflow-y-auto md:overscroll-contain md:pr-4">
             <h2 className="font-display text-ink text-story-title leading-none font-semibold tracking-[-0.065em] uppercase">
               {entry.name}
             </h2>
