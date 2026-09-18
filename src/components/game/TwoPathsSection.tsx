@@ -122,6 +122,17 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
               delay={80}
               className="absolute top-[-93.8%] left-[6.2%] w-[119.9%] md:top-[-53.7%] md:left-[2.65%] md:w-[32.7%]"
             >
+              {/* THE WEAPONS TURN ON A LARGE SCREEN. Two files per weapon, per the
+                  human: the delivered still below `lg`, the delivered GIF from it.
+                  Each is its own element and both are lazy, so the one that is
+                  `display: none` is never fetched — a hidden lazy image never
+                  intersects. The GIFs are animated, which Next's optimiser
+                  passes through untouched; `unoptimized` says so out loud. A GIF
+                  cannot be paused, so under reduced motion the still stays even
+                  on a large screen — the one way to honour the preference.
+                  `Sword.gif` frames its blade where `weapon-machete.png` does
+                  (alpha 0.29..0.65 x 0.56..0.84 of the box in both), so it takes
+                  the same box. */}
               <div data-chi-machete>
                 <Image
                   src="/assets/game/weapon-machete.png"
@@ -129,7 +140,15 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
                   width={954}
                   height={1309}
                   sizes="(max-width: 767px) 120vw, 33vw"
-                  className="w-full select-none"
+                  className="w-full select-none lg:hidden lg:motion-reduce:block"
+                />
+                <Image
+                  src="/assets/game/Sword.gif"
+                  alt={chi.macheteAlt}
+                  width={476}
+                  height={654}
+                  unoptimized
+                  className="hidden w-full select-none lg:block lg:motion-reduce:hidden"
                 />
               </div>
             </Reveal>
@@ -154,6 +173,11 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
               delay={120}
               className="absolute top-[-26.1%] left-[-26.1%] z-20 w-[97.8%] md:top-[-60.4%] md:left-[60.2%] md:w-[39.6%]"
             >
+              {/* `Spear.gif` is a wider canvas than `weapon-spear.png` (616:844
+                  against 1156:1688) with the spear drawn 7% smaller in it, so it
+                  is set 107% wide in the same box — that puts its spear on the
+                  still's spear to within half a percent, and leaves the box (and
+                  the drift's 54% / 70.4% pivot) exactly where the still had it. */}
               <div data-chi-spear>
                 <Image
                   src="/assets/game/weapon-spear.png"
@@ -161,7 +185,15 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
                   width={1156}
                   height={1688}
                   sizes="(max-width: 767px) 98vw, 40vw"
-                  className="w-full select-none"
+                  className="w-full select-none lg:hidden lg:motion-reduce:block"
+                />
+                <Image
+                  src="/assets/game/Spear.gif"
+                  alt={chi.spearAlt}
+                  width={616}
+                  height={844}
+                  unoptimized
+                  className="hidden w-[107%] max-w-none select-none lg:block lg:motion-reduce:hidden"
                 />
               </div>
             </Reveal>

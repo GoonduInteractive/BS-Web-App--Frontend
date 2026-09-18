@@ -15,7 +15,7 @@ import type { Messages } from "@/lib/utils/messages";
  *    NNOO *and* WELCOME choice. Awaiting the second frame.
  *  - the transition from here into the gate sequence
  */
-export function EntryScreen({ messages, locale }: { messages: Messages; locale: string }) {
+export function EntryScreen({ messages }: { messages: Messages }) {
   const t = messages.entry;
 
   return (
@@ -44,7 +44,7 @@ export function EntryScreen({ messages, locale }: { messages: Messages; locale: 
           sizes="(max-width: 767px) 88vw, 42vw"
           className="h-auto w-full max-w-150 select-none"
         />
-        <EnterButton href={`/${locale}/the-game`} label={t.enterIgbo} hoverLabel={t.enterEnglish} />
+        <EnterButton label={t.enterIgbo} hoverLabel={t.enterEnglish} />
       </div>
 
       {/* Absolutely placed so it never pushes the centred block off-centre. */}

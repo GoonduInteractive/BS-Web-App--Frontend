@@ -13,10 +13,18 @@ import type { Messages } from "@/lib/utils/messages";
 export function SummonsSection({
   messages,
   nextHref,
+  variant = "game",
 }: {
   messages: Messages;
-  nextHref: string;
+
+  nextHref?: string;
+
+  variant?: "game" | "comics";
 }) {
+  const comics = variant === "comics";
+  const image = comics
+    ? { src: "/assets/comics/sommon.png", width: 640, height: 462 }
+    : { src: "/assets/characters/black-legs.png", width: 1920, height: 1080 };
   const t = messages.theGame.summons;
   const root = useRef<HTMLElement>(null);
   useGsapScene(root, summonsScene);
@@ -24,31 +32,42 @@ export function SummonsSection({
   return (
     <section ref={root} className="bg-ink relative overflow-hidden">
 
-      <TornDivider
-        edge="bottom"
-        seed={4102}
-        className="text-bone absolute inset-x-0 -top-2 z-20"
-      />
+      {comics ? null : (
+        <TornDivider
+          edge="bottom"
+          seed={4102}
+          className="text-bone absolute inset-x-0 -top-2 z-20"
+        />
+      )}
 
-      <div className="relative mx-auto max-w-360 px-6 md:px-40">
+      <div className={comics ? "relative mx-auto flex max-w-360 flex-col px-5 md:block md:px-40" : "relative mx-auto flex max-w-360 flex-col px-6 md:block md:px-40"}>
 
         <div
           data-summons-figure
-          className="ml-[50%] w-[189vw] max-w-none -translate-x-1/2 md:absolute md:-top-14 md:-right-41 md:z-0 md:ml-0 md:w-282 md:translate-x-0"
+          className={
+            comics
+              ? "relative order-2 mt-28.5 aspect-473/445 w-[66vw] max-w-none self-center overflow-hidden md:absolute md:top-72.75 md:right-[9.8%] md:z-0 md:order-none md:mt-0 md:w-118.25 md:self-auto"
+              : "w-[189vw] max-w-none self-center md:absolute md:-top-14 md:-right-41 md:z-0 md:w-282 md:self-auto"
+          }
         >
-          <div data-summons-figure-inner>
+          <div data-summons-figure-inner className={comics ? "absolute inset-0" : undefined}>
+
             <Image
-              src="/assets/characters/black-legs.png"
+              src={image.src}
               alt={t.imageAlt}
-              width={1920}
-              height={1080}
-              sizes="(max-width: 767px) 80vw, 71vw"
-              className="w-full select-none"
+              width={image.width}
+              height={image.height}
+              sizes={comics ? "(max-width: 767px) 120vw, 711px" : "(max-width: 767px) 80vw, 71vw"}
+              className={
+                comics
+                  ? "absolute top-[-3.6%] left-[-25.8%] w-[150.3%] max-w-none select-none"
+                  : "w-full select-none"
+              }
             />
           </div>
         </div>
 
-        <div className="relative z-10 pt-10 pb-16 md:pt-51.25 md:pb-42">
+        <div className={comics ? "relative z-10 pt-46.5 pb-0 md:pt-74.25 md:pb-85.5" : "relative z-10 pt-10 pb-16 md:pt-51.25 md:pb-42"}>
 
           <div data-summons-title className="overflow-hidden pb-1">
             <SectionTitle className="text-menu-fg text-[3rem] leading-[0.95] tracking-[-0.066em] md:text-[4.8125rem]">
@@ -58,7 +77,11 @@ export function SummonsSection({
 
           <p
             data-summons-body
-            className="text-menu-fg/85 font-body text-body mt-[1.15rem] max-w-108 whitespace-pre-line"
+            className={
+              comics
+                ? "text-menu-fg/85 font-body text-body mt-[1.15rem] max-w-full whitespace-pre-line md:max-w-108"
+                : "text-menu-fg/85 font-body text-body mt-[1.15rem] max-w-108 whitespace-pre-line"
+            }
           >
             {t.body}
           </p>
@@ -73,9 +96,9 @@ export function SummonsSection({
 
       <div
         data-summons-cue
-        className="relative z-10 flex justify-center pb-14 md:pb-20"
+        className={comics ? "relative z-10 flex justify-center pb-28 md:pb-20" : "relative z-10 flex justify-center pb-14 md:pb-20"}
       >
-        <ScrollCue href={nextHref} label={t.cue} />
+        {nextHref ? <ScrollCue href={nextHref} label={t.cue} /> : null}
       </div>
     </section>
   );
@@ -132,8 +155,6 @@ const summonsScene: SceneBuilder = (gsap, q, section) => {
             trigger: section,
             start: "top bottom",
             end: "bottom top",
-            // A number, not `true`: the drift lags the scroll slightly, which
-            // is what stops it feeling glued to the wheel.
             scrub: 0.6,
           },
         },

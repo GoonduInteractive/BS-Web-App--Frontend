@@ -1,23 +1,49 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { CharacterCard } from "@/components/characters/CharacterCard";
+import { CharacterModal, type RosterEntry } from "@/components/characters/CharacterModal";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { Carousel } from "@/components/ui/Carousel";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { useGsapScene } from "@/hooks/useGsapScene";
+import { castCopy, characterHref, getCharacter } from "@/lib/characters";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 
-export function SoulsSection({ messages }: { messages: Messages }) {
+/**
+ * SOULS OF THE ARENA — three of the roster on The Game page.
+ *
+ * THE CARDS OPEN THE CHARACTER'S MODAL and the CTA goes to the Characters page,
+ * per the human. The modal is the Characters page's own `CharacterModal`, fed
+ * the same `RosterEntry` the roster builds — copy from `castCopy`, artwork and
+ * slug from the `CHARACTERS` manifest — so a character reads the same here as
+ * there, and SEE FULL DETAILS in it goes to `/characters/[slug]`. The card
+ * faces keep this section's own copy and portraits, which the frame draws.
+ */
+export function SoulsSection({ messages, locale }: { messages: Messages; locale: Locale }) {
   const t = messages.theGame.souls;
+  const roster = messages.characters.roster;
   const root = useRef<HTMLElement>(null);
+  const [open, setOpen] = useState<RosterEntry | null>(null);
+
+  const entry = (slug: string): RosterEntry | null => {
+    const character = getCharacter(slug);
+    if (!character) return null;
+    return {
+      ...castCopy(messages, character.castKey),
+      image: character.image,
+      portraitClass: character.portraitClass,
+      href: characterHref(locale, character.slug),
+    };
+  };
 
   const cards = [
-    { ...t.soma, image: "/assets/characters/soma-gate-character.png" },
-    { ...t.kaira, image: "/assets/characters/kaira-crop.png" },
-    { ...t.ogbunabali, image: "/assets/characters/ogbunabali.png" },
+    { ...t.soma, image: "/assets/characters/soma-gate-character.png", slug: "soma" },
+    { ...t.kaira, image: "/assets/characters/kaira-crop.png", slug: "kaira" },
+    { ...t.ogbunabali, image: "/assets/characters/ogbunabali.png", slug: "ogbunabali" },
   ];
 
   useGsapScene(root, (gsap, q, section) => {
@@ -137,6 +163,7 @@ export function SoulsSection({ messages }: { messages: Messages }) {
                   role={card.role}
                   image={card.image}
                   imageAlt={card.name}
+                  onSelect={() => setOpen(entry(card.slug))}
                 />
               </div>
             ))}
@@ -150,6 +177,7 @@ export function SoulsSection({ messages }: { messages: Messages }) {
                 red brackets that come with `field="light"`. */}
             <BracketButton
               field="light"
+              href={`/${locale}/characters`}
               className="bg-graphite text-bone px-8 py-[1.15rem] leading-none tracking-normal"
             >
               {t.cta}
@@ -157,6 +185,10 @@ export function SoulsSection({ messages }: { messages: Messages }) {
           </div>
         </div>
       </div>
+
+      {open ? (
+        <CharacterModal entry={open} cta={roster.modal.cta} closeLabel={roster.modal.close} onClose={() => setOpen(null)} />
+      ) : null}
     </section>
   );
 }

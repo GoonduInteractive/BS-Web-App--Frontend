@@ -44,21 +44,15 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <GameHero messages={messages} />
       <StorySection messages={messages} />
       <TwoPathsSection messages={messages} />
-      <SoulsSection messages={messages} />
+      <SoulsSection messages={messages} locale={locale} />
       {/* The last section is what the pull-up rides over, so it goes INSIDE the
           curtain — which makes it sticky and puts the panel after it in flow. */}
-      {/* THE VARIANT: the seam opens onto the Characters PAGE, not its gate.
-          `preview` is that page's own first section, and `entersPage` marks the
-          route open before the push so it lands already through the gate.
+      {/* THE VARIANT: the seam opens onto the Characters PAGE, not its door.
+          `preview` is that page's own first section and `href` its route.
 
-          Same rule as the gate variant — the preview must BE the destination's
+          Same rule as the door variant — the preview must BE the destination's
           component, not a copy of it, or the swap snaps. */}
-      <GateCurtain
-        preview={<CharactersHero messages={messages} />}
-        href={nextHref}
-        title={nextCopy.title}
-        entersPage
-      >
+      <GateCurtain preview={<CharactersHero messages={messages} />} href={nextHref} title={nextCopy.title}>
         <SummonsSection messages={messages} nextHref={nextHref} />
       </GateCurtain>
     </GatePage>

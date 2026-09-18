@@ -1,12 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Host_Grotesk, Teko } from "next/font/google";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/chrome/JsonLd";
+import { LocaleProvider } from "@/components/chrome/LocaleProvider";
 import { SiteChrome } from "@/components/chrome/SiteChrome";
 import { GateEntryProvider } from "@/components/gates/GateEntry";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { TransitionProvider } from "@/components/transition/TransitionProvider";
+import { OG_IMAGE, SITE_NAME, SITE_URL, STUDIO_NAME } from "@/lib/seo";
 import { isLocale, LOCALES } from "@/lib/utils/locales";
+import { getViewerState } from "@/lib/api/points";
+import { getProfile } from "@/lib/api/profile";
 import { getMessages } from "@/lib/utils/messages";
 import "../globals.css";
 
@@ -22,10 +27,7 @@ const teko = Teko({
   display: "swap",
 });
 
-/**
- * Body face — body copy, and the NNOO / WELCOME entry choice per Figma.
- * Variable 300-800 with a true italic, so no weight array is needed.
- */
+
 const hostGrotesk = Host_Grotesk({
   subsets: ["latin", "latin-ext"],
   style: ["normal", "italic"],
@@ -33,10 +35,33 @@ const hostGrotesk = Host_Grotesk({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Beyond Service: Trial of the Gods",
-  description: "The official site for Beyond Service: Trial of the Gods, by Goondu Games Studio.",
-};
+/**
+ * The site-wide defaults every route inherits and refines through
+ * `pageMetadata` (src/lib/seo.ts): the absolute base every relative URL in
+ * the tree resolves against, the fallback title and card, the indexing rule.
+ * The favicon set, the Apple icon and the manifest are Next file conventions
+ * beside this app's root (`src/app/favicon.ico`, `icon1.png`, `icon2.png`,
+ * `apple-icon.png`, `manifest.ts`) and need no entry here.
+ */
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const description = getMessages(isLocale(locale) ? locale : "en").site.description;
+  return {
+    metadataBase: SITE_URL,
+    applicationName: SITE_NAME,
+    title: { default: SITE_NAME, template: "%s" },
+    description,
+    authors: [{ name: STUDIO_NAME }],
+    creator: STUDIO_NAME,
+    publisher: STUDIO_NAME,
+    robots: { index: true, follow: true },
+    openGraph: { type: "website", siteName: SITE_NAME, title: SITE_NAME, description, images: [OG_IMAGE] },
+    twitter: { card: "summary_large_image", title: SITE_NAME, description, images: [OG_IMAGE.url] },
+  };
+}
+
+/** The browser chrome takes the page's own black — the manifest says the same. */
+export const viewport: Viewport = { themeColor: "#000000" };
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
@@ -52,31 +77,52 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
+  // The account dropdown's two states come from the same mock flag the store's
+  // points panels use. Nothing here is a session — see `getViewerState`.
+  const viewer = await getViewerState();
+  const profile = viewer === "signed-out" ? null : await getProfile();
+
+  // Who publishes this site and what it is, for search engines — the studio as
+  // the organisation, the site as the work, on every page.
+  const site = getMessages(locale).site;
+  const structured = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL.origin}/#organization`,
+        name: STUDIO_NAME,
+        url: SITE_URL.origin,
+        logo: `${SITE_URL.origin}/assets/brand/goondu-logo.png`,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL.origin}/#website`,
+        name: SITE_NAME,
+        description: site.description,
+        url: `${SITE_URL.origin}/${locale}`,
+        inLanguage: locale,
+        publisher: { "@id": `${SITE_URL.origin}/#organization` },
+      },
+    ],
+  };
+
   return (
     <html lang={locale} className={`${teko.variable} ${hostGrotesk.variable}`}>
       <body>
+        <JsonLd data={structured} />
         <TransitionProvider>
-          {/* Lenis. Loads its own chunk on idle and stays off under reduced
-              motion. Mounted above the content so it is running before the
-              first scroll. */}
-          <SmoothScroll />
-          {/*
-            Whether the gate is open. It wraps BOTH the page and the chrome
-            because both react to it — the page swaps its two faces, the rail
-            hides once you are through — and inside TransitionProvider because
-            opening a gate plays the tear.
-          */}
-          <GateEntryProvider>
-            {children}
-            {/*
-              Chrome mounts here rather than inside a page so it survives the
-              tear. The gate rail in particular MUST persist: if it remounted per
-              route it could flash on either side of the wipe, and its active
-              item would not already be correct when the screen reopens.
 
-              SiteChrome renders nothing on the entry screen.
-            */}
-            <SiteChrome messages={getMessages(locale)} />
+          <SmoothScroll />
+
+          <GateEntryProvider>
+            {/* The locale and its copy for the not-found boundary, which Next
+                renders without params. The same messages object SiteChrome takes. */}
+            <LocaleProvider locale={locale} messages={getMessages(locale)}>
+              {children}
+
+              <SiteChrome messages={getMessages(locale)} profile={profile} />
+            </LocaleProvider>
           </GateEntryProvider>
         </TransitionProvider>
       </body>

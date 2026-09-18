@@ -62,6 +62,7 @@ const FALLBACK_WIDTH = 1440;
 export function TornDivider({
   edge,
   seed,
+  depth = DEPTH,
   className,
 }: {
   /**
@@ -74,11 +75,20 @@ export function TornDivider({
    * the tear is deterministic, so the default repeats exactly.
    */
   seed?: number;
+  /**
+   * Tooth depth. Defaults to the designer's 47.4, which every section seam
+   * uses. The Competition frame's tournament cards tear their body panel into
+   * the plate with teeth spanning ~11px — a paper edge rather than a rip — and
+   * that is the one place this is set. The strip's height follows it, keeping
+   * the same 8.6 of solid colour below the teeth the default has.
+   */
+  depth?: number;
   /** Set the colour here, with a text utility — the SVG paints currentColor. */
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(FALLBACK_WIDTH);
+  const height = HEIGHT - DEPTH + depth;
 
   useEffect(() => {
     const el = ref.current;
@@ -98,18 +108,25 @@ export function TornDivider({
       ref={ref}
       aria-hidden
       className={cn("pointer-events-none relative w-full overflow-hidden", className)}
-      style={{ height: HEIGHT }}
+      style={{ height }}
     >
-      <TornSurface
-        // A full DEPTH taller and wider than the strip, and offset left by the
-        // same, so the OTHER three tears all fall outside the clip. Only the
-        // edge asked for survives; the ends of the band stay square.
-        width={width + DEPTH * 2}
-        height={HEIGHT + DEPTH}
-        depth={DEPTH}
-        seed={seed}
-        className={cn("absolute -left-12", edge === "top" ? "top-0" : "bottom-0")}
-      />
+      {/* A full depth taller and wider than the strip, and offset left by the
+          same, so the OTHER three tears all fall outside the clip. Only the
+          edge asked for survives; the ends of the band stay square. The offset
+          is a measured value like the height, so it is written the same way
+          rather than as a class that would have to be generated per depth. */}
+      <div
+        className={cn("absolute", edge === "top" ? "top-0" : "bottom-0")}
+        style={{ left: -depth }}
+      >
+        <TornSurface
+          width={width + depth * 2}
+          height={height + depth}
+          depth={depth}
+          seed={seed}
+          className="block"
+        />
+      </div>
     </div>
   );
 }

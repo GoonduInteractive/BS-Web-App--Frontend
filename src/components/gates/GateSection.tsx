@@ -2,15 +2,14 @@
 
 import Image from "next/image";
 
-import { useGateEntry } from "@/components/gates/GateEntry";
 import { ScrollCue } from "@/components/gates/ScrollCue";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { Chip } from "@/components/ui/Chip";
 import { usePointerDrift } from "@/hooks/usePointerDrift";
-import { GATE_CHARACTER, type Gate } from "@/lib/gates";
+import { GATE_CHARACTER, type Gate, type GateId } from "@/lib/gates";
 
 /**
- * One gate — the full-viewport hero at the top of each gate route.
+ * One gate — the full-viewport door the portal shows for an Ọnụ Ụzọ.
  *
  * Vertical positions are in `dvh` rather than percentages. A percentage padding
  * resolves against the containing block's WIDTH, not its height, so `pt-[28%]`
@@ -35,23 +34,26 @@ export function GateSection({
   chip,
   title,
   cta,
+  href,
   plateAlt,
   characterAlt,
-  cueHref,
+  next,
   cueLabel,
 }: {
   gate: Gate;
   chip: string;
   title: string;
   cta: string;
+  /** The page behind this door — the CTA's destination. */
+  href: string;
   plateAlt: string;
   characterAlt: string;
-  cueHref: string;
+  /** The door the cue leads to; gate 4 wraps back to gate 1. */
+  next: GateId;
   cueLabel: string;
 }) {
   // front = character, back = environment plate. 3% and 1% respectively.
   const { frontRef, backRef } = usePointerDrift<HTMLDivElement, HTMLDivElement>();
-  const { enter } = useGateEntry();
 
   return (
     <section
@@ -137,31 +139,16 @@ export function GateSection({
         </div>
 
         <div className="mt-auto flex flex-col items-center gap-[6.8dvh] pb-[3.35dvh]">
-          <BracketButton onClick={() => openGate(enter)} className="text-body leading-none tracking-[0.04em] px-4.5">
+          {/* A real link to the page: TransitionProvider's delegated handler
+              plays the tear around the push, and the destination is announced
+              and openable in a new tab like any link. */}
+          <BracketButton href={href} className="text-body leading-none tracking-[0.04em] px-4.5">
             {cta}
           </BracketButton>
-          <ScrollCue href={cueHref} label={cueLabel} />
+          <ScrollCue gate={next} label={cueLabel} />
         </div>
       </div>
     </section>
   );
 }
 
-/**
- * The CTA opens the gate onto the page behind it.
- *
- * IT IS A DOOR, NOT A SCROLL. It used to smooth-scroll down to the content,
- * which read as one long page with a tall hero on top. It is not one page: the
- * gate is the entrance and the page is what lies beyond it, so the passage
- * between them is the tear, and the page is the first thing you see when the
- * tear opens. `GateEntry` owns that swap; all this does is ask for it.
- *
- * NO CONTENT, NO TEAR. Gates 2 to 4 have nothing behind them yet, so there is
- * nothing to open onto and the CTA stays a deliberate no-op rather than tearing
- * to a blank screen. Each starts working the moment its route passes children to
- * GatePage, with no change here.
- */
-function openGate(enter: () => void) {
-  if (!document.querySelector("[data-gate-content]")) return;
-  enter();
-}

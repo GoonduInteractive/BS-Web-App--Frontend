@@ -28,6 +28,128 @@
 
   --color-gild: #e1d3a0;
 
+  /* ---- Colour: the merch store (10-merch). UNCONFIRMED ----
+     Read off flat fields in the merch frames and approved by the human as
+     working values, in the same state --color-oxblood and --color-clot are in.
+     Get the real hexes from Figma before launch.
+
+     --color-linen IS NOT --color-bone, AND THE 3/255 GAP IS THE WHOLE REASON
+     THIS RULE EXISTS. Bone is #e5deb5 and the product tiles read #e8ddb7. They
+     are indistinguishable on screen and must not be merged on that basis: if
+     Design confirms they are one colour, delete this token rather than assume
+     it. --color-crimson is likewise a FOURTH red, distinct from signal, ember,
+     clot and scar. */
+  --color-crimson: #d10023;       /* product tile field, points progress bar */
+  --color-linen: #e8ddb7;         /* product tile field, the warm one */
+  --color-ash: #282828;           /* claimable points and point perks panels */
+  --color-pitch: #0c0c0c;         /* checkout panel ground */
+  --color-moss: #0b5b3c;          /* shipping FREE */
+
+  /* The two product colourways that are not already tokens. These name GARMENT
+     colours, not UI, which is why they sit apart from the reds above.
+     --color-cocoa is 19/255 off --color-clot and must not be folded into it
+     without Design saying so. The third colourway is --color-ink exactly. */
+  --color-cocoa: #550800;         /* colourway swatch, the dark one */
+  --color-ivory: #fffcf2;         /* colourway swatch, the pale one */
+
+  /* Comic cover artwork tones, volume 2. These are part of a COVER, not of the
+     UI — the frames compose each cover from a band, a torn seam and a field, and
+     volume 2's pair is cool where volume 1 reuses --color-menu and --color-clot.
+     Unconfirmed, like the rest of the merch set. */
+  --color-dusk: #292d32;          /* vol 2 cover band */
+  --color-abyss: #12181b;         /* vol 2 cover field */
+
+  /* The profile screen's Log Out. A softer red than --color-signal, read off a
+     flat run of the frame's label. Unconfirmed, like the rest of the merch and
+     profile set. */
+  --color-flare: #e14040;
+
+  /* The Competition hero's ground, from the Figma inspector:
+     linear-gradient(161.56deg, #000000 12.32%, #A00000 184.28%).
+     The far stop sits at 184%, PAST the box, so no pixel on screen is ever this
+     colour — the bottom-right corner tops out near #520000. It is a token
+     because it is the value Design wrote down, not because it is seen. */
+  --color-blood: #a00000;
+
+  /* The featured tournament's plate, from the Figma inspector:
+     linear-gradient(152.26deg, #000000 18.18%, #BE0000 304.96%).
+     Same arrangement as --color-blood: the far stop is at 305%, so the plate's
+     corner tops out near #360000 and this value is never painted. */
+  --color-carmine: #be0000;
+
+  /* The featured card's field labels — STATUS, REGION, REWARDS POOL — on the
+     linen. UNCONFIRMED: read off a flat run of the frame's label, not supplied
+     from Figma. A cool grey with no relative in the palette. */
+  --color-slate: #52575c;
+
+  /* The active tournament cards, from the Figma inspector:
+     linear-gradient(180deg, #480301 -7.37%, #020202 64.18%) over the whole
+     card, and #1D1C1C for the body panel that covers its lower half. Both
+     supplied by the human. --color-arena-bottom is one value off
+     --color-roster-bottom and stays separate for the reason --color-linen does. */
+  --color-arena-top: #480301;
+  --color-arena-bottom: #020202;
+  --color-charcoal: #1d1c1c;
+
+  /* The tournament cards' field labels — ENDS, REGION, STATUS — on charcoal.
+     UNCONFIRMED: read off the frame. It is also the fill of the delivered
+     cart-m.svg, so Design has used it before. */
+  --color-mist: #dbdde0;
+
+  /* The achievement cards, both supplied by the human from Figma.
+     --color-parchment IS A THIRD CREAM: 5/255 from --color-bone (#e5deb5) in
+     green and 3 from --color-linen (#e8ddb7) in red. Confirmed as its own
+     colour, so it stays its own token — see the note on --color-linen.
+     --color-onyx is the card title, 11/255 off --color-ink; confirmed too. */
+  --color-parchment: #e5d9b4;
+  --color-onyx: #0b0b0c;
+
+  /* The leaderboard's greys. UNCONFIRMED: read off the frame, approved as
+     working values by the human, the same state --color-slate is in. The
+     table's odd rows are slate itself; these are the rest of its palette. */
+  --color-iron: #25282b;          /* table header and even rows */
+  --color-steel: #67696c;         /* table cell dividers */
+  --color-pewter: #676767;        /* podium block border */
+  --color-stone: #999999;         /* podium rank numerals */
+
+  /* The tournament detail page. UNCONFIRMED: read off the two detail frames,
+     approved as working values by the human. --color-amber is the stage in
+     progress; --color-lava the stage completed — the same #d41400 the merch
+     store's double chevron read, so Design uses it, and it is neither signal
+     nor crimson. The three greys are the stepper's idle connector, the
+     accordion bar and the bracket's connector lines. */
+  --color-amber: #fdb022;
+  --color-lava: #d41400;
+  --color-cinder: #3d3d3d;
+  --color-umber: #292323;
+  --color-taupe: #6b6565;
+
+  /* Community wall (05-community). The four note tints are flat vector fills
+     read off the frame — the sky one is also the fill in the delivered
+     card.svg, so they are the Figma values. The paper and its dots are read
+     off the wall's ground (the delivered wall.svg rasterises the same grid),
+     UNCONFIRMED like the other greys. */
+  --color-note-cream: #fffaf1;
+  --color-note-mint: #e4ffe9;
+  --color-note-sky: #ebf8ff;
+  --color-note-rose: #ffedeb;
+  --color-paper: #f3f3f3;
+  --color-paper-dot: #d2d2d2;
+  /* The active player map's disc — read off the frame, UNCONFIRMED. */
+  --color-globe: #140e0e;
+
+  /* The podium's three metals, from the Figma inspector — three stops each.
+     Painted only through the bg-podium-* utilities below. */
+  --color-gold-deep: #d99313;
+  --color-gold-mid: #9b6f00;
+  --color-gold-light: #e5c78f;
+  --color-silver-deep: #b5b5b5;
+  --color-silver-mid: #c8c1c1;
+  --color-silver-dark: #4f4f4f;
+  --color-bronze-deep: #9a876c;
+  --color-bronze-mid: #b6a082;
+  --color-bronze-dark: #3e3a34;
+
 
   --color-void: #0e0000;
 
@@ -84,6 +206,15 @@
   --text-detail-name: clamp(4.5rem, 11.11vw, 10rem);
   --text-detail-name--line-height: 1;
 
+  /* The Competition page's section headings — FEATURED TOURNAMENT, ACTIVE
+     TOURNAMENTS, EARN ACHIEVEMENTS, REGIONAL LEAGUES, HALL OF ASCENSION — and
+     the featured card's title. Every one measures a 40px cap at 1440, which is
+     63px in Teko: between --text-h1's 55 and --text-story-title's 78.5, and on
+     neither. Floor is .section-title's 40px mobile size; the 0.86 leading is
+     the card title's 54px pitch, the same ratio the Game hero uses. */
+  --text-section-heading: clamp(2.5rem, 1.984rem + 2.17vw, 3.9375rem);
+  --text-section-heading--line-height: 0.86;
+
 
   --ease-gate: cubic-bezier(0.33, 1, 0.68, 1);   /* ease-out-cubic */
   --duration-gate: 200ms;
@@ -94,6 +225,20 @@
 
   --font-display: var(--font-teko), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-host-grotesk), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  /* The community wall's handwriting: Bradley Hand ITC, loaded by the community
+     page alone (next/font/local), so the variable is only defined there.
+     LICENCE: a Monotype face, not an open one — see the community notes. */
+  --font-hand: var(--font-bradley), "Bradley Hand", "Segoe Print", cursive;
+}
+
+/* The community wall's ground: paper with a 16px dot grid, 2px dots. The
+   delivered wall.svg is this grid as a 3360 x 2022 raster at 63%; drawn here
+   in CSS instead, at the frame's measured pitch and colours. */
+@utility bg-paper-dots {
+  background-color: var(--color-paper);
+  background-image: radial-gradient(circle, var(--color-paper-dot) 1.1px, transparent 1.6px);
+  background-size: 16px 16px;
+  background-position: 7px 7px;
 }
 
 /* Entry screen ground: linear-gradient(180deg, #000000 0%, #200404 100%) per Figma. */
@@ -118,6 +263,83 @@
     180deg,
     var(--color-roster-top) 0%,
     var(--color-roster-bottom) 100%
+  );
+}
+
+/* The Competition hero, per the Figma inspector:
+   linear-gradient(161.56deg, #000000 12.32%, #A00000 184.28%).
+   The only hero on the site with a CSS ground instead of a plate.
+
+   THE ANGLE IS CONVERTED, THE STOPS ARE NOT. Figma measures a gradient's angle
+   in the layer's normalised square and stretches it to the box; CSS measures it
+   in pixels. Stretched to the frame's 1440 x 678, Figma's 18.44° off vertical
+   becomes 8.9° — 171deg in CSS. Pasted verbatim, 161.56deg painted the left
+   edge 15 levels darker than the frame while the right edge matched; at 171deg
+   both edges match to within 2. A fixed CSS angle cannot follow the box's
+   aspect the way Figma's does, so this is exact at the frame's proportions and
+   drifts gently away from them. */
+@utility bg-competition-hero {
+  background-image: linear-gradient(
+    171deg,
+    var(--color-ink) 12.32%,
+    var(--color-blood) 184.28%
+  );
+}
+
+/* The featured tournament's plate, per the Figma inspector:
+   linear-gradient(152.26deg, #000000 18.18%, #BE0000 304.96%).
+   Angle converted the same way as bg-competition-hero: Figma's 27.7° off
+   vertical in the layer's square is 26.3° in the plate's 631 x 593 pixels,
+   which is 153.7deg in CSS. Stops verbatim. */
+@utility bg-tournament-plate {
+  background-image: linear-gradient(
+    153.7deg,
+    var(--color-ink) 18.18%,
+    var(--color-carmine) 304.96%
+  );
+}
+
+/* The podium's points chips, per the Figma inspector:
+     gold    linear-gradient(96.5deg,  #D99313 -30.76%, #9B6F00 38.72%, #E5C78F 108.2%)
+     silver  linear-gradient(97.84deg, #B5B5B5 -1.13%,  #C8C1C1 53.09%, #4F4F4F 107.3%)
+     bronze  linear-gradient(96.07deg, #9A876C 1.41%,   #B6A082 70.02%, #3E3A34 138.62%)
+   Angles converted for the chip's 131 x 48 the way every gradient on this page
+   was: a few degrees past horizontal in Figma's square is barely past it in
+   pixels — 92.4, 92.9 and 92.2. Stops verbatim. */
+@utility bg-podium-gold {
+  background-image: linear-gradient(
+    92.4deg,
+    var(--color-gold-deep) -30.76%,
+    var(--color-gold-mid) 38.72%,
+    var(--color-gold-light) 108.2%
+  );
+}
+@utility bg-podium-silver {
+  background-image: linear-gradient(
+    92.9deg,
+    var(--color-silver-deep) -1.13%,
+    var(--color-silver-mid) 53.09%,
+    var(--color-silver-dark) 107.3%
+  );
+}
+@utility bg-podium-bronze {
+  background-image: linear-gradient(
+    92.2deg,
+    var(--color-bronze-deep) 1.41%,
+    var(--color-bronze-mid) 70.02%,
+    var(--color-bronze-dark) 138.62%
+  );
+}
+
+/* An active tournament card, per the Figma inspector, verbatim — 180deg needs
+   no conversion. It spans the WHOLE card, body panel included: with the stops
+   as written the R channel reads 0x41 at the card's top and 0x16 at the seam
+   276px down, which is what the frame shows. */
+@utility bg-arena-card {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-arena-top) -7.37%,
+    var(--color-arena-bottom) 64.18%
   );
 }
 
@@ -209,6 +431,201 @@
     opacity: 1;
     translate: 0 0;
     transition: none;
+  }
+}
+
+/* The leaderboard's filter menu opening from its chip's corner. */
+.menu-in {
+  transform-origin: top right;
+  animation: menu-in 180ms var(--ease-gate) both;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.25rem;
+    scale: 0.97;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/*
+ * The community tabs' swap: the panel you were on slides out one way and
+ * fades while the new one slides in from the other. Composited — opacity and
+ * transform — so it keeps moving while the map's chunk parses on the main
+ * thread; a GSAP tween started just before that block was swallowed by it.
+ * The outgoing panel is absolute over the incoming one for the length of its
+ * exit (see CommunityBoard).
+ */
+.swap-in-right {
+  animation: swap-in-right 480ms var(--ease-gate) both;
+}
+
+.swap-in-left {
+  animation: swap-in-left 480ms var(--ease-gate) both;
+}
+
+.swap-out-left {
+  animation: swap-out-left 380ms var(--ease-gate) both;
+}
+
+.swap-out-right {
+  animation: swap-out-right 380ms var(--ease-gate) both;
+}
+
+@keyframes swap-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(56px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes swap-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-56px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes swap-out-left {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-56px);
+  }
+}
+
+@keyframes swap-out-right {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(56px);
+  }
+}
+
+/* The rise a re-dealt line takes (the map's readout). */
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The map's readout re-dealing for a new place: name, then count. */
+.readout-in {
+  animation: panel-in 450ms var(--ease-gate) both;
+}
+
+/* A like landing on a community note: the thumb pops once. */
+[aria-pressed="true"] > .like-glyph {
+  animation: like-pop 320ms var(--ease-gate) both;
+}
+
+@keyframes like-pop {
+  0% {
+    scale: 1;
+  }
+  40% {
+    scale: 1.35;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+/* A note just pinned to the community wall. */
+.note-in {
+  animation: note-in 420ms var(--ease-gate) both;
+}
+
+@keyframes note-in {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/*
+ * The Active Player Map's Leaflet bits. Leaflet's own stylesheet comes with
+ * the map's chunk; these are the site's rules over it. The land is a GeoJSON
+ * layer whose fill is the 8px dot pattern ActiveMap puts in the document; the
+ * dot pane fades against the street tiles as the zoom crosses continent
+ * level. Pins are Leaflet markers wearing the delivered SVG.
+ */
+.map-disc.leaflet-container {
+  background: var(--color-globe);
+  font: inherit;
+}
+
+.map-land {
+  fill: url(#map-dots);
+}
+
+.leaflet-overlay-pane {
+  transition: opacity 160ms var(--ease-gate);
+}
+
+/* The marker div is Leaflet's (it carries the translate); the pop is the artwork's. */
+.map-pin {
+  cursor: pointer;
+}
+
+.map-pin img {
+  display: block;
+  transition: scale 200ms var(--ease-gate);
+  transform-origin: 50% 100%;
+}
+
+.map-pin:hover img,
+.map-pin:focus-visible img,
+.map-pin.is-selected img {
+  scale: 1.1;
+}
+
+.map-pin:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+/* A player's pin arriving as the map gets close: a short drop onto its spot. */
+.map-pin--player img {
+  animation: pin-in 420ms var(--ease-gate) both;
+}
+
+@keyframes pin-in {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 

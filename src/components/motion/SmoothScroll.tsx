@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { setLenis } from "@/lib/animation/lenis";
 
 /**
  * Lenis smooth scroll, mounted once from the layout.
@@ -80,6 +81,9 @@ export function SmoothScroll() {
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(drive);
       gsap.ticker.lagSmoothing(0);
+      // Handed to the one reader that needs the scroller itself (the gate
+      // pull-up holds the page still while it pulls). See lib/animation/lenis.
+      setLenis(lenis);
 
       teardown = () => {
         gsap.ticker.remove(drive);
@@ -87,6 +91,7 @@ export function SmoothScroll() {
         // drop compensation once smooth scroll is gone.
         gsap.ticker.lagSmoothing(500, 33);
         lenis.off("scroll", ScrollTrigger.update);
+        setLenis(null);
         lenis.destroy();
       };
     })();

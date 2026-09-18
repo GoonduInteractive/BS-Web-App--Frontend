@@ -5,10 +5,10 @@ import type { Messages } from "@/lib/utils/messages";
  * gate routes and each scroll cue all read from this list, so adding or
  * reordering a gate is a one-line change.
  *
- * The gates are SEPARATE ROUTES, not sections of one scrolling page. That is
- * what makes `usePathname()` the source of truth for the rail's active item, and
- * it is why every rail click and every scroll cue plays the tear transition:
- * they are real navigations through real links.
+ * THE DOORS SHARE THE HOME ROUTE; THE PAGES HAVE THE SLUGS. `/en` is the portal
+ * and shows one gate at a time (`GateEntry` holds which); `/en/{slug}` is the
+ * page a gate's CTA opens onto. So the rail and the cues swap the portal's
+ * face — the tear plays, the URL holds — and a CTA is a real link to a page.
  *
  * Route slugs are English per the naming rule in coding-standard.md, even though
  * the chip labels are Igbo.
@@ -87,10 +87,8 @@ export function gateHref(locale: string, gate: Gate): string {
 }
 
 /**
- * Which gate a pathname is on, or null if it is not a gate route.
- *
- * Returning null is what keeps the rail off the entry screen without the rail
- * needing to know the entry screen exists.
+ * Which gate's PAGE a pathname is, or null if it is not one — what BACK TO ỤZỌ
+ * reads to know which door to return to.
  */
 export function gateFromPathname(pathname: string): Gate | null {
   const segments = pathname.split("/").filter(Boolean);

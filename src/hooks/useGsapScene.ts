@@ -6,7 +6,7 @@ import { useEffect, type RefObject } from "react";
  * Build a scroll-driven GSAP scene for one section, safely.
  *
  * Every section that wants a timeline or a scrub goes through here rather than
- * calling GSAP directly, because there are three things that all of them have to
+ * calling GSAP directly, because there are four things that all of them have to
  * get right and only one obvious way to get each wrong.
  *
  * 1. DYNAMIC IMPORT. GSAP is ~27KB gzipped and ScrollTrigger another ~11KB.
@@ -33,6 +33,12 @@ import { useEffect, type RefObject } from "react";
  *
  * 3. CLEANUP. Everything is created inside `gsap.context`, so one `revert()`
  *    undoes the tweens AND kills the triggers.
+ *
+ * 4. EXACTLY ONE BUILD PER ELEMENT. Two racing callers each creating a context
+ *    is not a wasted cycle, it is an invisible section: the second context's
+ *    `from()` tweens read the first's start value as their END. See the guard
+ *    in `build` for why this only ever bit the one route with no gate in front
+ *    of it.
  *
  * WHAT IT DOES NOT DO is decide anything about the motion. `scene` receives the
  * live `gsap`, a selector scoped to the section, and the section element itself
@@ -71,19 +77,38 @@ export function useGsapScene(
     let cancelled = false;
     let ctx: { revert: () => void } | undefined;
     let refresh: (() => void) | undefined;
+    let building = false;
 
     const build = async () => {
+      // ONE CONTEXT PER ELEMENT, AND THE GUARD IS NOT DEFENSIVE — IT IS
+      // LOAD-BEARING. The direct call below and the observer's first callback
+      // both fire before the dynamic import resolves, so without this they each
+      // create a context. That means two sets of `from()` tweens on the same
+      // nodes, and the second reads the first's start value as its END: the
+      // section animates to opacity 0 and stays there, invisible.
+      //
+      // It never surfaced on The Game or The Characters because their sections
+      // mount inside a closed gate at `display: none` — `laidOut()` is false,
+      // the direct call is skipped, and only the observer ever builds. About is
+      // the first route with no gate in front of it.
+      if (building || ctx) return;
+      building = true;
+
       const [{ gsap }, { ScrollTrigger }] = await Promise.all([
         import("gsap"),
         import("gsap/ScrollTrigger"),
       ]);
-      if (cancelled) return;
+      if (cancelled) {
+        building = false;
+        return;
+      }
       gsap.registerPlugin(ScrollTrigger);
       refresh = () => ScrollTrigger.refresh();
 
       ctx = gsap.context(() => {
         scene(gsap, gsap.utils.selector(el), el);
       }, el);
+      building = false;
     };
 
     const laidOut = () => el.getBoundingClientRect().height > 0;
