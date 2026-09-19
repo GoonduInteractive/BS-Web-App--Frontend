@@ -27,6 +27,8 @@ export type RosterEntry = {
   image: string;
   /** Portrait framing override, as literal Tailwind classes. See CharacterCard. */
   portraitClass?: string;
+  /** Extra classes for the fill portrait — Omalicha's mask. See the manifest. */
+  figureClass?: string;
   /** The modal's bio paragraphs. Absent for anyone Content has not written yet. */
   bio?: string[];
   /** The character's own detail page. SEE FULL DETAILS goes here. */
@@ -172,7 +174,7 @@ export function CharacterModal({
                   alt={entry.alt}
                   fill
                   sizes="(max-width: 767px) 90vw, 318px"
-                  className="object-cover object-top"
+                  className={`object-cover object-top ${entry.figureClass ?? ""}`}
                 />
               )}
               <CornerMarks />

@@ -107,19 +107,7 @@
       "intro": "TODO ig: Meet a growing roster of ascendants, each with their own abilities, stories, and connection to the world of Beyond Service.",
       "title": "TODO ig: SOULS OF THE",
       "titleMuted": "TODO ig: ARENA",
-      "cta": "TODO ig: EXPLORE CHARACTERS",
-      "soma": {
-        "name": "SOMA",
-        "role": "TODO ig: The Chosen"
-      },
-      "kaira": {
-        "name": "KAIRA",
-        "role": "TODO ig: Lady Koi Koi"
-      },
-      "ogbunabali": {
-        "name": "OGBUN'ABALI",
-        "role": "TODO ig: The God of Punishment and Games"
-      }
+      "cta": "TODO ig: EXPLORE CHARACTERS"
     },
     "summons": {
       "title": "TODO ig: ANSWER THE SUMMONS",
@@ -152,104 +140,129 @@
       "cast": {
         "soma": {
           "name": "TODO ig: SOMA",
-          "role": "TODO ig: The Chosen",
+          "role": "TODO ig: The Nightlit Fugitive",
           "alt": "TODO ig: Soma, seen from behind, the sun tattoo across his shoulder",
           "bio": [
-            "TODO ig: Once an ordinary youth corps member, Soma’s life changed forever when he accepted a pact with Ogbun’abali after death. Resurrected with extraordinary chi abilities, he became one of the first ascendants to challenge the boundary between the mortal and divine worlds.",
-            "TODO ig: Versatile and adaptable, Soma excels at balancing offense, mobility, and crowd control, making him a reliable choice for both new and experienced players."
+            "TODO ig: Witty, guarded, and intense. After enduring severe personal trauma, Soma uses sharp humor and a rebellious exterior to mask deeper pain. He presents himself as an aloof lone ranger, but is fiercely loyal to those he trusts.",
+            "TODO ig: After the MYSC camp training, Soma has a life-changing experience that changes his world forever. Near death experience where he met Ogbunabali. Fought a syndicate to save his friends and had his first encounter with Nze."
           ],
           "detail": {
             "stats": {
-              "role": "TODO ig: BALANCED FIGHTER",
-              "difficulty": "TODO ig: MEDIUM"
+              "weapon": "TODO ig: GAUNTLET (SPIRIT FIST)",
+              "chi": "TODO ig: SPIRITUAL / ELECTRIC CHI"
             },
             "intro": [
-              "TODO ig: Soma is the all-rounder. He combines mobility, offense, crowd control, and adaptability, making him effective in almost any situation.",
-              "TODO ig: He's designed for players who want flexibility and the ability to respond to different combat scenarios without being locked into a single playstyle."
+              "TODO ig: Witty, guarded, and intense. After enduring severe personal trauma, Soma uses sharp humor and a rebellious exterior to mask deeper pain. He presents himself as an aloof lone ranger, but is fiercely loyal to those he trusts.",
+              "TODO ig: High-velocity boxing strikes combining close-quarters martial arts with burst electrical chi discharges.",
+              "TODO ig: Age 24. Spiritual bond: Ogbunabali, the Igbo deity of the night. Driven by survival and the sentient spirit weapon that chose him."
             ],
             "lore": [
-              "TODO ig: Soma never imagined that death would become the beginning of his story.",
-              "TODO ig: A recent university graduate serving his country through the National Youth Service Corps, Soma's life was cut short during a violent ambush while traveling home with his closest friends. In the moments between life and death, he encountered Ogbun'abali, the god of punishment and games, who offered him an impossible choice: remain among the dead or return to the world of the living and participate in a series of divine trials.",
-              "TODO ig: Soma chose to live.",
-              "TODO ig: Resurrected with extraordinary chi abilities and supernatural combat instincts, he set out to rescue his captured friends. What began as a personal mission quickly evolved into something much larger as he uncovered a hidden network of ritualists manipulating events from the shadows.",
-              "TODO ig: Despite the power he now possesses, Soma remains driven by loyalty, responsibility, and a deep desire to protect others. He carries the burden of both worlds on his shoulders, balancing his humanity against the growing influence of divine power."
+              "TODO ig: After the MYSC camp training, Soma has a life-changing experience that changes his world forever. Near death experience where he met Ogbunabali. Fought a syndicate to save his friends and had his first encounter with Nze.",
+              "TODO ig: Soma is bound to Anemene, a sentient, shape-shifting spirit artifact of Igbo-Ukwu origin. She manifests as different ancestral weapons that channel raw spiritual and electrical chi."
             ],
             "abilities": [
               {
                 "name": "TODO ig: FAST PUNCH",
-                "text": "TODO ig: A rapid series of electrified strikes that builds combo momentum and charges Soma's chi."
+                "text": "TODO ig: A lightning-fast four-hit chain — jab, cross, kick — closing with a concussive downward strike that detonates a small electric AOE at Soma's feet. Each hit lands faster than the last, building rhythm before the ground finisher."
               },
               {
-                "name": "TODO ig: GROUND SLAM",
-                "text": "TODO ig: Channels chi through his gauntlet to create a localized shockwave that damages nearby enemies."
+                "name": "TODO ig: CHARGED PUNCH",
+                "text": "TODO ig: Soma plants his stance and drives a single spirit-charged punch forward, releasing the stored chi as a linear energy blast that pierces through enemies in its path."
               },
               {
                 "name": "TODO ig: SPIRIT LOCK",
-                "text": "TODO ig: A grappling ability that launches opponents and creates openings for follow-up attacks."
+                "text": "TODO ig: Soma sweeps the opponent's legs with a low kick, suspending them mid-air in a brief chi tether, then hammers them into the ground with a downward gauntlet punch that erupts in a shockwave."
               },
               {
-                "name": "TODO ig: IJE MMUO (SPIRIT PATH)",
-                "text": "TODO ig: Soma's ultimate ability. He summons ancestral spiritual energy in a devastating burst that overwhelms enemies in front of him."
-              }
-            ],
-            "variants": [
-              {
-                "name": "TODO ig: GAUNTLET VARIANT",
-                "text": "TODO ig: Soma's default fighting style combines close-range combat with powerful electrical chi abilities. Fast, versatile, and adaptable, it rewards players who enjoy balanced gameplay and fluid combos."
+                "name": "TODO ig: IJE MMỤỌ (SPIRIT PATH)",
+                "text": "TODO ig: Soma channels his full chi, tattoos igniting as he launches the opponent skyward with a rising uppercut, then descends in a ground slam that unleashes a seismic spiritual shockwave marked by glowing nsibidi-style glyphs."
               },
               {
-                "name": "TODO ig: HATCHET VARIANT",
-                "text": "TODO ig: A more tactical combat style focused on precision, range, and battlefield control. By channeling ancestral energy through enchanted hatchets, Soma gains access to devastating mid-range attacks and powerful area denial abilities."
+                "name": "TODO ig: BLOCK",
+                "text": "TODO ig: Soma crosses his gauntleted forearms, projecting a thin film of chi that absorbs incoming force."
               }
             ]
           }
         },
         "kaira": {
           "name": "TODO ig: KAIRA",
-          "role": "TODO ig: Lady Koi Koi",
+          "role": "TODO ig: The Crimson Echo",
           "alt": "TODO ig: Kaira in a corps jacket, arms spread",
+          "bio": [
+            "TODO ig: Elegant, vengeful, and poetic in speech. Kaira speaks softly but strikes decisively. She demands respect and gives no second chances to those who mock justice.",
+            "TODO ig: Kaira was once a corper in an academic institution, known for her elegance and strict code of respect. After a betrayal by her students and fellow teachers, she became bound to her signature crimson heels — vessels of her wrath. Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption."
+          ],
           "detail": {
             "stats": {
-              "role": "TODO ig: TRICKSTER",
-              "difficulty": "TODO ig: HARD"
+              "weapon": "TODO ig: RED HEEL SHOES",
+              "chi": "TODO ig: SPIRITUAL / MYSTICAL RED CHI"
             },
             "intro": [
-              "TODO ig: Kaira fights on her own terms. She controls space, punishes impatience, and turns a crowded arena into a corridor of her choosing.",
-              "TODO ig: She is built for players who would rather set a trap than win a trade, and who enjoy reading an opponent before touching them."
+              "TODO ig: Elegant, vengeful, and poetic in speech. Kaira speaks softly but strikes decisively. She demands respect and gives no second chances to those who mock justice.",
+              "TODO ig: Age 23. Spiritual bond: Madam Koi Koi."
             ],
             "lore": [
-              "TODO ig: The corridors remember her before anyone else does.",
-              "TODO ig: Kaira was a boarding-school prefect with a reputation for knowing things she should not have known. When the trials took her, they took her at midnight, in a hallway that has not been used since.",
-              "TODO ig: She did not ask to come back. She asked to be believed.",
-              "TODO ig: What returned wears her uniform and her name, and it moves through the arena the way a rumour moves through a dormitory — never quite where you looked, always already ahead of you.",
-              "TODO ig: Kaira fights to be remembered correctly. Every opponent she leaves standing is one more mouth to carry the story she was denied."
+              "TODO ig: Kaira was once a corper in an academic institution, known for her elegance and strict code of respect. After a betrayal by her students and fellow teachers, she became bound to her signature crimson heels — vessels of her wrath.",
+              "TODO ig: Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption."
             ],
             "abilities": [
               {
-                "name": "TODO ig: KOI KOI",
-                "text": "TODO ig: A step that leaves an afterimage. Opponents who strike it are slowed and marked for her next attack."
+                "name": "TODO ig: KICK COMBO",
+                "text": "TODO ig: A blistering 7-hit chain of alternating heel jabs and cross-kicks, each strike snapping with balletic precision before flowing into the next. The final hit of the chain lands with slightly more force, punctuating the sequence."
               },
               {
-                "name": "TODO ig: HALL PASS",
-                "text": "TODO ig: Kaira opens a short corridor of space, pulling herself through it and anyone careless enough to be standing in the way."
+                "name": "TODO ig: HEEL KICKS",
+                "text": "TODO ig: Kaira delivers two swift, devastating heel kicks in succession. The first staggers, the second launches enemies airborne in a burst of crimson chi. A cinematic, high-commitment strike that reads as her “signature” heavy."
               },
               {
-                "name": "TODO ig: LIGHTS OUT",
-                "text": "TODO ig: Dims the arena in a radius around her, cutting enemy vision while leaving her own untouched."
+                "name": "TODO ig: DEADLY HEELS",
+                "text": "TODO ig: Kaira snares her opponent with her legs in one fluid motion, swings them through the air with acrobatic control, and releases them into the ground — leaving them stunned in a haze of red chi."
               },
               {
-                "name": "TODO ig: ROLL CALL",
-                "text": "TODO ig: Her ultimate. Kaira names every opponent she has marked, striking each of them at once wherever they stand."
+                "name": "TODO ig: CHAOS HEELS",
+                "text": "TODO ig: Kaira crosses fully into spirit mode — her form darkens, heels blazing crimson — as she telekinetically lifts her enemies off the ground. Suspended and helpless, they hang for a breath before she snaps them down with lethal finality."
               }
+            ]
+          }
+        },
+        "omalicha": {
+          "name": "TODO ig: OMALICHA",
+          "role": "TODO ig: The Sun Kin",
+          "alt": "TODO ig: Omalicha in a corps vest and green scarf, pistol in one hand and dagger in the other",
+          "bio": [
+            "TODO ig: Silent, calculating, and unflinching. She does not delight in death but views it as the restoration of sacred order. She speaks rarely but always with precision.",
+            "TODO ig: Born under the black Sun, Omalicha was abandoned as a child after misguided village elders foresaw a destiny of death in her aura. Raised by mmau of the forbidden forest, she learned to use her blessings of good fortune. On the night of her 20th birthday, a sun mark of Anyanwu appeared on her forehead, and her Chi surged awake. She now serves as an ascendant, Champion of Anyanwu."
+          ],
+          "detail": {
+            "stats": {
+              "weapon": "TODO ig: GUN AND DAGGER",
+              "chi": "TODO ig: DIVINE / GOLDEN SUN CHI"
+            },
+            "intro": [
+              "TODO ig: Silent, calculating, and unflinching. She does not delight in death but views it as the restoration of sacred order. She speaks rarely but always with precision.",
+              "TODO ig: “Fortune Favours… Well… Me.”",
+              "TODO ig: Age 25. Spiritual bond: Anyanwu."
             ],
-            "variants": [
+            "lore": [
+              "TODO ig: Born under the black Sun, Omalicha was abandoned as a child after misguided village elders foresaw a destiny of death in her aura. Raised by mmau of the forbidden forest, she learned to use her blessings of good fortune.",
+              "TODO ig: On the night of her 20th birthday, a sun mark of Anyanwu appeared on her forehead, and her Chi surged awake. She now serves as an ascendant, Champion of Anyanwu."
+            ],
+            "abilities": [
               {
-                "name": "TODO ig: PREFECT VARIANT",
-                "text": "TODO ig: Her default style. Measured, punishing, and built around control — it rewards players who set the terms of an engagement before it begins."
+                "name": "TODO ig: SUN AND STEEL",
+                "text": "TODO ig: A flowing gun-kata sequence: quick slash, reverse slash, rising spin-slash that lifts her airborne, a double shot fired mid-air, a descending spin-slash, and a charged finishing shot — blade and gun trading rhythm like a duet."
               },
               {
-                "name": "TODO ig: MIDNIGHT VARIANT",
-                "text": "TODO ig: A faster, riskier style that trades her zoning tools for pursuit. Kaira gives up the corridor and hunts in the open instead."
+                "name": "TODO ig: SOLAR PIERCE",
+                "text": "TODO ig: Omalicha charges her blade with concentrated sunlight, lunges forward in a piercing spin-slash, then punctuates the advance with three rapid shots."
+              },
+              {
+                "name": "TODO ig: ANYANWU’S GAZE",
+                "text": "TODO ig: An upward spin-slash launches the enemy skyward; Omalicha tracks them with three precise shots, the final round striking with enough force to send them spiraling into the ground."
+              },
+              {
+                "name": "TODO ig: ANYANWU’S JUDGEMENT",
+                "text": "TODO ig: The sun mark on Omalicha's forehead ignites as she launches skyward, descends in a straight kick that drives her enemy down, rides them in a grinding slide to a halt, then executes a single point-blank power shot charged with Anyanwu's full radiance."
               }
             ]
           }
@@ -306,49 +319,51 @@
         },
         "nzeUgwuoke": {
           "name": "TODO ig: NZE UGWUOKE",
-          "role": "TODO ig: The Fallen Chief Priest",
+          "role": "TODO ig: Chief Priest",
           "alt": "TODO ig: Nze Ugwuoke in a red cap and ivory beads",
+          "bio": [
+            "TODO ig: Wise, composed, deeply spiritual. Prone to isolation and secrecy. When betrayed, his emotions become volatile and destructive.",
+            "TODO ig: Nze Ugwuoke is the last initiated Chief Priest of the ancestral Grove of Nkpokiti. He was chosen by the gods at birth, raised among spirits, and trained in ancestral magic and divine law. The gods entrusted him with the Ekwu-Ofo, a staff representing balance and judgment — capable of transforming into Okwute, a Chaos battle axe, when he transforms into his spirit mode."
+          ],
           "detail": {
             "stats": {
-              "role": "TODO ig: BRAWLER",
-              "difficulty": "TODO ig: EASY"
+              "weapon": "TODO ig: EKWU-OFO / OKWUTE",
+              "chi": "TODO ig: CHAOS / MYSTIC RED CHI"
             },
             "intro": [
-              "TODO ig: Nze Ugwuoke hits harder than anyone else on the roster and asks very little of the player in return.",
-              "TODO ig: He is the entry point to the game — direct, durable, and honest about what he intends to do next."
+              "TODO ig: Wise, composed, deeply spiritual. Prone to isolation and secrecy. When betrayed, his emotions become volatile and destructive.",
+              "TODO ig: Age 47. Spiritual bond: unknown."
             ],
             "lore": [
-              "TODO ig: He was the last chief priest of a shrine that no longer has a village.",
-              "TODO ig: For forty years Nze Ugwuoke kept the rites, settled disputes, and buried the dead of a community that slowly stopped coming. When the road came through and the last family left, he stayed, because leaving would have meant admitting it was over.",
-              "TODO ig: The trials found him alone, still keeping a calendar nobody read.",
-              "TODO ig: He fights now with the same stubbornness that kept him at an empty shrine — not for glory, and not for return, but because putting something down is harder for him than carrying it."
+              "TODO ig: Nze Ugwuoke is the last initiated Chief Priest of the ancestral Grove of Nkpokiti. He was chosen by the gods at birth, raised among spirits, and trained in ancestral magic and divine law.",
+              "TODO ig: The gods entrusted him with the Ekwu-Ofo, a staff representing balance and judgment — capable of transforming into Okwute, a Chaos battle axe, when he transforms into his spirit mode."
             ],
             "abilities": [
               {
-                "name": "TODO ig: OPENING RITE",
-                "text": "TODO ig: A heavy overhand strike that staggers an opponent and opens them to a follow-up."
+                "name": "TODO ig: MYTHIC FIGHTING COMBO",
+                "text": "TODO ig: A ceremonial flow of staff work — a back-spin strike, a forward thrust, then Nze levitates while the staff charges a pulsing AOE around him, finishing with a chaos blast fired from the air."
               },
               {
-                "name": "TODO ig: STANDING GROUND",
-                "text": "TODO ig: Nze plants himself. Incoming damage is reduced sharply while he does not move."
+                "name": "TODO ig: UGWUOKE’S DECREE",
+                "text": "TODO ig: Nze levels the Ekwu-Ofo and pronounces judgment, launching a concentrated chaos blast at his target."
               },
               {
-                "name": "TODO ig: OATH BREAKER",
-                "text": "TODO ig: A shoulder charge that carries an opponent across the arena and into whatever is behind them."
+                "name": "TODO ig: HAND OF GOD",
+                "text": "TODO ig: Nze seizes his enemy telekinetically with the Ofo's authority and slams them against the ground four times like a ragdoll, the final slam landing with crushing finality."
               },
               {
-                "name": "TODO ig: LAST RITES",
-                "text": "TODO ig: His ultimate. A sustained series of blows that cannot be interrupted once it begins."
+                "name": "TODO ig: ULTIMATE ATTACK",
+                "text": "TODO ig: Nze surrenders to spirit mode — the Ekwu-Ofo screaming as it transforms into Okwute — then carves a sweeping side-spin slice that hurls his enemy to the floor, launches the axe spinning skyward, leaps to catch it, and brings it down in a devastating overhead slam that detonates a chaotic AOE."
               }
             ],
             "variants": [
               {
-                "name": "TODO ig: SHRINE VARIANT",
-                "text": "TODO ig: His default. Slow, heavy, and forgiving, with generous timing windows — the most straightforward style in the game."
+                "name": "TODO ig: FORM 1 (STAFF)",
+                "text": "TODO ig: Used for rituals, communion with the gods — emits pulses of Mythic light."
               },
               {
-                "name": "TODO ig: ELDER VARIANT",
-                "text": "TODO ig: Sacrifices some of his durability for reach and speed, giving him answers to opponents who refuse to stand and trade."
+                "name": "TODO ig: FORM 2 (AXE)",
+                "text": "TODO ig: Transforms into spiritual chaos corruption, or open war. Channels ancestral rage."
               }
             ]
           }
@@ -605,8 +620,8 @@
     },
     "detail": {
       "back": "TODO ig: BACK",
-      "roleLabel": "TODO ig: ROLE",
-      "difficultyLabel": "TODO ig: DIFFICULTY",
+      "weaponLabel": "TODO ig: WEAPON",
+      "chiLabel": "TODO ig: CHI TYPE",
       "loreHeading": "TODO ig: {name}'S LORE",
       "abilitiesHeading": "TODO ig: CORE ABILITIES",
       "variantsHeading": "TODO ig: COMBAT VARIANTS",

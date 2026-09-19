@@ -36,15 +36,29 @@ export function SoulsSection({ messages, locale }: { messages: Messages; locale:
       ...castCopy(messages, character.castKey),
       image: character.image,
       portraitClass: character.portraitClass,
+      figureClass: character.figureClass,
       href: characterHref(locale, character.slug),
     };
   };
 
+  // THE FACES READ THE ROSTER'S COPY (2026-09-19). The frame drew Soma, Kaira
+  // and Ogbun'abali with this section's own labels; the character document
+  // renamed the aliases and parked the gods, and the human asked for Ugwuoke
+  // in Ogbun'abali's place — "on the game page, Ogbunabali is still showing,
+  // replace him with Ugwuoke." So the third card is Nze, and each card's name
+  // and alias are the same strings the Characters page shows, from one place.
+  // The portraits stay this section's own: the frame's crops of Soma and
+  // Kaira, and Nze's roster cutout.
   const cards = [
-    { ...t.soma, image: "/assets/characters/soma-gate-character.png", slug: "soma" },
-    { ...t.kaira, image: "/assets/characters/kaira-crop.png", slug: "kaira" },
-    { ...t.ogbunabali, image: "/assets/characters/ogbunabali.png", slug: "ogbunabali" },
-  ];
+    { slug: "soma", image: "/assets/characters/soma-gate-character.png" },
+    { slug: "kaira", image: "/assets/characters/kaira-crop.png" },
+    { slug: "nze-ugwuoke", image: "/assets/characters/Nze-Ugwuoke.png" },
+  ].flatMap(({ slug, image }) => {
+    const character = getCharacter(slug);
+    if (!character) return [];
+    const copy = castCopy(messages, character.castKey);
+    return [{ slug, image, name: copy.name, role: copy.role }];
+  });
 
   useGsapScene(root, (gsap, q, section) => {
     const title = q("[data-souls-title] h2");
@@ -115,9 +129,9 @@ export function SoulsSection({ messages, locale }: { messages: Messages; locale:
 
       <div className="bg-bone pt-5.75 pb-20 md:pt-30 md:pb-34">
         <div className="mx-auto max-w-360 px-6 md:px-20">
-  
+
           <div className="flex flex-col gap-1 md:flex-row-reverse md:items-start md:justify-between md:gap-16">
-      
+
             <div data-souls-title className="overflow-hidden pb-1 md:-mt-7">
               <SectionTitle
                 mutedAfter={t.titleMuted}

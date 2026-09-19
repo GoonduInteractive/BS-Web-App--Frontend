@@ -15,6 +15,18 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- Omalicha, The Sun Kin, joins Soma and Kaira among the CHAMPIONS on The Characters page, with
+  her own card, modal and detail page — gun and dagger, divine golden sun chi, her four attacks,
+  and two of her renders in the gallery.
+- Every character's detail page now carries their official profile: the alias under the name
+  (The Nightlit Fugitive, The Crimson Echo, The Sun Kin, Chief Priest), WEAPON and CHI TYPE on the
+  two glyph tiles, personality, age and spiritual bond beside the portrait, the backstory under
+  LORE, and the real attacks under CORE ABILITIES — Fast Punch, Charged Punch, Spirit Lock, Ije Mmụọ
+  and Block for Soma; Kick Combo, Heel Kicks, Deadly Heels and Chaos Heels for Kaira; Sun and Steel,
+  Solar Pierce, Anyanwu's Gaze and Anyanwu's Judgement for Omalicha; Mythic Fighting Combo,
+  Ugwuoke's Decree, Hand of God and the ultimate for Nze Ugwuoke, whose Staff and Axe forms fill
+  COMBAT VARIANTS. The galleries show the new 3D renders, one plate each, instead of one picture
+  three times.
 - A REGISTER button in the header, where the account avatar was. It opens JOIN THE COMMUNITY —
   on the same torn paper as the tournament sign-up — asking for a first name, last name, WhatsApp
   number and email; SUBMIT sends them to Goondu's Google Sheet and the sheet says REGISTRATION
@@ -135,6 +147,12 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- The Characters page shows Soma, Kaira, Omalicha and Nze Ugwuoke for now. The GODS group and the
+  other adversaries — Lieutenant, The Beast, Oji Isi, Ogbuagu, Mkpume — are set aside until their
+  details are ready and their pages are not reachable in the meantime. On The Game page, SOULS OF
+  THE ARENA shows Nze Ugwuoke in Ogbun'abali's place, and its three cards carry the same names and
+  aliases as the Characters page.
+- The hero's two stats read WEAPON and CHI TYPE rather than ROLE and DIFFICULTY.
 - The account avatar and its dropdown are gone from the header for now; there is no account
   behind them yet. REGISTER stands in their place.
 - News, the Merch Store, Comics and Competition are not public yet: every address under them —

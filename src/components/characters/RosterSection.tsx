@@ -16,6 +16,14 @@ import type { Messages } from "@/lib/utils/messages";
  * Three groups on one ground: CHAMPIONS (2 cards), GODS (1), and
  * LEGENDS & ADVERSARIES (6, in a 3 x 2 grid). Every card opens a modal.
  *
+ * WHAT SHOWS NOW (2026-09-19, per the human): CHAMPIONS has three cards —
+ * Omalicha joined Soma and Kaira — the GODS group is commented out, and
+ * LEGENDS & ADVERSARIES shows Nze Ugwuoke alone; the other five cards are
+ * commented out beside him. Each hidden card's manifest entry is commented out
+ * too (`lib/characters.ts`), so the record is one place. The geometry below is
+ * the frame's and still holds: a row is its count of the one card width,
+ * centred.
+ *
  * ONE CARD SIZE, THREE COUNTS. That is the finding that shapes the whole
  * section. Every card in all four rows measures 410 x 513 with a 24px gutter,
  * and each group is that row centred in the viewport:
@@ -114,6 +122,7 @@ export function RosterSection({ messages, locale }: { messages: Messages; locale
       ...castCopy(messages, character.castKey),
       image: character.image,
       portraitClass: character.portraitClass,
+      figureClass: character.figureClass,
       href: characterHref(locale, character.slug),
     };
   }
@@ -141,26 +150,37 @@ export function RosterSection({ messages, locale }: { messages: Messages; locale
         className={`relative mx-auto w-full max-w-[90rem] px-6 pb-40 md:pb-[13.375rem] ${CARD_WIDTH}`}
       >
         <Group heading={t.champions.heading} first>
-          <div className={`${GRID} sm:grid-cols-[repeat(2,var(--card))]`}>
+          {/* Three across at lg — the legends row's grid, now that there are three. */}
+          <div className={`${GRID} sm:grid-cols-[repeat(2,var(--card))] lg:grid-cols-[repeat(3,var(--card))]`}>
             <Card entry={entries.soma} onSelect={setOpen} />
             <Card entry={entries.kaira} onSelect={setOpen} />
+            <Card entry={entries.omalicha} onSelect={setOpen} />
           </div>
         </Group>
 
+        {/* GODS — commented out for now, per the human (2026-09-19). Ogbun'abali's
+            manifest entry is commented out with it. */}
+        {/*
         <Group heading={t.gods.heading}>
           <div className={`${GRID} sm:grid-cols-[var(--card)]`}>
             <Card entry={entries.ogbunabali} onSelect={setOpen} />
           </div>
         </Group>
+        */}
 
         <Group heading={t.legends.heading}>
-          <div className={`${GRID} sm:grid-cols-[repeat(2,var(--card))] lg:grid-cols-[repeat(3,var(--card))]`}>
+          {/* Nze Ugwuoke alone, centred — the single-card row the GODS group drew. */}
+          <div className={`${GRID} sm:grid-cols-[var(--card)]`}>
             <Card entry={entries.nzeUgwuoke} onSelect={setOpen} />
+            {/* Commented out for now, per the human (2026-09-19); their manifest
+                entries are commented out with them. Restore the 3 x 2 grid too:
+                sm:grid-cols-[repeat(2,var(--card))] lg:grid-cols-[repeat(3,var(--card))]
             <Card entry={entries.lieutenant} onSelect={setOpen} />
             <Card entry={entries.theBeast} onSelect={setOpen} />
             <Card entry={entries.ojiIsi} onSelect={setOpen} />
             <Card entry={entries.ogbuagu} onSelect={setOpen} />
             <Card entry={entries.mkpume} onSelect={setOpen} />
+            */}
           </div>
         </Group>
       </div>
@@ -235,6 +255,7 @@ function Card({ entry, onSelect }: { entry: RosterEntry; onSelect: (entry: Roste
         image={entry.image}
         imageAlt={entry.alt}
         portraitClass={entry.portraitClass}
+        figureClass={entry.figureClass}
         onSelect={() => onSelect(entry)}
       />
     </div>
