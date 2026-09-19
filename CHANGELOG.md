@@ -15,6 +15,29 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- The About page now names the team: Moses Onwe (COO), Michael Apeli (Lead Technical Environment
+  Artist), Goodness Ndukwe (CTO & Lead Game Developer), Leslie Osinachi-Okok (CEO & Lead Game
+  Designer) and Sophia Ahuoyiza (Product Engineering Lead), with new portraits of Michael and Sophia
+  and a new team photograph behind the hero.
+- Omalicha, The Sun Kin, joins Soma and Kaira among the CHAMPIONS on The Characters page, with
+  her own card, modal and detail page — gun and dagger, divine golden sun chi, her four attacks,
+  and two of her renders in the gallery.
+- Every character's detail page now carries their official profile: the alias under the name
+  (The Nightlit Fugitive, The Crimson Echo, The Sun Kin, Chief Priest), WEAPON and CHI TYPE on the
+  two glyph tiles, personality, age and spiritual bond beside the portrait, the backstory under
+  LORE, and the real attacks under CORE ABILITIES — Fast Punch, Charged Punch, Spirit Lock, Ije Mmụọ
+  and Block for Soma; Kick Combo, Heel Kicks, Deadly Heels and Chaos Heels for Kaira; Sun and Steel,
+  Solar Pierce, Anyanwu's Gaze and Anyanwu's Judgement for Omalicha; Mythic Fighting Combo,
+  Ugwuoke's Decree, Hand of God and the ultimate for Nze Ugwuoke, whose Staff and Axe forms fill
+  COMBAT VARIANTS. The galleries show the new 3D renders, one plate each, instead of one picture
+  three times.
+- A REGISTER button in the header, where the account avatar was. It opens JOIN THE COMMUNITY —
+  on the same torn paper as the tournament sign-up — asking for a first name, last name, WhatsApp
+  number and email; SUBMIT sends them to Goondu's Google Sheet and the sheet says REGISTRATION
+  SUCCESSFUL. Someone who registers again with the same email sees ALREADY REGISTERED instead,
+  with the address named, and nothing is added twice. A field left empty or a malformed email or
+  number is caught before anything is sent, and a failed send says so and lets you try again.
+  Escape or the cross closes it.
 - Terms of Use and Privacy Policy, linked from every footer, now open a Coming Soon page — the
   forest gate, the page's name on a torn chip, COMING SOON!, "This piece of our universe is still
   taking shape. Check back soon." and BACK TO HOME — until the real pages are written. The gate
@@ -128,6 +151,23 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- Every call to action on The Game and The Characters pages — WATCH TRAILER, JOIN THE TRIAL, EXPLORE
+  CHARACTERS — reads DOWNLOAD GAME for now and opens the game's itch.io page in a new tab.
+- The Characters page shows Soma, Kaira, Omalicha and Nze Ugwuoke for now. The GODS group and the
+  other adversaries — Lieutenant, The Beast, Oji Isi, Ogbuagu, Mkpume — are set aside until their
+  details are ready and their pages are not reachable in the meantime. On The Game page, SOULS OF
+  THE ARENA shows Nze Ugwuoke in Ogbun'abali's place, and its three cards carry the same names and
+  aliases as the Characters page.
+- The hero's two stats read WEAPON and CHI TYPE rather than ROLE and DIFFICULTY.
+- The account avatar and its dropdown are gone from the header for now; there is no account
+  behind them yet. REGISTER stands in their place.
+- News, the Merch Store, Comics and Competition are not public yet: every address under them —
+  the news feed and its articles, the store, a product, the cart and checkout, the comics and the
+  reader, the competition page and its tournaments — opens onto the Coming Soon page for now, with
+  the section's name on the chip, the way Terms of Use and Privacy Policy do. The header's Comics,
+  News and Merch Store links, the menu's COMPETITION and the fourth door's DISCOVER THE COMPETITION
+  still go where they went and land there. Those pages are kept out of search and out of the
+  sitemap while they are hidden; a link to an article or product that does not exist is still a 404.
 - Hovering Comics, News or Merch Store in the header turns the word cream and draws a hand-drawn
   hairline under it; in the menu, the gate links turn the same cream and a flared rule draws in
   beneath them where a plain line used to grow.

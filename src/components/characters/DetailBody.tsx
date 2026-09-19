@@ -59,7 +59,7 @@ export function DetailBody({
                     aria-hidden
                     fill
                     sizes="9rem"
-                    className={`object-cover ${character.actionTileClass ?? "object-top"}`}
+                    className={character.actionTileClass ?? "object-cover object-top"}
                   />
                 </div>
                 <h3 className="font-display text-menu-fg text-h6 mt-9.5 leading-none font-semibold tracking-[-0.02em] uppercase">
@@ -71,34 +71,38 @@ export function DetailBody({
           </ul>
         </Block>
 
-        <Block heading={t.variantsHeading} className="pt-28 lg:pt-46">
-          <div className="flex flex-col gap-13">
-            {detail.variants.map((variant) => (
-              <div key={variant.name} data-rise>
-                <h3 className="font-display text-menu-fg text-h6 leading-none font-semibold tracking-[-0.02em] uppercase">
-                  {variant.name}
-                </h3>
-                <p className="text-menu-fg/85 font-body text-body mt-6 max-w-152">{variant.text}</p>
-              </div>
-            ))}
-          </div>
-        </Block>
+        {/* Only Nze's document has forms (Staff / Axe). Where there are none the
+            section is not drawn — the frame's slot, empty, rather than filled. */}
+        {detail.variants?.length ? (
+          <Block heading={t.variantsHeading} className="pt-28 lg:pt-46">
+            <div className="flex flex-col gap-13">
+              {detail.variants.map((variant) => (
+                <div key={variant.name} data-rise>
+                  <h3 className="font-display text-menu-fg text-h6 leading-none font-semibold tracking-[-0.02em] uppercase">
+                    {variant.name}
+                  </h3>
+                  <p className="text-menu-fg/85 font-body text-body mt-6 max-w-152">{variant.text}</p>
+                </div>
+              ))}
+            </div>
+          </Block>
+        ) : null}
 
         {/* The gallery and OTHER CHAMPIONS break out of the two-column split. */}
         <div className="pt-28 lg:pt-46">
           <Heading>{withName(t.galleryHeading, cast.name)}</Heading>
 
+          {/* One plate per delivered picture — two or three, see the manifest. */}
           <ul className="mt-14 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 lg:mt-26.25">
-            {[0, 1, 2].map((slot) => (
-              <li key={slot} data-gallery className="bg-menu relative aspect-336/453 overflow-hidden">
-    
+            {character.gallery.map((plate) => (
+              <li key={plate.src} data-gallery className="bg-menu relative aspect-336/453 overflow-hidden">
                 <div data-gallery-inner className="absolute inset-0">
                   <Image
-                    src={character.action}
+                    src={plate.src}
                     alt={withName(t.galleryAlt, cast.name)}
                     fill
                     sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 30vw"
-                    className={`object-cover ${character.actionGalleryClass ?? ""}`}
+                    className={plate.className ?? "object-cover"}
                   />
                 </div>
               </li>
@@ -128,6 +132,7 @@ export function DetailBody({
                       image={other.image}
                       imageAlt={entry.alt}
                       portraitClass={other.portraitClass}
+                      figureClass={other.figureClass}
                     />
                   </Link>
                 </li>

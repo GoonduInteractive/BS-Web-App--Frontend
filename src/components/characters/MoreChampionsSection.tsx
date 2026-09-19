@@ -5,7 +5,7 @@ import { useRef } from "react";
 
 import { ScrollCue } from "@/components/gates/ScrollCue";
 import type { GateId } from "@/lib/gates";
-import { BracketButton } from "@/components/ui/BracketButton";
+import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
 import type { Messages } from "@/lib/utils/messages";
 
@@ -67,9 +67,8 @@ export function MoreChampionsSection({
             </h2>
 
             <div data-more-cta className="mt-16 lg:mt-[13.47%]">
-              <BracketButton className="px-4 py-[1.1875rem] leading-none tracking-normal whitespace-nowrap">
-                {t.cta}
-              </BracketButton>
+              {/* JOIN THE TRIAL, for now DOWNLOAD GAME (2026-09-19). */}
+              <DownloadGameButton label={messages.site.downloadCta} className="px-4 py-[1.1875rem] leading-none tracking-normal whitespace-nowrap" />
             </div>
           </div>
 

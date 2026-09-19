@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { ArticleDetail } from "@/components/news/ArticleDetail";
 import { JsonLd } from "@/components/chrome/JsonLd";
 import { getComics } from "@/lib/api/merch";
 import { getArticle, getArticles, getRelatedArticles } from "@/lib/api/news";
+import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { localePath, pageMetadata, SITE_URL, STUDIO_NAME } from "@/lib/seo";
@@ -53,6 +55,9 @@ export default async function Page({
   if (!article) notFound();
 
   const messages = getMessages(locale);
+  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  if (isHidden("news")) return <HiddenSection section="news" locale={locale} messages={messages} />;
+
   const [related, comics] = await Promise.all([getRelatedArticles(slug), getComics()]);
   const copy = messages.news.articles[article.copyKey as keyof typeof messages.news.articles];
 

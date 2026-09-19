@@ -62,6 +62,7 @@ export function CharacterCard({
   priority = false,
   variant = "souls",
   portraitClass,
+  figureClass,
   onSelect,
 }: {
   name: string;
@@ -86,6 +87,12 @@ export function CharacterCard({
    * generated CSS.
    */
   portraitClass?: string;
+  /**
+   * Extra classes for the fill-fitted portrait. Omalicha's mask — her render
+   * has no alpha channel, so its black ground is faded into the scar field
+   * rather than sitting on it as a rectangle. See the manifest.
+   */
+  figureClass?: string;
   /** Opens the character's modal. Omit and the card is not interactive. */
   onSelect?: () => void;
 }) {
@@ -142,7 +149,7 @@ export function CharacterCard({
             fill
             priority={priority}
             sizes="(max-width: 767px) 90vw, (max-width: 1023px) 45vw, 30vw"
-            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-115 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            className={`object-cover object-top transition-transform duration-700 ease-out group-hover:scale-115 motion-reduce:transition-none motion-reduce:group-hover:scale-100 ${figureClass ?? ""}`}
           />
         )}
 

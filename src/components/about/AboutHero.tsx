@@ -21,13 +21,17 @@ export function AboutHero({ messages }: { messages: Messages }) {
         className="absolute inset-0 scale-105 md:scale-[1.208]"
       >
         <div className="ken-burns absolute inset-0" style={{ "--kb-origin": "50% 40%" } as React.CSSProperties}>
+          {/* HERO.jpg (3600 x 2400, the team on a sofa, faces across the middle
+              band) replaces story.png here per the human (2026-09-19); the
+              story section keeps story.png. Positioned on the faces at 40% down
+              — no frame, read off the file. */}
           <Image
-            src="/assets/about/story.png"
+            src="/assets/about/HERO.jpg"
             alt={t.plateAlt}
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[60%_38%] md:object-[50%_33.7%]"
+            className="object-cover object-[50%_40%]"
           />
         </div>
       </div>

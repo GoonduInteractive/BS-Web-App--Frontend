@@ -9,6 +9,7 @@ import { SoundToggle } from "@/components/chrome/SoundToggle";
 import { useGateEntry } from "@/components/gates/GateEntry";
 import { GateRail } from "@/components/gates/GateRail";
 import { GATES, type GateId } from "@/lib/gates";
+import { isHidden } from "@/lib/hidden-sections";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
 
@@ -39,8 +40,10 @@ export function SiteChrome({
   // THE COMIC READER REPLACES THE SITE CHROME WITH ITS OWN BAR. The frame draws
   // no menu, no wordmark and no account there — just BACK, the issue's title and
   // the share row, fixed to the top so it stays with the reader down the page.
-  // Rendering both would put two bars over each other.
-  const isReader = segments.length === 3 && segments[1] === "comics";
+  // Rendering both would put two bars over each other. While comics is not
+  // public (`lib/hidden-sections.ts`) that address is the Coming Soon page,
+  // which has no bar of its own and keeps the chrome.
+  const isReader = segments.length === 3 && segments[1] === "comics" && !isHidden("comics");
 
   if (isEntry || isReader) return null;
 

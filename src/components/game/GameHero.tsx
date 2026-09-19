@@ -4,8 +4,7 @@ import Image from "next/image";
 
 import { GateReturn } from "@/components/gates/GateReturn";
 import { Reveal } from "@/components/motion/Reveal";
-import { BracketButton } from "@/components/ui/BracketButton";
-import { PlayGlyph } from "@/components/ui/PlayGlyph";
+import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { usePointerDrift } from "@/hooks/usePointerDrift";
 import type { Messages } from "@/lib/utils/messages";
 
@@ -76,12 +75,12 @@ export function GameHero({ messages }: { messages: Messages }) {
 
           {/* The bracket overhangs the text column by ~10px in the frame. */}
           <div className="mt-23 -ml-2.5">
-            <TrailerButton label={t.cta} />
+            <TrailerButton label={messages.site.downloadCta} />
           </div>
         </Reveal>
 
         <div className="mt-12.5 -ml-1 md:hidden">
-          <TrailerButton label={t.cta} />
+          <TrailerButton label={messages.site.downloadCta} />
         </div>
       </div>
     </section>
@@ -89,12 +88,13 @@ export function GameHero({ messages }: { messages: Messages }) {
 }
 
 
+/**
+ * WATCH TRAILER, for now DOWNLOAD GAME (2026-09-19, per the human) — same
+ * box, no play glyph; the trailer button is one swap back: `BracketButton`
+ * with `<PlayGlyph />` before the label, at the same classes.
+ */
 function TrailerButton({ label }: { label: string }) {
   return (
-
-    <BracketButton className="inline-flex items-center gap-3 px-4.5 py-[1.15rem] leading-none tracking-normal">
-      <PlayGlyph />
-      {label}
-    </BracketButton>
+    <DownloadGameButton label={label} className="inline-flex items-center gap-3 px-4.5 py-[1.15rem] leading-none tracking-normal" />
   );
 }

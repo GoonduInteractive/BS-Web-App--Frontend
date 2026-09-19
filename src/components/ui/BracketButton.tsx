@@ -104,6 +104,7 @@ export function BracketButton({
   field = "dark",
   tone = "signal",
   size = "md",
+  brackets = true,
   href,
   className,
   ...props
@@ -126,6 +127,13 @@ export function BracketButton({
    */
   size?: keyof typeof BRACKET_SIZE;
   /**
+   * Draw the ornaments. Off, this is the same button — fill, wash, scale,
+   * label — with nothing beside it: the header's REGISTER, per the human ("the
+   * button component but without the bracket"). The hover still scales the
+   * button; there is simply no gap for it to close.
+   */
+  brackets?: boolean;
+  /**
    * Render as a link rather than a button.
    *
    * A CTA that navigates should BE a link: it belongs in the tab order as one,
@@ -135,6 +143,11 @@ export function BracketButton({
    * button with a router push would have been a link wearing the wrong hat.
    *
    * Styling is identical either way; only the element changes.
+   *
+   * AN ABSOLUTE URL IS AN OFF-SITE LINK and renders a plain `<a>` opening a
+   * new tab (`rel="noopener noreferrer"`) rather than a `Link` — the itch.io
+   * store page behind DOWNLOAD GAME. The transition layer already lets any
+   * href that does not start with "/" through untouched.
    */
   href?: string;
 }) {
@@ -165,9 +178,13 @@ export function BracketButton({
   );
 
   return (
-    <span className={cn("group inline-flex items-center", BRACKET_SIZE[size].gap)}>
-      <Bracket field={field} size={size} />
-      {href ? (
+    <span className={cn("group inline-flex items-center", brackets && BRACKET_SIZE[size].gap)}>
+      {brackets && <Bracket field={field} size={size} />}
+      {href && /^https?:\/\//.test(href) ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={shared}>
+          {body}
+        </a>
+      ) : href ? (
         <Link href={href} className={shared}>
           {body}
         </Link>
@@ -176,7 +193,7 @@ export function BracketButton({
           {body}
         </button>
       )}
-      <Bracket field={field} side="right" size={size} />
+      {brackets && <Bracket field={field} side="right" size={size} />}
     </span>
   );
 }

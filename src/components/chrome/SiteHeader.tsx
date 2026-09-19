@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { AccountMenu } from "@/components/chrome/AccountMenu";
+// import { AccountMenu } from "@/components/chrome/AccountMenu";
 import { HeaderRule } from "@/components/chrome/NavRules";
+import { RegisterCta } from "@/components/chrome/RegisterCta";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
 
@@ -12,7 +13,7 @@ export function SiteHeader({
   messages,
   locale,
   onOpenMenu,
-  profile = null,
+  // profile = null,
 }: {
   messages: Messages;
   locale: string;
@@ -20,6 +21,11 @@ export function SiteHeader({
   /**
    * The signed-in player, or null. Drives the account dropdown's two states —
    * see `AccountMenu`. There is no authentication behind it.
+   *
+   * PARKED (2026-09-19, per the human): the account control is not ready and
+   * has no backend, so it is commented out below and REGISTER stands in its
+   * place. The prop stays typed so `SiteChrome` keeps passing it; nothing
+   * reads it until the dropdown comes back.
    */
   profile?: Profile | null;
 }) {
@@ -63,7 +69,7 @@ export function SiteHeader({
           />
         </Link>
 
-        {/* ---- Right: utility links and account ---- */}
+        {/* ---- Right: utility links and REGISTER (the account control is parked) ---- */}
         <div className="flex items-center gap-6 md:gap-11">
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -72,7 +78,8 @@ export function SiteHeader({
             <UtilityLink href={`/${locale}/merch`}>{t.merch}</UtilityLink>
           </nav>
 
-          <AccountMenu messages={messages} locale={locale} profile={profile} />
+          {/* <AccountMenu messages={messages} locale={locale} profile={profile} /> */}
+          <RegisterCta messages={messages} locale={locale} />
         </div>
       </div>
     </header>

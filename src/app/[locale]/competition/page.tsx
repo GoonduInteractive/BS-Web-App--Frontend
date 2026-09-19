@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { ActiveTournaments } from "@/components/competition/ActiveTournaments";
 import { CompetitionHero } from "@/components/competition/CompetitionHero";
 import { CompetitionPanels } from "@/components/competition/CompetitionPanels";
@@ -14,6 +15,7 @@ import { GateCurtain } from "@/components/gates/GateCurtain";
 import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
 import { getJourney, getLeaderboard } from "@/lib/api/leaderboard";
 import { getGate, nextGate } from "@/lib/gates";
+import { isHidden } from "@/lib/hidden-sections";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
@@ -47,6 +49,9 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
+  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  if (isHidden("competition")) return <HiddenSection section="competition" locale={locale} messages={messages} />;
+
   // THE FOOT HANDS ON TO THE MANIFEST'S NEXT GATE, which for gate 4 wraps to
   // The Game — the gate 4 frame's own cue reads DISCOVER THE GAME. This page's
   // frame previews THE CHARACTERS there instead, so the two frames disagree and

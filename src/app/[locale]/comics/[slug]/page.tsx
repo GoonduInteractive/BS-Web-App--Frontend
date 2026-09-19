@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { ComicReader } from "@/components/comics/ComicReader";
 import { ShareComic } from "@/components/comics/ShareComic";
 import { SummonsSection } from "@/components/game/SummonsSection";
 import { ComicCover } from "@/components/merch/ComicCover";
 import { getComic, getComics, getRelatedComics } from "@/lib/api/merch";
+import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -51,6 +53,9 @@ export default async function Page({
   if (!issue || issue.pages.length === 0) notFound();
 
   const messages = getMessages(locale);
+  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  if (isHidden("comics")) return <HiddenSection section="comics" locale={locale} messages={messages} />;
+
   const related = await getRelatedComics(slug);
   const c = messages.merch.comics;
   const copy = c.issues[issue.copyKey as keyof typeof c.issues];

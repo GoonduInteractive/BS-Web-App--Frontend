@@ -38,14 +38,14 @@ export function DetailHero({
         data-hero-figure
         className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center lg:inset-y-0 lg:items-end"
       >
-        <div className="relative h-136 w-full max-w-228 lg:h-full">
+        <div className={`relative h-136 lg:h-full ${character.heroBoxClass ?? "w-full max-w-228"}`}>
           <Image
             src={character.image}
             alt={cast.alt}
             fill
             priority
             sizes="(max-width: 767px) 100vw, 57rem"
-            className="object-cover object-top opacity-40 lg:opacity-100"
+            className={`object-cover object-top opacity-40 lg:opacity-100 ${character.figureClass ?? ""}`}
           />
         </div>
       </div>
@@ -102,8 +102,8 @@ export function DetailHero({
           </div>
 
           <dl data-hero-item className="mt-7 flex gap-13">
-            <Stat label={t.roleLabel} value={detail.stats.role} mark="role" />
-            <Stat label={t.difficultyLabel} value={detail.stats.difficulty} mark="difficulty" />
+            <Stat label={t.weaponLabel} value={detail.stats.weapon} mark="weapon" />
+            <Stat label={t.chiLabel} value={detail.stats.chi} mark="chi" />
           </dl>
         </div>
 
@@ -152,15 +152,21 @@ function BackChip({ href, label }: { href: string; label: string }) {
  * One stat: a caption label over a gild tile carrying its nsibidi mark, and the
  * value beside it.
  *
- * THE MARKS ARE SOMA'S, ON EVERY CHARACTER,
- *  the individual glyphs the earlier sheets could not provide, which is why
- * this tile shipped bare until now. Each character will eventually get marks of
- * their own; until those arrive these two stand for all nine, so they are named
- * by the STAT rather than by the character and nothing here is per-character.
+ * THE STATS ARE WEAPON AND CHI TYPE (2026-09-19), the two columns Goondu's
+ * character document carries for every character; the frame's ROLE and
+ * DIFFICULTY are what the earlier placeholder copy filled, and the document
+ * has no difficulty for anyone. The tiles, the marks and the layout are the
+ * frame's; only the label and the value changed. FLAGGED as a departure from
+ * the frame's two words.
+ *
+ * THE MARKS ARE SOMA'S, ON EVERY CHARACTER — the individual glyphs the earlier
+ * sheets could not provide, which is why this tile shipped bare until now. The
+ * files are still named for the stats they were drawn beside (role,
+ * difficulty); each character will eventually get marks of their own.
  */
 const STAT_MARK = {
-  role: "/assets/ornaments/nisibidi-role.svg",
-  difficulty: "/assets/ornaments/nisibi-difficult.svg",
+  weapon: "/assets/ornaments/nisibidi-role.svg",
+  chi: "/assets/ornaments/nisibi-difficult.svg",
 } as const;
 
 function Stat({
@@ -186,7 +192,7 @@ function Stat({
             className="h-5.5 w-5.5 object-contain"
           />
         </span>
-        <span className="font-display text-menu-fg text-h6 max-w-28 leading-[1.1] font-semibold uppercase">
+        <span className="font-display text-menu-fg text-h6 max-w-36 leading-[1.1] font-semibold uppercase">
           {value}
         </span>
       </dd>
