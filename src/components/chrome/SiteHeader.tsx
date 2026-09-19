@@ -3,16 +3,25 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { AccountMenu } from "@/components/chrome/AccountMenu";
+import { HeaderRule } from "@/components/chrome/NavRules";
 import type { Messages } from "@/lib/utils/messages";
+import type { Profile } from "@/types/profile";
 
 export function SiteHeader({
   messages,
   locale,
   onOpenMenu,
+  profile = null,
 }: {
   messages: Messages;
   locale: string;
   onOpenMenu: () => void;
+  /**
+   * The signed-in player, or null. Drives the account dropdown's two states —
+   * see `AccountMenu`. There is no authentication behind it.
+   */
+  profile?: Profile | null;
 }) {
   const t = messages.nav;
 
@@ -32,8 +41,7 @@ export function SiteHeader({
             aria-hidden
             width={36}
             height={45}
-            // Natural aspect. menu-icon.svg is 36 WIDE x 45 TALL, so a wider-
-            // than-tall box makes it letterbox and shrink rather than fill.
+
             className="h-[45px] w-9 select-none"
           />
           <span className="text-menu-fg font-body text-body-sm font-medium">{t.menu}</span>
@@ -57,49 +65,29 @@ export function SiteHeader({
 
         {/* ---- Right: utility links and account ---- */}
         <div className="flex items-center gap-6 md:gap-11">
-          {/* lg, not md. The wordmark is absolutely centred, so between 768 and
-              1023 these links ran straight over it — "Comics" sat on top of the
-              SERVICE lettering. Below lg they live in the menu overlay instead,
-              which is already the only route to a gate at those widths. */}
+
           <nav className="hidden items-center gap-6 lg:flex">
             <UtilityLink href={`/${locale}/comics`}>{t.comics}</UtilityLink>
             <UtilityLink href={`/${locale}/news`}>{t.news}</UtilityLink>
             <UtilityLink href={`/${locale}/merch`}>{t.merch}</UtilityLink>
           </nav>
 
-          {/*
-            FLAGGED: the circle's fill has no token. It measures about #43464A in
-            the frame, which is close to --color-menu-fg at low opacity over the
-            dark bar, so it is expressed that way rather than by inventing a hex.
-            Ask Design for the real value.
-          */}
-          <button
-            type="button"
-            aria-label={t.account}
-            className="bg-menu-fg/25 focus-visible:outline-signal grid size-8.5 cursor-pointer place-items-center rounded-full transition-colors duration-150 ease-gate hover:bg-menu-fg/35 focus-visible:outline-2 focus-visible:outline-offset-2"
-          >
-            <Image
-              src="/assets/ornaments/user.svg"
-              alt=""
-              aria-hidden
-              width={20}
-              height={20}
-              className="size-5 select-none"
-            />
-          </button>
+          <AccountMenu messages={messages} locale={locale} profile={profile} />
         </div>
       </div>
     </header>
   );
 }
 
+/** Under the cursor: linen, and the hand-drawn rule beneath — see NavRules. */
 function UtilityLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
-      className="text-menu-fg font-body text-body-sm focus-visible:outline-signal relative transition-opacity duration-150 ease-gate hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-4"
+      className="text-menu-fg font-body text-body-sm focus-visible:outline-signal group relative transition-colors duration-300 ease-gate hover:text-linen focus-visible:text-linen focus-visible:outline-2 focus-visible:outline-offset-4"
     >
       {children}
+      <HeaderRule className="-bottom-0.5" />
     </Link>
   );
 }

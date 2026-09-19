@@ -1,0 +1,42 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { AboutHero } from "@/components/about/AboutHero";
+import { StudioStory } from "@/components/about/StudioStory";
+import { TeamSection } from "@/components/about/TeamSection";
+import { SiteFooter } from "@/components/chrome/SiteFooter";
+import { isLocale } from "@/lib/utils/locales";
+import { getMessages } from "@/lib/utils/messages";
+import { pageMetadata } from "@/lib/seo";
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+
+  const t = getMessages(locale).about.meta;
+  return pageMetadata({ locale, path: "/about", title: t.title, description: t.description });
+}
+
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+
+  const messages = getMessages(locale);
+
+  return (
+    <main>
+      <AboutHero messages={messages} />
+      <StudioStory messages={messages} />
+      <TeamSection messages={messages} />
+
+      <div className="pt-37.25">
+        <SiteFooter messages={messages} locale={locale} />
+      </div>
+    </main>
+  );
+}

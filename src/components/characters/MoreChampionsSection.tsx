@@ -4,16 +4,18 @@ import Image from "next/image";
 import { useRef } from "react";
 
 import { ScrollCue } from "@/components/gates/ScrollCue";
+import type { GateId } from "@/lib/gates";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
 import type { Messages } from "@/lib/utils/messages";
 
 export function MoreChampionsSection({
   messages,
-  nextHref,
+  nextGate,
 }: {
   messages: Messages;
-  nextHref: string;
+  /** The door the cue leads to, on the portal. */
+  nextGate: GateId;
 }) {
   const t = messages.characters.more;
   const root = useRef<HTMLElement>(null);
@@ -83,7 +85,7 @@ export function MoreChampionsSection({
       </div>
 
       <div data-more-cue className="relative z-10 flex justify-center pt-4 pb-20 lg:pt-[7.15%] lg:pb-[9.44%]">
-        <ScrollCue href={nextHref} label={t.cue} />
+        <ScrollCue gate={nextGate} label={t.cue} />
       </div>
     </section>
   );

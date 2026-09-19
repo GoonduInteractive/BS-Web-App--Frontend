@@ -3,15 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-/**
- * Global sound toggle, bottom-left (overview section 3).
- *
- * The torn square is a separate SVG from the speaker glyph, so the frame keeps
- * its ragged edge independent of the icon state.
- *
- * Audio itself is not wired yet — the entry choice is what unlocks autoplay
- * (motion moment 7), and that sequence is not built. This is the control only.
- */
+
 export function SoundToggle({ onLabel, offLabel }: { onLabel: string; offLabel: string }) {
   const [on, setOn] = useState(false);
 

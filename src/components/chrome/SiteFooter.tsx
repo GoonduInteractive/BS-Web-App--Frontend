@@ -4,66 +4,58 @@ import Link from "next/link";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * The site footer. Figma: `context/design/04-characters/character-detail.png`,
- * y 4850..5040 at 1440 — the first frame that shows one.
+ * The site's foot. At `md` and up, three columns: the wordmark with the
+ * copyright under it, the links, "Created by" with the studio mark — as every
+ * 1440 frame draws it. BELOW `md` IT IS A CENTRED STACK: wordmark, the links one
+ * under another, "Created by" and the studio mark, and the copyright LAST —
+ * the order the phone frames agree on (`05-community/mobile-active-map`,
+ * `08-news/News Details - Mobile`, `09-comics/comic-detail-mobile`, 2026-09-15).
+ * Measured off the comic frame: the rule 46 above the mark; links 78 under
+ * it on a 55 pitch; "Created by" 77 under the last link, the studio mark 11
+ * under it, the copyright 38 under that and 33 above the end.
  *
- * WHAT THE FRAME MEASURES:
- *
- *   rule        x  80..1360  y 4850
- *   wordmark    x  81        y 4906..4955
- *   copyright   x  81        cap top 4977
- *   links       x 543..907   cap top 4946
- *   credit      right edge 1345, "Created by" over the Goondu wordmark
- *
- * SCOPED TO THIS PAGE FOR NOW. It is built as a component rather than dropped
- * into the layout because no other frame on this site shows a footer yet, and
- * putting one under the gate sequence — which is deliberately exactly one
- * viewport tall with nothing to scroll to — would break that.
- *
- * FLAGGED: the three link destinations do not exist. Terms of Use and Privacy
- * Policy have no route and no design; About is `/about`, which is in the site
- * map but not built. They are rendered as the frame draws them and point at the
- * routes they will have.
+ * The wordmark group is `contents` on the phone so its two children take
+ * their own places in the stack — the copyright at the end — and a block
+ * again from `md`, where they share the left column.
  */
+
 export function SiteFooter({ messages, locale }: { messages: Messages; locale: string }) {
   const t = messages.footer;
 
   return (
     <footer className="bg-ink">
-      <div className="mx-auto w-full max-w-[90rem] px-6 md:px-20">
-        {/* 1282 x 11 natural, which is this container width at 1440 exactly.
-            Same dimension rule as the hero, in the footer stroke, and stretched
-            the same way — see DetailHero for why object-fill is the only fit
-            that works on artwork carrying no preserveAspectRatio. */}
+      <div className="mx-auto w-full max-w-360 px-6 md:px-20">
+
         <Image
           src="/assets/ornaments/Arrow-border-footer.svg"
           alt=""
           aria-hidden
           width={1282}
           height={11}
-          className="h-[0.6875rem] w-full object-fill"
+          className="h-2.75 w-full object-fill"
         />
 
-        {/* THE EXTRA BOTTOM PADDING IS FOR THE SOUND TOGGLE, which SiteChrome
-            fixes at bottom-4/left-4 and bottom-10/left-24. Fixed to the
-            viewport, it lands on whatever is at the foot of the page — and this
-            is the first page on the site that has anything there, so the
-            collision had never shown up before. It sat squarely on the
-            copyright line. Padding the footer is what keeps them apart without
-            moving a control that four other routes place correctly. */}
-        <div className="flex flex-col gap-12 pt-14 pb-28 md:flex-row md:items-start md:justify-between md:gap-8 md:pb-32">
-          <div>
+        {/* Measured off the 404 and Community frames at 1440 (they agree): the
+            wordmark's ink 45 tall, 51 under the rule; the copyright 27 under it;
+            the links level with its lower half; Created by 12 down, the mark
+            10 under that; 48 from the copyright to the end. Both logo files
+            carry transparent padding, so their boxes run past their ink. */}
+        <div className="flex flex-col items-center pt-9 pb-8.25 text-center md:flex-row md:items-start md:justify-between md:gap-8 md:pt-9 md:pb-11.25 md:text-left">
+          <div className="contents md:block">
             <Image
               src="/assets/brand/beyond-service-logo.png"
               alt={t.wordmarkAlt}
               width={360}
               height={104}
-              className="h-[3.0625rem] w-auto"
+              className="h-17.5 w-auto"
             />
-            <p className="text-menu-fg/70 font-body text-body-sm mt-[1.375rem]">{t.copyright}</p>
+            <p className="text-menu-fg/70 font-body text-body-sm order-last mt-9.5 md:order-none md:mt-1.5">{t.copyright}</p>
           </div>
 
-          <nav aria-label={t.navLabel} className="flex flex-wrap gap-x-[3.75rem] gap-y-4 md:pt-[2.25rem]">
+          <nav
+            aria-label={t.navLabel}
+            className="mt-15.5 flex flex-col items-center gap-y-7.25 md:mt-0 md:flex-row md:flex-wrap md:gap-x-15 md:gap-y-4 md:pt-11.25"
+          >
             {(
               [
                 ["terms", `/${locale}/terms`],
@@ -81,14 +73,14 @@ export function SiteFooter({ messages, locale }: { messages: Messages; locale: s
             ))}
           </nav>
 
-          <div className="md:text-right">
+          <div className="mt-[4.5625rem] md:mt-0 md:pt-3 md:text-right">
             <p className="text-menu-fg/70 font-body text-body-sm">{t.createdBy}</p>
             <Image
               src="/assets/brand/goondu-logo.png"
               alt={t.studioAlt}
               width={240}
               height={40}
-              className="mt-2 h-[1.4375rem] w-auto md:ml-auto"
+              className="mx-auto mt-2.75 h-6 w-auto md:mt-2.5 md:ml-auto md:mr-0"
             />
           </div>
         </div>

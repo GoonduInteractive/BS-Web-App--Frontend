@@ -1,4 +1,8 @@
 {
+  "site": {
+    "description": "The official site for Beyond Service: Trial of the Gods, by Goondu Games Studio.",
+    "ogImageAlt": "Key art from Beyond Service: Trial of the Gods"
+  },
   "entry": {
     "enterIgbo": "NNỌỌ",
     "enterEnglish": "WELCOME",
@@ -644,6 +648,379 @@
       ]
     }
   },
+  "competition": {
+    "backToGate": "BACK TO ỤZỌ",
+    "hero": {
+      "overline": "RISE THROUGH THE TRIAL",
+      "title": "COMPETITION",
+      "body": "The Tournament of the Gods is where ascendants prove their worth.\nCompete in seasonal events, conquer divine challenges, climb the rankings, and earn rewards worthy of legends.\nEvery battle shapes your legacy.",
+      "frontAlt": "Soma facing forward, chi flaring along his arm",
+      "rearAlt": "Soma turned away, mid-strike"
+    },
+    "tabs": {
+      "label": "Competition views",
+      "tournaments": "Tournaments",
+      "leaderboards": "Leaderboards"
+    },
+    "intro": {
+      "body": "Compete in official Beyond Service tournaments, climb the rankings, and earn rewards worthy of ascension. Whether you’re entering your first bracket or defending your place among the elite, every match brings you closer to glory.",
+      "cta": "JOIN THE TRIAL"
+    },
+    "featured": {
+      "heading": "FEATURED TOURNAMENT",
+      "labels": {
+        "status": "STATUS",
+        "timeRemaining": "TIME REMAINING",
+        "region": "REGION",
+        "participants": "PARTICIPANTS",
+        "rewards": "REWARDS POOL"
+      },
+      "days": "{n} DAYS",
+      "players": "{n} PLAYERS",
+      "plateAlt": "Nze Ugwuoke, the fallen chief priest, staff in hand and chi burning in his raised palm"
+    },
+    "status": {
+      "registrationOpen": "REGISTRATION OPEN",
+      "active": "ACTIVE",
+      "open": "OPEN",
+      "comingSoon": "COMING SOON"
+    },
+    "regions": {
+      "global": "Global",
+      "lagos": "Lagos",
+      "southEast": "South East",
+      "rivers": "Rivers",
+      "abuja": "Abuja",
+      "ghana": "Ghana"
+    },
+    "rewards": {
+      "skins": "EXCLUSIVE SKINS",
+      "titles": "SEASONAL TITLES",
+      "frames": "PROFILE FRAMES"
+    },
+    "tournaments": {
+      "wrathOfNze": {
+        "name": "Wrath of Nze Ugwuoke",
+        "description": "The fallen chief priest has returned, corrupting the realm and challenging ascendants to prove their worth. Battle through seasonal competitions, complete event challenges, and rise through the standings before the season comes to an end."
+      },
+      "lagosLeague": {
+        "name": "Lagos Ascendant League"
+      },
+      "easternCup": {
+        "name": "Eastern Province Cup"
+      },
+      "riversTrial": {
+        "name": "Rivers State Trial"
+      }
+    },
+    "cta": {
+      "register": "REGISTER NOW",
+      "details": "VIEW DETAILS"
+    },
+    "active": {
+      "heading": "ACTIVE TOURNAMENTS",
+      "subtitle": "Compete Across Regions. Browse active and upcoming competitions available in your region.",
+      "labels": {
+        "ends": "ENDS",
+        "starts": "STARTS",
+        "region": "REGION",
+        "status": "STATUS"
+      }
+    },
+    "achievements": {
+      "heading": "EARN ACHIEVEMENTS",
+      "subtitle": "Complete seasonal challenges, conquer difficult objectives, and earn rewards that accelerate your journey through the Trial. Challenges refresh throughout the season, giving ascendants new ways to compete, progress, and distinguish themselves from the rest.",
+      "rewardLabel": "REWARD:",
+      "items": {
+        "arenaConqueror": {
+          "title": "ARENA CONQUEROR",
+          "requirement": "Win 10 PvP Matches",
+          "reward": "Tournament Points + Exclusive Badge"
+        },
+        "pathOfTheAscendant": {
+          "title": "PATH OF THE ASCENDANT",
+          "requirement": "Clear 20 Divine Dungeons",
+          "reward": "Season XP + Cosmetic Unlock"
+        },
+        "fallOfTheMighty": {
+          "title": "FALL OF THE MIGHTY",
+          "requirement": "Defeat Nze Ugwuoke 3 Times",
+          "reward": "Exclusive Profile Frame"
+        },
+        "masterOfChi": {
+          "title": "MASTER OF CHI",
+          "requirement": "Unlock and upgrade a champion ability to its highest level.",
+          "reward": "Rare Seasonal Collectible"
+        }
+      }
+    },
+    "regional": {
+      "heading": "REGIONAL LEAGUES",
+      "body": "The Tournament of the Gods extends far beyond a single arena. Regional leagues allow ascendants to compete locally, build rivalries, and represent their communities on the path to national and global recognition.",
+      "body2": "Compete against nearby ascendants, build local rivalries, and earn your place on the regional leaderboard.",
+      "cta": "VIEW ACTIVE PLAYER MAP",
+      "regionsTitle": "ACTIVE REGIONS"
+    },
+    "leagues": {
+      "southEastLeague": "South East League",
+      "lagos": "Lagos",
+      "abuja": "Abuja",
+      "ghana": "Ghana",
+      "rivers": "Rivers"
+    },
+    "hall": {
+      "heading": "HALL OF ASCENSION",
+      "aside": "The greatest ascendants have etched their names into the history of the Trial. Their victories continue to inspire those who dare to enter Ogbun’abali’s arena.",
+      "season": "Season {n}",
+      "portraitAlt": "{handle}, champion of season {n}"
+    },
+    "gods": {
+      "title": "THE GODS ARE WATCHING",
+      "body": "Every challenge completed.\nEvery tournament entered.\nEvery victory earned.\nYour journey through the Trial begins with a single step into the arena.",
+      "cta": "REGISTER FOR A TOURNAMENT",
+      "cue": "SCROLL TO GO NEXT"
+    },
+    "formats": {
+      "oneVone": "1V1"
+    },
+    "register": {
+      "label": "Join tournament",
+      "close": "Close",
+      "title": "JOIN TOURNAMENT",
+      "body": "Confirm your participation in this tournament. Select Confirm Registration to secure your spot.",
+      "labels": {
+        "format": "FORMAT",
+        "prizePool": "PRIZE POOL",
+        "region": "REGION",
+        "deadline": "REGISTRATION DEADLINE:",
+        "slots": "AVAILABLE SLOTS:"
+      },
+      "slotsValue": "{taken} / {total}",
+      "agreeRules": "I agree to the tournament rules",
+      "agreeAvailable": "I will be available during the tournament period",
+      "confirm": "CONFIRM REGISTRATION"
+    },
+    "registered": {
+      "label": "Registration successful",
+      "close": "Close",
+      "title": "REGISTRATION SUCCESSFUL",
+      "body": "Your place in the Trial has been secured.\nYou have successfully registered for {tournament}.\nTournament updates, bracket assignments, and match schedules will be available once registration closes.",
+      "cta": "BACK TO PROFILE"
+    },
+    "champions": {
+      "soma": "Soma",
+      "kaira": "Kaira",
+      "ogbunabali": "Ogbun’abali"
+    },
+    "leaderboard": {
+      "filterBy": "FILTER BY:",
+      "allRegions": "ALL REGION",
+      "allTime": "ALL TIME",
+      "season": "{year} SEASON",
+      "regionFilter": "Filter by region",
+      "timeFilter": "Filter by season",
+      "points": "{n} PTS",
+      "columns": {
+        "rank": "RANK",
+        "player": "PLAYER/TEAM",
+        "playerSolo": "PLAYER",
+        "region": "REGION",
+        "points": "POINTS",
+        "champion": "CHAMPION",
+        "winRate": "WIN RATE",
+        "nextRank": "NEXT RANK"
+      },
+      "empty": "No ascendants ranked here yet.",
+      "journey": "YOUR JOURNEY",
+      "pointsAway": "{n} Points Away",
+      "podiumAlt": "{name}, rank {rank}",
+      "caption": "Leaderboard",
+      "journeyCaption": "Your standing"
+    },
+    "detail": {
+      "backToTournaments": "BACK TO TOURNAMENTS",
+      "register": "REGISTER FOR TOURNAMENT",
+      "registerNow": "REGISTER NOW",
+      "metaTitle": "{name} | Competition | Beyond Service: Trial of the Gods",
+      "facts": {
+        "status": "STATUS",
+        "timeRemaining": "TIME REMAINING",
+        "ends": "ENDS",
+        "starts": "STARTS",
+        "region": "REGION",
+        "participants": "PARTICIPANTS",
+        "format": "FORMAT",
+        "rewards": "REWARDS POOL"
+      },
+      "journey": {
+        "heading": "FOLLOW THE JOURNEY TO ASCENSION",
+        "sub": "Track the current stage of the competition, monitor key milestones, and see which champions remain in the race for glory."
+      },
+      "stages": {
+        "registration": "REGISTRATION",
+        "qualifiers": "QUALIFIERS",
+        "groupStage": "GROUP STAGE",
+        "quarterFinals": "QUARTER FINALS",
+        "semiFinals": "SEMI FINALS",
+        "finals": "FINALS"
+      },
+      "stageStatus": {
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "upcoming": "Upcoming"
+      },
+      "matchups": {
+        "heading": "CURRENT MATCHUPS",
+        "ends": "ENDS {time}",
+        "pts": "{n} PTS",
+        "noPts": "- PTS",
+        "nil": "NIL",
+        "viewBracket": "VIEW FULL BRACKET",
+        "bracketLabel": "Full bracket"
+      },
+      "stats": {
+        "registered": "REGISTERED PLAYERS",
+        "matchesPlayed": "MATCHES PLAYED",
+        "roundsRemaining": "ROUNDS REMAINING",
+        "untilFinals": "UNTIL FINALS",
+        "days": "{n} DAYS"
+      },
+      "rounds": {
+        "roundOf16": "ROUND OF 16",
+        "quarterFinals": "QUARTER FINALS",
+        "semiFinals": "SEMI FINALS",
+        "finals": "FINALS"
+      },
+      "rules": {
+        "title": "TOURNAMENT RULES",
+        "groups": [
+          {
+            "heading": "Eligibility Requirements",
+            "items": [
+              "Players must have an active Beyond Service account.",
+              "Participants must meet the regional requirements for the tournament.",
+              "Only one account may be used per player.",
+              "Players must comply with the official tournament code of conduct.",
+              "Tournament organizers reserve the right to verify player eligibility before and during the competition."
+            ]
+          },
+          {
+            "heading": "Tournament Rules",
+            "items": [
+              "Registration must be completed before the deadline.",
+              "Players are responsible for being available during their scheduled matches.",
+              "Failure to appear for a match may result in automatic forfeiture.",
+              "Exploits, cheating, or the use of unauthorized software will result in immediate disqualification.",
+              "Unsportsmanlike behaviour, harassment, or abuse of other players is prohibited.",
+              "Tournament decisions made by organizers and moderators are final."
+            ]
+          }
+        ]
+      },
+      "rewards": {
+        "title": "REWARDS",
+        "intro": "Compete for exclusive seasonal rewards available only during the {name} Trial.",
+        "groups": [
+          {
+            "heading": "PARTICIPATION REWARDS",
+            "items": [
+              "Season XP",
+              "Tournament Badge",
+              "Event Profile Frame"
+            ]
+          },
+          {
+            "heading": "TOP PERFORMERS",
+            "items": [
+              "Exclusive Character Skin",
+              "Seasonal Title",
+              "Hall of Ascension Recognition"
+            ]
+          },
+          {
+            "heading": "CHAMPION REWARD",
+            "items": [
+              "Season Champion Crown",
+              "Legendary Cosmetic Set",
+              "Permanent Legacy Record"
+            ]
+          }
+        ]
+      },
+      "toggle": {
+        "expand": "Expand",
+        "collapse": "Collapse"
+      }
+    }
+  },
+  "community": {
+    "backToGate": "BACK TO ỤZỌ",
+    "tabs": {
+      "wall": "Community Wall",
+      "map": "Active Player Map"
+    },
+    "hero": {
+      "title": "COMMUNITY WALL",
+      "body": "Welcome to our Community Wall! Share your thoughts and ideas to help improve everyone's experience. Join the conversation now!",
+      "cta": "SHARE YOUR THOUGHTS"
+    },
+    "wall": {
+      "label": "Community wall — drag to move around it",
+      "hint": "Drag to move around the wall",
+      "like": "Like this note",
+      "liked": "Unlike this note",
+      "avatarAlt": "Avatar of {name}",
+      "minsAgo": "{n} mins ago",
+      "hoursAgo": "{n} hours ago",
+      "daysAgo": "{n} days ago",
+      "you": "You"
+    },
+    "map": {
+      "title": "ACTIVE PLAYER MAP",
+      "searchPlaceholder": "Search a Location",
+      "searchLabel": "Search a location",
+      "results": "Locations",
+      "noResults": "No players there yet",
+      "location": "LOCATION",
+      "activePlayers": "ACTIVE PLAYERS",
+      "mapLabel": "World map of active players — drag to move, scroll to zoom",
+      "pinLabel": "{city}, {country}: {n} active players",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "place": "{city}, {country}"
+    },
+    "invite": {
+      "title": "INVITE FRIENDS",
+      "body": "You earn community points when friends join the community through your link.",
+      "linkLabel": "Your invite link",
+      "copy": "COPY LINK",
+      "copied": "Copied"
+    },
+    "form": {
+      "label": "Drop your feedback",
+      "title": "DROP YOUR FEEDBACK",
+      "sub": "Let others know what you feel about the game.",
+      "placeholder": "Input text",
+      "field": "Your feedback",
+      "submit": "SUBMIT",
+      "close": "Close"
+    },
+    "meta": {
+      "title": "Community Wall | Beyond Service: Trial of the Gods",
+      "description": "Welcome to our Community Wall! Share your thoughts and ideas to help improve everyone's experience. Join the conversation now!"
+    }
+  },
+  "notFound": {
+    "title": "OOPS! PAGE NOT FOUND",
+    "body": "It seems the page you are looking for doesn't exist or has been moved.",
+    "cta": "BACK TO HOME",
+    "artAlt": "A 404 cut through by a sword"
+  },
+  "comingSoon": {
+    "title": "COMING SOON!",
+    "body": "This piece of our universe is still taking shape. Check back soon.",
+    "cta": "BACK TO HOME"
+  },
   "footer": {
     "navLabel": "Footer",
     "wordmarkAlt": "Beyond Service",
@@ -654,6 +1031,422 @@
       "terms": "Terms of Use",
       "privacy": "Privacy Policy",
       "about": "About"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About Goondu Games | Beyond Service: Trial of the Gods",
+      "description": "Goondu Games is a game development studio creating immersive experiences inspired by Igbo mythology, culture, and storytelling."
+    },
+    "hero": {
+      "title": "WE BRING\nLEGENDS\nTO LIFE.",
+      "tagline": "The world is full of stories.",
+      "body": "Stories of gods, warriors, spirits, heroes, and the battles that shaped generations. Many of them have never made it to the games we play today.",
+      "emphasis": "We're changing that.",
+      "aside": "Goondu Games is a game development studio creating immersive experiences inspired by Igbo mythology, culture, and storytelling.",
+      "cta": "EXPLORE OUR WORLD",
+      "plateAlt": "The Goondu Games team and players together at a Beyond Service event"
+    },
+    "story": {
+      "chip": "OUR STORY",
+      "title": "SOME LEGENDS DESERVE\nTO BE EXPERIENCED.",
+      "body1": "Goondu Games is a creative technology company focused on game development and esports, creating immersive experiences inspired by Igbo culture, mythology, and storytelling.",
+      "body2": "The studio was built around the idea that indigenous stories could become the foundation for modern gaming experiences. By combining engaging gameplay with Igbo folklore, heroes, traditions, and imagination, Goondu Games creates new worlds and memorable characters for players to explore.",
+      "body3": "Its work extends beyond game development. Through esports tournaments, community engagement, and initiatives that support the gaming ecosystem, Goondu Games is contributing to a growing culture of gaming and interactive entertainment.",
+      "body4": "Today, that vision continues to grow through worlds like Beyond Service, bringing together games, comics, characters, and stories inspired by a rich cultural heritage.",
+      "cta": "LEARN MORE",
+      "photoAlt": "The Goondu Games team gathered around a player at a Beyond Service event"
+    },
+    "team": {
+      "chip": "THE TEAM",
+      "title": "BEHIND GOONDU GAMES",
+      "members": {
+        "leslie": {
+          "name": "FIRSTNAME SURNAME",
+          "role": "Position at GOONDU",
+          "portraitAlt": "Portrait of a Goondu Games team member"
+        },
+        "sophia": {
+          "name": "SOPHIA AHUOYIZA",
+          "role": "Position at GOONDU",
+          "portraitAlt": "Portrait of Sophia Ahuoyiza"
+        }
+      }
+    }
+  },
+  "merch": {
+    "meta": {
+      "title": "Merch Store | Beyond Service: Trial of the Gods",
+      "description": "Goondu Games originals — hoodies, tees, totes and beanies, plus the Beyond Service comics."
+    },
+    "nav": {
+      "cart": "Cart",
+      "cartCount": "items in cart"
+    },
+    "featured": {
+      "exclusive": "EXCLUSIVE"
+    },
+    "login": {
+      "pitch": "LOGIN TO ENJOY UP TO 20% OFF\nAND ACCESS TO EXCLUSIVE MERCH",
+      "cta": "LOGIN"
+    },
+    "sections": {
+      "merch": "MERCH",
+      "comics": "COMICS"
+    },
+    "colours": {
+      "black": "Black",
+      "oxblood": "Oxblood",
+      "white": "White"
+    },
+    "products": {
+      "hoodie": {
+        "name": "GOONDU HOODIE",
+        "imageAlt": "A black Goondu Games hoodie with the studio wordmark across the chest",
+        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      },
+      "tote": {
+        "name": "GOONDU TOTE",
+        "imageAlt": "A black Goondu Games tote bag with the studio wordmark and a red Nsibidi pattern",
+        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      },
+      "beanie": {
+        "name": "GOONDU BEANIE",
+        "imageAlt": "A white Goondu Games beanie with the studio wordmark on the cuff",
+        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      },
+      "tee": {
+        "name": "GOONDU TEE",
+        "imageAlt": "A black Goondu Games t-shirt with the studio wordmark across the chest",
+        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      }
+    },
+    "price": "₦{amount}",
+    "points": {
+      "claimable": "CLAIMABLE POINTS",
+      "unit": "PTS",
+      "next": "Next price is {count} points away",
+      "perksTitle": "POINT PERKS",
+      "perks": {
+        "discount": "5% off all Goondu originals",
+        "featured": "Access to featured products"
+      },
+      "more": "Gather more points to get even better rewards.",
+      "none": "No points yet, read comics, top leaderboard, and engage with community features to win more points."
+    },
+    "detail": {
+      "selectColour": "SELECT COLOUR",
+      "selectSize": "SELECT SIZE",
+      "description": "DESCRIPTION",
+      "addToCart": "ADD TO CART",
+      "related": "YOU MIGHT ALSO LIKE",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "quantity": "Quantity",
+      "added": "Added to cart"
+    },
+    "cart": {
+      "title": "CART",
+      "colour": "Colour:",
+      "size": "Size:",
+      "remove": "Remove {item}",
+      "empty": {
+        "title": "YOUR CART IS EMPTY",
+        "subtitle": "It doesn’t have to be",
+        "cta": "START SHOPPING"
+      }
+    },
+    "summary": {
+      "title": "ORDER SUMMARY",
+      "itemTotal": "Item Total",
+      "pointDiscount": "Point Discount",
+      "shipping": "Shipping",
+      "free": "FREE",
+      "total": "Total",
+      "checkout": "PROCEED TO CHECKOUT"
+    },
+    "sizes": {
+      "XS": "XSmall",
+      "S": "Small",
+      "M": "Medium",
+      "L": "Large",
+      "XL": "XLarge",
+      "XXL": "XXLarge"
+    },
+    "checkout": {
+      "shipping": "SHIPPING INFORMATION",
+      "contact": "CONTACT INFORMATION",
+      "edit": "EDIT",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "john",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "doe",
+      "phone": "Phone Number",
+      "phonePlaceholder": "xxx-xxxx-xxx",
+      "dialCode": "+234",
+      "address": "Address",
+      "addressPlaceholder": "Enter Address",
+      "country": "Country",
+      "countryPlaceholder": "Select Country",
+      "state": "State",
+      "statePlaceholder": "Select State",
+      "city": "City",
+      "cityPlaceholder": "Enter city",
+      "zip": "Zip Code",
+      "zipPlaceholder": "eg. 510001",
+      "deliveryMethod": "DELIVERY METHOD",
+      "delivery": "Delivery",
+      "pickup": "Pickup",
+      "pickupNote": "Insert the choosen Pickup address for Goondu",
+      "paymentMethod": "PAYMENT METHOD",
+      "paystack": "Paystack",
+      "bankTransfer": "Bank Transfer",
+      "orderSummary": "ORDER SUMMARY",
+      "itemTotal": "Item Total",
+      "pointDiscount": "Community Point Discount",
+      "shippingRow": "Shipping",
+      "free": "FREE",
+      "total": "Total",
+      "secureTitle": "Secure Checkout",
+      "secureBody": "Your payment information is encrypted and secure.",
+      "placeOrder": "PLACE ORDER"
+    },
+    "transfer": {
+      "heading": "PLEASE COMPLETE YOUR PAYMENT IN YOUR BANKING APP WITHIN {window}.",
+      "window": "25 MINUTES",
+      "accountNumber": "Account Number",
+      "bankName": "Bank Name",
+      "beneficiary": "Beneficiary Name",
+      "amount": "Amount",
+      "copy": "Copy",
+      "copied": "Copied",
+      "warning": "Transfer exact amount to avoid failure.",
+      "changeMethod": "CHANGE PAYMENT METHOD",
+      "sent": "I’VE SENT IT"
+    },
+    "confirmed": {
+      "title": "ORDER CONFIRMED",
+      "body": "Your order is currently being processed. You will receive an order confirmation email shortly with expected delivery date for your items.",
+      "cta": "BACK TO PROFILE",
+      "label": "Order confirmed",
+      "close": "Close"
+    },
+    "comics": {
+      "partner": "Goondu Games X Partner",
+      "related": "YOU MIGHT ALSO LIKE",
+      "issues": {
+        "trial": {
+          "title": "TRIAL OF THE GODS",
+          "volume": "VOL. 1",
+          "meta": "August 27, 2026 – Vol. 1",
+          "format": "Physical – Vol. 1",
+          "description": "Soma was an ordinary young man completing his national youth service when tragedy struck. Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games.",
+          "coverAlt": "Trial of the Gods, volume one — Soma turned away, carrying a crystal-tipped spear",
+          "coverTitle": "TRIAL OF\nTHE GODS"
+        },
+        "between": {
+          "title": "BETWEEN WORLDS",
+          "volume": "VOL. 2",
+          "meta": "August 27, 2026 – Vol. 2",
+          "format": "Online – Vol. 2",
+          "description": "",
+          "coverAlt": "Between Worlds, volume two — Soma mid-stance, trailing fire",
+          "coverTitle": "BETWEEN WORLDS"
+        }
+      }
+    }
+  },
+  "news": {
+    "meta": {
+      "title": "News & Updates | Beyond Service: Trial of the Gods",
+      "description": "Stay informed on the latest developments across the Trial."
+    },
+    "title": "NEWS & UPDATES",
+    "subtitle": "Stay informed on the latest developments across the Trial.",
+    "more": "MORE NEWS",
+    "loadMore": "LOAD MORE",
+    "back": "BACK",
+    "share": {
+      "heading": "SHARE VIA",
+      "facebook": "Share on Facebook",
+      "whatsapp": "Share on WhatsApp",
+      "x": "Share on X",
+      "instagram": "Copy the link to share on Instagram",
+      "copy": "Copy link",
+      "copied": "Link copied"
+    },
+    "byline": "By Goondu Staff",
+    "relativeDays": "{n} DAYS AGO",
+    "relativeToday": "TODAY",
+    "tags": {
+      "news": "NEWS",
+      "announcement": "ANNOUNCEMENT"
+    },
+    "articles": {
+      "seasonOne": {
+        "title": "SEASON ONE BEGINS: WRATH OF NZE UGWUOKE",
+        "imageAlt": "Nze Ugwuoke wreathed in flame, staff in hand",
+        "excerpt": "Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "betweenWorlds": {
+        "title": "BETWEEN WORLDS - EVERYTHING YOU NEED TO KNOW",
+        "imageAlt": "The Trial of the Gods comic, printed, on a stone slab",
+        "excerpt": "Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "easternCup": {
+        "title": "REGISTRATION OPENS FOR THE EASTERN PROVINCE CUP",
+        "imageAlt": "The Between Worlds cover",
+        "excerpt": "Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "combatUpdate": {
+        "title": "COMBAT UPDATE 1.1 RELEASED",
+        "imageAlt": "The Between Worlds cover",
+        "excerpt": "Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "fallOfNze": {
+        "title": "THE FALL OF NZE UGWUOKE",
+        "imageAlt": "Nze Ugwuoke wreathed in flame, staff in hand",
+        "excerpt": "Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "trialLaunch": {
+        "title": "TRIAL OF THE GODS - EVERYTHING YOU NEED TO KNOW",
+        "imageAlt": "Beyond Service: Trial of the Gods key art",
+        "excerpt": "Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      }
+    }
+  },
+  "profile": {
+    "meta": {
+      "title": "Player Profile | Beyond Service: Trial of the Gods",
+      "description": "Your level, points and tournament standing across the Trial."
+    },
+    "edit": "EDIT PROFILE",
+    "logOut": "Log Out",
+    "avatarAlt": "Your avatar",
+    "location": "LOCATION",
+    "stats": {
+      "level": "LEVEL",
+      "winRate": "WIN RATE",
+      "loss": "LOSS",
+      "rank": "RANK"
+    },
+    "gamePoints": "GAME POINTS",
+    "claimablePoints": "CLAIMABLE POINTS",
+    "pointsGlyphAlt": "",
+    "rankings": {
+      "title": "TOURNAMENT RANKINGS",
+      "empty": "You’re not registered in a tournament",
+      "seeDetails": "See Details",
+      "toNextRank": "{n} points away from next rank"
+    },
+    "standing": {
+      "rank": "RANK",
+      "points": "POINTS",
+      "winRate": "WIN RATE",
+      "champion": "CHAMPION"
+    },
+    "tournaments": {
+      "wrathOfNze": "Wrath of Nze Ugwuoke"
+    },
+    "form": {
+      "title": "EDIT PROFILE",
+      "uploadAvatar": "UPLOAD NEW AVATAR",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "john",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "doe",
+      "username": "Username",
+      "usernamePlaceholder": "@somamain",
+      "locationLabel": "Location",
+      "locationPlaceholder": "Enugu, Nigeria",
+      "save": "SAVE CHANGES",
+      "back": "EDIT PROFILE"
+    },
+    "account": {
+      "viewProfile": "View Profile",
+      "login": "Login",
+      "menuLabel": "Account menu"
+    }
+  },
+  "comics": {
+    "meta": {
+      "title": "The Comics | Beyond Service: Trial of the Gods",
+      "description": "Enter a world where death is not the end, gods make the rules, and survival is only the beginning."
+    },
+    "overline": "THE STORY BEGINS HERE",
+    "title": "THE COMICS",
+    "subtitle": "Enter a world where death is not the end, gods make the rules, and survival is only the beginning.",
+    "startReading": "START READING",
+    "explore": "EXPLORE MORE COMICS",
+    "own": {
+      "chip": "OWN THE STORY",
+      "title": "SOME STORIES BELONG\nIN YOUR HANDS.",
+      "body": [
+        "Read Beyond Service online wherever you are.",
+        "Or keep a piece of the world for yourself.",
+        "Own the physical edition and experience the story beyond",
+        "the screen, from the artwork to every turn of the page."
+      ],
+      "cta": "BUY PHYSICAL COPY",
+      "photoAlt": "The printed Trial of the Gods editions stacked on concrete"
+    },
+    "reader": {
+      "back": "BACK",
+      "shareVia": "SHARE VIA:",
+      "share": {
+        "facebook": "Share on Facebook",
+        "whatsapp": "Share on WhatsApp",
+        "x": "Share on X",
+        "instagram": "Copy the link to share on Instagram",
+        "copy": "Copy link",
+        "copied": "Link copied"
+      },
+      "pageAlt": "{title}, page {n}",
+      "shareHeading": "SHARE THIS COMIC",
+      "shareSub": "Gain claimable community points\nby sharing this comic with friends."
+    },
+    "synopsis": {
+      "trial": [
+        "Soma was an ordinary young man completing his national youth service when tragedy struck. During a journey home with friends, he was killed in an ambush by armed bandits.",
+        "Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games. Offered a second chance at life in exchange for participating in divine trials, he accepted."
+      ],
+      "between": []
     }
   }
 }

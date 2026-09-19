@@ -1,4 +1,8 @@
 {
+  "site": {
+    "description": "TODO ig: The official site for Beyond Service: Trial of the Gods, by Goondu Games Studio.",
+    "ogImageAlt": "TODO ig: Key art from Beyond Service: Trial of the Gods"
+  },
   "entry": {
     "enterIgbo": "NNỌỌ",
     "enterEnglish": "WELCOME",
@@ -622,6 +626,379 @@
       ]
     }
   },
+  "competition": {
+    "backToGate": "BACK TO ỤZỌ",
+    "hero": {
+      "overline": "TODO ig: RISE THROUGH THE TRIAL",
+      "title": "TODO ig: COMPETITION",
+      "body": "TODO ig: The Tournament of the Gods is where ascendants prove their worth.\nCompete in seasonal events, conquer divine challenges, climb the rankings, and earn rewards worthy of legends.\nEvery battle shapes your legacy.",
+      "frontAlt": "TODO ig: Soma facing forward, chi flaring along his arm",
+      "rearAlt": "TODO ig: Soma turned away, mid-strike"
+    },
+    "tabs": {
+      "label": "TODO ig: Competition views",
+      "tournaments": "TODO ig: Tournaments",
+      "leaderboards": "TODO ig: Leaderboards"
+    },
+    "intro": {
+      "body": "TODO ig: Compete in official Beyond Service tournaments, climb the rankings, and earn rewards worthy of ascension. Whether you’re entering your first bracket or defending your place among the elite, every match brings you closer to glory.",
+      "cta": "TODO ig: JOIN THE TRIAL"
+    },
+    "featured": {
+      "heading": "TODO ig: FEATURED TOURNAMENT",
+      "labels": {
+        "status": "TODO ig: STATUS",
+        "timeRemaining": "TODO ig: TIME REMAINING",
+        "region": "TODO ig: REGION",
+        "participants": "TODO ig: PARTICIPANTS",
+        "rewards": "TODO ig: REWARDS POOL"
+      },
+      "days": "TODO ig: {n} DAYS",
+      "players": "TODO ig: {n} PLAYERS",
+      "plateAlt": "TODO ig: Nze Ugwuoke, the fallen chief priest, staff in hand and chi burning in his raised palm"
+    },
+    "status": {
+      "registrationOpen": "TODO ig: REGISTRATION OPEN",
+      "active": "TODO ig: ACTIVE",
+      "open": "TODO ig: OPEN",
+      "comingSoon": "TODO ig: COMING SOON"
+    },
+    "regions": {
+      "global": "TODO ig: Global",
+      "lagos": "Lagos",
+      "southEast": "TODO ig: South East",
+      "rivers": "Rivers",
+      "abuja": "Abuja",
+      "ghana": "Ghana"
+    },
+    "rewards": {
+      "skins": "TODO ig: EXCLUSIVE SKINS",
+      "titles": "TODO ig: SEASONAL TITLES",
+      "frames": "TODO ig: PROFILE FRAMES"
+    },
+    "tournaments": {
+      "wrathOfNze": {
+        "name": "TODO ig: Wrath of Nze Ugwuoke",
+        "description": "TODO ig: The fallen chief priest has returned, corrupting the realm and challenging ascendants to prove their worth. Battle through seasonal competitions, complete event challenges, and rise through the standings before the season comes to an end."
+      },
+      "lagosLeague": {
+        "name": "TODO ig: Lagos Ascendant League"
+      },
+      "easternCup": {
+        "name": "TODO ig: Eastern Province Cup"
+      },
+      "riversTrial": {
+        "name": "TODO ig: Rivers State Trial"
+      }
+    },
+    "cta": {
+      "register": "TODO ig: REGISTER NOW",
+      "details": "TODO ig: VIEW DETAILS"
+    },
+    "active": {
+      "heading": "TODO ig: ACTIVE TOURNAMENTS",
+      "subtitle": "TODO ig: Compete Across Regions. Browse active and upcoming competitions available in your region.",
+      "labels": {
+        "ends": "TODO ig: ENDS",
+        "starts": "TODO ig: STARTS",
+        "region": "TODO ig: REGION",
+        "status": "TODO ig: STATUS"
+      }
+    },
+    "achievements": {
+      "heading": "TODO ig: EARN ACHIEVEMENTS",
+      "subtitle": "TODO ig: Complete seasonal challenges, conquer difficult objectives, and earn rewards that accelerate your journey through the Trial. Challenges refresh throughout the season, giving ascendants new ways to compete, progress, and distinguish themselves from the rest.",
+      "rewardLabel": "TODO ig: REWARD:",
+      "items": {
+        "arenaConqueror": {
+          "title": "TODO ig: ARENA CONQUEROR",
+          "requirement": "TODO ig: Win 10 PvP Matches",
+          "reward": "TODO ig: Tournament Points + Exclusive Badge"
+        },
+        "pathOfTheAscendant": {
+          "title": "TODO ig: PATH OF THE ASCENDANT",
+          "requirement": "TODO ig: Clear 20 Divine Dungeons",
+          "reward": "TODO ig: Season XP + Cosmetic Unlock"
+        },
+        "fallOfTheMighty": {
+          "title": "TODO ig: FALL OF THE MIGHTY",
+          "requirement": "TODO ig: Defeat Nze Ugwuoke 3 Times",
+          "reward": "TODO ig: Exclusive Profile Frame"
+        },
+        "masterOfChi": {
+          "title": "TODO ig: MASTER OF CHI",
+          "requirement": "TODO ig: Unlock and upgrade a champion ability to its highest level.",
+          "reward": "TODO ig: Rare Seasonal Collectible"
+        }
+      }
+    },
+    "regional": {
+      "heading": "TODO ig: REGIONAL LEAGUES",
+      "body": "TODO ig: The Tournament of the Gods extends far beyond a single arena. Regional leagues allow ascendants to compete locally, build rivalries, and represent their communities on the path to national and global recognition.",
+      "body2": "TODO ig: Compete against nearby ascendants, build local rivalries, and earn your place on the regional leaderboard.",
+      "cta": "TODO ig: VIEW ACTIVE PLAYER MAP",
+      "regionsTitle": "TODO ig: ACTIVE REGIONS"
+    },
+    "leagues": {
+      "southEastLeague": "TODO ig: South East League",
+      "lagos": "Lagos",
+      "abuja": "Abuja",
+      "ghana": "Ghana",
+      "rivers": "Rivers"
+    },
+    "hall": {
+      "heading": "TODO ig: HALL OF ASCENSION",
+      "aside": "TODO ig: The greatest ascendants have etched their names into the history of the Trial. Their victories continue to inspire those who dare to enter Ogbun’abali’s arena.",
+      "season": "TODO ig: Season {n}",
+      "portraitAlt": "TODO ig: {handle}, champion of season {n}"
+    },
+    "gods": {
+      "title": "TODO ig: THE GODS ARE WATCHING",
+      "body": "TODO ig: Every challenge completed.\nEvery tournament entered.\nEvery victory earned.\nYour journey through the Trial begins with a single step into the arena.",
+      "cta": "TODO ig: REGISTER FOR A TOURNAMENT",
+      "cue": "TODO ig: SCROLL TO GO NEXT"
+    },
+    "formats": {
+      "oneVone": "1V1"
+    },
+    "register": {
+      "label": "TODO ig: Join tournament",
+      "close": "TODO ig: Close",
+      "title": "TODO ig: JOIN TOURNAMENT",
+      "body": "TODO ig: Confirm your participation in this tournament. Select Confirm Registration to secure your spot.",
+      "labels": {
+        "format": "TODO ig: FORMAT",
+        "prizePool": "TODO ig: PRIZE POOL",
+        "region": "TODO ig: REGION",
+        "deadline": "TODO ig: REGISTRATION DEADLINE:",
+        "slots": "TODO ig: AVAILABLE SLOTS:"
+      },
+      "slotsValue": "TODO ig: {taken} / {total}",
+      "agreeRules": "TODO ig: I agree to the tournament rules",
+      "agreeAvailable": "TODO ig: I will be available during the tournament period",
+      "confirm": "TODO ig: CONFIRM REGISTRATION"
+    },
+    "registered": {
+      "label": "TODO ig: Registration successful",
+      "close": "TODO ig: Close",
+      "title": "TODO ig: REGISTRATION SUCCESSFUL",
+      "body": "TODO ig: Your place in the Trial has been secured.\nYou have successfully registered for {tournament}.\nTournament updates, bracket assignments, and match schedules will be available once registration closes.",
+      "cta": "TODO ig: BACK TO PROFILE"
+    },
+    "champions": {
+      "soma": "Soma",
+      "kaira": "Kaira",
+      "ogbunabali": "Ogbun’abali"
+    },
+    "leaderboard": {
+      "filterBy": "TODO ig: FILTER BY:",
+      "allRegions": "TODO ig: ALL REGION",
+      "allTime": "TODO ig: ALL TIME",
+      "season": "TODO ig: {year} SEASON",
+      "regionFilter": "TODO ig: Filter by region",
+      "timeFilter": "TODO ig: Filter by season",
+      "points": "TODO ig: {n} PTS",
+      "columns": {
+        "rank": "TODO ig: RANK",
+        "player": "TODO ig: PLAYER/TEAM",
+        "playerSolo": "TODO ig: PLAYER",
+        "region": "TODO ig: REGION",
+        "points": "TODO ig: POINTS",
+        "champion": "TODO ig: CHAMPION",
+        "winRate": "TODO ig: WIN RATE",
+        "nextRank": "TODO ig: NEXT RANK"
+      },
+      "empty": "TODO ig: No ascendants ranked here yet.",
+      "journey": "TODO ig: YOUR JOURNEY",
+      "pointsAway": "TODO ig: {n} Points Away",
+      "podiumAlt": "TODO ig: {name}, rank {rank}",
+      "caption": "TODO ig: Leaderboard",
+      "journeyCaption": "TODO ig: Your standing"
+    },
+    "detail": {
+      "backToTournaments": "TODO ig: BACK TO TOURNAMENTS",
+      "register": "TODO ig: REGISTER FOR TOURNAMENT",
+      "registerNow": "TODO ig: REGISTER NOW",
+      "metaTitle": "TODO ig: {name} | Competition | Beyond Service: Trial of the Gods",
+      "facts": {
+        "status": "TODO ig: STATUS",
+        "timeRemaining": "TODO ig: TIME REMAINING",
+        "ends": "TODO ig: ENDS",
+        "starts": "TODO ig: STARTS",
+        "region": "TODO ig: REGION",
+        "participants": "TODO ig: PARTICIPANTS",
+        "format": "TODO ig: FORMAT",
+        "rewards": "TODO ig: REWARDS POOL"
+      },
+      "journey": {
+        "heading": "TODO ig: FOLLOW THE JOURNEY TO ASCENSION",
+        "sub": "TODO ig: Track the current stage of the competition, monitor key milestones, and see which champions remain in the race for glory."
+      },
+      "stages": {
+        "registration": "TODO ig: REGISTRATION",
+        "qualifiers": "TODO ig: QUALIFIERS",
+        "groupStage": "TODO ig: GROUP STAGE",
+        "quarterFinals": "TODO ig: QUARTER FINALS",
+        "semiFinals": "TODO ig: SEMI FINALS",
+        "finals": "TODO ig: FINALS"
+      },
+      "stageStatus": {
+        "inProgress": "TODO ig: In Progress",
+        "completed": "TODO ig: Completed",
+        "upcoming": "TODO ig: Upcoming"
+      },
+      "matchups": {
+        "heading": "TODO ig: CURRENT MATCHUPS",
+        "ends": "TODO ig: ENDS {time}",
+        "pts": "TODO ig: {n} PTS",
+        "noPts": "- PTS",
+        "nil": "NIL",
+        "viewBracket": "TODO ig: VIEW FULL BRACKET",
+        "bracketLabel": "TODO ig: Full bracket"
+      },
+      "stats": {
+        "registered": "TODO ig: REGISTERED PLAYERS",
+        "matchesPlayed": "TODO ig: MATCHES PLAYED",
+        "roundsRemaining": "TODO ig: ROUNDS REMAINING",
+        "untilFinals": "TODO ig: UNTIL FINALS",
+        "days": "TODO ig: {n} DAYS"
+      },
+      "rounds": {
+        "roundOf16": "TODO ig: ROUND OF 16",
+        "quarterFinals": "TODO ig: QUARTER FINALS",
+        "semiFinals": "TODO ig: SEMI FINALS",
+        "finals": "TODO ig: FINALS"
+      },
+      "rules": {
+        "title": "TODO ig: TOURNAMENT RULES",
+        "groups": [
+          {
+            "heading": "TODO ig: Eligibility Requirements",
+            "items": [
+              "TODO ig: Players must have an active Beyond Service account.",
+              "TODO ig: Participants must meet the regional requirements for the tournament.",
+              "TODO ig: Only one account may be used per player.",
+              "TODO ig: Players must comply with the official tournament code of conduct.",
+              "TODO ig: Tournament organizers reserve the right to verify player eligibility before and during the competition."
+            ]
+          },
+          {
+            "heading": "TODO ig: Tournament Rules",
+            "items": [
+              "TODO ig: Registration must be completed before the deadline.",
+              "TODO ig: Players are responsible for being available during their scheduled matches.",
+              "TODO ig: Failure to appear for a match may result in automatic forfeiture.",
+              "TODO ig: Exploits, cheating, or the use of unauthorized software will result in immediate disqualification.",
+              "TODO ig: Unsportsmanlike behaviour, harassment, or abuse of other players is prohibited.",
+              "TODO ig: Tournament decisions made by organizers and moderators are final."
+            ]
+          }
+        ]
+      },
+      "rewards": {
+        "title": "TODO ig: REWARDS",
+        "intro": "TODO ig: Compete for exclusive seasonal rewards available only during the {name} Trial.",
+        "groups": [
+          {
+            "heading": "TODO ig: PARTICIPATION REWARDS",
+            "items": [
+              "TODO ig: Season XP",
+              "TODO ig: Tournament Badge",
+              "TODO ig: Event Profile Frame"
+            ]
+          },
+          {
+            "heading": "TODO ig: TOP PERFORMERS",
+            "items": [
+              "TODO ig: Exclusive Character Skin",
+              "TODO ig: Seasonal Title",
+              "TODO ig: Hall of Ascension Recognition"
+            ]
+          },
+          {
+            "heading": "TODO ig: CHAMPION REWARD",
+            "items": [
+              "TODO ig: Season Champion Crown",
+              "TODO ig: Legendary Cosmetic Set",
+              "TODO ig: Permanent Legacy Record"
+            ]
+          }
+        ]
+      },
+      "toggle": {
+        "expand": "TODO ig: Expand",
+        "collapse": "TODO ig: Collapse"
+      }
+    }
+  },
+  "community": {
+    "backToGate": "TODO ig: BACK TO ỤZỌ",
+    "tabs": {
+      "wall": "TODO ig: Community Wall",
+      "map": "TODO ig: Active Player Map"
+    },
+    "hero": {
+      "title": "TODO ig: COMMUNITY WALL",
+      "body": "TODO ig: Welcome to our Community Wall! Share your thoughts and ideas to help improve everyone's experience. Join the conversation now!",
+      "cta": "TODO ig: SHARE YOUR THOUGHTS"
+    },
+    "wall": {
+      "label": "TODO ig: Community wall — drag to move around it",
+      "hint": "TODO ig: Drag to move around the wall",
+      "like": "TODO ig: Like this note",
+      "liked": "TODO ig: Unlike this note",
+      "avatarAlt": "TODO ig: Avatar of {name}",
+      "minsAgo": "TODO ig: {n} mins ago",
+      "hoursAgo": "TODO ig: {n} hours ago",
+      "daysAgo": "TODO ig: {n} days ago",
+      "you": "TODO ig: You"
+    },
+    "map": {
+      "title": "TODO ig: ACTIVE PLAYER MAP",
+      "searchPlaceholder": "TODO ig: Search a Location",
+      "searchLabel": "TODO ig: Search a location",
+      "results": "TODO ig: Locations",
+      "noResults": "TODO ig: No players there yet",
+      "location": "TODO ig: LOCATION",
+      "activePlayers": "TODO ig: ACTIVE PLAYERS",
+      "mapLabel": "TODO ig: World map of active players — drag to move, scroll to zoom",
+      "pinLabel": "TODO ig: {city}, {country}: {n} active players",
+      "zoomIn": "TODO ig: Zoom in",
+      "zoomOut": "TODO ig: Zoom out",
+      "place": "TODO ig: {city}, {country}"
+    },
+    "invite": {
+      "title": "TODO ig: INVITE FRIENDS",
+      "body": "TODO ig: You earn community points when friends join the community through your link.",
+      "linkLabel": "TODO ig: Your invite link",
+      "copy": "TODO ig: COPY LINK",
+      "copied": "TODO ig: Copied"
+    },
+    "form": {
+      "label": "TODO ig: Drop your feedback",
+      "title": "TODO ig: DROP YOUR FEEDBACK",
+      "sub": "TODO ig: Let others know what you feel about the game.",
+      "placeholder": "TODO ig: Input text",
+      "field": "TODO ig: Your feedback",
+      "submit": "TODO ig: SUBMIT",
+      "close": "TODO ig: Close"
+    },
+    "meta": {
+      "title": "TODO ig: Community Wall | Beyond Service: Trial of the Gods",
+      "description": "TODO ig: Welcome to our Community Wall! Share your thoughts and ideas to help improve everyone's experience. Join the conversation now!"
+    }
+  },
+  "notFound": {
+    "title": "TODO ig: OOPS! PAGE NOT FOUND",
+    "body": "TODO ig: It seems the page you are looking for doesn't exist or has been moved.",
+    "cta": "TODO ig: BACK TO HOME",
+    "artAlt": "TODO ig: A 404 cut through by a sword"
+  },
+  "comingSoon": {
+    "title": "TODO ig: COMING SOON!",
+    "body": "TODO ig: This piece of our universe is still taking shape. Check back soon.",
+    "cta": "TODO ig: BACK TO HOME"
+  },
   "footer": {
     "navLabel": "TODO ig: Footer",
     "wordmarkAlt": "Beyond Service",
@@ -632,6 +1009,422 @@
       "terms": "TODO ig: Terms of Use",
       "privacy": "TODO ig: Privacy Policy",
       "about": "TODO ig: About"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "TODO ig: About Goondu Games | Beyond Service: Trial of the Gods",
+      "description": "TODO ig: Goondu Games is a game development studio creating immersive experiences inspired by Igbo mythology, culture, and storytelling."
+    },
+    "hero": {
+      "title": "TODO ig: WE BRING\nLEGENDS\nTO LIFE.",
+      "tagline": "TODO ig: The world is full of stories.",
+      "body": "TODO ig: Stories of gods, warriors, spirits, heroes, and the battles that shaped generations. Many of them have never made it to the games we play today.",
+      "emphasis": "TODO ig: We're changing that.",
+      "aside": "TODO ig: Goondu Games is a game development studio creating immersive experiences inspired by Igbo mythology, culture, and storytelling.",
+      "cta": "TODO ig: EXPLORE OUR WORLD",
+      "plateAlt": "TODO ig: The Goondu Games team and players together at a Beyond Service event"
+    },
+    "story": {
+      "chip": "TODO ig: OUR STORY",
+      "title": "TODO ig: SOME LEGENDS DESERVE\nTO BE EXPERIENCED.",
+      "body1": "TODO ig: Goondu Games is a creative technology company focused on game development and esports, creating immersive experiences inspired by Igbo culture, mythology, and storytelling.",
+      "body2": "TODO ig: The studio was built around the idea that indigenous stories could become the foundation for modern gaming experiences. By combining engaging gameplay with Igbo folklore, heroes, traditions, and imagination, Goondu Games creates new worlds and memorable characters for players to explore.",
+      "body3": "TODO ig: Its work extends beyond game development. Through esports tournaments, community engagement, and initiatives that support the gaming ecosystem, Goondu Games is contributing to a growing culture of gaming and interactive entertainment.",
+      "body4": "TODO ig: Today, that vision continues to grow through worlds like Beyond Service, bringing together games, comics, characters, and stories inspired by a rich cultural heritage.",
+      "cta": "TODO ig: LEARN MORE",
+      "photoAlt": "TODO ig: The Goondu Games team gathered around a player at a Beyond Service event"
+    },
+    "team": {
+      "chip": "TODO ig: THE TEAM",
+      "title": "TODO ig: BEHIND GOONDU GAMES",
+      "members": {
+        "leslie": {
+          "name": "FIRSTNAME SURNAME",
+          "role": "TODO ig: Position at GOONDU",
+          "portraitAlt": "TODO ig: Portrait of a Goondu Games team member"
+        },
+        "sophia": {
+          "name": "SOPHIA AHUOYIZA",
+          "role": "TODO ig: Position at GOONDU",
+          "portraitAlt": "TODO ig: Portrait of Sophia Ahuoyiza"
+        }
+      }
+    }
+  },
+  "merch": {
+    "meta": {
+      "title": "TODO ig: Merch Store | Beyond Service: Trial of the Gods",
+      "description": "TODO ig: Goondu Games originals — hoodies, tees, totes and beanies, plus the Beyond Service comics."
+    },
+    "nav": {
+      "cart": "TODO ig: Cart",
+      "cartCount": "TODO ig: items in cart"
+    },
+    "featured": {
+      "exclusive": "TODO ig: EXCLUSIVE"
+    },
+    "login": {
+      "pitch": "TODO ig: LOGIN TO ENJOY UP TO 20% OFF\nAND ACCESS TO EXCLUSIVE MERCH",
+      "cta": "TODO ig: LOGIN"
+    },
+    "sections": {
+      "merch": "TODO ig: MERCH",
+      "comics": "TODO ig: COMICS"
+    },
+    "colours": {
+      "black": "TODO ig: Black",
+      "oxblood": "TODO ig: Oxblood",
+      "white": "TODO ig: White"
+    },
+    "products": {
+      "hoodie": {
+        "name": "TODO ig: GOONDU HOODIE",
+        "imageAlt": "TODO ig: A black Goondu Games hoodie with the studio wordmark across the chest",
+        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      },
+      "tote": {
+        "name": "TODO ig: GOONDU TOTE",
+        "imageAlt": "TODO ig: A black Goondu Games tote bag with the studio wordmark and a red Nsibidi pattern",
+        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      },
+      "beanie": {
+        "name": "TODO ig: GOONDU BEANIE",
+        "imageAlt": "TODO ig: A white Goondu Games beanie with the studio wordmark on the cuff",
+        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      },
+      "tee": {
+        "name": "TODO ig: GOONDU TEE",
+        "imageAlt": "TODO ig: A black Goondu Games t-shirt with the studio wordmark across the chest",
+        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
+      }
+    },
+    "price": "₦{amount}",
+    "points": {
+      "claimable": "TODO ig: CLAIMABLE POINTS",
+      "unit": "TODO ig: PTS",
+      "next": "TODO ig: Next price is {count} points away",
+      "perksTitle": "TODO ig: POINT PERKS",
+      "perks": {
+        "discount": "TODO ig: 5% off all Goondu originals",
+        "featured": "TODO ig: Access to featured products"
+      },
+      "more": "TODO ig: Gather more points to get even better rewards.",
+      "none": "TODO ig: No points yet, read comics, top leaderboard, and engage with community features to win more points."
+    },
+    "detail": {
+      "selectColour": "TODO ig: SELECT COLOUR",
+      "selectSize": "TODO ig: SELECT SIZE",
+      "description": "TODO ig: DESCRIPTION",
+      "addToCart": "TODO ig: ADD TO CART",
+      "related": "TODO ig: YOU MIGHT ALSO LIKE",
+      "decrease": "TODO ig: Decrease quantity",
+      "increase": "TODO ig: Increase quantity",
+      "quantity": "TODO ig: Quantity",
+      "added": "TODO ig: Added to cart"
+    },
+    "cart": {
+      "title": "TODO ig: CART",
+      "colour": "TODO ig: Colour:",
+      "size": "TODO ig: Size:",
+      "remove": "TODO ig: Remove {item}",
+      "empty": {
+        "title": "TODO ig: YOUR CART IS EMPTY",
+        "subtitle": "TODO ig: It doesn’t have to be",
+        "cta": "TODO ig: START SHOPPING"
+      }
+    },
+    "summary": {
+      "title": "TODO ig: ORDER SUMMARY",
+      "itemTotal": "TODO ig: Item Total",
+      "pointDiscount": "TODO ig: Point Discount",
+      "shipping": "TODO ig: Shipping",
+      "free": "TODO ig: FREE",
+      "total": "TODO ig: Total",
+      "checkout": "TODO ig: PROCEED TO CHECKOUT"
+    },
+    "sizes": {
+      "XS": "TODO ig: XSmall",
+      "S": "TODO ig: Small",
+      "M": "TODO ig: Medium",
+      "L": "TODO ig: Large",
+      "XL": "TODO ig: XLarge",
+      "XXL": "TODO ig: XXLarge"
+    },
+    "checkout": {
+      "shipping": "TODO ig: SHIPPING INFORMATION",
+      "contact": "TODO ig: CONTACT INFORMATION",
+      "edit": "TODO ig: EDIT",
+      "firstName": "TODO ig: First Name",
+      "firstNamePlaceholder": "TODO ig: john",
+      "lastName": "TODO ig: Last Name",
+      "lastNamePlaceholder": "TODO ig: doe",
+      "phone": "TODO ig: Phone Number",
+      "phonePlaceholder": "TODO ig: xxx-xxxx-xxx",
+      "dialCode": "+234",
+      "address": "TODO ig: Address",
+      "addressPlaceholder": "TODO ig: Enter Address",
+      "country": "TODO ig: Country",
+      "countryPlaceholder": "TODO ig: Select Country",
+      "state": "TODO ig: State",
+      "statePlaceholder": "TODO ig: Select State",
+      "city": "TODO ig: City",
+      "cityPlaceholder": "TODO ig: Enter city",
+      "zip": "TODO ig: Zip Code",
+      "zipPlaceholder": "TODO ig: eg. 510001",
+      "deliveryMethod": "TODO ig: DELIVERY METHOD",
+      "delivery": "TODO ig: Delivery",
+      "pickup": "TODO ig: Pickup",
+      "pickupNote": "TODO ig: Insert the choosen Pickup address for Goondu",
+      "paymentMethod": "TODO ig: PAYMENT METHOD",
+      "paystack": "TODO ig: Paystack",
+      "bankTransfer": "TODO ig: Bank Transfer",
+      "orderSummary": "TODO ig: ORDER SUMMARY",
+      "itemTotal": "TODO ig: Item Total",
+      "pointDiscount": "TODO ig: Community Point Discount",
+      "shippingRow": "TODO ig: Shipping",
+      "free": "TODO ig: FREE",
+      "total": "TODO ig: Total",
+      "secureTitle": "TODO ig: Secure Checkout",
+      "secureBody": "TODO ig: Your payment information is encrypted and secure.",
+      "placeOrder": "TODO ig: PLACE ORDER"
+    },
+    "transfer": {
+      "heading": "TODO ig: PLEASE COMPLETE YOUR PAYMENT IN YOUR BANKING APP WITHIN {window}.",
+      "window": "TODO ig: 25 MINUTES",
+      "accountNumber": "TODO ig: Account Number",
+      "bankName": "TODO ig: Bank Name",
+      "beneficiary": "TODO ig: Beneficiary Name",
+      "amount": "TODO ig: Amount",
+      "copy": "TODO ig: Copy",
+      "copied": "TODO ig: Copied",
+      "warning": "TODO ig: Transfer exact amount to avoid failure.",
+      "changeMethod": "TODO ig: CHANGE PAYMENT METHOD",
+      "sent": "TODO ig: I’VE SENT IT"
+    },
+    "confirmed": {
+      "title": "TODO ig: ORDER CONFIRMED",
+      "body": "TODO ig: Your order is currently being processed. You will receive an order confirmation email shortly with expected delivery date for your items.",
+      "cta": "TODO ig: BACK TO PROFILE",
+      "label": "TODO ig: Order confirmed",
+      "close": "TODO ig: Close"
+    },
+    "comics": {
+      "partner": "TODO ig: Goondu Games X Partner",
+      "related": "TODO ig: YOU MIGHT ALSO LIKE",
+      "issues": {
+        "trial": {
+          "title": "TODO ig: TRIAL OF THE GODS",
+          "volume": "TODO ig: VOL. 1",
+          "meta": "TODO ig: August 27, 2026 – Vol. 1",
+          "format": "TODO ig: Physical – Vol. 1",
+          "description": "TODO ig: Soma was an ordinary young man completing his national youth service when tragedy struck. Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games.",
+          "coverAlt": "TODO ig: Trial of the Gods, volume one — Soma turned away, carrying a crystal-tipped spear",
+          "coverTitle": "TODO ig: TRIAL OF\nTHE GODS"
+        },
+        "between": {
+          "title": "TODO ig: BETWEEN WORLDS",
+          "volume": "TODO ig: VOL. 2",
+          "meta": "TODO ig: August 27, 2026 – Vol. 2",
+          "format": "TODO ig: Online – Vol. 2",
+          "description": "",
+          "coverAlt": "TODO ig: Between Worlds, volume two — Soma mid-stance, trailing fire",
+          "coverTitle": "TODO ig: BETWEEN WORLDS"
+        }
+      }
+    }
+  },
+  "news": {
+    "meta": {
+      "title": "TODO ig: News & Updates | Beyond Service: Trial of the Gods",
+      "description": "TODO ig: Stay informed on the latest developments across the Trial."
+    },
+    "title": "TODO ig: NEWS & UPDATES",
+    "subtitle": "TODO ig: Stay informed on the latest developments across the Trial.",
+    "more": "TODO ig: MORE NEWS",
+    "loadMore": "TODO ig: LOAD MORE",
+    "back": "TODO ig: BACK",
+    "share": {
+      "heading": "TODO ig: SHARE VIA",
+      "facebook": "TODO ig: Share on Facebook",
+      "whatsapp": "TODO ig: Share on WhatsApp",
+      "x": "TODO ig: Share on X",
+      "instagram": "TODO ig: Copy the link to share on Instagram",
+      "copy": "TODO ig: Copy link",
+      "copied": "TODO ig: Link copied"
+    },
+    "byline": "TODO ig: By Goondu Staff",
+    "relativeDays": "TODO ig: {n} DAYS AGO",
+    "relativeToday": "TODO ig: TODAY",
+    "tags": {
+      "news": "TODO ig: NEWS",
+      "announcement": "TODO ig: ANNOUNCEMENT"
+    },
+    "articles": {
+      "seasonOne": {
+        "title": "TODO ig: SEASON ONE BEGINS: WRATH OF NZE UGWUOKE",
+        "imageAlt": "TODO ig: Nze Ugwuoke wreathed in flame, staff in hand",
+        "excerpt": "TODO ig: Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "betweenWorlds": {
+        "title": "TODO ig: BETWEEN WORLDS - EVERYTHING YOU NEED TO KNOW",
+        "imageAlt": "TODO ig: The Trial of the Gods comic, printed, on a stone slab",
+        "excerpt": "TODO ig: Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "easternCup": {
+        "title": "TODO ig: REGISTRATION OPENS FOR THE EASTERN PROVINCE CUP",
+        "imageAlt": "TODO ig: The Between Worlds cover",
+        "excerpt": "TODO ig: Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "combatUpdate": {
+        "title": "TODO ig: COMBAT UPDATE 1.1 RELEASED",
+        "imageAlt": "TODO ig: The Between Worlds cover",
+        "excerpt": "TODO ig: Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "fallOfNze": {
+        "title": "TODO ig: THE FALL OF NZE UGWUOKE",
+        "imageAlt": "TODO ig: Nze Ugwuoke wreathed in flame, staff in hand",
+        "excerpt": "TODO ig: Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      },
+      "trialLaunch": {
+        "title": "TODO ig: TRIAL OF THE GODS - EVERYTHING YOU NEED TO KNOW",
+        "imageAlt": "TODO ig: Beyond Service: Trial of the Gods key art",
+        "excerpt": "TODO ig: Download the Modern Warfare® 4 Open Beta*, earn rewards, master new systems, explore the Campaign, Multiplayer, Kill Block, Ground War: Combat Outpost, Call of Duty®: Warzone™ Resurgence, with detailed intel every step of the way.",
+        "body": [
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture.",
+          "TODO ig: Recently, the gaming community has experienced a remarkable surge in innovative gameplay mechanics and deeply immersive storylines that are reshaping how players engage with games. Industry experts emphasize the role of cutting-edge AI systems, ever-changing dynamic environments, and vast multiplayer modes as crucial elements propelling this transformation. Players are invited to dive into a wide array of diverse narratives and take part in competitive events that encourage teamwork and strategic planning. Moreover, upcoming updates are set to deliver significantly enhanced graphics, improved performance optimizations, and fresh challenges designed to appeal to both casual gamers and dedicated enthusiasts. Stay connected for thorough coverage and detailed analyses of these thrilling trends that are defining the future landscape of interactive entertainment and gaming culture."
+        ]
+      }
+    }
+  },
+  "profile": {
+    "meta": {
+      "title": "TODO ig: Player Profile | Beyond Service: Trial of the Gods",
+      "description": "TODO ig: Your level, points and tournament standing across the Trial."
+    },
+    "edit": "TODO ig: EDIT PROFILE",
+    "logOut": "TODO ig: Log Out",
+    "avatarAlt": "TODO ig: Your avatar",
+    "location": "TODO ig: LOCATION",
+    "stats": {
+      "level": "TODO ig: LEVEL",
+      "winRate": "TODO ig: WIN RATE",
+      "loss": "TODO ig: LOSS",
+      "rank": "TODO ig: RANK"
+    },
+    "gamePoints": "TODO ig: GAME POINTS",
+    "claimablePoints": "TODO ig: CLAIMABLE POINTS",
+    "pointsGlyphAlt": "",
+    "rankings": {
+      "title": "TODO ig: TOURNAMENT RANKINGS",
+      "empty": "TODO ig: You’re not registered in a tournament",
+      "seeDetails": "TODO ig: See Details",
+      "toNextRank": "TODO ig: {n} points away from next rank"
+    },
+    "standing": {
+      "rank": "TODO ig: RANK",
+      "points": "TODO ig: POINTS",
+      "winRate": "TODO ig: WIN RATE",
+      "champion": "TODO ig: CHAMPION"
+    },
+    "tournaments": {
+      "wrathOfNze": "Wrath of Nze Ugwuoke"
+    },
+    "form": {
+      "title": "TODO ig: EDIT PROFILE",
+      "uploadAvatar": "TODO ig: UPLOAD NEW AVATAR",
+      "firstName": "TODO ig: First Name",
+      "firstNamePlaceholder": "TODO ig: john",
+      "lastName": "TODO ig: Last Name",
+      "lastNamePlaceholder": "TODO ig: doe",
+      "username": "TODO ig: Username",
+      "usernamePlaceholder": "TODO ig: @somamain",
+      "locationLabel": "TODO ig: Location",
+      "locationPlaceholder": "TODO ig: Enugu, Nigeria",
+      "save": "TODO ig: SAVE CHANGES",
+      "back": "TODO ig: EDIT PROFILE"
+    },
+    "account": {
+      "viewProfile": "TODO ig: View Profile",
+      "login": "TODO ig: Login",
+      "menuLabel": "TODO ig: Account menu"
+    }
+  },
+  "comics": {
+    "meta": {
+      "title": "TODO ig: The Comics | Beyond Service: Trial of the Gods",
+      "description": "TODO ig: Enter a world where death is not the end, gods make the rules, and survival is only the beginning."
+    },
+    "overline": "TODO ig: THE STORY BEGINS HERE",
+    "title": "TODO ig: THE COMICS",
+    "subtitle": "TODO ig: Enter a world where death is not the end, gods make the rules, and survival is only the beginning.",
+    "startReading": "TODO ig: START READING",
+    "explore": "TODO ig: EXPLORE MORE COMICS",
+    "own": {
+      "chip": "TODO ig: OWN THE STORY",
+      "title": "TODO ig: SOME STORIES BELONG\nIN YOUR HANDS.",
+      "body": [
+        "TODO ig: Read Beyond Service online wherever you are.",
+        "TODO ig: Or keep a piece of the world for yourself.",
+        "TODO ig: Own the physical edition and experience the story beyond",
+        "TODO ig: the screen, from the artwork to every turn of the page."
+      ],
+      "cta": "TODO ig: BUY PHYSICAL COPY",
+      "photoAlt": "TODO ig: The printed Trial of the Gods editions stacked on concrete"
+    },
+    "reader": {
+      "back": "TODO ig: BACK",
+      "shareVia": "TODO ig: SHARE VIA:",
+      "share": {
+        "facebook": "TODO ig: Share on Facebook",
+        "whatsapp": "TODO ig: Share on WhatsApp",
+        "x": "TODO ig: Share on X",
+        "instagram": "TODO ig: Copy the link to share on Instagram",
+        "copy": "TODO ig: Copy link",
+        "copied": "TODO ig: Link copied"
+      },
+      "pageAlt": "TODO ig: {title}, page {n}",
+      "shareHeading": "TODO ig: SHARE THIS COMIC",
+      "shareSub": "TODO ig: Gain claimable community points\nby sharing this comic with friends."
+    },
+    "synopsis": {
+      "trial": [
+        "TODO ig: Soma was an ordinary young man completing his national youth service when tragedy struck. During a journey home with friends, he was killed in an ambush by armed bandits.",
+        "TODO ig: Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games. Offered a second chance at life in exchange for participating in divine trials, he accepted."
+      ],
+      "between": []
     }
   }
 }

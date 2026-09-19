@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CHARACTERS, getCharacter } from "@/lib/characters";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
+import { pageMetadata } from "@/lib/seo";
 
 /**
  * One character's detail page. Figma:
@@ -46,11 +47,16 @@ export async function generateMetadata({
   if (!character) return {};
 
   const cast = getMessages(locale).characters.roster.cast[character.castKey];
-  return {
+  return pageMetadata({
+    locale,
+    path: `/characters/${character.slug}`,
     title: `${cast.name} | Beyond Service: Trial of the Gods`,
     // The first line of the intro is the tightest summary the copy has.
     description: cast.detail.intro[0],
-  };
+    // The character's own render as the card, not the key art.
+    image: character.image,
+    imageAlt: cast.name,
+  });
 }
 
 export default async function Page({

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
+import { MenuRule } from "@/components/chrome/NavRules";
 import { GATES, gateHref } from "@/lib/gates";
 import type { Messages } from "@/lib/utils/messages";
 import { cn } from "@/lib/utils/cn";
@@ -139,13 +140,19 @@ export function MenuOverlay({
               style={{ transitionDelay: open ? `${120 + i * STAGGER_MS}ms` : "0ms" }}
               className={cn(
                 "text-menu-fg font-display text-menu-link focus-visible:outline-signal group w-fit leading-none font-semibold transition-[opacity,transform] duration-400 ease-gate focus-visible:outline-6 focus-visible:outline-offset-4",
-                "pb-4 tracking-tighter md:pb-5 xl:pb-6.5",
+                // The span under this carries 12 of the gap (its rule lives there); these
+                // make up the rest, so the pitch is the frame's.
+                "pb-2 tracking-tighter md:pb-3 xl:pb-4.5",
                 open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
               )}
             >
 
-              <span className="bg-[linear-gradient(currentColor,currentColor)] bg-size-[0%_2px] bg-bottom-left bg-no-repeat pb-1 transition-[background-size] duration-300 ease-gate group-hover:bg-size-[100%_2px] group-focus-visible:bg-size-[100%_2px]">
+              {/* Under the cursor the label turns linen and the delivered rule
+                  (menu-border.svg) draws in beneath it, left to right — where a
+                  2px line used to grow. See NavRules. */}
+              <span className="relative inline-block pb-3 transition-colors duration-300 ease-gate group-hover:text-linen group-focus-visible:text-linen">
                 {link.label}
+                <MenuRule className="bottom-0" />
               </span>
             </Link>
           ))}

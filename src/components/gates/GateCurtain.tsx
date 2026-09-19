@@ -3,79 +3,119 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
 
+import { useGateEntry } from "@/components/gates/GateEntry";
 import { usePageTransition } from "@/components/transition/TransitionProvider";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
+import { getLenis } from "@/lib/animation/lenis";
+import type { GateId } from "@/lib/gates";
 
 /**
- * The gate pull-up. Scrolling past the end of a gate page draws the next gate's
- * hero up over it; when it covers the viewport the route changes invisibly.
- * Spec: `context/current-feature.md`.
+ * The gate pull-up, the way Thorgal does it.
  *
- * THE STRUCTURE IS THE ANIMATION. The outgoing page's last section is
- * `sticky top-0` and the panel follows it in normal flow, so ordinary scrolling
- * already slides the panel up over a section that holds still. No transform is
- * needed for the travel itself.
+ * AT REST THE FOOT IS THE FRAME. The page ends on the next gate's name ghosted
+ * across a seam, with a strip of that gate's plate showing beneath it — 237px
+ * of it at 1440, 135 on the phone frame — and ordinary scrolling stops there.
+ * Nothing moves on its own.
  *
- * WHICH IS WHY THE `y` TWEEN THE SPEC LISTS IS NOT HERE, and that is the one
- * deliberate departure. Step 2 asks for `y` 100% -> 0 AND the radius on one
- * scrub. With this structure flow already supplies exactly that travel; adding
- * the transform on top would move the panel twice as fast as the scroll and it
- * would arrive at the swap while the page was still half a viewport short. The
- * radius is scrubbed, the travel is flow, and the two stay in step because the
- * trigger measures the panel's own progress.
+ * THE PULL IS THE VISITOR'S. Scrolling on, once the page has nothing left to
+ * give, starts to draw the next gate up over this one — not one-to-one with the
+ * wheel, but as if something were drawing it up and it were heavy: each notch
+ * adds to a target the sheet eases towards, so it lags the hand and keeps
+ * moving a moment after it. Stop, and it settles back down to the seam. Keep
+ * going past the point of no return (`THRESHOLD`), and it draws itself the rest
+ * of the way and the route changes underneath it, invisibly.
  *
- * THE ARCH IS AN ELLIPTICAL RADIUS, NOT A CORNER ROUNDING. A dome across the
- * full width, `50% 50% 0 0 / 12% 12% 0 0`, with only the VERTICAL component
- * animated 12% -> 0. The horizontal stays at 50% throughout, which is what keeps
- * the curve a single arc from edge to edge instead of two corners.
+ * HOW THE SHEET IS IN TWO PLACES AT ONCE. At rest it is absolutely positioned
+ * in the strip, top-aligned, its lower two-thirds clipped by the strip
+ * (`overflow: clip`, which also keeps a viewport-tall element from lengthening
+ * the page). The moment a pull begins it is switched to `position: fixed` and
+ * translated to exactly where it already appears — the strip's top at the foot
+ * of a fully scrolled viewport — so the switch is invisible, and from there the
+ * translate carries it up over the outgoing page, which holds still underneath
+ * because the page is not scrolling at all while it pulls. A fixed element
+ * escapes an ancestor's clip, which is the whole trick. (The outgoing section
+ * used to be `sticky` so a viewport-tall panel could ride over it in flow;
+ * with a 237px strip in flow, sticky would shove the section down over the
+ * strip and bury the scroll cue, so it is plain flow now.)
  *
- * THE PREVIEW IS THE REAL COMPONENT. `preview` is the same `GateSection` the
- * next route paints, built by the page with the same props. Rebuilding the hero
- * by hand is the one thing guaranteed to produce a visible snap at the swap.
+ * THE PAGE HOLDS STILL WHILE IT PULLS. Lenis is asked to stop for the length of
+ * the pull and started again when the sheet settles or the route changes;
+ * scrolling back during a pull lowers the sheet first, and only once it is
+ * down does the page scroll again.
  *
- * IT IS INERT. The preview carries a live CTA, a cue link and a chip; none of
- * them should be reachable while it is scenery, and its CTA would otherwise read
- * `[data-gate-content]` from the page it is sitting on and open THAT. `inert`
- * takes it out of the tab order and out of the accessibility tree at once.
+ * THE ARCH is an elliptical radius across the full width, `50% 50% 0 0 / 12%
+ * 12% 0 0`, with the vertical component going 12% -> 0 as the sheet rises — a
+ * dome, not two corners. The seam title fades out by 30% of the rise, before
+ * the gate's own title arrives, so the name is never on screen twice.
+ *
+ * THE PREVIEW IS THE REAL COMPONENT — the same `GateSection` the next route
+ * paints, built by the page with the same props. Rebuilding the hero by hand
+ * would guarantee a visible snap at the swap. It is `inert`: its CTA, cue and
+ * chip must not be reachable while it is scenery.
+ *
+ * REDUCED MOTION gets none of this: the foot as drawn, still, and the cue above
+ * it is a plain link with an instant route change.
  */
 export function GateCurtain({
   children,
   preview,
   href,
   title,
+  gate,
 }: {
-  /** The outgoing page's last section. Made sticky so the panel rides over it. */
+  /** The outgoing page's last section; the sheet rides over it while it holds still. */
   children: ReactNode;
-  /** The next gate's hero — the same component that route renders. */
+  /** What rises — the next gate's door (`gatePreview`) or the next page's first section. */
   preview: ReactNode;
+  /** The route pushed under cover: the portal (`/en`) for a door, or a page's own path. */
   href: string;
   /** The next gate's name, ghosted across the seam. */
   title: string;
+  /**
+   * The door the portal should stand at on arrival. Named BEFORE the push (see
+   * GateEntry.seedGate) so the home route paints that gate on its first render
+   * — the same `GateSection` the sheet is already showing. Omit when `href` is
+   * a page: pages paint themselves.
+   */
+  gate?: GateId;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { claim, busy } = usePageTransition();
+  const { seedGate } = useGateEntry();
 
   // Written in an effect, never during render: the scene is built once and its
-  // ScrollTrigger outlives every later render, so it must not close over the
-  // first render's router.
+  // listeners outlive every later render, so they must not close over the first
+  // render's router.
   const swap = useRef<() => void>(() => {});
   useEffect(() => {
     swap.current = () => {
-      // STEP 5. If the tear already owns the screen, this does nothing — the
-      // visitor gets one transition, not two.
+      // If the tear already owns the screen, this does nothing — the visitor
+      // gets one transition, not two.
       const release = claim();
       if (!release) return;
 
-      // STEP 4. `scroll: false` stops Next restoring a scroll position, then the
-      // jump to the top happens while the panel still covers everything, so the
-      // new route paints exactly what is already on screen.
+      // SEEDED BEFORE THE PUSH, so the portal paints this door on its first
+      // render rather than the entry screen for a frame.
+      if (gate) seedGate(gate);
+
+      // `scroll: false` stops Next restoring a scroll position, then the jump to
+      // the top happens while the sheet still covers everything, so the new
+      // route paints exactly what is already on screen. Through Lenis where it
+      // runs — it was stopped for the pull, and `force` is how a stopped Lenis
+      // is moved — and started again for the page that is arriving.
       router.push(href, { scroll: false });
-      window.scrollTo(0, 0);
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true, force: true });
+        lenis.start();
+      } else {
+        window.scrollTo(0, 0);
+      }
       // Released on the next frame, once the push has been handed to React.
       requestAnimationFrame(() => release());
     };
-  }, [claim, router, href]);
+  }, [claim, router, href, gate, seedGate]);
 
   const scene = useCallback<SceneBuilder>(
     (gsap, q, host) => {
@@ -90,53 +130,141 @@ export function GateCurtain({
         },
         (context) => {
           const { motion } = context.conditions as { motion: boolean };
-
-          // STEP 6. Reduced motion gets no scrub at all — not a shortened one,
-          // which would be a jarring flash. The seam stays visible and the cue
-          // above it is a plain link with an instant route change.
           if (!motion) {
-            gsap.set([sheet, seam].filter(Boolean) as HTMLElement[], {
-              clearProps: "all",
-            });
+            gsap.set([sheet, seam].filter(Boolean) as HTMLElement[], { clearProps: "all" });
             return;
           }
 
-          let pushed = false;
+          /** The distance the sheet travels: from the strip's top to the viewport's. */
+          const travel = () => window.innerHeight - host.getBoundingClientRect().height;
+          /** Scrolled as far as the page goes, within a couple of pixels of Lenis's settling. */
+          const atFoot = () =>
+            window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
 
-          const timeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: host,
-              // The panel's own travel: from the moment its top enters the
-              // viewport to the moment it is flush with the top.
-              start: "top bottom",
-              end: "top top",
-              // `1`, not `true`. The smoothing lag stops the arch feeling glued
-              // to the scrollbar on a trackpad flick.
-              scrub: 1,
-              invalidateOnRefresh: true,
-              onLeave: (self) => {
-                // Progress 1, scrolling down, once. A flick can cross the
-                // threshold more than once; the latch keeps the push single.
-                if (pushed || self.direction !== 1) return;
-                // A tear mid-flight owns the screen. Leave it alone.
-                if (busy()) return;
-                pushed = true;
-                swap.current();
-              },
-            },
-          });
+          // `target` is where the hand has asked the sheet to be; `shown` is where
+          // it is, easing towards `target`. The gap between them is the weight.
+          let target = 0;
+          const shown = { p: 0 };
+          let active = false;
+          let completing = false;
+          let releaseTimer = 0;
 
-          // The arch, across the whole travel.
-          timeline.fromTo(
-            sheet,
-            { "--arch": "12%" },
-            { "--arch": "0%", ease: "none", duration: 1 },
-            0,
-          );
-          // The seam title, gone by 30% — before the gate.s own title arrives, so
-        // the two never read as one word printed twice.
-          if (seam)
-            timeline.to(seam, { opacity: 0, ease: "none", duration: 0.3 }, 0);
+          const paint = () => {
+            // Heavy at first, quick at the end: a curve rather than a line.
+            const eased = shown.p ** 1.4;
+            gsap.set(sheet, {
+              y: travel() * (1 - eased),
+              "--arch": `${12 * (1 - eased)}%`,
+            });
+            if (seam) gsap.set(seam, { opacity: Math.max(0, 1 - shown.p / 0.3) });
+          };
+
+          const follow = (to: number, duration: number, ease: string, onComplete?: () => void) =>
+            gsap.to(shown, { p: to, duration, ease, overwrite: true, onUpdate: paint, onComplete });
+
+          /** Switch the sheet from its place in the strip to the viewport. Same pixels. */
+          const lift = () => {
+            active = true;
+            getLenis()?.stop();
+            gsap.set(sheet, { position: "fixed", top: 0, left: 0, width: "100%", zIndex: 30 });
+            paint();
+          };
+
+          /** Put it back in the strip and let the page scroll again. */
+          const settle = () => {
+            active = false;
+            target = 0;
+            gsap.set(sheet, { clearProps: "position,top,left,width,zIndex,transform" });
+            // Back to inheriting the strip's resting 12%.
+            sheet.style.removeProperty("--arch");
+            if (seam) gsap.set(seam, { clearProps: "opacity" });
+            getLenis()?.start();
+          };
+
+          const complete = () => {
+            completing = true;
+            window.clearTimeout(releaseTimer);
+            follow(1, 0.55, "power2.in", () => {
+              // A tear mid-flight owns the screen; leave it alone and come back down.
+              if (busy()) {
+                completing = false;
+                follow(0, 0.6, "power3.out", settle);
+                return;
+              }
+              swap.current();
+            });
+          };
+
+          /** The hand has stopped: past the point of no return it finishes, short of it it settles. */
+          const release = () => {
+            if (!active || completing) return;
+            if (target >= THRESHOLD) complete();
+            else follow(0, 0.7, "power3.out", settle);
+          };
+
+          /** One increment of pull, in pixels of scroll intent. Positive pulls up. */
+          const nudge = (delta: number) => {
+            if (completing) return;
+            if (!active) {
+              if (delta <= 0 || !atFoot()) return;
+              lift();
+            }
+            target = Math.min(1, Math.max(0, target + delta / (travel() * GAIN)));
+            window.clearTimeout(releaseTimer);
+            if (target >= 1) {
+              complete();
+              return;
+            }
+            if (target === 0) {
+              // Pulled back all the way: down at once, and the page is free again.
+              follow(0, 0.35, "power2.out", settle);
+              return;
+            }
+            follow(target, 0.45, "power2.out");
+            releaseTimer = window.setTimeout(release, 180);
+          };
+
+          const onWheel = (event: WheelEvent) => {
+            // A wheel inside a dialog or another scroller is theirs, not a pull.
+            if ((event.target as Element | null)?.closest?.("[role='dialog'], [data-lenis-prevent]")) return;
+            const unit = event.deltaMode === 1 ? 40 : event.deltaMode === 2 ? window.innerHeight : 1;
+            nudge(event.deltaY * unit);
+          };
+
+          let touchY: number | null = null;
+          const onTouchStart = (event: TouchEvent) => {
+            touchY = event.touches[0]?.clientY ?? null;
+            window.clearTimeout(releaseTimer);
+          };
+          const onTouchMove = (event: TouchEvent) => {
+            const y = event.touches[0]?.clientY;
+            if (y === undefined || touchY === null) return;
+            // A finger moving up the screen is a pull up; touch is quicker than a wheel.
+            nudge((touchY - y) * TOUCH_GAIN);
+            touchY = y;
+          };
+          const onTouchEnd = () => {
+            touchY = null;
+            window.clearTimeout(releaseTimer);
+            release();
+          };
+
+          window.addEventListener("wheel", onWheel, { passive: true });
+          window.addEventListener("touchstart", onTouchStart, { passive: true });
+          window.addEventListener("touchmove", onTouchMove, { passive: true });
+          window.addEventListener("touchend", onTouchEnd, { passive: true });
+          window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+          return () => {
+            window.removeEventListener("wheel", onWheel);
+            window.removeEventListener("touchstart", onTouchStart);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("touchend", onTouchEnd);
+            window.removeEventListener("touchcancel", onTouchEnd);
+            window.clearTimeout(releaseTimer);
+            // If the page goes while a pull is in flight, do not leave Lenis stopped.
+            if (active) getLenis()?.start();
+          };
         },
       );
     },
@@ -147,57 +275,48 @@ export function GateCurtain({
 
   return (
     <>
-      {/* The outgoing page holds still while the panel rides over it. Sticky
-          rather than a ScrollTrigger pin: it is one declaration, it cannot
-          desync from the scroller, and it needs no pin-spacer in the flow. */}
-      <div className="sticky top-0">{children}</div>
+      {children}
 
-      {/* `--arch` is the vertical radius component. Declaring it here with an
-          initial value is what lets GSAP tween it: an unregistered custom
-          property has no type, so it interpolates as a string and jumps. The
-          resting 0% also means that with no JS the panel is simply square —
-          correct, just without the arch. */}
+      {/* THE FOOT: the strip of the next gate the frames show at rest — 237px at
+          1440, 135 on the phone frame. `overflow-clip` clips the viewport-tall
+          sheet to it AND keeps it out of the page's scrollable height; a fixed
+          sheet escapes the clip, which is what the pull relies on.
+
+          `--arch` is declared here with a value so GSAP can tween it: an
+          unregistered custom property has no type and would interpolate as a
+          string. Resting at 12% draws the dome on the strip as the frame does. */}
       <div
         ref={root}
         data-pullup
-        style={{ "--arch": "0%" } as React.CSSProperties}
-        className="relative h-dvh"
+        style={{ "--arch": "12%" } as React.CSSProperties}
+        className="relative h-[8.4375rem] lg:h-[14.8125rem]"
       >
-        <div
-          data-pullup-sheet
-          className="relative h-full w-full overflow-hidden [border-radius:50%_50%_0_0/var(--arch)_var(--arch)_0_0]"
-        >
-          {/* The next gate's own hero, inert. */}
+        {/* The clip is its own box so the seam title beside it, which straddles
+            the strip's top edge, is not cut in half. */}
+        <div className="absolute inset-0 overflow-clip">
           <div
-            // @ts-expect-error — `inert` is a valid attribute; React's types
-            // only added it in 19 and this project is on 18's JSX namespace.
-            inert=""
-            className="pointer-events-none absolute inset-0 select-none"
+            data-pullup-sheet
+            className="absolute top-0 left-0 h-dvh w-full overflow-hidden [border-radius:50%_50%_0_0/var(--arch)_var(--arch)_0_0]"
           >
-            {preview}
+            {/* The next gate's own hero, inert. */}
+            <div inert className="pointer-events-none absolute inset-0 select-none">
+              {preview}
+            </div>
           </div>
         </div>
 
         {/* THE SEAM TITLE. The frame ghosts the next gate's name large across the
             join — measured cap 152, ink `--color-menu-fg` at 80% (it reads
             rgb(197,197,197) on black and rgb(218,220,221) on the plate, which no
-            flat colour does).
+            flat colour does). At a negative offset so it straddles the sheet's
+            top edge exactly as the frame draws it: cap top 67px above the plate
+            line, the rest below. It goes with the seam — gone by 30% of the
+            rise, before the gate's own title arrives — because the preview is
+            the real `GateSection` and renders that title itself.
 
-            OUTSIDE THE SHEET, so the arch's `overflow-hidden` does not clip it,
-            and at a negative offset so it straddles the panel's top edge exactly
-            as the frame draws it: cap top 67px above the plate line, the rest
-            below.
-
-            IT FADES, AND THAT IS A DEPARTURE WORTH NAMING. The spec does not
-            mention fading it, but the preview is the real `GateSection` and that
-            renders the gate's OWN title — so once the panel is up, the same words
-            were on screen twice at two sizes. The seam title belongs to the seam,
-            which is a moment rather than a place, so it goes when the seam does.
-            Gone by 45% of the travel, well before the gate's own title arrives.
-
-            The chevron and SCROLL TO GO NEXT that complete the seam are already
-            rendered by the outgoing page's last section, measured to their own
-            frame positions, so they are not repeated here. */}
+            The chevron and SCROLL TO GO NEXT that complete the seam are rendered
+            by the outgoing page's last section, measured to their own frame
+            positions, so they are not repeated here. */}
         <h2
           data-pullup-seam
           aria-hidden
@@ -209,3 +328,14 @@ export function GateCurtain({
     </>
   );
 }
+
+/**
+ * How much scroll a full pull takes, in multiples of the sheet's travel: 1.1
+ * travels of wheel (about four notches on a 900px screen) to the top. The
+ * point of no return is a little under half way — enough that a stray notch
+ * settles back, and a second one commits.
+ */
+const GAIN = 1.1;
+const THRESHOLD = 0.45;
+/** A finger covers less ground than a wheel; weight it up so a swipe commits. */
+const TOUCH_GAIN = 1.6;

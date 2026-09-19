@@ -8,62 +8,16 @@ import { BracketButton } from "@/components/ui/BracketButton";
 import { usePointerDrift } from "@/hooks/usePointerDrift";
 import type { Messages } from "@/lib/utils/messages";
 
-/**
- * Section 1 of The Characters page — the hero. Figma:
- * `context/design/04-characters/The characters.png`, y 0..834 at 1440.
- *
- * Its own plate, `character/hero-plate.png`: the spirit tree above the shrine,
- * hung with nsibidi glyphs. Not the gate 2 plate, and not the Game hero's.
- *
- * WHAT THE FRAME MEASURES, at 1440 with the hero 834 tall. Everything below is
- * built to these, which is why the offsets are literal rather than fluid:
- *
- *   chip      x   93..223  y 227..256   (131 x 30)
- *   title     x  113..648  cap top 311, cap 63, line pitch 85
- *   body      x  110..561  cap top 513, 4 lines, pitch 25
- *   aside     x 1088..1345 cap top 471, 3 lines, LEFT-aligned
- *   button    x 1115..1273 y 616..671   (159 x 56)
- *   brackets  x 1087 and 1289          (12 x 36)
- *   machete   x  762..932  y 490..668
- *
- * The left column is the Game hero's exactly — same 108px content edge, same
- * chip at 93, same title optical left at 113. The RIGHT column is not: the aside
- * and the brackets both start at 1088 here against 1044 and 1034 there, so the
- * column is 244 wide rather than 288.
- *
- * NO SCRIM, AND THAT IS MEASURED RATHER THAN OMITTED. Dividing the frame's
- * luminance by the cover-fitted plate's, over six patches picked to avoid text,
- * gives a median darkening of between -0.013 and 0.000 — zero within noise, in
- * every one. The Game hero needs two gradient layers because its plate is bright
- * behind the copy; this plate is already dark exactly where the copy sits. So
- * the plate ships raw. No scrim value was asked of Design and none was invented.
- *
- * TWO DRIFT LAYERS, WHICH THE GAME HERO CANNOT HAVE. That hero's plate is a
- * single render with its shrine figure baked in, so it leans as one piece at the
- * environment's 1%. Here the blade is a genuinely separate asset over an opaque
- * plate, which is the condition motion moment 4 asks for — so the plate takes
- * the back ref at 1% and the blade the front at 3%, and the lean reads as depth
- * rather than as a slide.
- *
- * NO KEN BURNS, same as the Game hero. That belongs to the gates, where a still
- * full-viewport image has no cursor to bring it alive. Here the drift does that,
- * and running both would write `transform` twice on one node.
- */
+
 export function CharactersHero({ messages }: { messages: Messages }) {
   const t = messages.characters.hero;
   const { frontRef, backRef } = usePointerDrift<HTMLDivElement, HTMLDivElement>();
 
   return (
     <section className="relative min-h-dvh overflow-hidden">
-      {/* The overscan is what keeps the lean from exposing an edge. `scale-105`
-          compiles to the `scale` property in v4, so it coexists with the hook's
-          `transform` write instead of being overwritten by it. */}
+
       <div ref={backRef} aria-hidden className="absolute inset-0 scale-105">
-        {/* NOT `priority`. The gate 2 plate is this route's LCP image; marking
-            both eager would put two multi-hundred-KB plates in the initial load.
-            GateView warms this one on idle instead, so the tear never opens onto
-            a hole. It is the first `img` inside the content, which is the one
-            that warm picks. */}
+
         <Image
           src="/assets/character/hero-plate.png"
           alt={t.plateAlt}
@@ -75,17 +29,6 @@ export function CharactersHero({ messages }: { messages: Messages }) {
 
       <FloatingBlade alt={t.bladeAlt} layerRef={frontRef} />
 
-      {/* THE SPLIT STARTS AT `lg`, NOT `md`, and the right track is a
-          proportion WITH A FLOOR. The frame gives the aside a 244 track inside a
-          1224 content box; carried as literal pixels behind `md` that left 308px
-          of a 768 screen for a title set at 77px, so it broke to three lines and
-          the aside sat in a 244px gutter over the plate.
-
-          19.93% is 244 over 1224 — but a bare proportion is 161 at 1024, and the
-          CTA is 159 of button plus 24 of bracket and 32 of gap. It wrapped JOIN
-          THE TRIAL over three lines. `minmax(15.25rem, ...)` holds the frame own
-          244 until the proportion overtakes it, and the label is pinned besides.
-          Below `lg` the hero stacks the way the phone does. */}
       <div className="relative z-10 mx-auto grid w-full max-w-[90rem] grid-cols-1 px-6 pb-24 lg:grid-cols-[minmax(0,1fr)_minmax(15.25rem,19.93%)] lg:px-27 lg:pb-[7.25rem]">
         {/* ---- Left column: chip, title, body ---- */}
         <div className="pt-32 lg:pt-[14.1875rem]">

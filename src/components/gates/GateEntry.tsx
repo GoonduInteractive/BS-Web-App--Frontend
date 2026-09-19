@@ -1,37 +1,51 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 
 import { usePageTransition } from "@/components/transition/TransitionProvider";
+import type { GateId } from "@/lib/gates";
 
 /**
- * Whether the visitor has passed through the gate into the page behind it.
+ * Which gate the portal is showing.
  *
- * A GATE IS A DOOR, NOT A TALL HERO. You cannot scroll from the gate down into
- * the page: while the gate is up it is the only thing in the document, so there
- * is nothing to scroll to. The CTA tears, and the page is what the tear opens
- * onto — the first thing you see, at the top of the screen. Going back closes
- * the door again.
+ * THE GATES LIVE ON THE HOME ROUTE; THE PAGES HAVE THE URLS. Per the human
+ * (2026-09-14): "when on any gate the link should be `/en/` … you only see
+ * `/en/community` when you enter the main page of a specific gate." So `/en`
+ * is the portal — the entry screen first, then whichever Ọnụ Ụzọ the visitor
+ * is standing at — and `/en/the-game`, `/en/characters`, `/en/community`,
+ * `/en/competition` are the pages behind the doors, rendered as pages. A gate's
+ * CTA is a real link to its page; BACK TO ỤZỌ, the scroll cues and the rail
+ * come back here and say which door to stand at.
  *
- * WHY THE STATE LIVES THIS HIGH
+ * WHY THE STATE LIVES THIS HIGH. Three things read it from opposite sides of
+ * the tree — the portal (under `children`), the rail and the chrome (under
+ * `SiteChrome`) — and the provider is mounted in `layout.tsx` so it is an
+ * ancestor of all of them and SURVIVES NAVIGATION: a page can name the gate
+ * before pushing the home route, and the portal paints that gate on its first
+ * render. It sits inside TransitionProvider because every move plays the tear.
  *
- * Two things react to it and they are on opposite sides of the tree: the gate
- * page (`GateView`, under `children`) and the gate rail (under `SiteChrome`).
- * The provider is mounted in `layout.tsx` so it is an ancestor of both. It also
- * has to sit INSIDE TransitionProvider, because entering plays the tear.
- *
- * IT IS NOT IN THE URL, deliberately. The gate and the page it opens are one
- * route (`/the-game` is both Ọnụ Ụzọ 1 and The Game), which is what keeps the
- * page's content in the statically generated HTML for crawlers and keeps one
- * canonical URL per gate. The cost is that the door does not survive a reload
- * or a share — arriving at `/the-game` always starts at the gate, which is the
- * behaviour the gate is for.
+ * IT IS NOT IN THE URL, deliberately. Four doors at one address is what the
+ * human asked for, and the pages keep one canonical URL each with their
+ * content in the static HTML. The cost: a cold load of `/en` is always the
+ * entry screen, and a shared page link opens straight onto the page — which
+ * is what a page link should do.
  */
 const GateEntryContext = createContext<{
-  entered: boolean;
-  enter: () => void;
-  leave: () => void;
+  /** The gate the portal shows, or null for the entry screen. */
+  shown: GateId | null;
+  /**
+   * Stand at a gate, through the tear. On the portal it swaps the face in
+   * place; from anywhere else it names the gate and navigates home, so the
+   * portal opens on it.
+   */
+  showGate: (id: GateId) => void;
+  /**
+   * Name the gate with NO transition — the pull-up's move. The visitor has
+   * already travelled the distance by scrolling and the sheet they pulled up
+   * IS the gate; the curtain pushes the home route itself, under cover.
+   */
+  seedGate: (id: GateId) => void;
 } | null>(null);
 
 export function useGateEntry() {
@@ -40,47 +54,44 @@ export function useGateEntry() {
   return ctx;
 }
 
+/** The portal's path for the pathname's locale: `/en`, `/ig`. */
+export function homeHref(pathname: string): string {
+  return `/${pathname.split("/").filter(Boolean)[0] ?? "en"}`;
+}
+
 export function GateEntryProvider({ children }: { children: ReactNode }) {
-  const { reveal } = usePageTransition();
+  const { reveal, navigate } = usePageTransition();
   const pathname = usePathname();
+  const [shown, setShown] = useState<GateId | null>(null);
+
+  const home = homeHref(pathname);
+  const atHome = pathname === home;
 
   /**
-   * WHICH GATE IS OPEN, not whether one is — and that is what makes every gate
-   * start closed for free.
-   *
-   * A plain boolean would have to be reset on every route change, which means an
-   * effect that calls setState, which means a second render on every navigation
-   * for a value that was already knowable. Storing the route instead makes
-   * `entered` derived: arriving anywhere new cannot match, so the next gate is
-   * closed the moment its pathname lands.
+   * Both moves are the same shape: tear, change under full cover, reveal. On
+   * the portal there is no route to change, so `reveal` runs the swap itself;
+   * elsewhere the gate is named first and `navigate` plays the tear around
+   * the push. The scroll reset matters on the portal too — a gate is one
+   * viewport tall and must open at its top.
    */
-  const [openedRoute, setOpenedRoute] = useState<string | null>(null);
-  const entered = openedRoute === pathname;
-
-  /**
-   * Both directions are the same move: tear, swap under full cover, reveal.
-   *
-   * The scroll reset is not optional in either direction. Leaving from halfway
-   * down the page has to land on the gate, not on the middle of nothing; and
-   * `instant` is required because a smooth scroll would still be travelling
-   * when the tear opened.
-   */
-  const swap = useCallback(
-    (next: string | null) => {
-      reveal(() => {
-        setOpenedRoute(next);
-        window.scrollTo({ top: 0, behavior: "instant" });
-      });
+  const showGate = useCallback(
+    (id: GateId) => {
+      if (atHome) {
+        reveal(() => {
+          setShown(id);
+          window.scrollTo({ top: 0, behavior: "instant" });
+        });
+        return;
+      }
+      setShown(id);
+      navigate(home);
     },
-    [reveal],
+    [atHome, home, navigate, reveal],
   );
 
-  const enter = useCallback(() => swap(pathname), [swap, pathname]);
-  const leave = useCallback(() => swap(null), [swap]);
+  const seedGate = useCallback((id: GateId) => setShown(id), []);
 
-  return (
-    <GateEntryContext.Provider value={{ entered, enter, leave }}>
-      {children}
-    </GateEntryContext.Provider>
-  );
+  const value = useMemo(() => ({ shown, showGate, seedGate }), [shown, showGate, seedGate]);
+
+  return <GateEntryContext.Provider value={value}>{children}</GateEntryContext.Provider>;
 }

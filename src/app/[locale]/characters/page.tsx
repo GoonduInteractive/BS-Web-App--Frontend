@@ -6,7 +6,7 @@ import { MoreChampionsSection } from "@/components/characters/MoreChampionsSecti
 import { RosterSection } from "@/components/characters/RosterSection";
 import { GateCurtain } from "@/components/gates/GateCurtain";
 import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
-import { gateHref, getGate, nextGate } from "@/lib/gates";
+import { getGate, nextGate } from "@/lib/gates";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
@@ -25,8 +25,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   const messages = getMessages(locale);
   // The page ends by handing on to the next gate, as the frame's cue says.
+  // The page ends by handing on to the next DOOR, on the portal — see GateEntry.
   const next = nextGate(getGate("characters"));
-  const nextHref = gateHref(locale, next);
   const nextCopy = messages.gates[next.id];
 
   return (
@@ -34,12 +34,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <div className="bg-roster">
         <CharactersHero messages={messages} />
         <RosterSection messages={messages} locale={locale} />
-        <GateCurtain
-          preview={gatePreview(next, locale, messages)}
-          href={nextHref}
-          title={nextCopy.title}
-        >
-          <MoreChampionsSection messages={messages} nextHref={nextHref} />
+        <GateCurtain preview={gatePreview(next, locale, messages)} href={`/${locale}`} gate={next.id} title={nextCopy.title}>
+          <MoreChampionsSection messages={messages} nextGate={next.id} />
         </GateCurtain>
       </div>
     </GatePage>

@@ -7,7 +7,8 @@ import { StorySection } from "@/components/game/StorySection";
 import { SummonsSection } from "@/components/game/SummonsSection";
 import { TwoPathsSection } from "@/components/game/TwoPathsSection";
 import { GateCurtain } from "@/components/gates/GateCurtain";
-import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
+import { GatePage, gateMetadata } from "@/components/gates/GatePage";
+import { CharactersHero } from "@/components/characters/CharactersHero";
 import { gateHref, getGate } from "@/lib/gates";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -43,14 +44,15 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <GameHero messages={messages} />
       <StorySection messages={messages} />
       <TwoPathsSection messages={messages} />
-      <SoulsSection messages={messages} />
+      <SoulsSection messages={messages} locale={locale} />
       {/* The last section is what the pull-up rides over, so it goes INSIDE the
           curtain — which makes it sticky and puts the panel after it in flow. */}
-      <GateCurtain
-        preview={gatePreview(next, locale, messages)}
-        href={nextHref}
-        title={nextCopy.title}
-      >
+      {/* THE VARIANT: the seam opens onto the Characters PAGE, not its door.
+          `preview` is that page's own first section and `href` its route.
+
+          Same rule as the door variant — the preview must BE the destination's
+          component, not a copy of it, or the swap snaps. */}
+      <GateCurtain preview={<CharactersHero messages={messages} />} href={nextHref} title={nextCopy.title}>
         <SummonsSection messages={messages} nextHref={nextHref} />
       </GateCurtain>
     </GatePage>
