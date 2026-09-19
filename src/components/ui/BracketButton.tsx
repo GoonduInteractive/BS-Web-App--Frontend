@@ -143,6 +143,11 @@ export function BracketButton({
    * button with a router push would have been a link wearing the wrong hat.
    *
    * Styling is identical either way; only the element changes.
+   *
+   * AN ABSOLUTE URL IS AN OFF-SITE LINK and renders a plain `<a>` opening a
+   * new tab (`rel="noopener noreferrer"`) rather than a `Link` — the itch.io
+   * store page behind DOWNLOAD GAME. The transition layer already lets any
+   * href that does not start with "/" through untouched.
    */
   href?: string;
 }) {
@@ -175,7 +180,11 @@ export function BracketButton({
   return (
     <span className={cn("group inline-flex items-center", brackets && BRACKET_SIZE[size].gap)}>
       {brackets && <Bracket field={field} size={size} />}
-      {href ? (
+      {href && /^https?:\/\//.test(href) ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={shared}>
+          {body}
+        </a>
+      ) : href ? (
         <Link href={href} className={shared}>
           {body}
         </Link>

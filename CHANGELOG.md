@@ -15,6 +15,10 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- The About page now names the team: Moses Onwe (COO), Michael Apeli (Lead Technical Environment
+  Artist), Goodness Ndukwe (CTO & Lead Game Developer), Leslie Osinachi-Okok (CEO & Lead Game
+  Designer) and Sophia Ahuoyiza (Product Engineering Lead), with new portraits of Michael and Sophia
+  and a new team photograph behind the hero.
 - Omalicha, The Sun Kin, joins Soma and Kaira among the CHAMPIONS on The Characters page, with
   her own card, modal and detail page — gun and dagger, divine golden sun chi, her four attacks,
   and two of her renders in the gallery.
@@ -147,6 +151,8 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- Every call to action on The Game and The Characters pages — WATCH TRAILER, JOIN THE TRIAL, EXPLORE
+  CHARACTERS — reads DOWNLOAD GAME for now and opens the game's itch.io page in a new tab.
 - The Characters page shows Soma, Kaira, Omalicha and Nze Ugwuoke for now. The GODS group and the
   other adversaries — Lieutenant, The Beast, Oji Isi, Ogbuagu, Mkpume — are set aside until their
   details are ready and their pages are not reachable in the meantime. On The Game page, SOULS OF

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { GateReturn } from "@/components/gates/GateReturn";
 import { Reveal } from "@/components/motion/Reveal";
-import { BracketButton } from "@/components/ui/BracketButton";
+import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { usePointerDrift } from "@/hooks/usePointerDrift";
 import type { Messages } from "@/lib/utils/messages";
 
@@ -101,12 +101,12 @@ export function CharactersHero({ messages }: { messages: Messages }) {
           {/* The brackets start at 1088, level with the aside's left edge — no
               overhang here, unlike the Game hero's -2.5. */}
           <div className="mt-[4.625rem]">
-            <JoinButton label={t.cta} />
+            <JoinButton label={messages.site.downloadCta} />
           </div>
         </Reveal>
 
         <div className="mt-[3.125rem] -ml-1 lg:hidden">
-          <JoinButton label={t.cta} />
+          <JoinButton label={messages.site.downloadCta} />
         </div>
       </div>
     </section>
@@ -200,10 +200,7 @@ function FloatingBlade({
  * reason it does on the Game hero's trailer button — wide sets the label past
  * the frame's 126.
  */
+/** JOIN THE TRIAL, for now DOWNLOAD GAME (2026-09-19, per the human). */
 function JoinButton({ label }: { label: string }) {
-  return (
-    <BracketButton className="px-4 py-[1.1875rem] leading-none tracking-normal whitespace-nowrap">
-      {label}
-    </BracketButton>
-  );
+  return <DownloadGameButton label={label} className="px-4 py-[1.1875rem] leading-none tracking-normal whitespace-nowrap" />;
 }

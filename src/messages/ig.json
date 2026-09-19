@@ -1,7 +1,8 @@
 {
   "site": {
     "description": "TODO ig: The official site for Beyond Service: Trial of the Gods, by Goondu Games Studio.",
-    "ogImageAlt": "TODO ig: Key art from Beyond Service: Trial of the Gods"
+    "ogImageAlt": "TODO ig: Key art from Beyond Service: Trial of the Gods",
+    "downloadCta": "TODO ig: DOWNLOAD GAME"
   },
   "entry": {
     "enterIgbo": "NNỌỌ",
@@ -1079,14 +1080,29 @@
       "chip": "TODO ig: THE TEAM",
       "title": "TODO ig: BEHIND GOONDU GAMES",
       "members": {
+        "moses": {
+          "name": "TODO ig: MOSES ONWE",
+          "role": "TODO ig: COO",
+          "portraitAlt": "TODO ig: Stand-in portrait for Moses Onwe"
+        },
+        "michael": {
+          "name": "TODO ig: MICHAEL APELI",
+          "role": "TODO ig: Lead Technical Environment Artist",
+          "portraitAlt": "TODO ig: Portrait of Michael Apeli"
+        },
+        "goodness": {
+          "name": "TODO ig: GOODNESS NDUKWE",
+          "role": "TODO ig: CTO & Lead Game Developer",
+          "portraitAlt": "TODO ig: Stand-in portrait for Goodness Ndukwe"
+        },
         "leslie": {
-          "name": "FIRSTNAME SURNAME",
-          "role": "TODO ig: Position at GOONDU",
-          "portraitAlt": "TODO ig: Portrait of a Goondu Games team member"
+          "name": "TODO ig: LESLIE OSINACHI-OKOK",
+          "role": "TODO ig: CEO & Lead Game Designer",
+          "portraitAlt": "TODO ig: Portrait of Leslie Osinachi-Okok"
         },
         "sophia": {
-          "name": "SOPHIA AHUOYIZA",
-          "role": "TODO ig: Position at GOONDU",
+          "name": "TODO ig: SOPHIA AHUOYIZA",
+          "role": "TODO ig: Product Engineering Lead",
           "portraitAlt": "TODO ig: Portrait of Sophia Ahuoyiza"
         }
       }

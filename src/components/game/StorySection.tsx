@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 
-import { BracketButton } from "@/components/ui/BracketButton";
+import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { Chip } from "@/components/ui/Chip";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
@@ -98,9 +98,8 @@ export function StorySection({ messages }: { messages: Messages }) {
               data-story-cta
               className="absolute inset-x-0 bottom-16.75 flex justify-center pr-8 md:static md:mt-15.25 md:justify-start md:pr-0"
             >
-              <BracketButton className="text-body px-4.5 leading-none tracking-[0.04em]">
-                {t.cta}
-              </BracketButton>
+              {/* JOIN THE TRIAL, for now DOWNLOAD GAME (2026-09-19). */}
+              <DownloadGameButton label={messages.site.downloadCta} className="text-body px-4.5 leading-none tracking-[0.04em]" />
             </div>
           </div>
         </div>

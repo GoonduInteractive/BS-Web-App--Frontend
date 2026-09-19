@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef } from "react";
 
 import { ScrollCue } from "@/components/gates/ScrollCue";
-import { BracketButton } from "@/components/ui/BracketButton";
+import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
@@ -87,9 +87,8 @@ export function SummonsSection({
           </p>
 
           <div data-summons-cta className="mt-12">
-            <BracketButton className="inline-flex items-center gap-3 px-4.5 py-[1.15rem] leading-none tracking-normal">
-              {t.cta}
-            </BracketButton>
+            {/* JOIN THE TRIAL, for now DOWNLOAD GAME (2026-09-19). */}
+            <DownloadGameButton label={messages.site.downloadCta} className="inline-flex items-center gap-3 px-4.5 py-[1.15rem] leading-none tracking-normal" />
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 
 import { CharacterCard } from "@/components/characters/CharacterCard";
 import { CharacterModal, type RosterEntry } from "@/components/characters/CharacterModal";
-import { BracketButton } from "@/components/ui/BracketButton";
+import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { Carousel } from "@/components/ui/Carousel";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { TornDivider } from "@/components/ui/TornDivider";
@@ -189,13 +189,12 @@ export function SoulsSection({ messages, locale }: { messages: Messages; locale:
           >
             {/* Inverted for the light field: graphite fill, bone text, and the
                 red brackets that come with `field="light"`. */}
-            <BracketButton
+            {/* EXPLORE CHARACTERS → /characters, for now DOWNLOAD GAME (2026-09-19). */}
+            <DownloadGameButton
+              label={messages.site.downloadCta}
               field="light"
-              href={`/${locale}/characters`}
               className="bg-graphite text-bone px-8 py-[1.15rem] leading-none tracking-normal"
-            >
-              {t.cta}
-            </BracketButton>
+            />
           </div>
         </div>
       </div>

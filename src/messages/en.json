@@ -1,7 +1,8 @@
 {
   "site": {
     "description": "The official site for Beyond Service: Trial of the Gods, by Goondu Games Studio.",
-    "ogImageAlt": "Key art from Beyond Service: Trial of the Gods"
+    "ogImageAlt": "Key art from Beyond Service: Trial of the Gods",
+    "downloadCta": "DOWNLOAD GAME"
   },
   "entry": {
     "enterIgbo": "NNỌỌ",
@@ -1093,14 +1094,29 @@
       "chip": "THE TEAM",
       "title": "BEHIND GOONDU GAMES",
       "members": {
+        "moses": {
+          "name": "MOSES ONWE",
+          "role": "COO",
+          "portraitAlt": "Stand-in portrait for Moses Onwe"
+        },
+        "michael": {
+          "name": "MICHAEL APELI",
+          "role": "Lead Technical Environment Artist",
+          "portraitAlt": "Portrait of Michael Apeli"
+        },
+        "goodness": {
+          "name": "GOODNESS NDUKWE",
+          "role": "CTO & Lead Game Developer",
+          "portraitAlt": "Stand-in portrait for Goodness Ndukwe"
+        },
         "leslie": {
-          "name": "FIRSTNAME SURNAME",
-          "role": "Position at GOONDU",
-          "portraitAlt": "Portrait of a Goondu Games team member"
+          "name": "LESLIE OSINACHI-OKOK",
+          "role": "CEO & Lead Game Designer",
+          "portraitAlt": "Portrait of Leslie Osinachi-Okok"
         },
         "sophia": {
           "name": "SOPHIA AHUOYIZA",
-          "role": "Position at GOONDU",
+          "role": "Product Engineering Lead",
           "portraitAlt": "Portrait of Sophia Ahuoyiza"
         }
       }
