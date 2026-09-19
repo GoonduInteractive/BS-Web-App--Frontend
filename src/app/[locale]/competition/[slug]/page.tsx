@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { GodsWatching } from "@/components/competition/GodsWatching";
 import { JourneyStepper } from "@/components/competition/JourneyStepper";
@@ -10,6 +11,7 @@ import { TournamentProgress } from "@/components/competition/TournamentProgress"
 import { TournamentRules } from "@/components/competition/TournamentRules";
 import { JsonLd } from "@/components/chrome/JsonLd";
 import { getTournament, getTournamentSlugs } from "@/lib/api/tournaments";
+import { isHidden } from "@/lib/hidden-sections";
 import { isLocale, LOCALES } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { localePath, pageMetadata, SITE_URL } from "@/lib/seo";
@@ -60,6 +62,9 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!tournament?.detail) notFound();
 
   const messages = getMessages(locale);
+  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  if (isHidden("competition")) return <HiddenSection section="competition" locale={locale} messages={messages} />;
+
   const copy: { name: string; description?: string } =
     messages.competition.tournaments[tournament.copyKey as keyof typeof messages.competition.tournaments];
   const canRegister = tournament.status === "registrationOpen" || tournament.status === "open";

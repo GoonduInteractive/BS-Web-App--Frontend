@@ -128,6 +128,13 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- News, the Merch Store, Comics and Competition are not public yet: every address under them —
+  the news feed and its articles, the store, a product, the cart and checkout, the comics and the
+  reader, the competition page and its tournaments — opens onto the Coming Soon page for now, with
+  the section's name on the chip, the way Terms of Use and Privacy Policy do. The header's Comics,
+  News and Merch Store links, the menu's COMPETITION and the fourth door's DISCOVER THE COMPETITION
+  still go where they went and land there. Those pages are kept out of search and out of the
+  sitemap while they are hidden; a link to an article or product that does not exist is still a 404.
 - Hovering Comics, News or Merch Store in the header turns the word cream and draws a hand-drawn
   hairline under it; in the menu, the gate links turn the same cream and a flared rule draws in
   beneath them where a plain line used to grow.

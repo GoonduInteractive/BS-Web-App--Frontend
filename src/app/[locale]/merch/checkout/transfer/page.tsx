@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { TransferView } from "@/components/merch/TransferView";
 import { getComics, getProducts } from "@/lib/api/merch";
 import { getTransferAccount } from "@/lib/api/payment";
+import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -34,6 +36,9 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
+  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
+
   const [account, products, comics] = await Promise.all([
     getTransferAccount(),
     getProducts(),

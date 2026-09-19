@@ -5,6 +5,7 @@ import { getArticles } from "@/lib/api/news";
 import { getTournamentSlugs } from "@/lib/api/tournaments";
 import { CHARACTERS } from "@/lib/characters";
 import { GATES } from "@/lib/gates";
+import { hiddenSectionOf } from "@/lib/hidden-sections";
 import { localePath, SITE_URL } from "@/lib/seo";
 import { LOCALES } from "@/lib/utils/locales";
 
@@ -16,7 +17,9 @@ import { LOCALES } from "@/lib/utils/locales";
  * adapter the sitemap follows without a change here.
  *
  * Left out, deliberately: the profile, the cart and the checkout (one
- * visitor's own; also `noindex`), and comics with no pages (they 404).
+ * visitor's own; also `noindex`), comics with no pages (they 404), and every
+ * route in a section the public may not see yet (`lib/hidden-sections.ts` —
+ * they are the Coming Soon page for now, and `noindex`).
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [articles, products, comics, tournaments] = await Promise.all([
@@ -43,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const absolute = (p: string) => new URL(p, SITE_URL).toString();
 
-  return paths.flatMap(({ path, priority, lastModified }) =>
+  return paths.filter(({ path }) => hiddenSectionOf(path) === null).flatMap(({ path, priority, lastModified }) =>
     LOCALES.map((locale) => ({
       url: absolute(localePath(locale, path)),
       priority,
