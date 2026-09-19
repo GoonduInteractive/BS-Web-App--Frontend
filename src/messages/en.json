@@ -1021,6 +1021,31 @@
     "body": "This piece of our universe is still taking shape. Check back soon.",
     "cta": "BACK TO HOME"
   },
+  "register": {
+    "cta": "REGISTER",
+    "label": "Register",
+    "close": "Close",
+    "title": "JOIN THE COMMUNITY",
+    "body": "Register to be part of Beyond Service from the start. Release news, tournaments and community events, straight to your WhatsApp and email.",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "whatsapp": "WhatsApp Number",
+      "email": "Email"
+    },
+    "submit": "SUBMIT",
+    "error": "Your details were not sent. Please try again.",
+    "done": {
+      "label": "Registration successful",
+      "title": "REGISTRATION SUCCESSFUL",
+      "body": "Your place in the community is secured. We have your details and will reach you on WhatsApp and email."
+    },
+    "again": {
+      "label": "Already registered",
+      "title": "ALREADY REGISTERED",
+      "body": "{email} is already on the list — we have your details from an earlier registration. There is nothing more to do; we will reach you on WhatsApp and email."
+    }
+  },
   "footer": {
     "navLabel": "Footer",
     "wordmarkAlt": "Beyond Service",

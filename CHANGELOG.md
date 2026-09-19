@@ -15,6 +15,13 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- A REGISTER button in the header, where the account avatar was. It opens JOIN THE COMMUNITY —
+  on the same torn paper as the tournament sign-up — asking for a first name, last name, WhatsApp
+  number and email; SUBMIT sends them to Goondu's Google Sheet and the sheet says REGISTRATION
+  SUCCESSFUL. Someone who registers again with the same email sees ALREADY REGISTERED instead,
+  with the address named, and nothing is added twice. A field left empty or a malformed email or
+  number is caught before anything is sent, and a failed send says so and lets you try again.
+  Escape or the cross closes it.
 - Terms of Use and Privacy Policy, linked from every footer, now open a Coming Soon page — the
   forest gate, the page's name on a torn chip, COMING SOON!, "This piece of our universe is still
   taking shape. Check back soon." and BACK TO HOME — until the real pages are written. The gate
@@ -128,6 +135,8 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- The account avatar and its dropdown are gone from the header for now; there is no account
+  behind them yet. REGISTER stands in their place.
 - News, the Merch Store, Comics and Competition are not public yet: every address under them —
   the news feed and its articles, the store, a product, the cart and checkout, the comics and the
   reader, the competition page and its tournaments — opens onto the Coming Soon page for now, with

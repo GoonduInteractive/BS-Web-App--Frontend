@@ -999,6 +999,31 @@
     "body": "TODO ig: This piece of our universe is still taking shape. Check back soon.",
     "cta": "TODO ig: BACK TO HOME"
   },
+  "register": {
+    "cta": "TODO ig: REGISTER",
+    "label": "TODO ig: Register",
+    "close": "TODO ig: Close",
+    "title": "TODO ig: JOIN THE COMMUNITY",
+    "body": "TODO ig: Register to be part of Beyond Service from the start. Release news, tournaments and community events, straight to your WhatsApp and email.",
+    "fields": {
+      "firstName": "TODO ig: First Name",
+      "lastName": "TODO ig: Last Name",
+      "whatsapp": "TODO ig: WhatsApp Number",
+      "email": "TODO ig: Email"
+    },
+    "submit": "TODO ig: SUBMIT",
+    "error": "TODO ig: Your details were not sent. Please try again.",
+    "done": {
+      "label": "TODO ig: Registration successful",
+      "title": "TODO ig: REGISTRATION SUCCESSFUL",
+      "body": "TODO ig: Your place in the community is secured. We have your details and will reach you on WhatsApp and email."
+    },
+    "again": {
+      "label": "TODO ig: Already registered",
+      "title": "TODO ig: ALREADY REGISTERED",
+      "body": "TODO ig: {email} is already on the list — we have your details from an earlier registration. There is nothing more to do; we will reach you on WhatsApp and email."
+    }
+  },
   "footer": {
     "navLabel": "TODO ig: Footer",
     "wordmarkAlt": "Beyond Service",

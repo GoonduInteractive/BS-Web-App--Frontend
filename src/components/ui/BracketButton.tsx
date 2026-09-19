@@ -104,6 +104,7 @@ export function BracketButton({
   field = "dark",
   tone = "signal",
   size = "md",
+  brackets = true,
   href,
   className,
   ...props
@@ -125,6 +126,13 @@ export function BracketButton({
    * button's own size is the caller's, through `className`, as it always was.
    */
   size?: keyof typeof BRACKET_SIZE;
+  /**
+   * Draw the ornaments. Off, this is the same button — fill, wash, scale,
+   * label — with nothing beside it: the header's REGISTER, per the human ("the
+   * button component but without the bracket"). The hover still scales the
+   * button; there is simply no gap for it to close.
+   */
+  brackets?: boolean;
   /**
    * Render as a link rather than a button.
    *
@@ -165,8 +173,8 @@ export function BracketButton({
   );
 
   return (
-    <span className={cn("group inline-flex items-center", BRACKET_SIZE[size].gap)}>
-      <Bracket field={field} size={size} />
+    <span className={cn("group inline-flex items-center", brackets && BRACKET_SIZE[size].gap)}>
+      {brackets && <Bracket field={field} size={size} />}
       {href ? (
         <Link href={href} className={shared}>
           {body}
@@ -176,7 +184,7 @@ export function BracketButton({
           {body}
         </button>
       )}
-      <Bracket field={field} side="right" size={size} />
+      {brackets && <Bracket field={field} side="right" size={size} />}
     </span>
   );
 }
