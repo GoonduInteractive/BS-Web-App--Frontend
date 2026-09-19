@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Host_Grotesk, Teko } from "next/font/google";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 
 import { JsonLd } from "@/components/chrome/JsonLd";
 import { LocaleProvider } from "@/components/chrome/LocaleProvider";
@@ -15,11 +16,7 @@ import { getProfile } from "@/lib/api/profile";
 import { getMessages } from "@/lib/utils/messages";
 import "../globals.css";
 
-/**
- * Display face — headings, gate titles, section titles, menu links, buttons.
- * Teko ships weights 300-700 only: the Figma sheet's "Heavy" maps to 700 and
- * "Roman" maps to 400 (overview section 8, open question 2).
- */
+
 const teko = Teko({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "600", "700"],
@@ -35,14 +32,7 @@ const hostGrotesk = Host_Grotesk({
   display: "swap",
 });
 
-/**
- * The site-wide defaults every route inherits and refines through
- * `pageMetadata` (src/lib/seo.ts): the absolute base every relative URL in
- * the tree resolves against, the fallback title and card, the indexing rule.
- * The favicon set, the Apple icon and the manifest are Next file conventions
- * beside this app's root (`src/app/favicon.ico`, `icon1.png`, `icon2.png`,
- * `apple-icon.png`, `manifest.ts`) and need no entry here.
- */
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const description = getMessages(isLocale(locale) ? locale : "en").site.description;
@@ -125,6 +115,19 @@ export default async function LocaleLayout({
             </LocaleProvider>
           </GateEntryProvider>
         </TransitionProvider>
+
+        {/* Microsoft Clarity — session recordings & heatmaps.
+            `lazyOnload` waits for the browser idle time so it never blocks
+            render or competes with your fonts and hydration. */}
+        <Script id="ms-clarity" strategy="lazyOnload">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "ykej0l8day");
+          `}
+        </Script>
       </body>
     </html>
   );
