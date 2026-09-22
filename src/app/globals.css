@@ -258,6 +258,17 @@
   );
 }
 
+/* A scroll region with no visible scrollbar. The dialog scrolls its own copy
+   and the bar would sit on the torn parchment plate, which has no straight edge
+   to sit against. `scrollbar-width` covers Firefox, the pseudo-element covers
+   WebKit and Chromium. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility bg-roster {
   background-image: linear-gradient(
     180deg,

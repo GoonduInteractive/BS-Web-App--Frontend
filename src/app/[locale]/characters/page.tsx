@@ -11,24 +11,7 @@ import { getGate, nextGate } from "@/lib/gates";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
-/**
- * Ọnụ Ụzọ 2 — The Characters. Figma: context/design/02-gates/ for the gate,
- * context/design/04-characters/ for the page behind it.
- *
- * Same arrangement as The Game: the gate comes from GatePage, and these sections
- * are the page BEHIND it rather than sections below it. The gate's CTA tears and
- * this is what the tear opens onto.
- *
- * The hero and the roster exist. MORE CHAMPIONS ARE COMING and the scroll cue
- * are designed and not yet built.
- *
- * THE GROUND IS A PAGE-LEVEL GRADIENT, NOT A SECTION ONE. Read down the frame's
- * left margin, the human's linear-gradient(180deg, #170303, #010101) fits the
- * whole 5570px page to within a value at every sample; mapped onto the roster
- * section alone it would run three times as steep. So it is applied here, once,
- * and each section paints over its own share of it — the hero with its plate,
- * and MORE CHAMPIONS with its own fill once that is built. See `bg-roster`.
- */
+
 export function generateMetadata({
   params,
 }: {
