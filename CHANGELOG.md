@@ -15,6 +15,45 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- Sound. Each gate has its own ambience, matched to the place its plate shows, and a gate's
+  page keeps the same one as its door, so walking in from the portal does not break it; every
+  other page shares a default. Moving between them crossfades. Sound stays off until you press
+  the toggle — and nothing is downloaded until you do — and the toggle now means the same
+  thing on the entry screen and in the corner of every page.
+- The About page's team is split across three tabs — Core Team, Contributors and Partners —
+  using the same switcher as the Community Wall, with the marker, the sliding underline and
+  arrow-key navigation. Each person's tab is set in the content editor; a tab with nobody in
+  it yet says COMING SOON!.
+- The Characters now come from the content editor — the roster, each character's page, the
+  cards on The Game page's SOULS OF THE ARENA and the sitemap. A character switched off in the
+  editor has no card, no page and no place in OTHER CHAMPIONS; the six set aside on 19
+  September (Ogbun'abali, Lieutenant, The Beast, Oji Isi, Ogbuagu, Mkpume) wait there, switched
+  off, with their name, group and portrait, for their profiles from the character bible. Before
+  the first character is switched on the roster shows crossed swords and COMING SOON!.
+- The team on the About page now comes from the content editor — name, role, portrait and
+  order per person, and a switch to keep someone off the page until their portrait is ready.
+  The five people are there as they were. Before the first person is published the band shows
+  a group glyph and COMING SOON! under THE TEAM, the way the empty News page does.
+- The News page and every article now come from the content editor. An article's cover is the
+  admin's choice: the picture on its own, or a torn banner — a coloured band carrying a volume
+  tag, a title and an author line, its edge torn, with the picture beside it — in any of ten
+  colours from the site's palette. An article whose Igbo has not arrived yet reads in English
+  rather than going missing.
+- A content editor at `/admin`, built on Decap CMS. The content team signs in with GitHub and
+  edits three things in English and Igbo side by side, with a draft, review and publish flow
+  where publishing opens a pull request against the live branch: news articles (title, excerpt,
+  date, tags, pictures, body), the characters (name, alias, group, portrait, bio, weapon and chi
+  type, introduction, lore, core abilities, forms, action shot, gallery, and a switch to keep one
+  off the site until it is ready) and the team on the About page (name, role, portrait, order).
+  Entries land as markdown under `src/content/`, and the News page, the About page's team and
+  the Characters all read the editor's entries.
+- `npm run cms` runs a local proxy so articles can be edited on a developer's machine with no
+  sign-in. The README explains both the login setup and local editing.
+- The Igbo locale can now be machine-translated from the English with `npm run translate`, for
+  both the site's copy and the editor's entries. Only what is still untranslated is sent, and
+  Igbo that someone has written or corrected by hand is never overwritten. A workflow runs it
+  automatically whenever English copy or new entries reach the live branch, so an editor writes
+  in English, copies it to the Igbo tab and publishes; the Igbo follows on its own.
 - The About page now names the team: Moses Onwe (COO), Michael Apeli (Lead Technical Environment
   Artist), Goodness Ndukwe (CTO & Lead Game Developer), Leslie Osinachi-Okok (CEO & Lead Game
   Designer) and Sophia Ahuoyiza (Product Engineering Lead), with new portraits of Michael and Sophia
@@ -151,6 +190,22 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- The sound control now shows its state: muted, the bell is struck through in red inside a
+  plain square; with sound on, the red is gone, the plate is the torn one, and small marks
+  drift up off the bell. They hold still for anyone who has asked for reduced motion.
+- SOULS OF THE ARENA on The Game page now shows the first three characters from the roster,
+  with their own portraits, and its button reads EXPLORE CHARACTERS and opens The Characters
+  page. Reordering the characters in the editor changes which three appear.
+- The News page is public again, and in the sitemap. Until the first article is published it
+  shows a newspaper glyph, COMING SOON! and BACK TO HOME under its heading, the way the empty
+  cart does.
+- An article whose Igbo tab was left partly empty reads those parts in English rather than
+  breaking, and a picture placed in the text of an article is drawn the same way as the
+  article's body picture.
+- An article's author is set in the editor: it appears as the byline under the title, and on
+  the foot of a torn cover. Left empty, the byline reads By Goondu Staff as before.
+- The editor always loads its current set of fields, so a tab left open across a change no
+  longer offers fields that no longer exist.
 - Every call to action on The Game and The Characters pages — WATCH TRAILER, JOIN THE TRIAL, EXPLORE
   CHARACTERS — reads DOWNLOAD GAME for now and opens the game's itch.io page in a new tab.
 - The Characters page shows Soma, Kaira, Omalicha and Nze Ugwuoke for now. The GODS group and the
@@ -227,8 +282,17 @@ blockers live in local working notes and are deliberately not repeated here.
 - The clocks on a running tournament's matches count down again — the sample matches had
   quietly run out.
 
+### Removed
+
+- The eleven placeholder news articles and their sample copy. Nothing is shown on the News
+  page that the content team has not written.
+
 ### Fixed
 
+- On the About page, a last row with fewer people than the row holds now sits centred at every
+  screen size, instead of hugging the left.
+- A torn news cover sizes its title to the band it sits in, so a long headline wraps and fits
+  instead of running past the tear, and the volume tag keeps its shape on the article page.
 - On a phone the leaderboard's tables scroll sideways the way the character sheet's story scrolls:
   a slim bar, and the edge with more behind it fades so it reads as "more this way".
 - On the Competition page the Tournaments / Leaderboards underline sat well below its tab; it is
