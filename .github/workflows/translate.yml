@@ -1,0 +1,54 @@
+# Machine-translates the Igbo locale whenever English copy or CMS content lands on
+# main — a Decap publish, or a merge from dev — and commits the result back.
+# Only what is untranslated is sent; hand-edited Igbo is never overwritten.
+# See scripts/translate/translate.mjs and README.md → Igbo translation.
+#
+# Needs the repository secret GOOGLE_TRANSLATE_API_KEY. A push made with the
+# workflow's own token does not trigger workflows, so this cannot loop.
+name: Translate Igbo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/messages/en.json
+      - src/content/**
+      - public/admin/config.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: translate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Translate what is untranslated
+        run: npm run translate
+        env:
+          GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }}
+
+      - name: Commit the Igbo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/messages/ig.json src/content scripts/translate/ledger.json
+          if git diff --cached --quiet; then
+            echo "Nothing to translate."
+            exit 0
+          fi
+          git commit -m "content(i18n): machine-translate Igbo"
+          git push
