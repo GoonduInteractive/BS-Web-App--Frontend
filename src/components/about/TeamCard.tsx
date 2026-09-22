@@ -28,7 +28,7 @@ export function TeamCard({
           priority={priority}
           sizes="(max-width: 767px) 90vw, (max-width: 1023px) 45vw, 22vw"
 
-          className={`absolute h-auto max-w-none transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100 ${portraitClass}`}
+          className={`absolute transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100 ${portraitClass}`}
         />
       </div>
 

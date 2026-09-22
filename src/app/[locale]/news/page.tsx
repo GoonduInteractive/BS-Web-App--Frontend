@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { ArticleCard } from "@/components/news/ArticleCard";
+import { EmptyNews } from "@/components/news/EmptyNews";
 import { LoadMore } from "@/components/news/LoadMore";
-import { getComics } from "@/lib/api/merch";
 import { getFeatured, getMoreNews } from "@/lib/api/news";
-import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -32,14 +30,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
-  if (isHidden("news")) return <HiddenSection section="news" locale={locale} messages={messages} />;
-
-  const [{ lead, beside }, more, comics] = await Promise.all([
-    getFeatured(),
-    getMoreNews(),
-    getComics(),
-  ]);
+  const [{ lead, beside }, more] = await Promise.all([getFeatured(locale), getMoreNews(locale)]);
 
   return (
     <main className="bg-roster">
@@ -53,43 +44,30 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           </p>
         </header>
 
-        {/* The lead block: one large article, two beside it. */}
-        <div className="mt-16 grid grid-cols-1 gap-10 lg:mt-28.75 lg:grid-cols-[57.4%_40.5%] lg:justify-between lg:gap-0">
-          <ArticleCard
-            article={lead}
-            comics={comics}
-            messages={messages}
-            locale={locale}
-            size="lead"
-            priority
-          />
+        {/* The lead block: one large article, two beside it — or, until the
+            first article is published, the empty state. */}
+        {!lead ? <EmptyNews messages={messages} locale={locale} /> : null}
+        {lead ? (
+          <div className="mt-16 grid grid-cols-1 gap-10 lg:mt-28.75 lg:grid-cols-[57.4%_40.5%] lg:justify-between lg:gap-0">
+            <ArticleCard article={lead} messages={messages} locale={locale} size="lead" priority />
 
-          <div className="flex flex-col gap-11.75">
-            {beside.map((article) => (
-              <ArticleCard
-                key={article.slug}
-                article={article}
-                comics={comics}
-                messages={messages}
-                locale={locale}
-                size="wide"
-              />
-            ))}
+            <div className="flex flex-col gap-11.75">
+              {beside.map((article) => (
+                <ArticleCard key={article.slug} article={article} messages={messages} locale={locale} size="wide" />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
 
-        <section className="pt-20 md:pt-28.25">
-          <h2 className="font-display text-menu-fg text-[2.25rem] leading-none font-semibold tracking-[-0.03em] uppercase">
-            {messages.news.more}
-          </h2>
+        {more.length > 0 ? (
+          <section className="pt-20 md:pt-28.25">
+            <h2 className="font-display text-menu-fg text-[2.25rem] leading-none font-semibold tracking-[-0.03em] uppercase">
+              {messages.news.more}
+            </h2>
 
-          <LoadMore
-            articles={more}
-            comics={comics}
-            messages={messages}
-            locale={locale}
-          />
-        </section>
+            <LoadMore articles={more} messages={messages} locale={locale} />
+          </section>
+        ) : null}
       </div>
 
       <SiteFooter messages={messages} locale={locale} />

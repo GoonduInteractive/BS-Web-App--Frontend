@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
 
 import { getComics, getProducts } from "@/lib/api/merch";
+import { getCharacters } from "@/lib/api/characters";
 import { getArticles } from "@/lib/api/news";
 import { getTournamentSlugs } from "@/lib/api/tournaments";
-import { CHARACTERS } from "@/lib/characters";
 import { GATES } from "@/lib/gates";
 import { hiddenSectionOf } from "@/lib/hidden-sections";
 import { localePath, SITE_URL } from "@/lib/seo";
-import { LOCALES } from "@/lib/utils/locales";
+import { DEFAULT_LOCALE, LOCALES } from "@/lib/utils/locales";
 
 /**
  * `/sitemap.xml`: every public route in both locales, each entry carrying its
@@ -22,8 +22,10 @@ import { LOCALES } from "@/lib/utils/locales";
  * they are the Coming Soon page for now, and `noindex`).
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, products, comics, tournaments] = await Promise.all([
-    getArticles(),
+  const [articles, characters, products, comics, tournaments] = await Promise.all([
+    // An entry exists when its English file does; the path is the same in both locales.
+    getArticles(DEFAULT_LOCALE),
+    getCharacters(DEFAULT_LOCALE),
     getProducts(),
     getComics(),
     getTournamentSlugs(),
@@ -36,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/news", priority: 0.8 },
     { path: "/comics", priority: 0.7 },
     { path: "/merch", priority: 0.7 },
-    ...CHARACTERS.map((c) => ({ path: `/characters/${c.slug}`, priority: 0.8 })),
+    ...characters.map((c) => ({ path: `/characters/${c.slug}`, priority: 0.8 })),
     ...articles.map((a) => ({ path: `/news/${a.slug}`, priority: 0.6, lastModified: a.published })),
     ...comics.filter((c) => c.pages.length > 0).map((c) => ({ path: `/comics/${c.slug}`, priority: 0.6 })),
     ...comics.map((c) => ({ path: `/merch/comics/${c.slug}`, priority: 0.5 })),

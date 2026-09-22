@@ -9,6 +9,7 @@ import { TwoPathsSection } from "@/components/game/TwoPathsSection";
 import { GateCurtain } from "@/components/gates/GateCurtain";
 import { GatePage, gateMetadata } from "@/components/gates/GatePage";
 import { CharactersHero } from "@/components/characters/CharactersHero";
+import { getCharacters } from "@/lib/api/characters";
 import { gateHref, getGate } from "@/lib/gates";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -34,6 +35,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
+  const characters = await getCharacters(locale);
   // The page ends by handing on to the next gate, as the frame's cue says.
   const next = getGate("characters");
   const nextHref = gateHref(locale, next);
@@ -44,7 +46,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <GameHero messages={messages} />
       <StorySection messages={messages} />
       <TwoPathsSection messages={messages} />
-      <SoulsSection messages={messages} locale={locale} />
+      <SoulsSection characters={characters} messages={messages} locale={locale} />
       {/* The last section is what the pull-up rides over, so it goes INSIDE the
           curtain — which makes it sticky and puts the panel after it in flow. */}
       {/* THE VARIANT: the seam opens onto the Characters PAGE, not its door.

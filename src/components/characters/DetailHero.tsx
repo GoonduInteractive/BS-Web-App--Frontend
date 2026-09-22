@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useRef } from "react";
 
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
-import { castCopy, type Character } from "@/lib/characters";
+import { figureClass, heroBoxClass } from "@/lib/characters";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { TornPlate } from "@/components/ui/TornPlate";
 import type { Messages } from "@/lib/utils/messages";
+import type { Character } from "@/types/character";
 
 export function DetailHero({
   character,
@@ -20,8 +21,6 @@ export function DetailHero({
   backHref: string;
 }) {
   const t = messages.characters.detail;
-  const cast = castCopy(messages, character.castKey);
-  const detail = cast.detail;
   const root = useRef<HTMLElement>(null);
 
   useGsapScene(root, heroScene);
@@ -38,14 +37,14 @@ export function DetailHero({
         data-hero-figure
         className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center lg:inset-y-0 lg:items-end"
       >
-        <div className={`relative h-136 lg:h-full ${character.heroBoxClass ?? "w-full max-w-228"}`}>
+        <div className={`relative h-136 lg:h-full ${heroBoxClass(character.image) ?? "w-full max-w-228"}`}>
           <Image
             src={character.image}
-            alt={cast.alt}
+            alt={character.alt}
             fill
             priority
             sizes="(max-width: 767px) 100vw, 57rem"
-            className={`object-cover object-top opacity-40 lg:opacity-100 ${character.figureClass ?? ""}`}
+            className={`object-cover object-top opacity-40 lg:opacity-100 ${figureClass(character.image) ?? ""}`}
           />
         </div>
       </div>
@@ -80,7 +79,7 @@ export function DetailHero({
               data-hero-name
               className="font-display text-menu-fg text-detail-name block leading-none font-semibold tracking-[-0.055em] uppercase"
             >
-              {cast.name}
+              {character.name}
             </h1>
           </span>
 
@@ -88,7 +87,7 @@ export function DetailHero({
             data-hero-item
             className="font-display text-menu-fg text-h3 mt-5.75 leading-none font-semibold tracking-[-0.02em] uppercase"
           >
-            {cast.role}
+            {character.role}
           </p>
           <div data-hero-rule className="mt-12.25 w-full max-w-87.25 origin-left">
             <Image
@@ -101,14 +100,16 @@ export function DetailHero({
             />
           </div>
 
+          {/* A tile is drawn only when its value is written — an entry switched
+              on before its stats arrive shows the rule alone. */}
           <dl data-hero-item className="mt-7 flex gap-13">
-            <Stat label={t.weaponLabel} value={detail.stats.weapon} mark="weapon" />
-            <Stat label={t.chiLabel} value={detail.stats.chi} mark="chi" />
+            {character.weapon ? <Stat label={t.weaponLabel} value={character.weapon} mark="weapon" /> : null}
+            {character.chi ? <Stat label={t.chiLabel} value={character.chi} mark="chi" /> : null}
           </dl>
         </div>
 
         <div data-hero-item className="flex flex-col gap-6.25 lg:pt-23.75">
-          {detail.intro.map((paragraph) => (
+          {character.intro.map((paragraph) => (
             <p key={paragraph.slice(0, 24)} className="text-menu-fg/85 font-body text-body">
               {paragraph}
             </p>

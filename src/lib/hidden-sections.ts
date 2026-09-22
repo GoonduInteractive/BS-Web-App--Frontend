@@ -18,9 +18,10 @@ import type { Messages } from "@/lib/utils/messages";
  *
  * TO OPEN A SECTION, REMOVE ITS NAME HERE. Nothing else changes.
  */
-export type HiddenSectionName = "news" | "merch" | "comics" | "competition";
+// export type HiddenSectionName = "news" | "merch" | "comics" | "competition";
+export type HiddenSectionName =  "merch" | "comics" | "competition";
 
-export const HIDDEN_SECTIONS: readonly HiddenSectionName[] = ["news", "merch", "comics", "competition"];
+export const HIDDEN_SECTIONS: readonly HiddenSectionName[] = ["merch", "comics", "competition"];
 
 export function isHidden(section: HiddenSectionName): boolean {
   return HIDDEN_SECTIONS.includes(section);
@@ -39,8 +40,8 @@ export function hiddenSectionOf(path: string): HiddenSectionName | null {
  */
 export function hiddenSectionLabel(section: HiddenSectionName, messages: Messages): string {
   switch (section) {
-    case "news":
-      return messages.nav.news;
+    // case "news":
+    //   return messages.nav.news;
     case "merch":
       return messages.nav.merch;
     case "comics":
