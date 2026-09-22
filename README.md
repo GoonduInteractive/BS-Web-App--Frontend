@@ -29,9 +29,3 @@ Teko for display, Host Grotesk for body.
 
 All theme tokens live in `src/app/globals.css` under `@theme`. This is Tailwind v4 —
 there is no `tailwind.config.ts`.
-
-## Working notes
-
-Project context, design references and the per-feature workflow live in `context/`,
-which is gitignored and shared out of band. `CLAUDE.md` at the root carries the
-short version.
