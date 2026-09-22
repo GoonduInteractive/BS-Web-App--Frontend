@@ -408,6 +408,28 @@
   }
 }
 
+/* The sound toggle's motes: a small mark drifting up off the bell and fading,
+   while the sound is on. Three of them run on staggered delays (set in the
+   component) so the group never pulses in step. The global reduced-motion rule
+   at the foot of this file stops them. */
+.sound-mote {
+  animation: sound-mote 1.8s var(--ease-gate) infinite;
+}
+
+@keyframes sound-mote {
+  0% {
+    opacity: 0;
+    translate: 0 0.3rem;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    translate: 0 -0.6rem;
+  }
+}
+
 .scroll-cue-bob {
   animation: scroll-cue-bob 1.9s ease-in-out infinite;
 }
