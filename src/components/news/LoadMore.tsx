@@ -7,20 +7,15 @@ import { ArticleCard } from "@/components/news/ArticleCard";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Article } from "@/types/news";
-import type { ComicIssue } from "@/types/merch";
-
 
 const PAGE = 6;
 
-
 export function LoadMore({
   articles,
-  comics,
   messages,
   locale,
 }: {
   articles: readonly Article[];
-  comics: readonly ComicIssue[];
   messages: Messages;
   locale: Locale;
 }) {
@@ -33,12 +28,7 @@ export function LoadMore({
       <ul className="mt-8 grid grid-cols-1 gap-x-6 gap-y-16 sm:grid-cols-2 lg:mt-8.75 lg:grid-cols-3">
         {visible.map((article) => (
           <li key={article.slug}>
-            <ArticleCard
-              article={article}
-              comics={comics}
-              messages={messages}
-              locale={locale}
-            />
+            <ArticleCard article={article} messages={messages} locale={locale} />
           </li>
         ))}
       </ul>

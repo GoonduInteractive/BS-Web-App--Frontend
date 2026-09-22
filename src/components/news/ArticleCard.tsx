@@ -1,27 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ComicBanner } from "@/components/merch/ComicBanner";
 import { TagPills, relativeDate } from "@/components/news/ArticleMeta";
+import { BAND, BAND_FIELD, seedFor } from "@/components/news/bands";
+import { TornBanner } from "@/components/ui/TornBanner";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
-import type { Article } from "@/types/news";
-import type { ComicIssue } from "@/types/merch";
+import type { Article, ArticleCover } from "@/types/news";
 
 /**
  * One article card. Figma: `context/design/08-news/News.png`.
  *
- * Three sizes, all the same anatomy — media, title with the date beside it, tag
- * pills, excerpt — differing only in the media's aspect and the title's size:
+ * Three sizes, all the same anatomy — cover, title with the date beside it, tag
+ * pills, excerpt — differing only in the cover's aspect and the title's size:
  *
- *   lead   735 x 571 media (1.29), title ~31px    the index's left column
- *   wide   519 x 235 media (2.21), title ~25px    the two beside it
- *   grid   410 x 236 media (1.74), title ~25px    MORE NEWS, and the detail row
+ *   lead   735 x 571 cover (1.29), title ~31px    the index's left column
+ *   wide   519 x 235 cover (2.21), title ~25px    the two beside it
+ *   grid   410 x 236 cover (1.74), title ~25px    MORE NEWS, and the detail row
  *
- * TWO CARDS CARRY A COMIC INSTEAD OF A PHOTOGRAPH, and the frame draws them in
- * the LANDSCAPE composition rather than the portrait cover — band and title
- * left, a vertical torn edge, the figure beside it. `ComicBanner` is that
- * composition; `ArticleMedia` is a union so a card can hold either.
+ * THE COVER IS THE ADMIN'S CHOICE, per article, in the CMS: the picture full
+ * bleed, or the frame's torn banner — a coloured band carrying a volume tag,
+ * the title and an author line, torn vertically, with the picture beside it.
+ * `ArticleCover` is that union; `CoverView` draws either.
  */
 const MEDIA: Record<CardSize, string> = {
   lead: "aspect-[735/571]",
@@ -39,23 +39,17 @@ export type CardSize = "lead" | "wide" | "grid";
 
 export function ArticleCard({
   article,
-  comics,
   messages,
   locale,
   size = "grid",
   priority = false,
 }: {
   article: Article;
-  /** Only needed when an article's media is a comic cover. */
-  comics: readonly ComicIssue[];
   messages: Messages;
   locale: Locale;
   size?: CardSize;
   priority?: boolean;
 }) {
-  const t = messages.news;
-  const copy = t.articles[article.copyKey as keyof typeof t.articles];
-
   return (
     <article>
       <Link
@@ -63,11 +57,11 @@ export function ArticleCard({
         className="focus-visible:outline-signal group block focus-visible:outline-2 focus-visible:outline-offset-4"
       >
         <div className={`relative w-full overflow-hidden ${MEDIA[size]}`}>
-          <ArticleMediaView
-            article={article}
-            comics={comics}
-            messages={messages}
-            alt={copy.imageAlt}
+          <CoverView
+            cover={article.cover}
+            alt={article.imageAlt}
+            author={article.author}
+            seed={seedFor(article.slug)}
             priority={priority}
           />
         </div>
@@ -76,7 +70,7 @@ export function ArticleCard({
           <h3
             className={`font-display text-menu-fg leading-[1.15] font-semibold tracking-[-0.03em] uppercase ${TITLE[size]}`}
           >
-            {copy.title}
+            {article.title}
           </h3>
           <p className="text-menu-fg/85 font-body mt-1 shrink-0 text-[0.6875rem] leading-none tracking-[0.06em] uppercase">
             {relativeDate(article.published, messages)}
@@ -92,45 +86,54 @@ export function ArticleCard({
             size === "lead" ? "line-clamp-3" : "line-clamp-2"
           }`}
         >
-          {copy.excerpt}
+          {article.excerpt}
         </p>
       </Link>
     </article>
   );
 }
 
-export function ArticleMediaView({
-  article,
-  comics,
-  messages,
+/** The cover, in a box the caller has already sized. */
+export function CoverView({
+  cover,
   alt,
+  author,
+  seed,
   priority = false,
-  body = false,
 }: {
-  article: Article;
-  comics: readonly ComicIssue[];
-  messages: Messages;
+  cover: ArticleCover;
   alt: string;
+  /** The line at the foot of a torn band. Absent draws none. */
+  author?: string;
+  seed: number;
   priority?: boolean;
-  body?: boolean;
 }) {
-  const media = body ? (article.bodyMedia ?? article.media) : article.media;
-
-  if (media.kind === "comic") {
-    const issue = comics.find((c) => c.slug === media.slug);
-    // The cover is composed, so a missing issue means no media rather than a
-    // broken image. Nothing is substituted.
-    if (!issue) return null;
+  if (cover.kind === "torn") {
+    const band = BAND[cover.band];
     return (
       <div className="absolute inset-0 overflow-hidden">
-        <ComicBanner issue={issue} messages={messages} priority={priority} />
+        <TornBanner
+          figure={cover.src}
+          alt={alt}
+          // Whole, on the dark field, as the frame shows its renders — a picture
+          // with its own dark ground reads the same; a padded render sits smaller.
+          figureClass="object-contain object-[76%_center]"
+          seamClass={band.seam}
+          fieldClass={BAND_FIELD}
+          chipClass={band.chip}
+          volume={cover.volume}
+          title={cover.title}
+          author={author}
+          seed={seed}
+          priority={priority}
+        />
       </div>
     );
   }
 
   return (
     <Image
-      src={media.src}
+      src={cover.src}
       alt={alt}
       fill
       priority={priority}
@@ -138,4 +141,9 @@ export function ArticleMediaView({
       className="object-cover object-[50%_38%] transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
     />
   );
+}
+
+/** A plain picture in a box the caller has already sized — the detail page's second image. */
+export function BodyImage({ src, alt }: { src: string; alt: string }) {
+  return <Image src={src} alt={alt} fill sizes="(max-width: 1023px) 92vw, 60vw" className="object-cover object-[50%_38%]" />;
 }

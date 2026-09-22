@@ -4,61 +4,49 @@ import { useRef, useState } from "react";
 
 import { CharacterCard } from "@/components/characters/CharacterCard";
 import { CharacterModal, type RosterEntry } from "@/components/characters/CharacterModal";
-import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
+import { BracketButton } from "@/components/ui/BracketButton";
 import { Carousel } from "@/components/ui/Carousel";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { useGsapScene } from "@/hooks/useGsapScene";
-import { castCopy, characterHref, getCharacter } from "@/lib/characters";
+import { rosterEntry } from "@/components/characters/roster-entry";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
+import type { Character } from "@/types/character";
 
 /**
  * SOULS OF THE ARENA — three of the roster on The Game page.
  *
- * THE CARDS OPEN THE CHARACTER'S MODAL and the CTA goes to the Characters page,
- * per the human. The modal is the Characters page's own `CharacterModal`, fed
- * the same `RosterEntry` the roster builds — copy from `castCopy`, artwork and
- * slug from the `CHARACTERS` manifest — so a character reads the same here as
- * there, and SEE FULL DETAILS in it goes to `/characters/[slug]`. The card
- * faces keep this section's own copy and portraits, which the frame draws.
+ * THIS SECTION IS THE ROSTER'S WINDOW, NOT A LIST OF ITS OWN (the human,
+ * 2026-09-22: "it is supposed to be connected to the character page … it seems
+ * like it is independent"). The page hands it the same characters The
+ * Characters page draws, and it shows the FIRST THREE in roster order — so
+ * which three appear is the editor's `order`, set in /admin, and a character
+ * switched off is never here either.
+ *
+ * Everything on a card is that character's own: portrait, framing, name and
+ * alias, through the same `rosterEntry` the roster page uses. The card opens
+ * the Characters page's own `CharacterModal`, and SEE FULL DETAILS in it goes
+ * to `/characters/[slug]`.
  */
-export function SoulsSection({ messages, locale }: { messages: Messages; locale: Locale }) {
+export function SoulsSection({
+  characters,
+  messages,
+  locale,
+}: {
+  characters: readonly Character[];
+  messages: Messages;
+  locale: Locale;
+}) {
   const t = messages.theGame.souls;
   const roster = messages.characters.roster;
   const root = useRef<HTMLElement>(null);
   const [open, setOpen] = useState<RosterEntry | null>(null);
 
-  const entry = (slug: string): RosterEntry | null => {
-    const character = getCharacter(slug);
-    if (!character) return null;
-    return {
-      ...castCopy(messages, character.castKey),
-      image: character.image,
-      portraitClass: character.portraitClass,
-      figureClass: character.figureClass,
-      href: characterHref(locale, character.slug),
-    };
-  };
-
-  // THE FACES READ THE ROSTER'S COPY (2026-09-19). The frame drew Soma, Kaira
-  // and Ogbun'abali with this section's own labels; the character document
-  // renamed the aliases and parked the gods, and the human asked for Ugwuoke
-  // in Ogbun'abali's place — "on the game page, Ogbunabali is still showing,
-  // replace him with Ugwuoke." So the third card is Nze, and each card's name
-  // and alias are the same strings the Characters page shows, from one place.
-  // The portraits stay this section's own: the frame's crops of Soma and
-  // Kaira, and Nze's roster cutout.
-  const cards = [
-    { slug: "soma", image: "/assets/characters/soma-gate-character.png" },
-    { slug: "kaira", image: "/assets/characters/kaira-crop.png" },
-    { slug: "nze-ugwuoke", image: "/assets/characters/Nze-Ugwuoke.png" },
-  ].flatMap(({ slug, image }) => {
-    const character = getCharacter(slug);
-    if (!character) return [];
-    const copy = castCopy(messages, character.castKey);
-    return [{ slug, image, name: copy.name, role: copy.role }];
-  });
+  // The frame draws three cards, so the row takes the first three of the
+  // roster. Fewer on the roster, fewer here; none, and the carousel is not
+  // drawn at all and the section is its title, its line and the CTA.
+  const cards = characters.slice(0, 3).map((character) => rosterEntry(character, locale));
 
   useGsapScene(root, (gsap, q, section) => {
     const title = q("[data-souls-title] h2");
@@ -162,6 +150,7 @@ export function SoulsSection({ messages, locale }: { messages: Messages; locale:
             Slide width is the frame's arithmetic, not a round number:
             100vw less the 24px gutter, the 16px gap and the 15px peek.
           */}
+          {cards.length ? (
           <Carousel
             label={t.title}
             className="mt-7.5 md:mt-23"
@@ -169,32 +158,42 @@ export function SoulsSection({ messages, locale }: { messages: Messages; locale:
             itemClassName="w-[calc(100vw-3.4375rem)] sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3.125rem)/3)]"
           >
             {cards.map((card) => (
-
-              <div data-souls-card key={card.name}>
+              <div data-souls-card key={card.href}>
                 <CharacterCard
                   variant="roster"
                   name={card.name}
                   role={card.role}
                   image={card.image}
-                  imageAlt={card.name}
-                  onSelect={() => setOpen(entry(card.slug))}
+                  imageAlt={card.alt}
+                  portraitClass={card.portraitClass}
+                  figureClass={card.figureClass}
+                  onSelect={() => setOpen(card)}
                 />
               </div>
             ))}
           </Carousel>
+          ) : null}
 
           <div
             data-souls-cta
             className="mt-12 flex justify-center md:mt-11 md:justify-end"
           >
             {/* Inverted for the light field: graphite fill, bone text, and the
-                red brackets that come with `field="light"`. */}
-            {/* EXPLORE CHARACTERS → /characters, for now DOWNLOAD GAME (2026-09-19). */}
-            <DownloadGameButton
-              label={messages.site.downloadCta}
+                red brackets that come with `field="light"`.
+
+                EXPLORE CHARACTERS → The Characters page, the frame's own CTA.
+                It stood in as DOWNLOAD GAME from 2026-09-19 until the human
+                asked for it back (2026-09-22): "the button shouldn't be
+                download games, it should be explore characters which now takes
+                you to the character page itself." The other CTAs on this page
+                are unchanged. */}
+            <BracketButton
+              href={`/${locale}/characters`}
               field="light"
               className="bg-graphite text-bone px-8 py-[1.15rem] leading-none tracking-normal"
-            />
+            >
+              {t.cta}
+            </BracketButton>
           </div>
         </div>
       </div>

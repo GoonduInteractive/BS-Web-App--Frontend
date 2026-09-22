@@ -1,0 +1,382 @@
+# Decap CMS configuration. Read by /admin/index.html.
+#
+# The site is on Vercel, so Decap's default Netlify Identity login is not
+# available. Editors log in with GitHub instead, and the token exchange runs on
+# a small OAuth gateway deployed as its own Vercel project — see README.md →
+# Content editing for the setup. This repo carries no server code for it.
+#
+# WHAT DECAP OWNS: News, the About page's team, and the Characters. Everything
+# game-side — leaderboards, tournaments, community, merch, players — comes
+# through the adapters in src/lib/api/ and, later, the game backend. Not here.
+
+backend:
+  # name: git-gateway
+  name: github
+  repo: GoonduInteractive/BS-Web-App--Frontend
+  Vercel builds production from main, so published entries land there.
+  branch: main
+  # The OAuth gateway (daresaydigital/decap-cms-oauth). Decap sends editors to
+  # <base_url>/auth and receives the token from <base_url>/callback.
+  # TODO(human): replace with the gateway's URL once it is deployed on Vercel.
+  base_url: https://decap-cms-oauth-gray.vercel.app/
+  commit_messages:
+    create: 'content({{collection}}): create {{slug}}'
+    update: 'content({{collection}}): update {{slug}}'
+    delete: 'content({{collection}}): delete {{slug}}'
+    uploadMedia: 'content(media): upload {{path}}'
+    deleteMedia: 'content(media): delete {{path}}'
+
+# Draft → In review → Ready. Publishing merges the pull request Decap opened
+# against main, so nothing reaches the live site unreviewed.
+publish_mode: editorial_workflow
+
+# On localhost with `npm run cms` running, the admin offers to work against the
+# local checkout instead of GitHub — no login, files land in the working tree.
+# local_backend: true
+
+# The default upload folder. News uses it; the other two collections point at
+# the folders their pictures already live in.
+media_folder: public/assets/news
+public_folder: /assets/news
+
+# Every entry is written in both locales. One entry, two tabs in the editor:
+# src/content/<collection>/en/<slug>.md and src/content/<collection>/ig/<slug>.md.
+# A field marked `i18n: true` is translated; `i18n: duplicate` is the same in
+# both and greyed out on the Igbo tab.
+#
+# THE IGBO TAB DOES NOT HAVE TO BE WRITTEN BY HAND. Decap insists both tabs are
+# filled before publishing, so the editor clicks "Fill in from another locale"
+# on the Igbo tab, which copies the English across, and publishes. After the
+# publish lands on main, scripts/translate/translate.mjs (run by the Translate
+# Igbo workflow) sees Igbo that is identical to the English and machine-
+# translates it. Igbo an editor writes or corrects by hand is never overwritten.
+i18n:
+  structure: multiple_folders
+  locales: [en, ig]
+  default_locale: en
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+collections:
+  # ---------------------------------------------------------------------------
+  # NEWS — the News & Updates page. Mirrors `Article` in src/types/news.ts;
+  # src/lib/api/news.ts reads these files at build (lib/schemas/news.ts checks them).
+  # ---------------------------------------------------------------------------
+  - name: news
+    label: News
+    label_singular: Article
+    description: Articles for the News & Updates page. Write the English; on the Igbo tab click "Fill in from another locale", then publish — the Igbo is translated automatically afterwards, and any Igbo you write yourself is kept.
+    folder: src/content/news
+    create: true
+    delete: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{slug}}'
+    summary: '{{title}} — {{published}}'
+    sortable_fields: [published, title]
+    view_filters:
+      - label: News
+        field: tags
+        pattern: news
+      - label: Announcements
+        field: tags
+        pattern: announcement
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        i18n: true
+      - label: Excerpt
+        name: excerpt
+        widget: text
+        hint: Shown on the article card and used as the page description.
+        i18n: true
+      - label: Published
+        name: published
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        i18n: duplicate
+      - label: Tags
+        name: tags
+        widget: select
+        multiple: true
+        options:
+          - { label: News, value: news }
+          - { label: Announcement, value: announcement }
+        default: [news]
+        i18n: duplicate
+      # The cover: the picture full bleed, or the torn banner — a coloured band
+      # on the left with a volume tag, a title and an author line, its edge
+      # torn, and the picture beside it. The admin's choice per article.
+      - label: Cover style
+        name: coverStyle
+        widget: select
+        options:
+          - { label: Full image — the picture on its own, value: full }
+          - { label: Torn banner — a coloured band with the volume tag, title and author, torn down its edge, with the picture beside it, value: torn }
+        default: full
+        hint: Choose Torn banner to get the tear. The three fields named "Torn banner" below do nothing while this says Full image.
+        i18n: duplicate
+      - label: Picture
+        name: image
+        widget: image
+        hint: The card and the top of the article. On a torn banner it is the picture to the right of the tear.
+        i18n: duplicate
+      - label: Picture description
+        name: imageAlt
+        widget: string
+        hint: What the picture shows, for screen readers and search.
+        i18n: true
+      - label: 'Torn banner: band colour'
+        name: band
+        widget: select
+        options:
+          - { label: Grey-blue (dusk), value: dusk }
+          - { label: Dark red (clot), value: clot }
+          - { label: Deep red (ember), value: ember }
+          - { label: Darkest red (oxblood), value: oxblood }
+          - { label: Red (blood), value: blood }
+          - { label: Bright red (carmine), value: carmine }
+          - { label: Crimson, value: crimson }
+          - { label: Near-black (menu), value: menu }
+          - { label: Black-blue (abyss), value: abyss }
+          - { label: Dark grey (ash), value: ash }
+        default: dusk
+        hint: The colour of the torn band. The site's palette; the frame uses grey-blue and dark red.
+        i18n: duplicate
+      - label: 'Torn banner: volume tag'
+        name: volume
+        widget: string
+        required: false
+        hint: The small plate above the title, e.g. VOL. 1. Leave empty for no plate.
+        i18n: true
+      - label: 'Torn banner: cover title'
+        name: coverTitle
+        widget: text
+        required: false
+        hint: The big title on the band. Press Enter to break a line. Empty uses the article title. A long one is sized down to fit the band.
+        i18n: true
+      - label: Author
+        name: author
+        widget: string
+        required: false
+        hint: Who wrote it. Shown as the byline on the article, and on a torn banner at the foot of the band. Empty uses "By Goondu Staff".
+        i18n: true
+      - label: Body image
+        name: bodyImage
+        widget: image
+        required: false
+        hint: An optional second picture partway down the article.
+        i18n: duplicate
+      - label: Body
+        name: body
+        widget: markdown
+        i18n: true
+
+  # ---------------------------------------------------------------------------
+  # CHARACTERS — the roster on The Characters page and each character's detail
+  # page. src/lib/api/characters.ts reads these files at build
+  # (lib/schemas/character.ts checks them). Per-file framing (how a render is
+  # cropped into a card, a tile or a plate) is NOT here: it is solved for each
+  # picture file and stays in code (lib/characters.ts), keyed by the file.
+  # The paragraph fields are plain text — the pages draw paragraphs, not
+  # markdown — so a blank line is a paragraph break and nothing else is styled.
+  # ---------------------------------------------------------------------------
+  - name: characters
+    label: Characters
+    label_singular: Character
+    description: The roster and the character detail pages — Champions, Gods, Legends & Adversaries. Bio is the card's modal; the rest is the detail page. Pictures are the delivered renders; how each one is cropped is set in code, not here. Igbo tab as for News.
+    folder: src/content/characters
+    create: true
+    delete: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    slug: '{{slug}}'
+    summary: '{{name}} — {{group}}'
+    sortable_fields: [order, name]
+    media_folder: /public/assets/characters
+    public_folder: /assets/characters
+    view_filters:
+      - label: Champions
+        field: group
+        pattern: champions
+      - label: Gods
+        field: group
+        pattern: gods
+      - label: Legends & Adversaries
+        field: group
+        pattern: legends
+    fields:
+      - label: Name
+        name: name
+        widget: string
+        i18n: true
+      - label: Alias
+        name: role
+        widget: string
+        required: false
+        hint: The line under the name, e.g. The Nightlit Fugitive.
+        i18n: true
+      - label: Group
+        name: group
+        widget: select
+        options:
+          - { label: Champions, value: champions }
+          - { label: Gods, value: gods }
+          - { label: Legends & Adversaries, value: legends }
+        default: champions
+        i18n: duplicate
+      - label: Show on the site
+        name: visible
+        widget: boolean
+        default: true
+        hint: Off keeps the character out of the roster and the detail pages until their art and copy are ready.
+        i18n: duplicate
+      - label: Order
+        name: order
+        widget: number
+        value_type: int
+        min: 1
+        default: 1
+        hint: Position within the group. Lower comes first.
+        i18n: duplicate
+      - label: Portrait
+        name: image
+        widget: image
+        hint: The roster card, the modal and the detail hero. A cutout PNG with a transparent background.
+        i18n: duplicate
+      - label: Portrait description
+        name: alt
+        widget: string
+        hint: What the portrait shows, for screen readers and search.
+        i18n: true
+      - label: Bio
+        name: bio
+        widget: text
+        required: false
+        hint: The short text on the roster card and its modal. Plain text; leave a blank line between paragraphs.
+        i18n: true
+      - label: Weapon
+        name: weapon
+        widget: string
+        hint: The first glyph tile on the detail hero, e.g. GAUNTLET (SPIRIT FIST).
+        i18n: true
+      - label: Chi type
+        name: chi
+        widget: string
+        hint: The second glyph tile, e.g. SPIRITUAL / ELECTRIC CHI.
+        i18n: true
+      - label: Introduction
+        name: intro
+        widget: text
+        hint: Beside the portrait on the detail page — personality, fighting style, then age and spiritual bond. One paragraph each, a blank line between them.
+        i18n: true
+      - label: Lore
+        name: lore
+        widget: text
+        hint: The backstory under the LORE heading. Plain text; leave a blank line between paragraphs.
+        i18n: true
+      - label: Core abilities
+        name: abilities
+        widget: list
+        summary: '{{fields.name}}'
+        i18n: true
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Description, name: text, widget: text }
+      - label: Forms
+        name: variants
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        hint: Only for a character with more than one form, like Nze Ugwuoke's staff and axe. Leave empty otherwise and the section does not appear.
+        i18n: true
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Description, name: text, widget: text }
+      - label: Action shot
+        name: action
+        widget: image
+        hint: The pose behind the ability tiles on the detail page.
+        i18n: duplicate
+      # A list cannot be `duplicate` in Decap, so this one is per locale like the
+      # abilities: fill it on the English tab, then "Fill in from another
+      # locale" on the Igbo tab copies it across.
+      - label: Gallery
+        name: gallery
+        widget: list
+        hint: The renders in the detail page's gallery, in order. Same pictures on both tabs.
+        i18n: true
+        field: { label: Picture, name: src, widget: image }
+
+  # ---------------------------------------------------------------------------
+  # TEAM — the people on the About page. Mirrors src/lib/team.ts plus the copy
+  # under messages.about.team.members. Card framing stays in code, as above.
+  # ---------------------------------------------------------------------------
+  - name: team
+    label: Team
+    label_singular: Team member
+    description: The people on the About page — Core team, Contributors and Partners, each its own tab, in the order given here. Igbo tab as for News.
+    folder: src/content/team
+    create: true
+    delete: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    slug: '{{slug}}'
+    summary: '{{name}} — {{role}}'
+    sortable_fields: [order, name]
+    media_folder: /public/assets/about
+    public_folder: /assets/about
+    fields:
+      - label: Name
+        name: name
+        widget: string
+        hint: As it appears on the card, e.g. MICHAEL APELI.
+        i18n: duplicate
+      - label: Role
+        name: role
+        widget: string
+        hint: e.g. Lead Technical Environment Artist.
+        i18n: true
+      - label: Group
+        name: group
+        widget: select
+        options:
+          - { label: Core team, value: core }
+          - { label: Contributors, value: contributors }
+          - { label: Partners, value: partners }
+        default: core
+        hint: Which tab this person appears under on the About page.
+        i18n: duplicate
+      - label: Order
+        name: order
+        widget: number
+        value_type: int
+        min: 1
+        default: 1
+        hint: Position within the tab. Lower comes first.
+        i18n: duplicate
+      - label: Show on the site
+        name: visible
+        widget: boolean
+        default: true
+        i18n: duplicate
+      - label: Portrait
+        name: image
+        widget: image
+        i18n: duplicate
+      - label: Portrait description
+        name: portraitAlt
+        widget: string
+        hint: e.g. Portrait of Michael Apeli.
+        i18n: true

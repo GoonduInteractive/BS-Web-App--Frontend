@@ -6,6 +6,7 @@ import Script from "next/script";
 import { JsonLd } from "@/components/chrome/JsonLd";
 import { LocaleProvider } from "@/components/chrome/LocaleProvider";
 import { SiteChrome } from "@/components/chrome/SiteChrome";
+import { SoundProvider } from "@/components/chrome/SoundProvider";
 import { GateEntryProvider } from "@/components/gates/GateEntry";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { TransitionProvider } from "@/components/transition/TransitionProvider";
@@ -106,6 +107,9 @@ export default async function LocaleLayout({
           <SmoothScroll />
 
           <GateEntryProvider>
+            {/* Inside GateEntryProvider: the bed the portal plays is whichever
+                door it is standing at, which is that provider's state. */}
+            <SoundProvider>
             {/* The locale and its copy for the not-found boundary, which Next
                 renders without params. The same messages object SiteChrome takes. */}
             <LocaleProvider locale={locale} messages={getMessages(locale)}>
@@ -113,6 +117,7 @@ export default async function LocaleLayout({
 
               <SiteChrome messages={getMessages(locale)} profile={profile} />
             </LocaleProvider>
+            </SoundProvider>
           </GateEntryProvider>
         </TransitionProvider>
 

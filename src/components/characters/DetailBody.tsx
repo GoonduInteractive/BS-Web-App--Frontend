@@ -6,24 +6,27 @@ import { useRef } from "react";
 
 import { CharacterCard } from "@/components/characters/CharacterCard";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
-import { castCopy, characterHref, otherCharacters, withName, type Character } from "@/lib/characters";
+import { rosterEntry } from "@/components/characters/roster-entry";
+import { actionTileClass, galleryClass, withName } from "@/lib/characters";
 import type { Messages } from "@/lib/utils/messages";
+import type { Character } from "@/types/character";
 
 export function DetailBody({
   character,
+  others,
   messages,
   locale,
 }: {
   character: Character;
+  /** Everyone else on the roster, in roster order; the row takes the first three. */
+  others: readonly Character[];
   messages: Messages;
   locale: string;
 }) {
   const t = messages.characters.detail;
-  const cast = castCopy(messages, character.castKey);
-  const detail = cast.detail;
   const root = useRef<HTMLElement>(null);
 
-  const others = otherCharacters(character.slug).slice(0, 3);
+  const row = others.slice(0, 3);
 
   useGsapScene(root, bodyScene);
 
@@ -37,9 +40,9 @@ export function DetailBody({
           it down below. */}
       <div className="mx-auto w-full max-w-360">
        <div className="px-6 lg:px-[13.19%]">
-        <Block heading={withName(t.loreHeading, cast.name)} className="pt-28 lg:pt-58">
+        <Block heading={withName(t.loreHeading, character.name)} className="pt-28 lg:pt-58">
           <div className="flex flex-col gap-6.25">
-            {detail.lore.map((paragraph) => (
+            {character.lore.map((paragraph) => (
               <p key={paragraph.slice(0, 24)} data-rise className="text-menu-fg/85 font-body text-body">
                 {paragraph}
               </p>
@@ -49,7 +52,7 @@ export function DetailBody({
 
         <Block heading={t.abilitiesHeading} className="pt-28 lg:pt-41.75">
           <ul className="grid grid-cols-1 gap-x-6 gap-y-15 sm:grid-cols-2 lg:grid-cols-3">
-            {detail.abilities.map((ability) => (
+            {character.abilities.map((ability) => (
               <li key={ability.name} data-rise>
 
                 <div className="bg-menu relative aspect-144/130 w-full max-w-36 overflow-hidden">
@@ -59,7 +62,7 @@ export function DetailBody({
                     aria-hidden
                     fill
                     sizes="9rem"
-                    className={character.actionTileClass ?? "object-cover object-top"}
+                    className={actionTileClass(character.action)}
                   />
                 </div>
                 <h3 className="font-display text-menu-fg text-h6 mt-9.5 leading-none font-semibold tracking-[-0.02em] uppercase">
@@ -73,10 +76,10 @@ export function DetailBody({
 
         {/* Only Nze's document has forms (Staff / Axe). Where there are none the
             section is not drawn — the frame's slot, empty, rather than filled. */}
-        {detail.variants?.length ? (
+        {character.variants.length ? (
           <Block heading={t.variantsHeading} className="pt-28 lg:pt-46">
             <div className="flex flex-col gap-13">
-              {detail.variants.map((variant) => (
+              {character.variants.map((variant) => (
                 <div key={variant.name} data-rise>
                   <h3 className="font-display text-menu-fg text-h6 leading-none font-semibold tracking-[-0.02em] uppercase">
                     {variant.name}
@@ -90,19 +93,19 @@ export function DetailBody({
 
         {/* The gallery and OTHER CHAMPIONS break out of the two-column split. */}
         <div className="pt-28 lg:pt-46">
-          <Heading>{withName(t.galleryHeading, cast.name)}</Heading>
+          <Heading>{withName(t.galleryHeading, character.name)}</Heading>
 
           {/* One plate per delivered picture — two or three, see the manifest. */}
           <ul className="mt-14 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 lg:mt-26.25">
-            {character.gallery.map((plate) => (
-              <li key={plate.src} data-gallery className="bg-menu relative aspect-336/453 overflow-hidden">
+            {character.gallery.map((plate, i) => (
+              <li key={`${i}-${plate}`} data-gallery className="bg-menu relative aspect-336/453 overflow-hidden">
                 <div data-gallery-inner className="absolute inset-0">
                   <Image
-                    src={plate.src}
-                    alt={withName(t.galleryAlt, cast.name)}
+                    src={plate}
+                    alt={withName(t.galleryAlt, character.name)}
                     fill
                     sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 30vw"
-                    className={plate.className ?? "object-cover"}
+                    className={galleryClass(plate)}
                   />
                 </div>
               </li>
@@ -119,20 +122,19 @@ export function DetailBody({
             {t.otherHeading}
           </h2>
           <ul className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:mt-21">
-            {others.map((other) => {
-              const entry = castCopy(messages, other.castKey);
+            {row.map((other) => {
+              const entry = rosterEntry(other, locale);
               return (
                 <li key={other.slug} data-rise className="w-full max-w-102.5">
-
-                  <Link href={characterHref(locale, other.slug)} className="focus-visible:outline-signal block focus-visible:outline-2 focus-visible:outline-offset-4">
+                  <Link href={entry.href} className="focus-visible:outline-signal block focus-visible:outline-2 focus-visible:outline-offset-4">
                     <CharacterCard
                       variant="roster"
                       name={entry.name}
                       role={entry.role}
-                      image={other.image}
+                      image={entry.image}
                       imageAlt={entry.alt}
-                      portraitClass={other.portraitClass}
-                      figureClass={other.figureClass}
+                      portraitClass={entry.portraitClass}
+                      figureClass={entry.figureClass}
                     />
                   </Link>
                 </li>

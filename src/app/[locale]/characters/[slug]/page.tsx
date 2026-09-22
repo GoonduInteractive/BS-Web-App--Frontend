@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { DetailBody } from "@/components/characters/DetailBody";
 import { DetailHero } from "@/components/characters/DetailHero";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
-import { CHARACTERS, getCharacter } from "@/lib/characters";
+import { getCharacter, getCharacterSlugs, getOtherCharacters } from "@/lib/api/characters";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -21,19 +21,16 @@ import { pageMetadata } from "@/lib/seo";
  * is a plain page. That is also why it is the only route that carries a footer —
  * see SiteFooter for why one under the gate sequence would be wrong.
  *
- * FULLY STATIC. `generateStaticParams` enumerates every locale and slug, so all
- * eighteen pages are prerendered at build time, per the static-generation rule.
+ * FULLY STATIC. `generateStaticParams` enumerates every locale and every
+ * character the editor has switched on, so each page is prerendered at build
+ * time, per the static-generation rule; a character switched off has no page.
  *
- * FLAGGED: only Soma's copy is real, transcribed from the frame. The other
- * eight carry dummy lore, abilities, variants and stats written to fit each
- * character at the human's explicit instruction, and every one of them reuses
- * its own portrait for the ability tiles and gallery because no action art was
- * delivered. Both are expected to be replaced.
+ * THE COPY IS THE CMS'S (2026-09-22): what the content team writes in
+ * `src/content/characters/`, from Goondu's character bible.
  */
 export function generateStaticParams() {
-  return LOCALES.flatMap((locale) =>
-    CHARACTERS.map((character) => ({ locale, slug: character.slug })),
-  );
+  const slugs = getCharacterSlugs();
+  return LOCALES.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
 export async function generateMetadata({
@@ -43,19 +40,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
-  const character = getCharacter(slug);
+  const character = await getCharacter(locale, slug).catch(() => null);
   if (!character) return {};
 
-  const cast = getMessages(locale).characters.roster.cast[character.castKey];
   return pageMetadata({
     locale,
     path: `/characters/${character.slug}`,
-    title: `${cast.name} | Beyond Service: Trial of the Gods`,
-    // The first line of the intro is the tightest summary the copy has.
-    description: cast.detail.intro[0],
+    title: `${character.name} | Beyond Service: Trial of the Gods`,
+    // The first line of the intro is the tightest summary the copy has; the
+    // lore stands in for a character whose intro is still to come.
+    description: character.intro[0] ?? character.lore[0] ?? character.name,
     // The character's own render as the card, not the key art.
     image: character.image,
-    imageAlt: cast.name,
+    imageAlt: character.name,
   });
 }
 
@@ -67,10 +64,11 @@ export default async function Page({
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
 
-  const character = getCharacter(slug);
+  const character = await getCharacter(locale, slug).catch(() => null);
   if (!character) notFound();
 
   const messages = getMessages(locale);
+  const others = await getOtherCharacters(locale, slug);
 
   return (
     <main>
@@ -81,6 +79,7 @@ export default async function Page({
       />
       <DetailBody
         character={character}
+        others={others}
         messages={messages}
         locale={locale}
       />

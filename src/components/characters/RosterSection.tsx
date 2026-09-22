@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 
+import { Swords } from "lucide-react";
+
 import { CharacterCard } from "@/components/characters/CharacterCard";
 import { CharacterModal, type RosterEntry } from "@/components/characters/CharacterModal";
+import { rosterEntry } from "@/components/characters/roster-entry";
 import { Reveal } from "@/components/motion/Reveal";
-import { CHARACTERS, castCopy, characterHref, type Character } from "@/lib/characters";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { TornDivider } from "@/components/ui/TornDivider";
 import type { Messages } from "@/lib/utils/messages";
+import { CHARACTER_GROUPS, type Character } from "@/types/character";
 
 /**
  * Section 2 of The Characters page — the roster. Figma:
@@ -16,13 +20,13 @@ import type { Messages } from "@/lib/utils/messages";
  * Three groups on one ground: CHAMPIONS (2 cards), GODS (1), and
  * LEGENDS & ADVERSARIES (6, in a 3 x 2 grid). Every card opens a modal.
  *
- * WHAT SHOWS NOW (2026-09-19, per the human): CHAMPIONS has three cards —
- * Omalicha joined Soma and Kaira — the GODS group is commented out, and
- * LEGENDS & ADVERSARIES shows Nze Ugwuoke alone; the other five cards are
- * commented out beside him. Each hidden card's manifest entry is commented out
- * too (`lib/characters.ts`), so the record is one place. The geometry below is
- * the frame's and still holds: a row is its count of the one card width,
- * centred.
+ * WHO SHOWS IS THE CMS'S (2026-09-22): the page hands this section every
+ * character the editor has switched on, already in roster order, and each group
+ * draws the ones it has — a group with nobody in it is not drawn, which is
+ * what the GODS group looked like while Ogbun'abali was parked. Nobody at all,
+ * and the section draws the empty state under the tear instead. The geometry
+ * below is the frame's and still holds: a row is its count of the one card
+ * width, centred.
  *
  * ONE CARD SIZE, THREE COUNTS. That is the finding that shapes the whole
  * section. Every card in all four rows measures 410 x 513 with a 24px gutter,
@@ -93,6 +97,16 @@ const GRID = "grid grid-cols-1 justify-center gap-6";
 const CARD = "w-full max-w-[25.625rem]";
 
 /**
+ * A row's tracks by how many cards it holds — one centred, two across, or the
+ * legends' 3 x N. Whole class strings, since Tailwind scans source text.
+ */
+function columnsFor(count: number): string {
+  if (count <= 1) return "sm:grid-cols-[var(--card)]";
+  if (count === 2) return "sm:grid-cols-[repeat(2,var(--card))]";
+  return "sm:grid-cols-[repeat(2,var(--card))] lg:grid-cols-[repeat(3,var(--card))]";
+}
+
+/**
  * Portrait framing for the three hand-placed cards. See `portraitClass` on
  * CharacterCard for why these exist and how they were solved.
  *
@@ -107,25 +121,23 @@ const CARD = "w-full max-w-[25.625rem]";
  * and worth confirming against Figma.
  */
 
-export function RosterSection({ messages, locale }: { messages: Messages; locale: string }) {
+export function RosterSection({
+  characters,
+  messages,
+  locale,
+}: {
+  characters: readonly Character[];
+  messages: Messages;
+  locale: string;
+}) {
   const t = messages.characters.roster;
   const [open, setOpen] = useState<RosterEntry | null>(null);
 
-  // THE MANIFEST IS THE SOURCE OF THE ARTWORK AND THE SLUGS, and it moved there
-  // when the detail route landed: the roster grid, the modal's SEE FULL DETAILS
-  // and the detail page's OTHER CHAMPIONS row all need the same nine records,
-  // and three copies of that list would have drifted the first time an asset
-  // changed. Copy still comes from `messages`; `castKey` joins the two.
-  const entries = {} as Record<Character["castKey"], RosterEntry>;
-  for (const character of CHARACTERS) {
-    entries[character.castKey] = {
-      ...castCopy(messages, character.castKey),
-      image: character.image,
-      portraitClass: character.portraitClass,
-      figureClass: character.figureClass,
-      href: characterHref(locale, character.slug),
-    };
-  }
+  const groups = CHARACTER_GROUPS.map((group) => ({
+    group,
+    heading: t[group].heading,
+    entries: characters.filter((c) => c.group === group).map((c) => rosterEntry(c, locale)),
+  })).filter((g) => g.entries.length > 0);
 
   return (
     <section className="relative">
@@ -143,46 +155,33 @@ export function RosterSection({ messages, locale }: { messages: Messages; locale
         className="text-roster-top absolute inset-x-0 -top-6 z-10"
       />
 
-      {/* `--card` is declared here, once, and read by all three grids below.
+      {/* `--card` is declared here, once, and read by every grid below.
           `px-6` throughout: at 1440 that leaves 1392, which centres the frame's
           1278 legends row to margins of exactly 81. */}
       <div
         className={`relative mx-auto w-full max-w-[90rem] px-6 pb-40 md:pb-[13.375rem] ${CARD_WIDTH}`}
       >
-        <Group heading={t.champions.heading} first>
-          {/* Three across at lg — the legends row's grid, now that there are three. */}
-          <div className={`${GRID} sm:grid-cols-[repeat(2,var(--card))] lg:grid-cols-[repeat(3,var(--card))]`}>
-            <Card entry={entries.soma} onSelect={setOpen} />
-            <Card entry={entries.kaira} onSelect={setOpen} />
-            <Card entry={entries.omalicha} onSelect={setOpen} />
-          </div>
-        </Group>
+        {groups.length === 0 ? (
+          // Nobody switched on yet: the Coming Soon lines under a pair of
+          // swords, to the cart's empty-state anatomy. No CTA — this is the
+          // middle of a gate page.
+          <EmptyState
+            icon={Swords}
+            title={messages.comingSoon.title}
+            body={messages.comingSoon.body}
+            className="pt-24 md:pt-[12rem]"
+          />
+        ) : null}
 
-        {/* GODS — commented out for now, per the human (2026-09-19). Ogbun'abali's
-            manifest entry is commented out with it. */}
-        {/*
-        <Group heading={t.gods.heading}>
-          <div className={`${GRID} sm:grid-cols-[var(--card)]`}>
-            <Card entry={entries.ogbunabali} onSelect={setOpen} />
-          </div>
-        </Group>
-        */}
-
-        <Group heading={t.legends.heading}>
-          {/* Nze Ugwuoke alone, centred — the single-card row the GODS group drew. */}
-          <div className={`${GRID} sm:grid-cols-[var(--card)]`}>
-            <Card entry={entries.nzeUgwuoke} onSelect={setOpen} />
-            {/* Commented out for now, per the human (2026-09-19); their manifest
-                entries are commented out with them. Restore the 3 x 2 grid too:
-                sm:grid-cols-[repeat(2,var(--card))] lg:grid-cols-[repeat(3,var(--card))]
-            <Card entry={entries.lieutenant} onSelect={setOpen} />
-            <Card entry={entries.theBeast} onSelect={setOpen} />
-            <Card entry={entries.ojiIsi} onSelect={setOpen} />
-            <Card entry={entries.ogbuagu} onSelect={setOpen} />
-            <Card entry={entries.mkpume} onSelect={setOpen} />
-            */}
-          </div>
-        </Group>
+        {groups.map(({ group, heading, entries }, i) => (
+          <Group key={group} heading={heading} first={i === 0}>
+            <div className={`${GRID} ${columnsFor(entries.length)}`}>
+              {entries.map((entry) => (
+                <Card key={entry.href} entry={entry} onSelect={setOpen} />
+              ))}
+            </div>
+          </Group>
+        ))}
       </div>
 
       {open ? (

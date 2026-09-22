@@ -5,6 +5,7 @@ import { AboutHero } from "@/components/about/AboutHero";
 import { StudioStory } from "@/components/about/StudioStory";
 import { TeamSection } from "@/components/about/TeamSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
+import { getTeam } from "@/lib/api/team";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -27,12 +28,13 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
+  const team = await getTeam(locale);
 
   return (
     <main>
       <AboutHero messages={messages} />
       <StudioStory messages={messages} />
-      <TeamSection messages={messages} />
+      <TeamSection members={team} messages={messages} />
 
       <div className="pt-37.25">
         <SiteFooter messages={messages} locale={locale} />

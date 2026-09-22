@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils/cn";
  * the same control centred in its hero (Community Wall / Active Player Map),
  * so it lives here and both use it.
  *
- * Arrow keys move between the two tabs, per the tabs pattern; the sibling is
- * the only other tab, so either arrow reaches it.
+ * Arrow keys move between the tabs, per the tabs pattern: right to the next,
+ * left to the previous, wrapping at each end.
  *
  * With `indicator={false}` the underline is the tablist's `TabSlider`, which
  * travels between the tabs; the tab keeps its slot, invisible, for height.
@@ -49,14 +49,19 @@ export function PanelTab({
       disabled={disabled}
       onClick={onSelect}
       onKeyDown={(event) => {
-        // Arrow keys move between the two tabs, per the tabs pattern; the
-        // sibling is the only other tab, so either arrow reaches it.
-        if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-          const tabs = event.currentTarget.parentElement?.querySelectorAll<HTMLElement>("[role=tab]");
-          const other = tabs && [...tabs].find((tab) => tab !== event.currentTarget);
-          other?.focus();
-          other?.click();
-        }
+        // Right to the next tab, left to the previous, wrapping at each end.
+        // IT USED TO TAKE "THE OTHER TAB", which was the same thing while every
+        // tablist here held two; the About page's team has three since
+        // 2026-09-22, and with three that sent both arrows to the first tab
+        // that was not this one.
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        const list = event.currentTarget.parentElement?.querySelectorAll<HTMLElement>("[role=tab]");
+        if (!list?.length) return;
+        const tabs = [...list];
+        const step = event.key === "ArrowRight" ? 1 : -1;
+        const next = tabs[(tabs.indexOf(event.currentTarget) + step + tabs.length) % tabs.length];
+        next?.focus();
+        next?.click();
       }}
 
       className="text-menu-fg font-body text-body focus-visible:outline-signal flex cursor-pointer flex-col focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-default"

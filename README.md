@@ -20,6 +20,7 @@ The app runs on http://localhost:3000 and redirects to the default locale at `/e
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
+| `npm run cms` | Local Decap proxy, for editing content without logging in (see below) |
 
 ## Stack
 

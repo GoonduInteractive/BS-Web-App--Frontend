@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The editor is for the content team only. robots.ts disallows /admin as well. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Content Manager · Beyond Service Game</title>
+    <!--
+      Absolute on purpose. The page is served at /admin (no trailing slash), so
+      Decap's default relative fetch would look for /config.yml and 404.
+    -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+  </head>
+  <body>
+    <!--
+      Decap CMS, served from unpkg. This page is never part of the site's payload —
+      no visitor loads it — so the section 10 budget does not apply here. Login
+      goes through the GitHub backend and the OAuth gateway named in config.yml;
+      see README.md → Content editing.
+    -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  </body>
+</html>

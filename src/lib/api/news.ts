@@ -1,105 +1,27 @@
-import type { Article } from "@/types/news";
+import { cache } from "react";
+
+import { contentSlugs, readEntries, type Entry } from "@/lib/content";
+import { articleFrontmatter, type ArticleFrontmatter } from "@/lib/schemas/news";
+import type { Locale } from "@/lib/utils/locales";
+import type { Article, ArticleCover } from "@/types/news";
 
 /**
- * News, from a mock adapter.
+ * News, from the CMS.
  *
- * NO CMS YET. The plan (overview section 9) is Decap writing markdown into
- * `src/content/news/`; until then this returns a fixed list. Components read it
- * through these functions and never learn the difference, so the swap is one
- * file.
+ * Decap writes one markdown file per article per locale into
+ * `src/content/news/<locale>/<slug>.md`; `lib/content.ts` reads them at build
+ * — every news route is statically generated — with the English underneath
+ * the Igbo, and `lib/schemas/news.ts` says what the frontmatter must hold.
+ * This file only turns an entry into an `Article`. Nothing above it knows the
+ * articles are files.
  *
- * ⚠ THE COPY IS THE FRAME'S PLACEHOLDER AND CANNOT SHIP. Every excerpt and body
- * paragraph in `context/design/08-news/` is filler lifted from a Call of Duty
- * page — it names `Modern Warfare®`, `Call of Duty®` and `Warzone™`, which are
- * another publisher's trademarks. It is transcribed rather than invented,
- * because copy is never invented here, but Goondu must replace it before this
- * page is public. The article TITLES are Goondu's own and are real.
+ * NOTHING IS CACHED ACROSS REQUESTS. `cache()` dedupes the reads within one
+ * render; a module-level cache held the dev server's first (empty) answer for
+ * the rest of its life, which is why an article published locally did not
+ * appear until a restart.
  */
 
-const ARTICLES: readonly Article[] = [
-  {
-    slug: "season-one-begins",
-    copyKey: "seasonOne",
-    media: { kind: "image", src: "/assets/news/news-1.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-    bodyMedia: { kind: "image", src: "/assets/news/news-1.png" },
-  },
-  {
-    slug: "between-worlds-explained",
-    copyKey: "betweenWorlds",
-    media: { kind: "image", src: "/assets/news/news-2.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-    bodyMedia: { kind: "image", src: "/assets/news/news-1.png" },
-  },
-  {
-    slug: "eastern-province-cup",
-    copyKey: "easternCup",
-    // The frame gives this one the Between Worlds cover, which this site
-    // composes rather than loads.
-    media: { kind: "comic", slug: "between-worlds" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-  },
-  {
-    slug: "combat-update-1-1",
-    copyKey: "combatUpdate",
-    media: { kind: "comic", slug: "between-worlds" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-  },
-  {
-    slug: "fall-of-nze-ugwuoke",
-    copyKey: "fallOfNze",
-    media: { kind: "image", src: "/assets/news/news-1.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-  },
-  {
-    slug: "trial-of-the-gods-launch",
-    copyKey: "trialLaunch",
-    media: { kind: "image", src: "/assets/news/news-3.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-    bodyMedia: { kind: "image", src: "/assets/news/news-1.png" },
-  },
-  {
-    slug: "trial-of-the-gods-launch-2",
-    copyKey: "trialLaunch",
-    media: { kind: "image", src: "/assets/news/news-1.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-  },
-  {
-    slug: "trial-of-the-gods-launch-3",
-    copyKey: "trialLaunch",
-    media: { kind: "image", src: "/assets/news/news-3.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-05",
-  },
-  {
-    slug: "season-one-begins-2",
-    copyKey: "seasonOne",
-    media: { kind: "image", src: "/assets/news/news-1.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-04",
-  },
-  {
-    slug: "between-worlds-explained-2",
-    copyKey: "betweenWorlds",
-    media: { kind: "image", src: "/assets/news/news-2.png" },
-    tags: ["news", "announcement"],
-    published: "2026-09-04",
-  },
-  {
-    slug: "combat-update-1-1-b",
-    copyKey: "combatUpdate",
-    media: { kind: "comic", slug: "between-worlds" },
-    tags: ["news", "announcement"],
-    published: "2026-09-04",
-  },
-] as const;
+const COLLECTION = "news";
 
 export class ArticleNotFoundError extends Error {
   constructor(slug: string) {
@@ -108,33 +30,66 @@ export class ArticleNotFoundError extends Error {
   }
 }
 
-export async function getArticles(): Promise<readonly Article[]> {
-  return ARTICLES;
+function toArticle(locale: Locale, { slug, data: fm, body }: Entry<ArticleFrontmatter>): Article {
+  const cover: ArticleCover =
+    fm.coverStyle === "torn"
+      ? { kind: "torn", src: fm.image, band: fm.band, volume: fm.volume, title: fm.coverTitle ?? fm.title }
+      : { kind: "image", src: fm.image };
+
+  return {
+    slug,
+    locale,
+    title: fm.title,
+    excerpt: fm.excerpt,
+    imageAlt: fm.imageAlt,
+    author: fm.author,
+    cover,
+    bodyImage: fm.bodyImage,
+    body,
+    tags: fm.tags,
+    published: fm.published,
+  };
 }
 
-export async function getArticle(slug: string): Promise<Article> {
-  const article = ARTICLES.find((a) => a.slug === slug);
+/** Every slug, from the English folder. Empty when nothing has been published. */
+export function getArticleSlugs(): readonly string[] {
+  return contentSlugs(COLLECTION);
+}
+
+/** One list per locale per render. Newest first, then by slug for a stable order. */
+const readList = cache((locale: Locale): readonly Article[] =>
+  readEntries(COLLECTION, locale, articleFrontmatter)
+    .map((entry) => toArticle(locale, entry))
+    .sort((a, b) => b.published.localeCompare(a.published) || a.slug.localeCompare(b.slug)),
+);
+
+export async function getArticles(locale: Locale): Promise<readonly Article[]> {
+  return readList(locale);
+}
+
+export async function getArticle(locale: Locale, slug: string): Promise<Article> {
+  const article = readList(locale).find((a) => a.slug === slug);
   if (!article) throw new ArticleNotFoundError(slug);
   return article;
 }
 
 /**
- * The index's lead block: one large article and two beside it, as the frame
- * lays them out.
+ * The index's lead block: the newest article and the two after it, as the
+ * frame lays them out. `lead` is null until something is published.
  */
-export async function getFeatured(): Promise<{
-  lead: Article;
-  beside: readonly Article[];
-}> {
-  return { lead: ARTICLES[0], beside: ARTICLES.slice(1, 3) };
+export async function getFeatured(locale: Locale): Promise<{ lead: Article | null; beside: readonly Article[] }> {
+  const articles = readList(locale);
+  return { lead: articles[0] ?? null, beside: articles.slice(1, 3) };
 }
 
 /** Everything the lead block did not use. */
-export async function getMoreNews(): Promise<readonly Article[]> {
-  return ARTICLES.slice(3);
+export async function getMoreNews(locale: Locale): Promise<readonly Article[]> {
+  return readList(locale).slice(3);
 }
 
 /** The detail page's row. Never includes the article being read. */
-export async function getRelatedArticles(slug: string): Promise<readonly Article[]> {
-  return ARTICLES.filter((a) => a.slug !== slug).slice(0, 3);
+export async function getRelatedArticles(locale: Locale, slug: string): Promise<readonly Article[]> {
+  return readList(locale)
+    .filter((a) => a.slug !== slug)
+    .slice(0, 3);
 }
