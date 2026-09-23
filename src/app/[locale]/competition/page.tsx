@@ -20,7 +20,7 @@ import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
 /**
- * Ọnụ Ụzọ 4 — Competition. Figma: context/design/02-gates/ for the gate,
+ * Ọnụ Ụzọ 4 - Competition. Figma: context/design/02-gates/ for the gate,
  * context/design/06-competition/ for the page behind it.
  *
  * Same arrangement as The Game and The Characters: the gate comes from
@@ -49,11 +49,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("competition")) return <HiddenSection section="competition" locale={locale} messages={messages} />;
 
   // THE FOOT HANDS ON TO THE MANIFEST'S NEXT GATE, which for gate 4 wraps to
-  // The Game — the gate 4 frame's own cue reads DISCOVER THE GAME. This page's
+  // The Game - the gate 4 frame's own cue reads DISCOVER THE GAME. This page's
   // frame previews THE CHARACTERS there instead, so the two frames disagree and
   // the manifest is followed until Design says. FLAGGED. Switching is one line:
   // getGate("characters") in place of nextGate(...).
@@ -84,7 +84,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           }
         />
         {/* The last section goes INSIDE the curtain, which makes it sticky and
-            puts the pull-up panel after it in flow — the arrangement The Game
+            puts the pull-up panel after it in flow - the arrangement The Game
             and The Characters use. */}
         <GateCurtain preview={gatePreview(next, locale, messages)} href={`/${locale}`} gate={next.id} title={nextCopy.title}>
           <GodsWatching messages={messages} nextGate={next.id} />

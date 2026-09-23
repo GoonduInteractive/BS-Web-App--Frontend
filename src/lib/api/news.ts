@@ -10,7 +10,7 @@ import type { Article, ArticleCover } from "@/types/news";
  *
  * Decap writes one markdown file per article per locale into
  * `src/content/news/<locale>/<slug>.md`; `lib/content.ts` reads them at build
- * — every news route is statically generated — with the English underneath
+ * - every news route is statically generated - with the English underneath
  * the Igbo, and `lib/schemas/news.ts` says what the frontmatter must hold.
  * This file only turns an entry into an `Article`. Nothing above it knows the
  * articles are files.

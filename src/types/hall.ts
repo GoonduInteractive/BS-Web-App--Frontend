@@ -1,5 +1,5 @@
 /**
- * A HALL OF ASCENSION entry — a season's champion. The handle is the player's,
+ * A HALL OF ASCENSION entry - a season's champion. The handle is the player's,
  * as the profile's `@somamain` is; the tournament, where one is named, is a key
  * into `messages.competition.tournaments` so the hall and the tournaments
  * cannot spell it differently.

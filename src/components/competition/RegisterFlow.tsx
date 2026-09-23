@@ -131,7 +131,7 @@ export function RegisterFlow({
         maxWidthClassName="max-w-[43.6875rem]"
         className="flex flex-col items-center px-6 pt-16.75 pb-12 text-center"
       >
-        {/* 124 square, signal, white tick — the merch confirmation's disc. */}
+        {/* 124 square, signal, white tick - the merch confirmation's disc. */}
         <span aria-hidden className="bg-signal grid size-31 shrink-0 place-items-center rounded-full">
           <svg
             viewBox="0 0 44 34"

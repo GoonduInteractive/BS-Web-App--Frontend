@@ -5,7 +5,7 @@ import type { Messages } from "@/lib/utils/messages";
 import type { Stage, StageStatus } from "@/types/tournament";
 
 /**
- * FOLLOW THE JOURNEY TO ASCENSION — the six stages as a stepper. Figma:
+ * FOLLOW THE JOURNEY TO ASCENSION - the six stages as a stepper. Figma:
  * `Tournament (upcoming).png` y 987..1272 and `…ongoing.png` y 1077..1362, and
  * the phone frame, where the stepper is vertical.
  *
@@ -25,7 +25,7 @@ import type { Stage, StageStatus } from "@/types/tournament";
  * horizontal at `xl` rather than `lg`: at 1024 it ran 10px past the page.
  * Below that it is vertical, as the phone frame draws it: chips 35 in from
  * each edge and full width, the status centred 10 under each, a 4 x 20 link
- * centred under that, the next chip 10 under the link — a 135 pitch. The
+ * centred under that, the next chip 10 under the link - a 135 pitch. The
  * heading wraps to three lines there at a 50 pitch (0.91) and the sub sits 21
  * under it.
  */
@@ -45,7 +45,7 @@ export function JourneyStepper({ stages, messages }: { stages: readonly Stage[];
       </Reveal>
 
       {/* The `stepper` scene: each stage rises in turn and the link out of it
-          draws itself towards the next — along the row at xl, down the column
+          draws itself towards the next - along the row at xl, down the column
           below it. */}
       <Scene scene="stepper" as="ol" className="mx-3.75 mt-19 flex flex-col xl:mx-0 xl:mt-[4.4375rem] xl:flex-row xl:items-start xl:justify-center">
         {stages.map((stage, index) => {

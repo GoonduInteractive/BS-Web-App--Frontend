@@ -6,33 +6,33 @@ import { useId, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * TOURNAMENT RULES and REWARDS — a bar that opens onto its content. Figma:
+ * TOURNAMENT RULES and REWARDS - a bar that opens onto its content. Figma:
  * `Tournament (upcoming).png`, y 1456..2200 at 1440, both open; the ongoing
  * frame draws both closed.
  *
  * WHAT THE FRAME MEASURES:
  *
- *   bar      79..1362 x 1456..1533 — 78 tall on --color-umber, the container's width
+ *   bar      79..1362 x 1456..1533 - 78 tall on --color-umber, the container's width
  *   title    ink 120..401, cap 30 at 1479 → 48px Teko, --text-h2, white; 41 in
- *   glyph    21 square at 1300..1320 — the scroll cue's arrow, `ornaments/arrow.svg`
+ *   glyph    21 square at 1300..1320 - the scroll cue's arrow, `ornaments/arrow.svg`
  *   content  starts 24 under the bar, 35 in from the container's edge
  *   phone    (`tornament-mobilee.png`) bar 320 x 59 in a 20 gutter, title 29px
  *            12 in, glyph 19 wide ending 13 from the right; content 16 in, at
  *            14 / 25
  *
- * THE GLYPH POINTS DOWN WHEN CLOSED AND UP WHEN OPEN — the convention — which
+ * THE GLYPH POINTS DOWN WHEN CLOSED AND UP WHEN OPEN - the convention - which
  * is not quite either frame: the upcoming one draws an open bar with a down
  * glyph, the ongoing one draws two closed bars with the glyph each way. Two
  * frames, three readings; the convention is followed and FLAGGED.
  *
  * HOW IT OPENS. The panel is a one-row grid whose row goes from `0fr` to
- * `1fr`, and that is a CSS transition — the one way to animate to an unknown
+ * `1fr`, and that is a CSS transition - the one way to animate to an unknown
  * height without measuring it, and a one-shot state change of the kind
  * `Reveal` documents: nothing to seek or scrub, so it stays out of GSAP and the
  * global reduced-motion block collapses it for free. The content fades and
  * settles a beat behind the row. While closed the panel is `inert`, so it is
  * out of the tab order and the accessibility tree, but it stays in the
- * document — a crawler reads the rules either way.
+ * document - a crawler reads the rules either way.
  *
  * A `button` with `aria-expanded` over the region it controls.
  */

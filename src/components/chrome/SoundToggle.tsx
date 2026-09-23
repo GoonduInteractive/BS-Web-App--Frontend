@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSound } from "@/components/chrome/SoundProvider";
 
 /**
- * The global sound toggle — the bell on its torn plate.
+ * The global sound toggle - the bell on its torn plate.
  *
  * TWO STATES, per the human (2026-09-22): "the red line indicates that the
  * sound is muted, then it doesn't show when it is not muted. the audio icon
@@ -14,14 +14,14 @@ import { useSound } from "@/components/chrome/SoundProvider";
  * particles is moving."
  *
  *   MUTED    the delivered icon, whose crossbar is painted in `--color-signal`,
- *            inside a plain square — a ruled border, no tear. Still.
+ *            inside a plain square - a ruled border, no tear. Still.
  *   SOUND ON the same bell with the crossbar back in white, inside the torn
  *            plate Goondu delivered, with marks drifting up off the bell.
  *
  * WHERE THE SECOND ICON CAME FROM. `audio-icon.svg` draws the bell's crossbar
  * twice: once in white as part of the bell, and again in red on top of it. The
  * red is the whole of the mute signal, so `audio-icon-on.svg` is that same file
- * with the one red path removed — no art was drawn, and if Goondu redeliver the
+ * with the one red path removed - no art was drawn, and if Goondu redeliver the
  * icon the variant is regenerated the same way.
  *
  * THE SQUARE IS INSET 2px to sit where the torn plate's own rect sits (x 2.34
@@ -65,8 +65,8 @@ export function SoundToggle({ onLabel, offLabel }: { onLabel: string; offLabel: 
         className="relative size-6 select-none"
       />
 
-      {/* The marks that say it is ringing: three small squares — the site's own
-          shape, the one the tabs and the rail use — drifting up off the bell's
+      {/* The marks that say it is ringing: three small squares - the site's own
+          shape, the one the tabs and the rail use - drifting up off the bell's
           shoulders and fading, on staggered loops so they never pulse together.
           Decorative, so they are hidden from assistive tech, and the global
           reduced-motion rule stops them for anyone who has asked. */}

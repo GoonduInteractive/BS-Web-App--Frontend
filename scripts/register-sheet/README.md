@@ -10,14 +10,14 @@ Once set up, the sheet fills a tab called **Registrations** with these columns:
 | Timestamp | First name | Last name | WhatsApp | Email | Locale | Page |
 |---|---|---|---|---|---|---|
 
-Repeat emails are not added twice. The script also ignores a POST that carries a `website` field —
+Repeat emails are not added twice. The script also ignores a POST that carries a `website` field -
 a bot-trap the site's form no longer sets (browser autofill filled it for real people, and their
 sign-ups were silently dropped), kept in the script only because it is harmless there.
 
 ## Set up (about ten minutes, once)
 
 1. **Create the spreadsheet.** In Google Drive, New → Google Sheets. Name it anything (say
-   "Beyond Service — Registrations"). Leave it empty; the script creates its own tab.
+   "Beyond Service - Registrations"). Leave it empty; the script creates its own tab.
 
 2. **Open the script editor.** In the spreadsheet: **Extensions → Apps Script**. A project opens
    with an empty `Code.gs`.
@@ -28,14 +28,14 @@ sign-ups were silently dropped), kept in the script only because it is harmless 
 4. **Deploy it as a web app.** Top right: **Deploy → New deployment**.
    - Click the gear next to "Select type" and choose **Web app**.
    - Description: anything ("register v1").
-   - **Execute as: Me** (your account — the script writes to your spreadsheet as you).
+   - **Execute as: Me** (your account - the script writes to your spreadsheet as you).
    - **Who has access: Anyone** (the site's visitors are not signed in to Google; without this
      the browser gets a Google sign-in page instead of the script).
    - Click **Deploy**.
 
 5. **Authorise it.** The first deploy asks for permission to run as you and edit your
    spreadsheets. Choose your account → if you see "Google hasn't verified this app", click
-   **Advanced → Go to <project name> (unsafe)** — it is your own script, not a published app →
+   **Advanced → Go to <project name> (unsafe)** - it is your own script, not a published app →
    **Allow**.
 
 6. **Copy the Web app URL.** It ends in `/exec`. Paste it in a browser tab: you should see
@@ -69,15 +69,15 @@ site would need the environment variable changed and a rebuild.
 - **Why form-encoded, and why no error details reach the visitor.** Apps Script cannot answer a
   browser's CORS "preflight", so the site sends a plain form post, which browsers send without
   asking. The reply is `{ ok: true }` or `{ ok: false, error }`; the visitor sees only "sent" or
-  "not sent — try again". The `error` codes (`missing`, `email`, `whatsapp`) are for you, in the
+  "not sent - try again". The `error` codes (`missing`, `email`, `whatsapp`) are for you, in the
   browser's network tab.
 - **"CORS error" in the console, but the row IS in the sheet.** The request reached the script
   (it runs before it answers); it is the *reply* the browser refused, because Google routes the
-  answer through a redirect that sometimes comes back without the CORS header — typically when more
+  answer through a redirect that sometimes comes back without the CORS header - typically when more
   than one Google account is signed in in that browser. The site handles this: when it cannot read
   the reply it sends the same post once more in a mode whose reply it never needs, and shows
   success once that completes. The script keeps one row per email, so nothing is added twice. The
-  one thing lost in that case is the ALREADY REGISTERED message — a repeat address gets plain
+  one thing lost in that case is the ALREADY REGISTERED message - a repeat address gets plain
   success. Signing out of the extra Google accounts, or testing in a private window, makes the
   reply readable again.
 - **If the sheet says "not sent" every time:** check the URL in the environment variable ends in
@@ -90,4 +90,4 @@ site would need the environment variable changed and a rebuild.
 - **This collects personal data.** Names, phone numbers and emails of real people are being stored
   in a spreadsheet. The site's Privacy Policy page is still Coming Soon and the form has no consent
   line; both need copy from Goondu before the form is public. Whoever holds the spreadsheet holds
-  the data — keep sharing tight, and delete rows when someone asks.
+  the data - keep sharing tight, and delete rows when someone asks.

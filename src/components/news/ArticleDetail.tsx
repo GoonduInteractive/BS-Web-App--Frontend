@@ -47,7 +47,7 @@ export function ArticleDetail({
             {article.title}
           </h1>
 
-          {/* One row on the phone, stacked from lg — as the two frames draw them. */}
+          {/* One row on the phone, stacked from lg - as the two frames draw them. */}
           <div className="mt-5.5 flex flex-wrap items-baseline gap-x-7 gap-y-1.5 lg:block">
             <p className="text-menu-fg/85 font-body text-[0.6875rem] leading-none tracking-[0.06em] uppercase">
               {relativeDate(article.published, messages)}

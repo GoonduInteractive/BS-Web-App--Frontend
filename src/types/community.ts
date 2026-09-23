@@ -4,7 +4,7 @@
  * learns which.
  */
 
-/** The four papers a note can be written on — the frame's tints, as tokens. */
+/** The four papers a note can be written on - the frame's tints, as tokens. */
 export type NoteTint = "cream" | "mint" | "sky" | "rose";
 
 export type CommunityNote = {
@@ -13,7 +13,7 @@ export type CommunityNote = {
   author: string;
   body: string;
   likes: number;
-  /** ISO instant. Rendered relative — "30 mins ago" — in the reader's locale. */
+  /** ISO instant. Rendered relative - "30 mins ago" - in the reader's locale. */
   postedAt: string;
   tint: NoteTint;
   /**
@@ -32,9 +32,9 @@ export type WallBounds = {
   /** The point of the canvas that sits at the viewport's top-left on arrival at 1440. */
   origin: { x: number; y: number };
   /**
-   * The same for a phone, where the canvas is drawn at `narrowScale` — the
+   * The same for a phone, where the canvas is drawn at `narrowScale` - the
    * phone frame's cards are 258 wide against the desktop's 416, the same
-   * cards at 0.62 — and opens on a different part of the collage.
+   * cards at 0.62 - and opens on a different part of the collage.
    */
   narrowScale: number;
   narrowOrigin: { x: number; y: number };

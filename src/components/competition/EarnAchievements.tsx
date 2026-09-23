@@ -6,7 +6,7 @@ import type { Messages } from "@/lib/utils/messages";
 import type { Achievement } from "@/types/achievement";
 
 /**
- * Section 4 of the Competition page — EARN ACHIEVEMENTS. Figma:
+ * Section 4 of the Competition page - EARN ACHIEVEMENTS. Figma:
  * `context/design/06-competition/Competition.png`, y 2769..3546 at 1440.
  *
  * WHAT THE FRAME MEASURES:
@@ -27,7 +27,7 @@ import type { Achievement } from "@/types/achievement";
  * THE BADGES ARE 1x AND CENTRED. Cards 2 to 4 centre the 114-wide file to the
  * pixel; card 1's sits 13 left, which is read as a nudge. Their tops and
  * bottoms both vary by up to 9px because the files carry different alpha
- * padding, so the slot is a fixed 140 with the emblem centred in it — the mean
+ * padding, so the slot is a fixed 140 with the emblem centred in it - the mean
  * of the frame's four centres.
  *
  * THE REWARD FOLLOWS THE LINE, it is not pinned to the bottom. Card 4's two-line
@@ -91,7 +91,7 @@ function AchievementCard({
 
       {/* --text-h3 at a 0.9 leading, so the requirement's line box starts where
           the frame's does, 3px under the cap. -0.05em lands every title on the
-          frame's width (273 / 213 / 219 / 163) — a smaller correction than the
+          frame's width (273 / 213 / 219 / 163) - a smaller correction than the
           48px names needed, so the gap is not simply a function of size. */}
       <h3 className="font-display text-onyx text-h3 mt-2.75 leading-[0.9] font-semibold tracking-[-0.05em] uppercase">
         {copy.title}

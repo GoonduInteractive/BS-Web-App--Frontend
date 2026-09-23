@@ -87,7 +87,7 @@ export function StorySection({ messages }: { messages: Messages }) {
             </p>
           </div>
 
-          {/* Soma's lane. Empty on purpose — he is absolute, and this is the
+          {/* Soma's lane. Empty on purpose - he is absolute, and this is the
               column the frame reserves for him. */}
           <div aria-hidden className="hidden md:block" />
 
@@ -133,7 +133,7 @@ const storyScene: SceneBuilder = (gsap, q, section) => {
       const { motion } = context.conditions as { motion: boolean };
 
       // Reduced motion gets the composed result and nothing else. Not a slower
-      // version — no movement at all, per overview section 10.
+      // version - no movement at all, per overview section 10.
       if (!motion) {
         gsap.set([figure, figureInner, head, copy, aside, cta, glyphs], { clearProps: "all" });
         return;
@@ -145,7 +145,7 @@ const storyScene: SceneBuilder = (gsap, q, section) => {
         scrollTrigger: { trigger: section, start: "top 72%", once: true },
       });
 
-      // Soma leads, and he arrives from BELOW the tear — the same direction the
+      // Soma leads, and he arrives from BELOW the tear - the same direction the
       // scrub then keeps pushing him. Everything else settles onto a figure that
       // is already coming up.
       tl.from(figureInner, { yPercent: 9, opacity: 0, duration: 1.2 })

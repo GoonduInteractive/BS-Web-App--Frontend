@@ -35,14 +35,14 @@ const SIZES: readonly ProductSize[] = ["XS", "S", "M", "L", "XL", "XXL"] as cons
 
 /**
  * The three colourways the detail frame draws, as swatch TOKENS rather than
- * hexes — a component must never carry a raw colour.
+ * hexes - a component must never carry a raw colour.
  *
  * Read off the frame's swatch row: #000000, #550800, #fffcf2. The first is
  * `--color-ink` exactly; the other two are the merch section's two new
  * colourway tokens.
  *
- * FLAGGED: "Oxblood" is ours. The frames never name that swatch — the cart
- * labels only Black and White — and a colour needs a name to be operable from
+ * FLAGGED: "Oxblood" is ours. The frames never name that swatch - the cart
+ * labels only Black and White - and a colour needs a name to be operable from
  * the keyboard. Ask Design for the real word.
  */
 const COLOURS: readonly ProductColour[] = [
@@ -55,7 +55,7 @@ const COLOURS: readonly ProductColour[] = [
  * The catalogue.
  *
  * FOUR PRODUCTS, AND THE FRAME'S SIX CARDS ARE THREE OF THEM TWICE. Prices are
- * the frame's ₦10,000 throughout — that is what Design drew on every card, not a
+ * the frame's ₦10,000 throughout - that is what Design drew on every card, not a
  * placeholder we chose. Tile fields are per product and were read off the
  * frame: the tote sits on white, the beanie on crimson, the tee and the hoodie
  * on linen, in both rows.
@@ -106,7 +106,7 @@ const PRODUCTS: readonly Product[] = [
 /**
  * The grid, in the frame's order: tote, beanie, tee, then beanie, tee, tote.
  *
- * A LISTING IS NOT THE CATALOGUE. Six cards, three products — the repetition is
+ * A LISTING IS NOT THE CATALOGUE. Six cards, three products - the repetition is
  * what Design drew, and it lives here as an ordered list of references so the
  * grid never has to know that two cards point at one product.
  */
@@ -154,7 +154,7 @@ export async function getRelated(slug: string): Promise<readonly Product[]> {
 /**
  * The comics.
  *
- * The covers are assembled rather than loaded — see `ComicIssue` — because what
+ * The covers are assembled rather than loaded - see `ComicIssue` - because what
  * Goondu delivered is character renders, which is also what the frames compose
  * their covers from.
  *
@@ -216,7 +216,7 @@ const COMICS: readonly ComicIssue[] = [
       seam: "text-dusk",
       figureMode: "field",
       align: "center",
-      // The cyan plate Goondu delivered — `#5EC1CE`, which closes the colour
+      // The cyan plate Goondu delivered - `#5EC1CE`, which closes the colour
       // `Chip` still raises as unconfirmed for gate 2.
       chip: "text-ink bg-[url('/assets/ornaments/onu-uzo-blue.svg')]",
       figure: "/assets/comics/soma-mysc.png",

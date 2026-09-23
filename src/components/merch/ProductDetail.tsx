@@ -113,7 +113,7 @@ export function ProductDetail({
                 // string as well, `text-menu-fg` and `text-ink` are two
                 // same-property utilities in one class attribute and the
                 // generated stylesheet's order decides the winner, not this
-                // one — which is how the chosen chip came out white on white.
+                // one - which is how the chosen chip came out white on white.
                 className={`font-display h-13 w-14.25 cursor-pointer border text-[1.375rem] leading-none font-semibold tracking-[-0.02em] transition-colors duration-150 ease-gate ${
                   selected
                     ? "border-menu-fg bg-menu-fg text-ink"

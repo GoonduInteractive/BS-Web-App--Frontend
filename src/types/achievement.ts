@@ -5,7 +5,7 @@
  */
 export type Achievement = {
   slug: string;
-  /** Key into `messages.competition.achievements.items` — title, requirement, reward. */
+  /** Key into `messages.competition.achievements.items` - title, requirement, reward. */
   copyKey: string;
   /** The delivered emblem, drawn at 1x. All four are 114 wide; heights differ. */
   badge: { src: string; width: number; height: number };

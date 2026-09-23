@@ -12,7 +12,7 @@ import type { Messages } from "@/lib/utils/messages";
  * A dialog rather than a page: it is what both payment paths end on, over
  * whichever screen the visitor was already looking at.
  *
- * THE FRAME DRAWS NO CLOSE CONTROL, and one is added anyway — Escape, a click on
+ * THE FRAME DRAWS NO CLOSE CONTROL, and one is added anyway - Escape, a click on
  * the backdrop, and a labelled button. A modal whose only action is BACK TO
  * PROFILE, with no profile route built, would otherwise trap someone in it. The
  * close affordance is visually quiet so the composition is unchanged.
@@ -93,7 +93,7 @@ export function OrderConfirmed({
       >
         {/* `ornaments/tear-sheet.svg`, not the delivered `tear-bg.svg`: the latter
             letterboxes inside a box that is not 843:689, and on a phone the
-            sheet is tall — the title sat on white and the button on black. */}
+            sheet is tall - the title sat on white and the button on black. */}
         <div className="flex flex-col items-center bg-[url('/assets/ornaments/tear-sheet.svg')] bg-size-[100%_100%] bg-center bg-no-repeat px-6 pt-16.75 pb-15.5 text-center">
           <button
             ref={closeButton}

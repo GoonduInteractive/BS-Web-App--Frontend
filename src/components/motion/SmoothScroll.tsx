@@ -14,11 +14,11 @@ import { setLenis } from "@/lib/animation/lenis";
  *
  * DYNAMICALLY IMPORTED, like GSAP in TransitionProvider. The library is ~3KB
  * gzipped but there is no reason for it to block first paint on a metered
- * connection — smooth scroll only matters once someone scrolls.
+ * connection - smooth scroll only matters once someone scrolls.
  *
  * WIRED TO SCROLLTRIGGER, AND THAT NOTE USED TO SAY THE OPPOSITE. The old
- * reasoning — Lenis drives the real `window` scroll, so native events fire and
- * ScrollTrigger needs nothing — is true as far as it goes, and it held while the
+ * reasoning - Lenis drives the real `window` scroll, so native events fire and
+ * ScrollTrigger needs nothing - is true as far as it goes, and it held while the
  * only scroll-linked thing on the site was the gate rail's fade. It said "if a
  * future section pins or scrubs, that assumption needs rechecking". The gate
  * pull-up scrubs a full-viewport panel against the scroll, so this is that
@@ -38,7 +38,7 @@ import { setLenis } from "@/lib/animation/lenis";
  *
  * GSAP AND SCROLLTRIGGER ARE IMPORTED DYNAMICALLY HERE TOO. They are already
  * dynamic in `useGsapScene` and `TransitionProvider`, so this adds no weight to
- * the initial bundle — it joins the same chunk.
+ * the initial bundle - it joins the same chunk.
  *
  * NO CSS SCROLL-SNAP ANYWHERE. Lenis and snap fight each other and produce a
  * stuttering, fighting-the-user feel (overview, motion moment 2).

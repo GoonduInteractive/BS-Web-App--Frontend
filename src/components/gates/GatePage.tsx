@@ -11,7 +11,7 @@ import { pageMetadata } from "@/lib/seo";
  * page.
  *
  * The gate itself is not here. Per the human (2026-09-14) the doors stand on
- * the home route — `/en` is the portal, see `GatePortal` and `GateEntry` — and a
+ * the home route - `/en` is the portal, see `GatePortal` and `GateEntry` - and a
  * gate route is the page its CTA opens onto, so a shared link lands on the
  * page and a crawler reads it without a click. Each `page.tsx` stays a thin
  * Server Component that names its gate and passes its sections.
@@ -62,8 +62,8 @@ export function gatePreview(gate: Gate, locale: Locale, messages: Messages) {
 /**
  * Per-route, per-locale metadata for the four gate pages, through
  * `pageMetadata` so each carries its canonical, its language alternates and
- * its cards. The description is the page's own opening copy — the Game hero's
- * body, the Characters hero's aside, the Competition hero's pitch — rather
+ * its cards. The description is the page's own opening copy - the Game hero's
+ * body, the Characters hero's aside, the Competition hero's pitch - rather
  * than the plate's alt text, which described a picture, not a page. Community
  * has no page copy yet (no design), so it takes the site's description.
  */

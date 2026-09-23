@@ -8,8 +8,8 @@ import { CHARACTER_GROUPS } from "@/types/character";
  *
  * LENIENT WHERE THE EDITOR IS STRICT. Decap requires weapon, chi, intro, lore
  * and the rest before it will publish; here they are optional so that an entry
- * switched OFF can be half-written — a name, a group and a portrait waiting
- * for its copy — without failing the build. The page hides what is empty.
+ * switched OFF can be half-written - a name, a group and a portrait waiting
+ * for its copy - without failing the build. The page hides what is empty.
  */
 const optionalText = z
   .string()

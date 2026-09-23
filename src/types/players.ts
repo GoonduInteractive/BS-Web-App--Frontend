@@ -6,7 +6,7 @@ export type PlayerHotspot = {
   id: string;
   city: string;
   country: string;
-  /** Decimal degrees, east and north positive — the city's pin. */
+  /** Decimal degrees, east and north positive - the city's pin. */
   lon: number;
   lat: number;
   /** Players active there now; always `players.length`. */

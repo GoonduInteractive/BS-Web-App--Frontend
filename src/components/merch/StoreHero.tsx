@@ -18,7 +18,7 @@ const FIELD: Record<TileField, string> = {
  * The store's top row: the featured product on a wide tile, and whatever the
  * viewer's state puts beside it.
  *
- * Frame at 1440 — tile 80..840 x 197..768, right column 903..1356, so 760 and
+ * Frame at 1440 - tile 80..840 x 197..768, right column 903..1356, so 760 and
  * 453 of a 1280 container. The aside is a slot because all three store frames
  * share this row and differ only in what fills it: the login offer when signed
  * out, the points panels when signed in.

@@ -75,7 +75,7 @@ export function DetailBody({
         </Block>
 
         {/* Only Nze's document has forms (Staff / Axe). Where there are none the
-            section is not drawn — the frame's slot, empty, rather than filled. */}
+            section is not drawn - the frame's slot, empty, rather than filled. */}
         {character.variants.length ? (
           <Block heading={t.variantsHeading} className="pt-28 lg:pt-46">
             <div className="flex flex-col gap-13">
@@ -95,7 +95,7 @@ export function DetailBody({
         <div className="pt-28 lg:pt-46">
           <Heading>{withName(t.galleryHeading, character.name)}</Heading>
 
-          {/* One plate per delivered picture — two or three, see the manifest. */}
+          {/* One plate per delivered picture - two or three, see the manifest. */}
           <ul className="mt-14 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 lg:mt-26.25">
             {character.gallery.map((plate, i) => (
               <li key={`${i}-${plate}`} data-gallery className="bg-menu relative aspect-336/453 overflow-hidden">
@@ -148,7 +148,7 @@ export function DetailBody({
   );
 }
 
-/** Heading left, content right — the frame's layout for three of five blocks. */
+/** Heading left, content right - the frame's layout for three of five blocks. */
 function Block({
   heading,
   children,

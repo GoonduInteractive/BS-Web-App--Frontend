@@ -14,7 +14,7 @@ import type { Profile } from "@/types/profile";
  * card with and without a tournament: `standing` null gives the empty rankings
  * panel and drops RANK from the stats row; populated gives the strip. No flag.
  *
- * Measured at 1440 — card 904 x 698 on `--color-pitch`, inner panels on
+ * Measured at 1440 - card 904 x 698 on `--color-pitch`, inner panels on
  * `--color-ash`, avatar 96 circle with a `--color-signal` ring, points column
  * 245 wide against a 537 rankings panel.
  *
@@ -22,7 +22,7 @@ import type { Profile } from "@/types/profile";
  * sheet in overview section 8 says "Square corners throughout, nothing is
  * rounded" and every other page on this site obeys it. These frames draw a
  * rounded card and rounded inner panels, and Figma is binding where the two
- * disagree — so it is followed here and raised rather than silently squared.
+ * disagree - so it is followed here and raised rather than silently squared.
  */
 export function ProfileCard({
   profile,
@@ -161,7 +161,7 @@ export function ProfileCard({
       </div>
 
       {/* FLAGGED: there is no session to end. The control is drawn because the
-          frame draws it, and it does nothing — the same state every other
+          frame draws it, and it does nothing - the same state every other
           undestined CTA on this site is in. */}
       <div className="mt-12 flex justify-center md:mt-[4.125rem]">
         <button

@@ -19,7 +19,7 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
     <section ref={root} className="relative overflow-x-clip">
       {/* `overflow-x-clip`, NOT `overflow-hidden`. Master Your Chi lays its fighter and
         weapons at up to 140% of the section and pulls them left of it, which is
-        the designed composition on a phone — but unclipped it let the whole page
+        the designed composition on a phone - but unclipped it let the whole page
         scroll sideways, 99px at 380. `overflow-hidden` would have fixed that and
         broken something else: hidden on one axis forces the other to become a
         scroll container, and this art is meant to bleed vertically. `clip` is the
@@ -61,7 +61,7 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
               PROPORTION. Two 328 and 348 columns either side of a 15px rule with
               the frame own 115 gutters is 921 of content; `md` offered 660 at 768,
               so the right-hand column ran 250px past the viewport and took the
-              page with it. 9.4% is 115 over the frame 1224 content box — 115 at
+              page with it. 9.4% is 115 over the frame 1224 content box - 115 at
               1440, 86 at 1024, which is what makes it fit. */}
           <div className="mt-35.75 lg:mt-43.75 lg:grid lg:translate-x-1.25 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-x-[9.4%]">
             <Reveal className="text-center lg:w-82 lg:justify-self-end lg:text-left">
@@ -125,11 +125,11 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
               {/* THE WEAPONS TURN ON A LARGE SCREEN. Two files per weapon, per the
                   human: the delivered still below `lg`, the delivered GIF from it.
                   Each is its own element and both are lazy, so the one that is
-                  `display: none` is never fetched — a hidden lazy image never
+                  `display: none` is never fetched - a hidden lazy image never
                   intersects. The GIFs are animated, which Next's optimiser
                   passes through untouched; `unoptimized` says so out loud. A GIF
                   cannot be paused, so under reduced motion the still stays even
-                  on a large screen — the one way to honour the preference.
+                  on a large screen - the one way to honour the preference.
                   `Sword.gif` frames its blade where `weapon-machete.png` does
                   (alpha 0.29..0.65 x 0.56..0.84 of the box in both), so it takes
                   the same box. */}
@@ -175,7 +175,7 @@ export function TwoPathsSection({ messages }: { messages: Messages }) {
             >
               {/* `Spear.gif` is a wider canvas than `weapon-spear.png` (616:844
                   against 1156:1688) with the spear drawn 7% smaller in it, so it
-                  is set 107% wide in the same box — that puts its spear on the
+                  is set 107% wide in the same box - that puts its spear on the
                   still's spear to within half a percent, and leaves the box (and
                   the drift's 54% / 70.4% pivot) exactly where the still had it. */}
               <div data-chi-spear>

@@ -14,7 +14,7 @@ import type { ComicIssue } from "@/types/merch";
 /**
  * One comic issue. Figma: `Merch Store- Comics Detail.png`.
  *
- * Frame at 1440 — cover 189..598 x 190..751, copy column 719..1252. Title ink
+ * Frame at 1440 - cover 189..598 x 190..751, copy column 719..1252. Title ink
  * 215, meta 285, a rule under it, five description lines from 366, price 583,
  * and the quantity plus ADD TO CART at 640..695.
  *

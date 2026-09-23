@@ -6,7 +6,7 @@ import TornSurface from "@/components/ui/TornSurface";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * The ragged boundary between two sections — every one on the site goes through
+ * The ragged boundary between two sections - every one on the site goes through
  * here.
  *
  * This is now a thin wrapper around `TornSurface`, the designer's procedural
@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils/cn";
  *
  * `feDisplacementMap`'s scale and `feTurbulence`'s baseFrequency are both in
  * user-space units. Stretch the viewBox to a wider container and the teeth
- * stretch with it — they smear into soft vertical streaks and no two sections
+ * stretch with it - they smear into soft vertical streaks and no two sections
  * look alike. Passing real pixels keeps the tear a constant PHYSICAL size, so it
  * reads identically at 380px and 2560px, which is the whole point of the
  * component. The previous implementation used `preserveAspectRatio="none"` over
@@ -71,19 +71,19 @@ export function TornDivider({
    */
   edge: "top" | "bottom";
   /**
-   * Noise seed. Vary it so two edges on one screen are not the same shape —
+   * Noise seed. Vary it so two edges on one screen are not the same shape -
    * the tear is deterministic, so the default repeats exactly.
    */
   seed?: number;
   /**
    * Tooth depth. Defaults to the designer's 47.4, which every section seam
    * uses. The Competition frame's tournament cards tear their body panel into
-   * the plate with teeth spanning ~11px — a paper edge rather than a rip — and
+   * the plate with teeth spanning ~11px - a paper edge rather than a rip - and
    * that is the one place this is set. The strip's height follows it, keeping
    * the same 8.6 of solid colour below the teeth the default has.
    */
   depth?: number;
-  /** Set the colour here, with a text utility — the SVG paints currentColor. */
+  /** Set the colour here, with a text utility - the SVG paints currentColor. */
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);

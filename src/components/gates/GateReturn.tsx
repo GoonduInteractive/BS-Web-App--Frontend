@@ -13,19 +13,19 @@ import { gateFromPathname } from "@/lib/gates";
  * The mirror of the gate CTA: that one tears from the gate into the page, this
  * one tears from the page back to the gate. `GateEntry` owns both moves.
  *
- * ON THE TORN CHIP, per the frame — the same cream plate the Ọnụ Ụzọ chip uses,
+ * ON THE TORN CHIP, per the frame - the same cream plate the Ọnụ Ụzọ chip uses,
  * with a left arrow and dark text on it. It is wider than the gate chip (131 vs
  * 96 in the 1440 frame), which is why it draws the plate through `TornPlate`
  * rather than the fixed-size background `Chip` uses.
  *
  * IT IS A BUTTON, NOT A LINK. Its destination is the portal standing at THIS
- * page's door — a place, not just an address: `/en` alone would open the
+ * page's door - a place, not just an address: `/en` alone would open the
  * portal on whatever it last showed. `showGate` names the door and navigates
  * home with the tear; the gate is read off the route, so every page's chip is
  * the same element with no props to get wrong.
  *
  * WITH `href` IT IS A LINK, on the same plate. The tournament detail page's
- * BACK TO TOURNAMENTS goes somewhere — back to the competition route — so there
+ * BACK TO TOURNAMENTS goes somewhere - back to the competition route - so there
  * it renders a `next/link`; the styling is shared, only the element changes.
  */
 export function GateReturn({ label, href }: { label: string; href?: string }) {
@@ -67,7 +67,7 @@ export function GateReturn({ label, href }: { label: string; href?: string }) {
 }
 
 // BODY FACE, NOT DISPLAY. The frame sets this label in the grotesque, not in
-// condensed Teko — wide round counters, an 11px cap on a 12px arrow. The Ọnụ
+// condensed Teko - wide round counters, an 11px cap on a 12px arrow. The Ọnụ
 // Ụzọ chip on the gates is Teko and stays that way; these two chips share a
 // plate, not a typeface.
 //

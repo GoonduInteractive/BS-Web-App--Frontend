@@ -22,7 +22,7 @@ export function TournamentCard({
   // One CTA per card, as the frame draws it, and it goes to the tournament's
   // own page whatever it says: VIEW DETAILS is the page, and REGISTER NOW is
   // the page too, because that is where the facts and the registration sheet
-  // both are — a card has no room to show what someone is signing up for.
+  // both are - a card has no room to show what someone is signing up for.
   const href = `/${locale}/competition/${tournament.slug}`;
 
   return (
@@ -120,7 +120,7 @@ function ctaFor(status: Tournament["status"], messages: Messages): string | null
 }
 
 /**
- * "OCTOBER 12", as the frame writes it — month first, which is `en-US` rather
+ * "OCTOBER 12", as the frame writes it - month first, which is `en-US` rather
  * than Nigeria's day-first `en-NG`. Igbo has its own month names in ICU and
  * takes them. The card sets it in caps. Nothing to print is an empty cell, not
  * a placeholder.

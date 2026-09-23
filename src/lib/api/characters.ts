@@ -12,8 +12,8 @@ import { CHARACTER_GROUPS, type Character } from "@/types/character";
  * `src/content/characters/<locale>/<slug>.md`, read through `lib/content.ts`
  * with the English underneath the Igbo, checked against
  * `lib/schemas/character.ts`. Characters switched off in the editor are left
- * out here — no card, no modal, no detail page (the route 404s), no sitemap
- * line, no place in OTHER CHAMPIONS — which is what commenting an entry out of
+ * out here - no card, no modal, no detail page (the route 404s), no sitemap
+ * line, no place in OTHER CHAMPIONS - which is what commenting an entry out of
  * the old manifest used to do. The order is the roster's: champions, then
  * gods, then legends, and within a group the editor's `order`, then the name.
  *
@@ -73,7 +73,7 @@ export async function getCharacters(locale: Locale): Promise<readonly Character[
   return readList(locale);
 }
 
-/** The slugs that have a page — the visible characters, from the English files. */
+/** The slugs that have a page - the visible characters, from the English files. */
 export function getCharacterSlugs(): readonly string[] {
   return readList(DEFAULT_LOCALE).map((c) => c.slug);
 }

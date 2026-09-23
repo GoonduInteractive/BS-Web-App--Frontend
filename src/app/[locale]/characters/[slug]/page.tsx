@@ -11,14 +11,14 @@ import { pageMetadata } from "@/lib/seo";
 
 /**
  * One character's detail page. Figma:
- * `context/design/04-characters/character-detail.png` — Soma's, at 1440 x 5040.
+ * `context/design/04-characters/character-detail.png` - Soma's, at 1440 x 5040.
  *
  * Three sections, as the frame lays them out: the hero on its own radial field,
  * the detail body on the roster's gradient, and the site footer.
  *
  * NOT BEHIND A GATE. Every other route on this site is one of the four gates and
  * goes through `GatePage`; this one is reached from inside The Characters, so it
- * is a plain page. That is also why it is the only route that carries a footer —
+ * is a plain page. That is also why it is the only route that carries a footer -
  * see SiteFooter for why one under the gate sequence would be wrong.
  *
  * FULLY STATIC. `generateStaticParams` enumerates every locale and every

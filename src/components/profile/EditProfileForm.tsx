@@ -14,7 +14,7 @@ import type { Profile } from "@/types/profile";
  * Edit profile. Figma: `context/design/12-player-profile/Edit profile.png`.
  *
  * ⚠ NOTHING TYPED HERE IS STORED OR SENT. Values live in component state for the
- * length of the visit — not `localStorage`, not a request. There is no backend
+ * length of the visit - not `localStorage`, not a request. There is no backend
  * to receive a person's name and location, and no consent flow to collect them
  * under. `SAVE CHANGES` saves nothing, and that is deliberate rather than
  * unfinished: the alternative is a form that quietly banks personal details in a

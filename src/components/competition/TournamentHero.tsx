@@ -14,7 +14,7 @@ import type { Tournament } from "@/types/tournament";
 /**
  * The tournament detail page's hero. Figma:
  * `context/design/06-competition/Tournament (upcoming).png` and
- * `Tournament details page ongoing.png`, y 0..678 at 1440 — identical in both.
+ * `Tournament details page ongoing.png`, y 0..678 at 1440 - identical in both.
  *
  * THE COMPETITION HERO'S GROUND AND GEOMETRY, with Nze Ugwuoke where the two
  * Somas were. Same gradient (the corner reads #44 against the competition
@@ -24,13 +24,13 @@ import type { Tournament } from "@/types/tournament";
  *
  * WHAT THE FRAME MEASURES:
  *
- *   chip     93..275 x 227..256 — BACK TO TOURNAMENTS, a link back to the page
+ *   chip     93..275 x 227..256 - BACK TO TOURNAMENTS, a link back to the page
  *   title    ink 112..548, two lines, cap 63 at 297 and 377 → --text-game-hero
- *   body     ink 111..595, four lines at a 25 pitch from 474 — the card's copy
+ *   body     ink 111..595, four lines at a 25 pitch from 474 - the card's copy
  *   CTA      red 1025..1297 x 514..568, brackets at 997 and 1314; ends 8 short
  *            of the 1332 content edge, level with the body's foot
  *   render   nze.png at 1.02 → 644 x 602 at (740, 108), bottom 32 past the
- *            hero's 678 — under the next section's tear, as the Somas are
+ *            hero's 678 - under the next section's tear, as the Somas are
  *
  * FULL VIEWPORT HEIGHT, as the competition hero. The render is bottom-anchored
  * for the same reason its figures are: its canvas cuts it at the knee and the
@@ -38,14 +38,14 @@ import type { Tournament } from "@/types/tournament";
  *
  * THE PHONE FRAME (`tornament-mobilee.png`, 360 wide) is its own composition:
  * chip at 136, title 52 under it, the copy in a 320 box, and the render AT THE
- * SAME 1.02 SCALE AS THE DESKTOP — solved by compositing, error 9.4 — a 644 x
+ * SAME 1.02 SCALE AS THE DESKTOP - solved by compositing, error 9.4 - a 644 x
  * 602 box at (−112, 524), so it runs off both sides and 75 past the hero's
  * foot, where the tear cuts it at the mask. The CTA sits OVER the render, the
  * bracket group centred, its red 78 above the foot. Below `lg` the stage is
  * the render's visible 527 (146.4cqw) and the CTA is absolute against the
  * hero; from `lg` it is the grid cell the desktop frame gives it.
  *
- * THE CTA IS THE REGISTRATION FLOW where registration is open — the same two
+ * THE CTA IS THE REGISTRATION FLOW where registration is open - the same two
  * sheets the featured card opens, so a tournament page registers the same way
  * the card does. For a running or announced tournament there is nothing to
  * register for, so no CTA is drawn; the ongoing frame still shows REGISTER FOR
@@ -122,8 +122,8 @@ export function TournamentHero({
           aria-hidden
           className="pointer-events-none relative mt-auto h-[146.4cqw] select-none [--fx:0.069444cqw] lg:absolute lg:inset-0 lg:h-auto"
         >
-          {/* The render arrives from the right on mount — the `heroFigure`
-              scene — on this wrapper, which the drift layer above carries. */}
+          {/* The render arrives from the right on mount - the `heroFigure`
+              scene - on this wrapper, which the drift layer above carries. */}
           <Scene
             scene="heroFigure"
             className="absolute bottom-[-20.8cqw] left-[-31.1cqw] w-[178.9cqw] lg:bottom-[calc(-32*var(--fx))] lg:left-[calc(740*var(--fx))] lg:w-[calc(644*var(--fx))]"

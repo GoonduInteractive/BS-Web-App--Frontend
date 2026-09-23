@@ -23,7 +23,7 @@ export function Scene({
   ...rest
 }: {
   scene: CompetitionScene;
-  /** Rendered element — the semantic tag the section would have used. */
+  /** Rendered element - the semantic tag the section would have used. */
   as?: ElementType;
   className?: string;
   children: ReactNode;

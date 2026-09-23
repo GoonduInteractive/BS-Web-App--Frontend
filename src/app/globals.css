@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
-  ALL theme tokens live here. This is Tailwind v4 — there is no tailwind.config.ts.
+  ALL theme tokens live here. This is Tailwind v4 - there is no tailwind.config.ts.
   Source of truth for these values: context/project-overview.md section 8.
   The palette grows section by section. Never invent a colour; ask for the hex.
 */
@@ -53,7 +53,7 @@
   --color-ivory: #fffcf2;         /* colourway swatch, the pale one */
 
   /* Comic cover artwork tones, volume 2. These are part of a COVER, not of the
-     UI — the frames compose each cover from a band, a torn seam and a field, and
+     UI - the frames compose each cover from a band, a torn seam and a field, and
      volume 2's pair is cool where volume 1 reuses --color-menu and --color-clot.
      Unconfirmed, like the rest of the merch set. */
   --color-dusk: #292d32;          /* vol 2 cover band */
@@ -67,7 +67,7 @@
   /* The Competition hero's ground, from the Figma inspector:
      linear-gradient(161.56deg, #000000 12.32%, #A00000 184.28%).
      The far stop sits at 184%, PAST the box, so no pixel on screen is ever this
-     colour — the bottom-right corner tops out near #520000. It is a token
+     colour - the bottom-right corner tops out near #520000. It is a token
      because it is the value Design wrote down, not because it is seen. */
   --color-blood: #a00000;
 
@@ -77,7 +77,7 @@
      corner tops out near #360000 and this value is never painted. */
   --color-carmine: #be0000;
 
-  /* The featured card's field labels — STATUS, REGION, REWARDS POOL — on the
+  /* The featured card's field labels - STATUS, REGION, REWARDS POOL - on the
      linen. UNCONFIRMED: read off a flat run of the frame's label, not supplied
      from Figma. A cool grey with no relative in the palette. */
   --color-slate: #52575c;
@@ -91,7 +91,7 @@
   --color-arena-bottom: #020202;
   --color-charcoal: #1d1c1c;
 
-  /* The tournament cards' field labels — ENDS, REGION, STATUS — on charcoal.
+  /* The tournament cards' field labels - ENDS, REGION, STATUS - on charcoal.
      UNCONFIRMED: read off the frame. It is also the fill of the delivered
      cart-m.svg, so Design has used it before. */
   --color-mist: #dbdde0;
@@ -99,7 +99,7 @@
   /* The achievement cards, both supplied by the human from Figma.
      --color-parchment IS A THIRD CREAM: 5/255 from --color-bone (#e5deb5) in
      green and 3 from --color-linen (#e8ddb7) in red. Confirmed as its own
-     colour, so it stays its own token — see the note on --color-linen.
+     colour, so it stays its own token - see the note on --color-linen.
      --color-onyx is the card title, 11/255 off --color-ink; confirmed too. */
   --color-parchment: #e5d9b4;
   --color-onyx: #0b0b0c;
@@ -114,7 +114,7 @@
 
   /* The tournament detail page. UNCONFIRMED: read off the two detail frames,
      approved as working values by the human. --color-amber is the stage in
-     progress; --color-lava the stage completed — the same #d41400 the merch
+     progress; --color-lava the stage completed - the same #d41400 the merch
      store's double chevron read, so Design uses it, and it is neither signal
      nor crimson. The three greys are the stepper's idle connector, the
      accordion bar and the bracket's connector lines. */
@@ -125,7 +125,7 @@
   --color-taupe: #6b6565;
 
   /* Community wall (05-community). The four note tints are flat vector fills
-     read off the frame — the sky one is also the fill in the delivered
+     read off the frame - the sky one is also the fill in the delivered
      card.svg, so they are the Figma values. The paper and its dots are read
      off the wall's ground (the delivered wall.svg rasterises the same grid),
      UNCONFIRMED like the other greys. */
@@ -135,10 +135,10 @@
   --color-note-rose: #ffedeb;
   --color-paper: #f3f3f3;
   --color-paper-dot: #d2d2d2;
-  /* The active player map's disc — read off the frame, UNCONFIRMED. */
+  /* The active player map's disc - read off the frame, UNCONFIRMED. */
   --color-globe: #140e0e;
 
-  /* The podium's three metals, from the Figma inspector — three stops each.
+  /* The podium's three metals, from the Figma inspector - three stops each.
      Painted only through the bg-podium-* utilities below. */
   --color-gold-deep: #d99313;
   --color-gold-mid: #9b6f00;
@@ -170,7 +170,7 @@
   --text-h2--line-height: 3.5rem;
   --text-h3: 2.25rem;             /* 36 / 40  Teko SemiBold */
   --text-h3--line-height: 2.5rem;
-  --text-h4: 2.25rem;             /* 36 / 40  Teko SemiBold — identical to h3, see risk 5 */
+  --text-h4: 2.25rem;             /* 36 / 40  Teko SemiBold, identical to h3, see risk 5 */
   --text-h4--line-height: 2.5rem;
   --text-h5: 1.5rem;              /* 24 / 28  Teko SemiBold */
   --text-h5--line-height: 1.75rem;
@@ -199,15 +199,15 @@
   --text-menu-link: clamp(2.75rem, 5.4vw, 4.8625rem);
   --text-menu-link--line-height: 1;
 
-  /* The character detail page's name — the largest type on the site.
+  /* The character detail page's name - the largest type on the site.
      The frame sets a 102px cap at 1440, which is 160px in Teko (cap 0.6366),
      past --text-gate's 121px ceiling and far past the scale's 55. Floor
      extrapolated: there is no mobile frame for this page. */
   --text-detail-name: clamp(4.5rem, 11.11vw, 10rem);
   --text-detail-name--line-height: 1;
 
-  /* The Competition page's section headings — FEATURED TOURNAMENT, ACTIVE
-     TOURNAMENTS, EARN ACHIEVEMENTS, REGIONAL LEAGUES, HALL OF ASCENSION — and
+  /* The Competition page's section headings - FEATURED TOURNAMENT, ACTIVE
+     TOURNAMENTS, EARN ACHIEVEMENTS, REGIONAL LEAGUES, HALL OF ASCENSION - and
      the featured card's title. Every one measures a 40px cap at 1440, which is
      63px in Teko: between --text-h1's 55 and --text-story-title's 78.5, and on
      neither. Floor is .section-title's 40px mobile size; the 0.86 leading is
@@ -227,7 +227,7 @@
   --font-body: var(--font-host-grotesk), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   /* The community wall's handwriting: Bradley Hand ITC, loaded by the community
      page alone (next/font/local), so the variable is only defined there.
-     LICENCE: a Monotype face, not an open one — see the community notes. */
+     LICENCE: a Monotype face, not an open one - see the community notes. */
   --font-hand: var(--font-bradley), "Bradley Hand", "Segoe Print", cursive;
 }
 
@@ -284,7 +284,7 @@
    THE ANGLE IS CONVERTED, THE STOPS ARE NOT. Figma measures a gradient's angle
    in the layer's normalised square and stretches it to the box; CSS measures it
    in pixels. Stretched to the frame's 1440 x 678, Figma's 18.44° off vertical
-   becomes 8.9° — 171deg in CSS. Pasted verbatim, 161.56deg painted the left
+   becomes 8.9° - 171deg in CSS. Pasted verbatim, 161.56deg painted the left
    edge 15 levels darker than the frame while the right edge matched; at 171deg
    both edges match to within 2. A fixed CSS angle cannot follow the box's
    aspect the way Figma's does, so this is exact at the frame's proportions and
@@ -316,7 +316,7 @@
      bronze  linear-gradient(96.07deg, #9A876C 1.41%,   #B6A082 70.02%, #3E3A34 138.62%)
    Angles converted for the chip's 131 x 48 the way every gradient on this page
    was: a few degrees past horizontal in Figma's square is barely past it in
-   pixels — 92.4, 92.9 and 92.2. Stops verbatim. */
+   pixels - 92.4, 92.9 and 92.2. Stops verbatim. */
 @utility bg-podium-gold {
   background-image: linear-gradient(
     92.4deg,
@@ -342,7 +342,7 @@
   );
 }
 
-/* An active tournament card, per the Figma inspector, verbatim — 180deg needs
+/* An active tournament card, per the Figma inspector, verbatim - 180deg needs
    no conversion. It spans the WHOLE card, body panel included: with the stops
    as written the R channel reads 0x41 at the card's top and 0x16 at the seam
    276px down, which is what the frame shows. */
@@ -354,7 +354,7 @@
   );
 }
 
-/* Roster headings — CHAMPIONS, GODS, LEGENDS & ADVERSARIES. The ink is a
+/* Roster headings - CHAMPIONS, GODS, LEGENDS & ADVERSARIES. The ink is a
    left-to-right white-to-grey ramp, not a flat colour, so it is painted through
    the glyphs rather than set as a text colour. */
 @utility text-roster-heading {
@@ -488,8 +488,8 @@
 
 /*
  * The community tabs' swap: the panel you were on slides out one way and
- * fades while the new one slides in from the other. Composited — opacity and
- * transform — so it keeps moving while the map's chunk parses on the main
+ * fades while the new one slides in from the other. Composited - opacity and
+ * transform - so it keeps moving while the map's chunk parses on the main
  * thread; a GSAP tween started just before that block was swallowed by it.
  * The outgoing panel is absolute over the incoming one for the length of its
  * exit (see CommunityBoard).

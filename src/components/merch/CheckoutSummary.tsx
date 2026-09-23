@@ -12,7 +12,7 @@ import type { ComicIssue, Product } from "@/types/merch";
 /**
  * The checkout's right column: what is being bought, then what it costs.
  *
- * Frame at 1440 — summary panel 904..1347 x 137..560, totals 904..1347 x
+ * Frame at 1440 - summary panel 904..1347 x 137..560, totals 904..1347 x
  * 592..1075.
  *
  * PLACE ORDER TAKES NO PAYMENT. There is no backend, no payment SDK and no card

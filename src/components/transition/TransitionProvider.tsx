@@ -24,8 +24,8 @@ type PageTransition = {
   /**
    * Play the tear over a change that is NOT a route change.
    *
-   * `commit` runs while the screen is fully covered, so whatever it does — a
-   * scroll jump, a state swap — is never seen happening. The gate CTA uses this:
+   * `commit` runs while the screen is fully covered, so whatever it does - a
+   * scroll jump, a state swap - is never seen happening. The gate CTA uses this:
    * a gate and the page it opens onto share one route, so there is no href to
    * push, but the passage between them still has to be the tear.
    */
@@ -62,7 +62,7 @@ const FAILSAFE_MS = 3000;
  *
  * The hold used to be whatever the route change happened to take. Once the close
  * was lengthened the route was already resolved by the time it finished, and the
- * measured hold collapsed to 72ms — the covered moment stopped registering and
+ * measured hold collapsed to 72ms - the covered moment stopped registering and
  * the close ran straight into the open. This floors it so the wipe has a beat.
  */
 const HOLD_MIN_MS = 220;
@@ -180,7 +180,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
 
   /**
    * Held while the pull-up owns the screen. Kept separate from `phase`, which
-   * describes the TEAR's own state machine — conflating them would have a
+   * describes the TEAR's own state machine - conflating them would have a
    * pull-up driving the tear overlay.
    */
   const claimed = useRef(false);
@@ -235,8 +235,8 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   /**
    * Same-route tear. Close, run `commit` under full cover, reveal.
    *
-   * It cannot lean on the pathname effect the way `navigate` does — the route
-   * never changes, so that effect never fires — so it calls `openTear` itself
+   * It cannot lean on the pathname effect the way `navigate` does - the route
+   * never changes, so that effect never fires - so it calls `openTear` itself
    * once the commit is in. The failsafe is armed before `commit` runs, because a
    * throw inside it must not leave the screen red.
    */
@@ -330,7 +330,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     //
     // React attaches its handlers to the root container, which is BELOW
     // document, so a bubble-phase listener here runs after next/link has already
-    // navigated — the route changed and the tear never played. Every <Link> on
+    // navigated - the route changed and the tear never played. Every <Link> on
     // the site silently skipped the transition; only EnterButton worked, because
     // it calls navigate() directly rather than going through a link.
     //

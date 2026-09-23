@@ -23,7 +23,7 @@ import type { Messages } from "@/lib/utils/messages";
 /** Which flat field a product's tile is painted in. Set by Design, per product. */
 export type TileField = "linen" | "crimson" | "white";
 
-/** A colourway. `swatch` is a token name, never a hex — see coding-standard. */
+/** A colourway. `swatch` is a token name, never a hex - see coding-standard. */
 export type ProductColour = {
   id: string;
   /** Key into `messages.merch.colours`. */
@@ -53,7 +53,7 @@ export type Product = {
  * One entry in a listing.
  *
  * SEPARATE FROM `Product` ON PURPOSE. The frame's grid shows six cards drawn
- * from three products — the same catalogue repeated, exactly as the About team
+ * from three products - the same catalogue repeated, exactly as the About team
  * grid repeats two portraits. A listing is therefore an ordered list of
  * references with its own stable keys, not the catalogue itself, and swapping in
  * a real backend's product list changes nothing about how the grid renders.
@@ -70,7 +70,7 @@ export type ListingEntry = {
  * THE COVER IS COMPOSED, NOT A FILE. The frames build each one out of parts: a
  * dark band carrying a volume chip and the title, a torn seam, a coloured field
  * below it, and a character render laid over the join. Goondu delivered the
- * renders — `soma-gate-character.png`, `soma-mysc.png`, `weapon-spear.png` —
+ * renders - `soma-gate-character.png`, `soma-mysc.png`, `weapon-spear.png` -
  * and not flattened covers, so the page assembles what the design assembles.
  *
  * That is also why framing arrives as literal Tailwind classes, the same way
@@ -99,7 +99,7 @@ export type ComicIssue = {
      * WHOLE TAILWIND CLASS NAMES, never derived at runtime.
      *
      * `field.replace("bg-", "text-")` was tried for the seam and produced a
-     * class that had never been generated — Tailwind scans source text, so
+     * class that had never been generated - Tailwind scans source text, so
      * `text-abyss` existed nowhere and the seam fell back to `currentColor`,
      * which inherited near-white and drew two white blobs on the cover. Each
      * class is written out for exactly that reason.
@@ -111,9 +111,9 @@ export type ComicIssue = {
      * How the render sits in the cover, because the two frames do it
      * differently and the difference is structural rather than cosmetic.
      *
-     *   "figure" — a cutout placed by hand, painted IN FRONT of the torn seam.
+     *   "figure" - a cutout placed by hand, painted IN FRONT of the torn seam.
      *              Volume 1: Soma's head crosses the seam into the band above it.
-     *   "field"  — the render IS the field, covering it edge to edge and running
+     *   "field" - the render IS the field, covering it edge to edge and running
      *              up BEHIND the seam. Volume 2's studio backdrop is baked into
      *              the file, so there is no flat colour to show.
      */
@@ -125,7 +125,7 @@ export type ComicIssue = {
     /** The character render, and how it sits in the cover box. */
     figure: string;
     figureClass: string;
-    /** An optional second render behind the figure — the spear on volume 1. */
+    /** An optional second render behind the figure - the spear on volume 1. */
     prop?: string;
     propClass?: string;
   };
@@ -154,7 +154,7 @@ export type PointsBalance = {
 
 /**
  * What a placed order looks like. NOTHING IN THIS BUILD CREATES ONE against a
- * server — the checkout screens advance to the confirmation view and no payment
+ * server - the checkout screens advance to the confirmation view and no payment
  * is taken, no card detail is ever collected. The type exists so the screens are
  * built against the shape a real order will have.
  */

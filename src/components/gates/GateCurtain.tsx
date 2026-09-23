@@ -13,12 +13,12 @@ import type { GateId } from "@/lib/gates";
  * The gate pull-up, the way Thorgal does it.
  *
  * AT REST THE FOOT IS THE FRAME. The page ends on the next gate's name ghosted
- * across a seam, with a strip of that gate's plate showing beneath it — 237px
- * of it at 1440, 135 on the phone frame — and ordinary scrolling stops there.
+ * across a seam, with a strip of that gate's plate showing beneath it - 237px
+ * of it at 1440, 135 on the phone frame - and ordinary scrolling stops there.
  * Nothing moves on its own.
  *
  * THE PULL IS THE VISITOR'S. Scrolling on, once the page has nothing left to
- * give, starts to draw the next gate up over this one — not one-to-one with the
+ * give, starts to draw the next gate up over this one - not one-to-one with the
  * wheel, but as if something were drawing it up and it were heavy: each notch
  * adds to a target the sheet eases towards, so it lags the hand and keeps
  * moving a moment after it. Stop, and it settles back down to the seam. Keep
@@ -29,8 +29,8 @@ import type { GateId } from "@/lib/gates";
  * in the strip, top-aligned, its lower two-thirds clipped by the strip
  * (`overflow: clip`, which also keeps a viewport-tall element from lengthening
  * the page). The moment a pull begins it is switched to `position: fixed` and
- * translated to exactly where it already appears — the strip's top at the foot
- * of a fully scrolled viewport — so the switch is invisible, and from there the
+ * translated to exactly where it already appears - the strip's top at the foot
+ * of a fully scrolled viewport - so the switch is invisible, and from there the
  * translate carries it up over the outgoing page, which holds still underneath
  * because the page is not scrolling at all while it pulls. A fixed element
  * escapes an ancestor's clip, which is the whole trick. (The outgoing section
@@ -44,11 +44,11 @@ import type { GateId } from "@/lib/gates";
  * down does the page scroll again.
  *
  * THE ARCH is an elliptical radius across the full width, `50% 50% 0 0 / 12%
- * 12% 0 0`, with the vertical component going 12% -> 0 as the sheet rises — a
+ * 12% 0 0`, with the vertical component going 12% -> 0 as the sheet rises - a
  * dome, not two corners. The seam title fades out by 30% of the rise, before
  * the gate's own title arrives, so the name is never on screen twice.
  *
- * THE PREVIEW IS THE REAL COMPONENT — the same `GateSection` the next route
+ * THE PREVIEW IS THE REAL COMPONENT - the same `GateSection` the next route
  * paints, built by the page with the same props. Rebuilding the hero by hand
  * would guarantee a visible snap at the swap. It is `inert`: its CTA, cue and
  * chip must not be reachable while it is scenery.
@@ -65,7 +65,7 @@ export function GateCurtain({
 }: {
   /** The outgoing page's last section; the sheet rides over it while it holds still. */
   children: ReactNode;
-  /** What rises — the next gate's door (`gatePreview`) or the next page's first section. */
+  /** What rises - the next gate's door (`gatePreview`) or the next page's first section. */
   preview: ReactNode;
   /** The route pushed under cover: the portal (`/en`) for a door, or a page's own path. */
   href: string;
@@ -74,7 +74,7 @@ export function GateCurtain({
   /**
    * The door the portal should stand at on arrival. Named BEFORE the push (see
    * GateEntry.seedGate) so the home route paints that gate on its first render
-   * — the same `GateSection` the sheet is already showing. Omit when `href` is
+   * - the same `GateSection` the sheet is already showing. Omit when `href` is
    * a page: pages paint themselves.
    */
   gate?: GateId;
@@ -90,7 +90,7 @@ export function GateCurtain({
   const swap = useRef<() => void>(() => {});
   useEffect(() => {
     swap.current = () => {
-      // If the tear already owns the screen, this does nothing — the visitor
+      // If the tear already owns the screen, this does nothing - the visitor
       // gets one transition, not two.
       const release = claim();
       if (!release) return;
@@ -102,8 +102,8 @@ export function GateCurtain({
       // `scroll: false` stops Next restoring a scroll position, then the jump to
       // the top happens while the sheet still covers everything, so the new
       // route paints exactly what is already on screen. Through Lenis where it
-      // runs — it was stopped for the pull, and `force` is how a stopped Lenis
-      // is moved — and started again for the page that is arriving.
+      // runs - it was stopped for the pull, and `force` is how a stopped Lenis
+      // is moved - and started again for the page that is arriving.
       router.push(href, { scroll: false });
       const lenis = getLenis();
       if (lenis) {
@@ -277,7 +277,7 @@ export function GateCurtain({
     <>
       {children}
 
-      {/* THE FOOT: the strip of the next gate the frames show at rest — 237px at
+      {/* THE FOOT: the strip of the next gate the frames show at rest - 237px at
           1440, 135 on the phone frame. `overflow-clip` clips the viewport-tall
           sheet to it AND keeps it out of the page's scrollable height; a fixed
           sheet escapes the clip, which is what the pull relies on.
@@ -306,12 +306,12 @@ export function GateCurtain({
         </div>
 
         {/* THE SEAM TITLE. The frame ghosts the next gate's name large across the
-            join — measured cap 152, ink `--color-menu-fg` at 80% (it reads
+            join - measured cap 152, ink `--color-menu-fg` at 80% (it reads
             rgb(197,197,197) on black and rgb(218,220,221) on the plate, which no
             flat colour does). At a negative offset so it straddles the sheet's
             top edge exactly as the frame draws it: cap top 67px above the plate
-            line, the rest below. It goes with the seam — gone by 30% of the
-            rise, before the gate's own title arrives — because the preview is
+            line, the rest below. It goes with the seam - gone by 30% of the
+            rise, before the gate's own title arrives - because the preview is
             the real `GateSection` and renders that title itself.
 
             The chevron and SCROLL TO GO NEXT that complete the seam are rendered
@@ -332,7 +332,7 @@ export function GateCurtain({
 /**
  * How much scroll a full pull takes, in multiples of the sheet's travel: 1.1
  * travels of wheel (about four notches on a 900px screen) to the top. The
- * point of no return is a little under half way — enough that a stray notch
+ * point of no return is a little under half way - enough that a stray notch
  * settles back, and a second one commits.
  */
 const GAIN = 1.1;

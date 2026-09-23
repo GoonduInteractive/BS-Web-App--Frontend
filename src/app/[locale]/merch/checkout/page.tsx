@@ -14,7 +14,7 @@ import { pageMetadata } from "@/lib/seo";
 /**
  * Checkout. Figma: `Merch Store- Checkout-New User.png`.
  *
- * NO CART CONTROL IN THE HEADER ROW, because the frame draws none — this is the
+ * NO CART CONTROL IN THE HEADER ROW, because the frame draws none - this is the
  * end of the funnel and the cart is already on screen to the right.
  *
  * The container is 93px, wider than the store's 80: the frame's panels run
@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
   const [products, comics, countries, states] = await Promise.all([

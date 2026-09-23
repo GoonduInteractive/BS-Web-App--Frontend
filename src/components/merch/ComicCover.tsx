@@ -8,12 +8,12 @@ import type { ComicIssue } from "@/types/merch";
  * A comic cover, assembled. Figma: the cover on `Merch Store- Comics Detail.png`
  * and the four cards on the store index.
  *
- * Frame at 1440 — 410 x 562, a band down to 43%, a torn seam, then the issue's
+ * Frame at 1440 - 410 x 562, a band down to 43%, a torn seam, then the issue's
  * field. The chip sits 8% down, the title under it, the partner line at the
  * foot, and the render straddles the seam.
  *
  * THE TWO COVERS LAYER DIFFERENTLY, and it is not a detail. Volume 1 places a
- * cutout IN FRONT of the seam — Soma's head crosses up into the band. Volume 2's
+ * cutout IN FRONT of the seam - Soma's head crosses up into the band. Volume 2's
  * render IS the field: its studio backdrop is baked into the file, so it covers
  * the field edge to edge and runs up BEHIND the seam, which is painted in the
  * band's colour over it. `figureMode` carries that difference.
@@ -26,7 +26,7 @@ import type { ComicIssue } from "@/types/merch";
  *
  * Every class arrives from the manifest as a WHOLE literal. Deriving the seam's
  * colour with `field.replace("bg-", "text-")` produced a class Tailwind had
- * never generated — it scans source text — so the seam fell back to
+ * never generated - it scans source text - so the seam fell back to
  * `currentColor`, inherited near-white and drew two white blobs across the
  * cover. Same trap `team.ts` documents for `w-[${n}%]`.
  */
@@ -88,7 +88,7 @@ export function ComicCover({
         </div>
       ) : null}
 
-      {/* THE SEAM IS THE BAND'S BOTTOM EDGE, TORN, BITING DOWN INTO THE FIELD —
+      {/* THE SEAM IS THE BAND'S BOTTOM EDGE, TORN, BITING DOWN INTO THE FIELD -
           on both covers. It was drawn the other way round (the field's colour
           biting up) until the frame was profiled: scanning down every fourth
           column for the first field-coloured pixel gives a median of 247 with a
@@ -140,13 +140,13 @@ export function ComicCover({
 
       <div
         // A PERCENTAGE PADDING RESOLVES AGAINST THE CONTAINER'S WIDTH, on both
-        // axes — so the frame's 44px top inset on a 414 x 567 cover is 10.7% of
+        // axes - so the frame's 44px top inset on a 414 x 567 cover is 10.7% of
         // the width, not 7.8% of the height. Written as 7.8 it put the chip 11px
         // high on every cover.
         className={`relative z-4 px-[9.9%] pt-[10.7%] ${centred ? "text-center" : ""}`}
       >
         {/* The chip is the delivered torn plate, stretched to the label rather
-            than letterboxed — the artwork carries no preserveAspectRatio. */}
+            than letterboxed - the artwork carries no preserveAspectRatio. */}
         <span
           className={`font-display inline-grid place-items-center bg-size-[100%_100%] bg-center bg-no-repeat px-[4.5cqw] py-[1.9cqw] text-[2.7cqw] leading-none font-bold tracking-[0.08em] ${cover.chip}`}
         >

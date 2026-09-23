@@ -9,7 +9,7 @@ import type { SceneBuilder } from "@/hooks/useGsapScene";
  *
  * Same two conventions as `competition-scenes.ts`: tween WRAPPERS, never the
  * element that hovers (GSAP zeroes Tailwind's `translate`/`scale` inline), and
- * clear only the props a tween wrote — the note wrappers are positioned by
+ * clear only the props a tween wrote - the note wrappers are positioned by
  * inline `left`/`top` that React writes and `clearProps: "all"` would take
  * them with it.
  */
@@ -23,7 +23,7 @@ const REST = { clearProps: "opacity,transform,transformOrigin" };
 
 /**
  * The wall deals its notes. Whatever is inside the window when the wall first
- * has a box pins itself to the board — a ripple from the middle outward, each
+ * has a box pins itself to the board - a ripple from the middle outward, each
  * note settling from a hair of tilt and a touch smaller, the way paper lands
  * under a thumb. Notes off-screen are left alone: the visitor pans to them,
  * and a board is not a slideshow. Plays once; panning never re-triggers it.

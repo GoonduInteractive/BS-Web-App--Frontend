@@ -34,7 +34,7 @@ export function CharactersHero({ messages }: { messages: Messages }) {
         <div className="pt-32 lg:pt-[14.1875rem]">
           {/* HIDDEN ON MOBILE, following the Game hero, whose own 361 frame
               shows no chip. There is no 361 frame for THIS page, so that is a
-              carried-over decision rather than a read one. FLAGGED — it is a
+              carried-over decision rather than a read one. FLAGGED - it is a
               real loss of an obvious way back to the gate on the majority
               platform, and it is worth confirming for both pages at once. */}
           <Reveal className="hidden lg:-ml-4 lg:block">
@@ -56,7 +56,7 @@ export function CharactersHero({ messages }: { messages: Messages }) {
             // available agree on it.
             //
             // -0.058em is the Game hero's value, unchanged, and closes the same
-            // gap for the same reason — matched on cap height Teko sets wider
+            // gap for the same reason - matched on cap height Teko sets wider
             // than the frame's face. See --text-gate. Third measurement, same
             // finding; overview risk 3 stays open.
             //
@@ -79,7 +79,7 @@ export function CharactersHero({ messages }: { messages: Messages }) {
         {/* ---- Right column: aside, then the CTA ----
             HIDDEN ON MOBILE, following the Game hero: its 361 frame drops the
             aside entirely and moves the button into the left column's flow. Same
-            caveat as the chip — carried over, not read from a frame of this
+            caveat as the chip - carried over, not read from a frame of this
             page's own. */}
         <Reveal delay={160} className="hidden lg:block lg:pt-[29rem]">
           {/* LEFT-aligned, not right. Every line in the frame starts at exactly
@@ -92,13 +92,13 @@ export function CharactersHero({ messages }: { messages: Messages }) {
               lines.
 
               A WIDTH, NOT A MAX-WIDTH. The column is 244 and the frame's third
-              line is 260, so a max-width can never reach it — the paragraph is
+              line is 260, so a max-width can never reach it - the paragraph is
               a block and fills the 244 it is given, and the cap never binds.
               Setting the width outright is what lets the box cross the column
               edge, which is the thing the frame actually does. */}
           <p className="text-menu-fg/85 font-body text-body w-[17rem]">{t.aside}</p>
 
-          {/* The brackets start at 1088, level with the aside's left edge — no
+          {/* The brackets start at 1088, level with the aside's left edge - no
               overhang here, unlike the Game hero's -2.5. */}
           <div className="mt-[4.625rem]">
             <JoinButton label={messages.site.downloadCta} />
@@ -114,7 +114,7 @@ export function CharactersHero({ messages }: { messages: Messages }) {
 }
 
 /**
- * The machete suspended in front of the tree — the hero's second layer, and the
+ * The machete suspended in front of the tree - the hero's second layer, and the
  * reason this page gets the full two-layer drift.
  *
  * LOCKED TO THE PLATE, NOT TO THE VIEWPORT. The blade hangs at a specific point
@@ -122,8 +122,8 @@ export function CharactersHero({ messages }: { messages: Messages }) {
  * `%`-positioned blade slides off it the moment the viewport stops being the
  * frame's 1440 x 834. So the geometry is expressed in PLATE pixels and scaled by
  * the same factor `object-cover` uses, which is `max(box width / 2880, box
- * height / 1714)`. `--plate-px` is that factor — the on-screen size of one pixel
- * of the plate — and every number below is a measurement off the 2880 x 1714
+ * height / 1714)`. `--plate-px` is that factor - the on-screen size of one pixel
+ * of the plate - and every number below is a measurement off the 2880 x 1714
  * file:
  *
  *   964 x 1322   the asset's box, in plate pixels
@@ -142,7 +142,7 @@ export function CharactersHero({ messages }: { messages: Messages }) {
  *
  * HIDDEN BELOW `md`. Cover-fitting a 1.68 plate into a portrait box zooms it by
  * height, so a proportionally-correct blade is about 432px wide on a 380px
- * screen — across the body copy, with no scrim to lift the text off it. There is
+ * screen - across the body copy, with no scrim to lift the text off it. There is
  * no 361 frame for this page to say what should happen instead, so it is left
  * out rather than guessed at. FLAGGED.
  */
@@ -169,7 +169,7 @@ function FloatingBlade({
       }
       // `-translate-*` compiles to the `translate` property in v4, so it
       // coexists with the drift hook's `transform` write rather than being
-      // overwritten by it — the same arrangement the plate's `scale-105` uses.
+      // overwritten by it - the same arrangement the plate's `scale-105` uses.
       className="pointer-events-none absolute hidden -translate-x-1/2 -translate-y-1/2 select-none lg:block"
     >
       <Image
@@ -188,7 +188,7 @@ function FloatingBlade({
 /**
  * JOIN THE TRIAL.
  *
- * The button box is 159 x 56 in the frame, with the label's ink 126 x 13 —
+ * The button box is 159 x 56 in the frame, with the label's ink 126 x 13 -
  * a 13px cap is 18px, which is `text-h7`, which is BracketButton's own default.
  *
  * `px-4` and the explicit `py` OVERRIDE BracketButton's `px-5 py-5` rather than
@@ -197,7 +197,7 @@ function FloatingBlade({
  * its measured 16 and 17.
  *
  * `tracking-normal` overrides the component's `tracking-wide` for the same
- * reason it does on the Game hero's trailer button — wide sets the label past
+ * reason it does on the Game hero's trailer button - wide sets the label past
  * the frame's 126.
  */
 /** JOIN THE TRIAL, for now DOWNLOAD GAME (2026-09-19, per the human). */

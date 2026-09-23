@@ -65,7 +65,7 @@ export function NotFoundView() {
 
 
 const TEAR = { cx: 120, cy: 257, dx: 0.9205, dy: -0.3907, half: 30 };
-/** Where the blade's tip rests, in the same units — the tear's lower-left end. */
+/** Where the blade's tip rests, in the same units - the tear's lower-left end. */
 const TIP = { x: 34, y: 250 };
 
 const slashScene: SceneBuilder = (gsap, q, root) => {

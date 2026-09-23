@@ -22,7 +22,7 @@ export type LeaderboardEntry = {
   region: TournamentRegion;
   points: number;
   champion: ChampionKey;
-  /** Percentage, 0–100. */
+  /** Percentage, 0-100. */
   winRate: number;
   /** The season the points were earned in. */
   season: 2026 | 2025;
@@ -30,8 +30,8 @@ export type LeaderboardEntry = {
 
 /**
  * The top three. The frame each stands in belongs to the STEP, not the person
- * — Design's first delivery baked one portrait into each frame, and a rank
- * changes hands — so an entry carries only its step and its player, whose
+ * - Design's first delivery baked one portrait into each frame, and a rank
+ * changes hands - so an entry carries only its step and its player, whose
  * `avatar` the podium sets inside the step's frame (see `PodiumFrame`).
  */
 export type PodiumEntry = LeaderboardEntry & {

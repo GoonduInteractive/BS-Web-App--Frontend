@@ -18,48 +18,13 @@ import { COMMUNITY_SCENES } from "@/lib/animation/community-scenes";
 import type { Messages } from "@/lib/utils/messages";
 import type { CommunityNote } from "@/types/community";
 
-/**
- * The wall: a fixed window onto a canvas twice its size that the visitor drags
- * around — up, down and sideways, per the human. Figma: `Community Wall.png`
- * y 657..1530 (an 873 window) and `MOBILE-WALL.png`, where the same collage is
- * cut narrower.
- *
- * HOW IT PANS. Pointer events on the window: down starts a drag, move
- * translates the canvas by the pointer's travel, up lets it coast a little
- * from the release velocity and settles. The offset is clamped to the canvas
- * so there is never blank ground past an edge. All of it is written to a ref
- * and painted with a `translate3d` in one place — a React render per pointer
- * move is the one thing this must not cost.
- *
- * A CLICK IS A DRAG THAT DID NOT MOVE. The like buttons sit on the cards, and
- * a press on one has to be able to become a pan; so the window tracks travel
- * and, if a pointer lifts having moved more than a few pixels, swallows the
- * click that follows. THE POINTER IS CAPTURED ONLY ONCE IT HAS TRAVELLED:
- * capturing on the press retargets the release to the window, and a click is
- * dispatched to the common ancestor of press and release — so a captured
- * press on a like button would never have clicked it.
- *
- * TOUCH KEEPS THE PAGE. The window is most of a phone's screen; if a finger
- * on it could only pan the wall, nobody could scroll past it. So on touch the
- * browser keeps vertical swipes for the page (`touch-action: pan-y`) and the
- * wall pans sideways only; a mouse pans both ways. FLAGGED — a reading, since
- * neither frame can show a gesture.
- *
- * KEYBOARD: the window is focusable and the arrow keys pan it, so the notes
- * beyond the first view are reachable without a pointer; the cards' buttons
- * are in the tab order as they always were.
- *
- * FIRST VIEW IS THE FRAME: the canvas opens at `WALL.origin`, which is where
- * the nine notes of `Community Wall.png` sit at 1440. Narrower windows show
- * less of the same arrangement, as the phone frame does.
- */
-/** The part of the canvas in view, in canvas pixels — read by whoever places a note. */
+/** The part of the canvas in view, in canvas pixels - read by whoever places a note. */
 export type WallView = { x: number; y: number; w: number; h: number };
 
 /**
  * MEMOISED, AND IT MATTERS: the board re-renders on every tab switch and every
  * new place on the map, and 161 torn cards re-rendering with it cost ~850ms of
- * script on a switch — long enough to swallow the swap animation before its
+ * script on a switch - long enough to swallow the swap animation before its
  * first frame. With stable props (the notes, the copy, a ref) the wall skips
  * those renders entirely; its own state (the likes) still re-renders it.
  */
@@ -82,7 +47,7 @@ export const CommunityWall = memo(function CommunityWall({
   const viewport = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLDivElement>(null);
   const [liked, setLiked] = useState<Set<string>>(() => new Set());
-  // The notes in view pin themselves to the board once it has a box — a
+  // The notes in view pin themselves to the board once it has a box - a
   // ripple from the middle. The scene reads the wrappers' boxes, so it builds
   // after `place()` has run (the gsap import resolves later than the mount
   // effect that places the canvas).
@@ -126,7 +91,7 @@ export const CommunityWall = memo(function CommunityWall({
     const el = viewport.current;
     if (!el) return;
     const place = () => {
-      // No box yet — the page face is still `hidden` behind its gate — so
+      // No box yet - the page face is still `hidden` behind its gate - so
       // nothing to place against; the observer fires again when it has one.
       if (el.clientWidth === 0) return;
       const narrow = el.clientWidth < 768;
@@ -255,7 +220,7 @@ export const CommunityWall = memo(function CommunityWall({
       >
         {/* A card that is pushed aside slides to its new place; the one just
             posted pops in; the deal tweens the wrapper. All of it is on the
-            wrapper — the card itself lifts under the cursor and must not be
+            wrapper - the card itself lifts under the cursor and must not be
             transformed by anything else (the useGsapScene warning). */}
         {notes.map((note) => (
           <div

@@ -10,7 +10,7 @@ import type { Messages } from "@/lib/utils/messages";
 
 /**
  * The home route's two faces: the entry screen, then the gate the visitor is
- * standing at. `/en` is the portal — ENTER opens onto Ọnụ Ụzọ 1, the cues and
+ * standing at. `/en` is the portal - ENTER opens onto Ọnụ Ụzọ 1, the cues and
  * the rail move between the four doors, and the URL never changes until a
  * door's CTA takes you through to its page. See `GateEntry`.
  *

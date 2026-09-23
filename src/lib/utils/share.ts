@@ -2,7 +2,7 @@
  * Share endpoints, deliberately narrow.
  *
  * Plain URLs to each service's public share page carrying the current address
- * and nothing else — no SDK, no pixel, no third-party script, so nothing loads
+ * and nothing else - no SDK, no pixel, no third-party script, so nothing loads
  * that could watch the reader. Used by the comic reader's bar and by the SHARE
  * THIS COMIC block under the pages, so the two cannot drift apart.
  *

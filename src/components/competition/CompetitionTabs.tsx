@@ -5,7 +5,7 @@ export type CompetitionView = "tournaments" | "leaderboard";
 
 /**
  * Tournaments / Leaderboards, in the bar under the hero. The row is the shared
- * `PanelTabs`; this file is its placement — the bar's ground and rule, the 61 of
+ * `PanelTabs`; this file is its placement - the bar's ground and rule, the 61 of
  * air above the tabs, the container. The list runs 4px outside the container
  * because the underline runs past its label on both sides (padding on the tab).
  */

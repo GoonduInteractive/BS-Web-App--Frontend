@@ -20,13 +20,13 @@ import { TEAM_GROUPS, type TeamGroup, type TeamMember } from "@/types/team";
  *
  * TABBED SINCE 2026-09-22, per the human: Core Team, Contributors and Partners,
  * drawn with the Community page's own switcher (`PanelTabs`) rather than a
- * second control that looks like it — the same tabs, ids, keyboard pattern and
+ * second control that looks like it - the same tabs, ids, keyboard pattern and
  * sliding underline the Community Wall and the Competition standings use.
  * Another tab is one entry in `TEAM_GROUPS`, one label in
  * `messages.about.team.tabs`, and one option in the CMS select; the row here
  * reads the list and nothing counts them.
  *
- * A TAB WITH NOBODY IN IT IS STILL DRAWN, showing the empty state under it —
+ * A TAB WITH NOBODY IN IT IS STILL DRAWN, showing the empty state under it -
  * Contributors is empty until the first one is published, and a tab that
  * vanished would leave the visitor wondering what they saw a moment ago.
  */
@@ -51,7 +51,7 @@ export function TeamSection({ members, messages }: { members: readonly TeamMembe
             {t.title}
           </h2>
 
-          {/* Left on the phone with the heading, centred under it from md — the
+          {/* Left on the phone with the heading, centred under it from md - the
               band's own alignment, which the heading above already follows. */}
           <PanelTabs
             name="team"
@@ -60,7 +60,7 @@ export function TeamSection({ members, messages }: { members: readonly TeamMembe
             active={group}
             onChange={setGroup}
             // Three tabs measure 333px against a 332px phone viewport, so the row
-            // wraps there — the slider reads each tab's own offset and follows it to
+            // wraps there - the slider reads each tab's own offset and follows it to
             // the second line. One line, centred, from md, at the frame's gap.
             className="mt-9 -ml-2.5 flex-wrap gap-x-4 gap-y-3 md:ml-0 md:justify-center md:gap-x-[1.875rem]"
           />
@@ -74,8 +74,8 @@ export function TeamSection({ members, messages }: { members: readonly TeamMembe
             <EmptyTeam messages={messages} />
           ) : (
             /* A WRAPPING FLEX ROW, NOT A GRID, so that a short last row centres
-               itself — one card left over sits in the middle, two sit either side
-               of it — at every breakpoint and for any number of people. A grid
+               itself - one card left over sits in the middle, two sit either side
+               of it - at every breakpoint and for any number of people. A grid
                cannot do that: its tracks are fixed, so the leftovers hug the left
                unless a column start is computed per count AND per breakpoint.
                Each card carries the width its column had, so a full row is laid

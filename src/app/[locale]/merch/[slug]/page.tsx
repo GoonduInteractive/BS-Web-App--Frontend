@@ -60,7 +60,7 @@ export default async function Page({
   // is a 404 rather than a crash.
   const product = await getProduct(slug).catch(() => null);
   if (!product) notFound();
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
   const related = await getRelated(slug);

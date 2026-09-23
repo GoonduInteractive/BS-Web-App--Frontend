@@ -5,14 +5,14 @@ import { TabSlider } from "@/components/ui/TabSlider";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * The two-panel switcher's row — the tablist, its two tabs and the underline
- * that slides between them — as ONE component, at the human's direction
+ * The two-panel switcher's row - the tablist, its two tabs and the underline
+ * that slides between them - as ONE component, at the human's direction
  * (2026-09-16): the Competition page's Tournaments / Leaderboards and the
  * Community page's Community Wall / Active Player Map are the same control and
  * were composed twice, and the two copies had drifted (the Competition copy
  * put its top padding INSIDE the tablist, which the slider then counted
- * twice — see TabSlider). Layout that differs between the pages — left-aligned
- * in a bar, or centred in a hero — comes in through `className`; the tabs, the
+ * twice - see TabSlider). Layout that differs between the pages - left-aligned
+ * in a bar, or centred in a hero - comes in through `className`; the tabs, the
  * ids, the keyboard pattern and the slider do not.
  *
  * Ids follow one rule the panels share: the tab is `${name}-tab-${key}` and the

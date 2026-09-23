@@ -10,7 +10,7 @@ import type { GateId } from "@/lib/gates";
  * The cue at the foot of a gate and of a page: a torn arrow over a label
  * naming the gate it leads to. Bottom-centred.
  *
- * TWO DESTINATIONS. With `gate` it stands the portal at that door (a button —
+ * TWO DESTINATIONS. With `gate` it stands the portal at that door (a button -
  * the URL does not change, see GateEntry); with `href` it is a plain
  * `next/link` to a page, and TransitionProvider's delegated click handler
  * plays the tear. Nothing here calls the transition either way.

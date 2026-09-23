@@ -30,7 +30,7 @@ import type { BracketRound, Match, TournamentDetail } from "@/types/tournament";
  *              join; a 36px round heading 85 above each column's first card
  *
  * THE TREE TOUCHES BOTH EDGES OF THE PAGE. The frame draws it cut at the left
- * AND the right — the round of 16 runs off one side, the finals off the other —
+ * AND the right - the round of 16 runs off one side, the finals off the other -
  * so it is not held in the 80px container the rest of the page uses. The
  * columns are 271 and the gutters at least 158, which is 1558 for four rounds:
  * on a page wider than that the gutters grow and the first and last columns
@@ -50,7 +50,7 @@ import type { BracketRound, Match, TournamentDetail } from "@/types/tournament";
  * date, and ROUNDS REMAINING is the stages not yet completed. The frame prints
  * 12 DAYS and 4 rounds; the data says what it says.
  *
- * MOTION: three scenes from `competition-scenes` — `matchups` (the cards rise
+ * MOTION: three scenes from `competition-scenes` - `matchups` (the cards rise
  * in turn), `stats` (the cards rise and the numbers count up to their values)
  * and `bracket` (round by round: cards rise, then the lines out of them draw
  * across the gutter and on into the next round). The tweened targets are the
@@ -167,7 +167,7 @@ function Bracket({ rounds, messages, locale }: { rounds: readonly BracketRound[]
           return (
             <Fragment key={round.key}>
               <div data-round={r} className="relative w-67.75 shrink-0" style={{ "--slot": `${slot}px` } as CSSProperties}>
-                {/* 85 above the first card's top — heading line box 40 tall. */}
+                {/* 85 above the first card's top - heading line box 40 tall. */}
                 <h3
                   className="font-display text-menu-fg text-h3 absolute font-semibold tracking-[-0.058em] uppercase whitespace-nowrap"
                   style={{ top: cardTop - 85 - 5 } as CSSProperties}

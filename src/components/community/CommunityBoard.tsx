@@ -18,14 +18,14 @@ import type { CommunityNote } from "@/types/community";
 import type { PlayerHotspot } from "@/types/players";
 
 export type CommunityView = "wall" | "map";
-/** Tab order — a swap slides towards the tab you chose. */
+/** Tab order - a swap slides towards the tab you chose. */
 const VIEWS: readonly CommunityView[] = ["wall", "map"];
 
 /**
  * The Community page behind gate 3: the hero, the two tabs, and the wall.
  * Figma: `05-community/Community Wall.png` (1440 x 1810) and `MOBILE-WALL.png`
  * (360 x 2267). One client component because the hero's CTA, the sheet it
- * opens and the wall share one piece of state — the notes, which a submitted
+ * opens and the wall share one piece of state - the notes, which a submitted
  * sheet adds to.
  *
  * THE HERO IS THE ENTRY SCREEN'S GROUND, per the human: the same `bg-entry`
@@ -34,9 +34,9 @@ const VIEWS: readonly CommunityView[] = ["wall", "map"];
  * WHAT THE FRAME MEASURES, at 1440:
  *
  *   hero     0..657, the wall from 657
- *   chip     93..223 x 227..256 — the Game and Competition heroes' chip exactly
+ *   chip     93..223 x 227..256 - the Game and Competition heroes' chip exactly
  *   tabs     centred, label caps at 225; a 6px marker, the underline 550..698
- *   title    ink 450..993, cap 63 at 307 — the hero title token
+ *   title    ink 450..993, cap 63 at 307 - the hero title token
  *   body     two centred lines, caps 403 and 428, 519 wide
  *   CTA      red 601..838 x 499..553, brackets at 573 and 856
  *
@@ -48,7 +48,7 @@ const VIEWS: readonly CommunityView[] = ["wall", "map"];
  * body and swaps the title (ACTIVE PLAYER MAP) and the slot under the body:
  * SHARE YOUR THOUGHTS becomes the location search. The body copy under the
  * map title is the wall's own sentence in the frame ("Welcome to our Community
- * Wall! …") — transcribed as drawn and FLAGGED as a likely comp slip. Both
+ * Wall! …") - transcribed as drawn and FLAGGED as a likely comp slip. Both
  * panels are in the document, the inactive one `hidden`, as the Competition
  * page does; the map's chunk loads only when its tab is chosen.
  */
@@ -91,8 +91,8 @@ export function CommunityBoard({
   // THE WALL IS NEVER display:none. Taking 161 torn cards out of layout and
   // back cost ~480ms of relayout (every TornPanel re-measuring its filter) on
   // the way back in, which swallowed the swap before its first frame. Off
-  // duty it is `visibility: hidden` and absolute instead — out of flow, out of
-  // the accessibility tree and the tab order, but laid out — so coming back
+  // duty it is `visibility: hidden` and absolute instead - out of flow, out of
+  // the accessibility tree and the tab order, but laid out - so coming back
   // is a visibility flip and the animation runs from its first frame.
   // Each side keeps its class until ITS OWN animation ends: clearing both on
   // the shorter exit cut the entrance a third short.
@@ -120,7 +120,7 @@ export function CommunityBoard({
 
   // A new note lands in the middle of what the visitor is looking at, on
   // cream, and the cards already there are pushed aside to make room for it
-  // (`placeNote`) — a note never covers another. Per the human.
+  // (`placeNote`) - a note never covers another. Per the human.
   const post = (body: string) => {
     const id = `you-${Date.now()}`;
     setNotes((current) =>
@@ -186,7 +186,7 @@ export function CommunityBoard({
             <p className="text-menu-fg font-body text-body text-center">{t.hero.body}</p>
           </Reveal>
 
-          {/* The slot under the body: the wall's CTA, or the map's search — the
+          {/* The slot under the body: the wall's CTA, or the map's search - the
               frame puts the 48-tall pill exactly where the 55-tall button was. */}
           <Reveal key={`slot-${view}`} delay={160} className="mt-12 flex justify-center lg:mt-12.5">
             {view === "wall" ? (

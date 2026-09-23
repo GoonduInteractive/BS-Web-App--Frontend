@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ElementType, type ReactNode } from "react";
 
 /**
- * Reveal on enter — the page's one scroll motion.
+ * Reveal on enter - the page's one scroll motion.
  *
  * Content rises and fades as its section comes into view, once, and then stays
  * put. Nothing re-animates on the way back up.
@@ -19,7 +19,7 @@ import { useEffect, useRef, type ElementType, type ReactNode } from "react";
  *
  * The observer disconnects the moment it fires, so nothing is left watching.
  *
- * `delay` staggers siblings within a section. Keep the steps small — this is a
+ * `delay` staggers siblings within a section. Keep the steps small - this is a
  * reveal, not a sequence, and long chains read as the page being slow.
  */
 export function Reveal({

@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   const messages = getMessages(locale);
   const characters = await getCharacters(locale);
-  // The page ends by handing on to the next DOOR, on the portal — see GateEntry.
+  // The page ends by handing on to the next DOOR, on the portal - see GateEntry.
   const next = nextGate(getGate("characters"));
   const nextCopy = messages.gates[next.id];
 

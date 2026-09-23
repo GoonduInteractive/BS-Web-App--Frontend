@@ -1,14 +1,14 @@
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * The gate manifest. Gate order lives here and nowhere else — the rail, the four
+ * The gate manifest. Gate order lives here and nowhere else - the rail, the four
  * gate routes and each scroll cue all read from this list, so adding or
  * reordering a gate is a one-line change.
  *
  * THE DOORS SHARE THE HOME ROUTE; THE PAGES HAVE THE SLUGS. `/en` is the portal
  * and shows one gate at a time (`GateEntry` holds which); `/en/{slug}` is the
  * page a gate's CTA opens onto. So the rail and the cues swap the portal's
- * face — the tear plays, the URL holds — and a CTA is a real link to a page.
+ * face - the tear plays, the URL holds - and a CTA is a real link to a page.
  *
  * Route slugs are English per the naming rule in coding-standard.md, even though
  * the chip labels are Igbo.
@@ -87,12 +87,12 @@ export function gateHref(locale: string, gate: Gate): string {
 }
 
 /**
- * Which gate's PAGE a pathname is, or null if it is not one — what BACK TO ỤZỌ
+ * Which gate's PAGE a pathname is, or null if it is not one - what BACK TO ỤZỌ
  * reads to know which door to return to.
  */
 export function gateFromPathname(pathname: string): Gate | null {
   const segments = pathname.split("/").filter(Boolean);
-  // [locale, slug] — anything shorter is the entry screen, anything deeper is a
+  // [locale, slug] - anything shorter is the entry screen, anything deeper is a
   // detail route that is not itself a gate.
   if (segments.length !== 2) return null;
   return GATES.find((g) => g.slug === segments[1]) ?? null;

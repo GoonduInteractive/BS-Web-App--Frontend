@@ -17,7 +17,7 @@ import type { Messages } from "@/lib/utils/messages";
  * IT HAS TO BE THE PAGE THAT STEPS ASIDE, not a layout above it. Next renders
  * every segment and ships each one's tree in the flight payload for the client
  * router, so a layout that never places its children still sends the page's
- * markup — the hidden copy, pictures and prices, readable in the page source.
+ * markup - the hidden copy, pictures and prices, readable in the page source.
  * Measured with the swap in a layout: the news index's payload carried three
  * `article` elements and their pictures with nothing of them in the DOM, and
  * ran 13KB heavier than Terms of Use. In the page, it is the Coming Soon tree

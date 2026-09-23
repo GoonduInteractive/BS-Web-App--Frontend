@@ -20,7 +20,7 @@ import { getMessages } from "@/lib/utils/messages";
  * rather than in the layout so no other page preloads a 160KB face it never
  * draws; `--font-hand` in globals.css reads the variable this sets.
  *
- * LICENCE — FLAGGED. Bradley Hand ITC is a Monotype face, not an open one like
+ * LICENCE - FLAGGED. Bradley Hand ITC is a Monotype face, not an open one like
  * Teko and Host Grotesk. Serving it from the site is web-font embedding and
  * needs a licence that covers it. A one-line swap to a Google face (Kalam is
  * the nearest) is the alternative if none is bought.
@@ -33,13 +33,13 @@ const bradley = localFont({
 });
 
 /**
- * Ọnụ Ụzọ 3 — Community. Figma: `context/design/02-gates/` for the gate,
+ * Ọnụ Ụzọ 3 - Community. Figma: `context/design/02-gates/` for the gate,
  * `context/design/05-community/` for the page behind it: `Community Wall.png`
  * and `MOBILE-WALL.png` (2026-09-14), the sheet in `Community wall form.png`.
  * `Active player map.png` and `mobile-active-map/home/game.png` are the second tab.
  *
  * Same arrangement as the other gate pages: `GatePage` owns the gate and these
- * are the page behind it. No pull-up — the frame ends on the footer.
+ * are the page behind it. No pull-up - the frame ends on the footer.
  */
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   return params.then(({ locale }) => {

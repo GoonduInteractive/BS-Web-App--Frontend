@@ -3,7 +3,7 @@ import type { Messages } from "@/lib/utils/messages";
 
 /**
  * SHARE VIA, at the foot of an article's body. Figma: `08-news/News Details.png`
- * (2026-09-15) — the heading at 31px Teko, then the five marks in a row
+ * (2026-09-15) - the heading at 31px Teko, then the five marks in a row
  * (`ShareMarks`): 40px slots on a 76 pitch at 1440, 22 on 54 on the phone
  * frame, where the heading is 24px.
  */

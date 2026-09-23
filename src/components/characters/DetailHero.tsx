@@ -31,7 +31,7 @@ export function DetailHero({
       className="bg-detail-hero relative overflow-hidden pb-28 lg:pb-0"
     >
       {/* The figure. Anchored to the bottom and cropped by the tear, as the
-          frame draws it — it is scenery, so it sits behind everything and takes
+          frame draws it - it is scenery, so it sits behind everything and takes
           no part in the reading order. */}
       <div
         data-hero-figure
@@ -49,7 +49,7 @@ export function DetailHero({
         </div>
       </div>
 
-      {/* The marks the frame stacks at x78, y315..455 — decorative, and the
+      {/* The marks the frame stacks at x78, y315..455 - decorative, and the
           one delivered vertical glyph strip is exactly this shape. Dimmed
           because the frame draws them barely above the field. */}
       <Image
@@ -100,7 +100,7 @@ export function DetailHero({
             />
           </div>
 
-          {/* A tile is drawn only when its value is written — an entry switched
+          {/* A tile is drawn only when its value is written - an entry switched
               on before its stats arrive shows the rule alone. */}
           <dl data-hero-item className="mt-7 flex gap-13">
             {character.weapon ? <Stat label={t.weaponLabel} value={character.weapon} mark="weapon" /> : null}
@@ -160,7 +160,7 @@ function BackChip({ href, label }: { href: string; label: string }) {
  * frame's; only the label and the value changed. FLAGGED as a departure from
  * the frame's two words.
  *
- * THE MARKS ARE SOMA'S, ON EVERY CHARACTER — the individual glyphs the earlier
+ * THE MARKS ARE SOMA'S, ON EVERY CHARACTER - the individual glyphs the earlier
  * sheets could not provide, which is why this tile shipped bare until now. The
  * files are still named for the stats they were drawn beside (role,
  * difficulty); each character will eventually get marks of their own.
@@ -202,7 +202,7 @@ function Stat({
 }
 
 /**
- * The hero's entrance — the first beat of the page's cinematic run.
+ * The hero's entrance - the first beat of the page's cinematic run.
  *
  * The name is the anchor: it comes up from under its own baseline with the mask
  * clipping it, so it reads as rising into frame rather than sliding. Everything

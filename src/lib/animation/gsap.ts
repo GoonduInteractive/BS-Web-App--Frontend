@@ -1,7 +1,7 @@
 import { gsap } from "gsap";
 
 /**
- * Shared GSAP setup. Core only — no ScrollTrigger, which arrives with the gate
+ * Shared GSAP setup. Core only - no ScrollTrigger, which arrives with the gate
  * sequence and must be imported individually when it does (overview section 10).
  *
  * The coding standard puts shared easings and durations in globals.css as
@@ -38,7 +38,7 @@ export const OPEN_TIMESCALE = 1.15;
 
 export const EASE = {
   /**
-   * In, not out — the masses still accelerate into the meeting point. power2
+   * In, not out - the masses still accelerate into the meeting point. power2
    * rather than power3: the same duration, but the travel is spread across it
    * instead of arriving all at once.
    */

@@ -9,7 +9,7 @@ import { usePointerDrift } from "@/hooks/usePointerDrift";
 import { GATE_CHARACTER, type Gate, type GateId } from "@/lib/gates";
 
 /**
- * One gate — the full-viewport door the portal shows for an Ọnụ Ụzọ.
+ * One gate - the full-viewport door the portal shows for an Ọnụ Ụzọ.
  *
  * Vertical positions are in `dvh` rather than percentages. A percentage padding
  * resolves against the containing block's WIDTH, not its height, so `pt-[28%]`
@@ -20,7 +20,7 @@ import { GATE_CHARACTER, type Gate, type GateId } from "@/lib/gates";
  *
  * Ken Burns (motion moment 3) is a CSS animation on `transform`. Pointer drift
  * (motion moment 4) is a JS write to `transform`. On the same element the two
- * silently clobber each other — whichever wrote last wins and the other appears
+ * silently clobber each other - whichever wrote last wins and the other appears
  * broken. So they are nested: the drift layer takes the translate, and its child
  * takes the Ken Burns scale. Nothing writes `transform` twice on one node.
  *
@@ -44,7 +44,7 @@ export function GateSection({
   chip: string;
   title: string;
   cta: string;
-  /** The page behind this door — the CTA's destination. */
+  /** The page behind this door - the CTA's destination. */
   href: string;
   plateAlt: string;
   characterAlt: string;
@@ -78,7 +78,7 @@ export function GateSection({
 
           Design gave #00000033, which is 20%. This is 50%: the plates are bright
           enough at 20% that the white title loses contrast against sky and
-          foliage. Deepened deliberately — worth confirming, since it is a
+          foliage. Deepened deliberately - worth confirming, since it is a
           departure from the supplied value rather than a translation of it. */}
       <div aria-hidden className="bg-ink/50 absolute inset-0" />
 
@@ -100,7 +100,7 @@ export function GateSection({
 
           Both `translate` utilities compile to the `translate` property in v4, so
           they coexist with the drift hook's `transform` write rather than being
-          overwritten by it — the same arrangement the plate's `scale-105` uses. */}
+          overwritten by it - the same arrangement the plate's `scale-105` uses. */}
       <div
         ref={frontRef}
         className="pointer-events-none absolute bottom-0 left-1/2 aspect-square h-[min(62dvh,140vw)] -translate-x-1/2 translate-y-[13%] select-none md:h-[min(78.4dvh,76vw)] md:translate-y-[24%]"

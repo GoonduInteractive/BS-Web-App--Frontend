@@ -6,13 +6,13 @@ import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * FEATURED TOURNAMENT — the first section of the Tournaments panel. Figma:
+ * FEATURED TOURNAMENT - the first section of the Tournaments panel. Figma:
  * `context/design/06-competition/Competition.png`, y 772..1791 at 1440.
  *
  * The pitch with JOIN THE TRIAL, then the heading and the Wrath of Nze Ugwuoke
  * card. The torn edge and the tab row that head this section in the frame
- * moved up to `CompetitionPanels` when the Leaderboard panel arrived — they
- * head both panels now — so this starts at the intro.
+ * moved up to `CompetitionPanels` when the Leaderboard panel arrived - they
+ * head both panels now - so this starts at the intro.
  *
  * THE HEADING: ink 76..535, cap 40 at 1102 → `--text-section-heading`, the
  * size every heading on this page shares. Its 54px box sits at 1101, 101 below

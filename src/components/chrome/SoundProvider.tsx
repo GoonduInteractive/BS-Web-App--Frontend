@@ -10,27 +10,27 @@ import { AMBIENCE_VOLUME, FADE_MS, TRACKS, trackFor, type TrackId } from "@/lib/
  * The site's sound layer: one ambient bed, chosen by where the visitor is
  * standing, and one switch that turns it on or off everywhere.
  *
- * ONE PROVIDER, NOT ONE PER BUTTON. The toggle appears twice — the entry
- * screen's and the chrome's — and each used to hold its own `useState`, so the
+ * ONE PROVIDER, NOT ONE PER BUTTON. The toggle appears twice - the entry
+ * screen's and the chrome's - and each used to hold its own `useState`, so the
  * two disagreed and neither played anything. The state lives here now, above
  * both, beside `GateEntryProvider` whose `shown` decides which gate's bed the
  * portal is on.
  *
  * NOTHING IS FETCHED UNTIL THE VISITOR ASKS FOR SOUND. The element carries
  * `preload="none"` and has no `src` at all until the first time sound is turned
- * on: a visitor who never touches the toggle — which is everyone, by default —
+ * on: a visitor who never touches the toggle - which is everyone, by default -
  * pays nothing for five audio files on a metered connection. That is also why
  * the beds are one file each and not a sprite.
  *
  * SOUND IS OFF BY DEFAULT AND NEVER AUTOPLAYS, per the accessibility rule.
  * `play()` is only ever called from the click that turns it on, or from a
- * track change while it is already playing — both inside a gesture the visitor
+ * track change while it is already playing - both inside a gesture the visitor
  * made. The preference is deliberately NOT remembered across visits: restoring
  * "on" would either autoplay or show a lie until the visitor touched the page.
  *
  * A CHANGE OF GROUND IS A CROSSFADE, not a cut: the old bed fades out over
  * `FADE_MS`, the new one is swapped in and fades up. Under
- * `prefers-reduced-motion` it still fades — this is sound, not movement, and a
+ * `prefers-reduced-motion` it still fades - this is sound, not movement, and a
  * hard cut is the harsher of the two.
  */
 const SoundContext = createContext<{ on: boolean; toggle: () => void } | null>(null);
@@ -75,7 +75,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
 
   /**
    * A bed that will not play turns the switch back off rather than leaving the
-   * bell ringing over silence — a missing file (which is `dev` today, since
+   * bell ringing over silence - a missing file (which is `dev` today, since
    * the placeholder beds are deliberately not in the repo) or a browser that
    * refused. The element's `error` is attached here rather than through JSX:
    * React's `onError` prop does not fire for a media element whose source

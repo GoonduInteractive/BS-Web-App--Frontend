@@ -5,7 +5,7 @@ import type { Messages } from "@/lib/utils/messages";
  * SHARE THIS COMIC, under the reader's last page. Figma: `09-comics/Comics
  * Detail.png` and `comic-detail-mobile.png` (2026-09-15): a 33px heading, two
  * centred body lines with a hard break after "points", and the five marks
- * (`ShareMarks`) — 40px slots on a 76 pitch at 1440, 32 on 66 on the phone.
+ * (`ShareMarks`) - 40px slots on a 76 pitch at 1440, 32 on 66 on the phone.
  * The SUBSCRIBE button the earlier frame drew is gone with this one.
  *
  * FLAGGED as before: the copy promises claimable points that nothing here
@@ -22,7 +22,7 @@ export function ShareComic({ title, messages }: { title: string; messages: Messa
       >
         {t.shareHeading}
       </h2>
-      {/* #cacccf on both frames — the white at 80%, the pills' grey elsewhere. */}
+      {/* #cacccf on both frames - the white at 80%, the pills' grey elsewhere. */}
       <p className="text-menu-fg/80 font-body text-body mt-3 whitespace-pre-line">{t.shareSub}</p>
 
       <ShareMarks

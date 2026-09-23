@@ -148,7 +148,7 @@ export function MenuOverlay({
             >
 
               {/* Under the cursor the label turns linen and the delivered rule
-                  (menu-border.svg) draws in beneath it, left to right — where a
+                  (menu-border.svg) draws in beneath it, left to right - where a
                   2px line used to grow. See NavRules. */}
               <span className="relative inline-block pb-3 transition-colors duration-300 ease-gate group-hover:text-linen group-focus-visible:text-linen">
                 {link.label}

@@ -7,7 +7,7 @@ import type { BandColour } from "@/types/news";
  * `text-${band}` that exists nowhere generates nothing (see the note on
  * `ComicIssue.cover` in `types/merch.ts` for the day that happened).
  *
- * `seam` is the band itself — `TornSurface` paints in `currentColor`. The chip
+ * `seam` is the band itself - `TornSurface` paints in `currentColor`. The chip
  * pairs with the band the way the frame pairs them: the blue plate on the
  * grey-blue band ("Registration opens…"), the cream plate on the red one
  * ("Combat update…"). The field behind the picture is the same dark backdrop on

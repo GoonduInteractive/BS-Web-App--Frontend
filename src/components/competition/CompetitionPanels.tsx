@@ -15,7 +15,7 @@ import type { Messages } from "@/lib/utils/messages";
  * the page and handed here as nodes, so this client component holds one piece
  * of state and nothing about either panel's content.
  *
- * BOTH PANELS ARE IN THE DOCUMENT, the inactive one `hidden` — the same
+ * BOTH PANELS ARE IN THE DOCUMENT, the inactive one `hidden` - the same
  * arrangement `GateView` uses for a gate and its page. Static generation
  * ships both, so a crawler reads the leaderboard too; `hidden` takes the other
  * out of layout without taking it out of the tree, and every `Reveal` inside
@@ -25,7 +25,7 @@ import type { Messages } from "@/lib/utils/messages";
  * is the top of what follows the hero. With two panels it heads both, so it
  * moved up one level with the tabs; nothing about its geometry changed.
  *
- * SWITCHING SETTLES THE NEW PANEL IN — a short rise and fade on the panel
+ * SWITCHING SETTLES THE NEW PANEL IN - a short rise and fade on the panel
  * itself, every time, because the `Reveal`s inside it fire once and would leave
  * the second switch abrupt. GSAP is on this page already (the gate curtain
  * loads it), so the import is a cache hit; nothing runs on the first render or

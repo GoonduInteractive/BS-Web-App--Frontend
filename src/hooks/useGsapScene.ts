@@ -15,7 +15,7 @@ import { useEffect, type RefObject } from "react";
  *    reasoning, and the same pattern, as TransitionProvider's tear.
  *
  * 2. NOTHING IS BUILT UNTIL THE SECTION HAS A BOX, and that is not a
- *    micro-optimisation — it is the difference between a scene working and not
+ *    micro-optimisation - it is the difference between a scene working and not
  *    existing. This page's two faces are swapped with `hidden` (see GateView),
  *    so until the visitor is through the gate every section below the gate is
  *    `display: none` and every measurement in it is zero. ScrollTrigger caches
@@ -23,7 +23,7 @@ import { useEffect, type RefObject } from "react";
  *    "top 72%" against a zero-height element at position zero, which is already
  *    "past". A `once` entrance then fires and finishes where nobody can see it,
  *    and a scrub runs against a range it measured as empty. Both were observed
- *    on Answer the Summons before this guard existed — the copy simply appeared,
+ *    on Answer the Summons before this guard existed - the copy simply appeared,
  *    and the figure sat pinned at the far end of its drift.
  *
  *    A ResizeObserver reports nothing for a `display: none` element and fires
@@ -42,7 +42,7 @@ import { useEffect, type RefObject } from "react";
  *
  * WHAT IT DOES NOT DO is decide anything about the motion. `scene` receives the
  * live `gsap`, a selector scoped to the section, and the section element itself
- * to hang triggers on, and owns the choreography — including its own
+ * to hang triggers on, and owns the choreography - including its own
  * `matchMedia` branch for reduced motion, which is required rather than optional
  * (overview section 10).
  *
@@ -80,7 +80,7 @@ export function useGsapScene(
     let building = false;
 
     const build = async () => {
-      // ONE CONTEXT PER ELEMENT, AND THE GUARD IS NOT DEFENSIVE — IT IS
+      // ONE CONTEXT PER ELEMENT, AND THE GUARD IS NOT DEFENSIVE - IT IS
       // LOAD-BEARING. The direct call below and the observer's first callback
       // both fire before the dynamic import resolves, so without this they each
       // create a context. That means two sets of `from()` tweens on the same
@@ -88,7 +88,7 @@ export function useGsapScene(
       // section animates to opacity 0 and stays there, invisible.
       //
       // It never surfaced on The Game or The Characters because their sections
-      // mount inside a closed gate at `display: none` — `laidOut()` is false,
+      // mount inside a closed gate at `display: none` - `laidOut()` is false,
       // the direct call is skipped, and only the observer ever builds. About is
       // the first route with no gate in front of it.
       if (building || ctx) return;
@@ -113,7 +113,7 @@ export function useGsapScene(
 
     const laidOut = () => el.getBoundingClientRect().height > 0;
 
-    // Already visible — arriving from a page that was open, or a browser with no
+    // Already visible - arriving from a page that was open, or a browser with no
     // ResizeObserver, where waiting would mean never building at all.
     if (laidOut() || typeof ResizeObserver === "undefined") void build();
 

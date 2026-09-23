@@ -18,13 +18,13 @@ const FIELD: Record<TileField, string> = {
  *   products.find((p) => p.slug === line.slug)
  *
  * A comic's slug is in no product list, so the lookup returned undefined and the
- * line was silently filtered out — while `count` still included it. Adding a
+ * line was silently filtered out - while `count` still included it. Adding a
  * comic to the cart therefore bumped the badge and showed nothing, and the
  * totals were short by exactly that line. Fixing it in one of the three places
  * would have left the other two wrong, so resolution lives here and all three
  * call it.
  *
- * Copy stays in `src/messages` — this reads it, it does not hold it.
+ * Copy stays in `src/messages` - this reads it, it does not hold it.
  */
 export type CartEntry = {
   line: CartLine;
@@ -39,7 +39,7 @@ export type CartEntry = {
   /**
    * Whether the row shows Colour and Size.
    *
-   * A comic has neither — it is one thing — so its line carries the placeholder
+   * A comic has neither - it is one thing - so its line carries the placeholder
    * colour and size the cart's identity needs and hides both rows.
    */
   variant: boolean;
@@ -96,7 +96,7 @@ export function resolveCartLines({
       ];
     }
 
-    // A slug in storage that matches nothing today — a product withdrawn since
+    // A slug in storage that matches nothing today - a product withdrawn since
     // the visitor last shopped. Dropping it is correct; it must not be counted.
     return [];
   });

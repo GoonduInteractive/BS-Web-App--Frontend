@@ -18,10 +18,10 @@ import { pageMetadata } from "@/lib/seo";
  * ONE PAGE, TWO FRAMES, AND THE DIFFERENCE IS THE DATA. The second frame adds
  * EXPLORE MORE COMICS between the featured issue and the OWN THE STORY band.
  * That section appears when there is more than one issue and is absent when
- * there is not — no flag, and the single-comic frame is simply what one issue
+ * there is not - no flag, and the single-comic frame is simply what one issue
  * looks like.
  *
- * THE GROUND IS THE GRADIENT THE HUMAN SUPPLIED — `180deg, #170303, #010101`,
+ * THE GROUND IS THE GRADIENT THE HUMAN SUPPLIED - `180deg, #170303, #010101`,
  * which is `--color-roster-top` to `--color-roster-bottom`, already in `@theme`
  * as the `bg-roster` utility. No new token.
  *
@@ -48,13 +48,13 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("comics")) return <HiddenSection section="comics" locale={locale} messages={messages} />;
 
   const comics = await getComics();
   const [featured] = comics;
 
-  // The frame's grid is eight cards from the issues there are, repeating — the
+  // The frame's grid is eight cards from the issues there are, repeating - the
   // same repetition the merch grid and the About team grid use.
   const explore =
     comics.length > 1 ? Array.from({ length: 8 }, (_, i) => comics[i % comics.length]) : [];

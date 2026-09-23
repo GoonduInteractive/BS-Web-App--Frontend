@@ -30,7 +30,7 @@ export function PanelTab({
   active: boolean;
   onSelect: () => void;
   /**
-   * Drawn at full strength but not selectable — for a panel that has no design
+   * Drawn at full strength but not selectable - for a panel that has no design
    * yet. A tab that looked live and did nothing would mislead a keyboard user
    * twice; `disabled` says so once. FLAGGED wherever it is set.
    */

@@ -4,19 +4,19 @@ import type { CommunityNote } from "@/types/community";
  * Where a new note goes on the wall, and how the wall makes room for it.
  *
  * THE RULE, from the human: a new note must never cover another. It goes where
- * the visitor is looking — the middle of their view — and if a note is already
+ * the visitor is looking - the middle of their view - and if a note is already
  * there, that note is pushed aside to make room, and whatever it bumps into is
  * pushed in turn, until nothing overlaps. The reference wall (Frame
  * 1984078901.png) packs cards edge to edge, so "room" is a card's box plus a
  * small gap, not a clearing.
  *
  * HOW. The new card is placed and pinned. Then, for a bounded number of
- * passes, every overlap that involves a DISTURBED card — the new one, or one
- * already pushed — is separated along the axis that needs the smaller move,
+ * passes, every overlap that involves a DISTURBED card - the new one, or one
+ * already pushed - is separated along the axis that needs the smaller move,
  * the card further from the new one moving (so the push radiates outward from
  * the visitor's note), by the overlap plus GAP; the moved card becomes
- * disturbed in turn. Overlaps elsewhere on the wall are the frame's own — it
- * lets cards touch and lap by a few pixels — and are left exactly as they are:
+ * disturbed in turn. Overlaps elsewhere on the wall are the frame's own - it
+ * lets cards touch and lap by a few pixels - and are left exactly as they are:
  * only the corner the visitor is working in rearranges. Moves are clamped to
  * the canvas. A handful of passes settles it; the cap is there so a
  * pathological board cannot spin.
@@ -27,7 +27,7 @@ export const GAP = 12;
 
 /**
  * A card's height, from its copy: the frame's short note (two lines) is 232
- * and its long one (eight lines) is 384 — 182 of chrome and 25 a line, at the
+ * and its long one (eight lines) is 384 - 182 of chrome and 25 a line, at the
  * ~48 characters a line the handwriting fits in the card's 352px of text.
  */
 export function noteHeight(body: string): number {

@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-/** The browser chrome takes the page's own black — the manifest says the same. */
+/** The browser chrome takes the page's own black - the manifest says the same. */
 export const viewport: Viewport = { themeColor: "#000000" };
 
 export function generateStaticParams() {
@@ -69,11 +69,11 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   // The account dropdown's two states come from the same mock flag the store's
-  // points panels use. Nothing here is a session — see `getViewerState`.
+  // points panels use. Nothing here is a session - see `getViewerState`.
   const viewer = await getViewerState();
   const profile = viewer === "signed-out" ? null : await getProfile();
 
-  // Who publishes this site and what it is, for search engines — the studio as
+  // Who publishes this site and what it is, for search engines - the studio as
   // the organisation, the site as the work, on every page.
   const site = getMessages(locale).site;
   const structured = {
@@ -121,7 +121,7 @@ export default async function LocaleLayout({
           </GateEntryProvider>
         </TransitionProvider>
 
-        {/* Microsoft Clarity — session recordings & heatmaps.
+        {/* Microsoft Clarity - session recordings & heatmaps.
             `lazyOnload` waits for the browser idle time so it never blocks
             render or competes with your fonts and hydration. */}
         <Script id="ms-clarity" strategy="lazyOnload">

@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           </p>
         </header>
 
-        {/* The lead block: one large article, two beside it — or, until the
+        {/* The lead block: one large article, two beside it - or, until the
             first article is published, the empty state. */}
         {!lead ? <EmptyNews messages={messages} locale={locale} /> : null}
         {lead ? (

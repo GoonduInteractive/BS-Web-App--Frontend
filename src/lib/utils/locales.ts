@@ -1,5 +1,5 @@
 /**
- * The two shipped locales. i18n is architectural here, not cosmetic — the entry
+ * The two shipped locales. i18n is architectural here, not cosmetic - the entry
  * screen's NNOO / WELCOME choice is the language switch (overview section 9).
  *
  * This is a stand-in. When next-intl is wired in chunk 1 it will own routing and

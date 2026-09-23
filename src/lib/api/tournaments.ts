@@ -39,14 +39,14 @@ function stagesUpTo(current: StageKey | null): readonly Stage[] {
 
 /**
  * THE LAGOS BRACKET IS NOT THE FRAME'S. The frame fills every round-of-16 and
- * quarter-final card with "SOMAMAIN 2000 · CHIHUNTER 1000" — a comp filling a
+ * quarter-final card with "SOMAMAIN 2000 · CHIHUNTER 1000" - a comp filling a
  * tree. Mocks here carry plausible data, so the sixteen are the four handles
  * the frame's CURRENT MATCHUPS name plus the leaderboard's eight players and
  * four more, each round-of-16 result feeding the quarter-final it decides. The
  * quarter-finals are live (`endsAt`), the semis and final are scheduled and
- * undecided — the frame's NIL. FLAGGED as mock data throughout.
+ * undecided - the frame's NIL. FLAGGED as mock data throughout.
  *
- * THE LIVE MATCHES END RELATIVE TO THE BUILD — tomorrow evening, Lagos time —
+ * THE LIVE MATCHES END RELATIVE TO THE BUILD - tomorrow evening, Lagos time -
  * because a fixed date is a countdown that has already reached 00:00:00 the
  * day after it is written, which is how the first one was found. Everything
  * else keeps fixed ISO dates; a match that has been played has a date.
@@ -151,7 +151,7 @@ const TOURNAMENTS: readonly Tournament[] = [
   },
 ];
 
-/** The tournament the FEATURED TOURNAMENT card shows — the first in the list. */
+/** The tournament the FEATURED TOURNAMENT card shows - the first in the list. */
 export async function getFeaturedTournament(): Promise<Tournament> {
   return TOURNAMENTS[0];
 }
@@ -176,7 +176,7 @@ export async function getActiveTournaments(): Promise<readonly Tournament[]> {
  *
  * Shared by TIME REMAINING and anything else that counts down. `Date.now()`
  * runs at build for a static page, so the figure is as fresh as the last
- * deploy — the same trade the news feed's relative dates make.
+ * deploy - the same trade the news feed's relative dates make.
  */
 export function daysUntil(iso: string, now: number = Date.now()): number {
   const then = new Date(iso).getTime();

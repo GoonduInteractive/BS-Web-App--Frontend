@@ -16,7 +16,7 @@ import type { PlayerHotspot } from "@/types/players";
  *
  * WHAT THE 1440 FRAME MEASURES:
  *
- *   search   537..903 x 498..545 — a 366 x 48 pill in the CTA's slot, a
+ *   search   537..903 x 498..545 - a 366 x 48 pill in the CTA's slot, a
  *            --color-disabled-fg ring, "Search a Location" 14px, a pin glyph
  *   LOCATION 16px at cap 740, x 164; the place Teko cap 36 at 775 → 56px
  *   ACTIVE   14px at cap 879; the count Teko cap 22 at 905 → 35px
@@ -27,8 +27,8 @@ import type { PlayerHotspot } from "@/types/players";
  * place 1502, ACTIVE PLAYERS 1623, the count 1642; INVITE FRIENDS from 1753
  * (see `InviteFriends`); the footer's rule at 2064.
  *
- * THE DISC IS A CIRCLE. Both frames draw it as an ellipse — 732 x 678 at 1440,
- * ~738 x 629 at 360, two different ratios — which reads as a circle resized
+ * THE DISC IS A CIRCLE. Both frames draw it as an ellipse - 732 x 678 at 1440,
+ * ~738 x 629 at 360, two different ratios - which reads as a circle resized
  * off-square in Figma rather than a shape, since the dotted world inside it is
  * not squashed. Built round, at each frame's WIDTH (732; 175vw on a phone),
  * with the top where each frame puts it, so the circle runs 27px lower than
@@ -39,13 +39,13 @@ import type { PlayerHotspot } from "@/types/players";
  * as the phone frame stacks it.
  *
  * (The torn glyph at 96..152 x 762..818 is the SoundToggle where the first
- * viewport puts it, as on the merch and competition frames — not the panel's.)
+ * viewport puts it, as on the merch and competition frames - not the panel's.)
  *
  * THE MAP LOADS WHEN THE TAB DOES. `next/dynamic` with no server render:
  * Leaflet, the land data and the pins are ~70KB gzipped the wall's visitors
  * never need, and a map is nothing a crawler reads.
  *
- * The search is a combobox over the hotspots — the places that have players —
+ * The search is a combobox over the hotspots - the places that have players -
  * because that is what a visitor is looking for here, and a place with none
  * has nothing to show. Choosing one selects it: the copy column reads it and
  * the map flies there. A pin does the same.
@@ -75,7 +75,7 @@ export function MapPanel({
   // A new place re-deals the readout: the name and the count rise in
   // (`readout-in`), as the leaderboard's rows do on a filter. Keyed on the
   // place so React remounts the two lines and the animation restarts; not on
-  // the first place — the Reveal brings the column up. CSS, not GSAP, for the
+  // the first place - the Reveal brings the column up. CSS, not GSAP, for the
   // panel's reason: the flight it coincides with keeps the main thread busy
   // and a JS tween started beside it arrived already finished.
   const [firstPlace] = useState(selected.id);

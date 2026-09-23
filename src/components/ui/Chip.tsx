@@ -1,5 +1,5 @@
 /**
- * The Ọnụ Ụzọ chip — the torn cream plate above every gate title.
+ * The Ọnụ Ụzọ chip - the torn cream plate above every gate title.
  *
  * The plate is `ornaments/onu-uzo-chip.svg`, a 96x30 rect filled #E1D3A0 and
  * torn by an feTurbulence + feDisplacementMap pair, the same technique as the

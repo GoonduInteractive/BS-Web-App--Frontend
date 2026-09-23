@@ -5,7 +5,7 @@
  *
  * Copy is never carried here. Names, descriptions, statuses, regions and reward
  * names are all KEYS into `messages.competition`, the same arrangement
- * `PointsBalance.perkKeys` uses — the adapter says which, the locale says what.
+ * `PointsBalance.perkKeys` uses - the adapter says which, the locale says what.
  */
 
 /**
@@ -33,7 +33,7 @@ export type TournamentFormat = "oneVone";
 
 export type Tournament = {
   slug: string;
-  /** Key into `messages.competition.tournaments` — name, and description where one exists. */
+  /** Key into `messages.competition.tournaments` - name, and description where one exists. */
   copyKey: string;
   status: TournamentStatus;
   region: TournamentRegion;
@@ -86,7 +86,7 @@ export type MatchSide = { handle: string; points?: number };
 /**
  * A match in the bracket. A live match carries `endsAt` and the frame counts
  * it down; a scheduled one carries `scheduledAt` and prints the date. Sides
- * are `null` until the previous round decides them — the frame prints NIL.
+ * are `null` until the previous round decides them - the frame prints NIL.
  */
 export type Match = {
   id: string;

@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils/cn";
  *
  * DRAWN INLINE, NOT LOADED, for the reason `TornPlate` gives: as an image an SVG
  * keeps its own aspect ratio inside any box (letterboxing), and these have to
- * span labels of every width — "News" and "Merch Store", THE GAME and THE
+ * span labels of every width - "News" and "Merch Store", THE GAME and THE
  * CHARACTERS. The path data is the file's, untouched; `preserveAspectRatio="none"`
  * stretches it to the label, the height stays the file's. The header rule's
- * stroke keeps its 0.5 through `vector-effect` — thin, as delivered, FLAGGED. The
+ * stroke keeps its 0.5 through `vector-effect` - thin, as delivered, FLAGGED. The
  * colour is `currentColor` from the parent's `text-linen` rather than a hex here.
  *
  * REVEALED LEFT TO RIGHT with a clip, the way the old underline grew, so the

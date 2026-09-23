@@ -1,8 +1,8 @@
 import type { SceneBuilder } from "@/hooks/useGsapScene";
 
 /**
- * The Competition page's GSAP choreography — the tournament page's sections
- * and the leaderboard — in one place, keyed by name so a Server Component can
+ * The Competition page's GSAP choreography - the tournament page's sections
+ * and the leaderboard - in one place, keyed by name so a Server Component can
  * ask for a scene with a string (see `Scene`).
  *
  * Every scene is built through `useGsapScene`, so it is lazy, scoped, reverted
@@ -21,7 +21,7 @@ import type { SceneBuilder } from "@/hooks/useGsapScene";
  *    GSAP's inline opacity and transform would survive into the next build.
  *    Only THOSE props, never `clearProps: "all"`: the bracket's cards and
  *    lines are positioned by inline `top`/`height` that React writes, and
- *    "all" wiped them — under reduced motion every card sat at the top of its
+ *    "all" wiped them - under reduced motion every card sat at the top of its
  *    column until this was caught.
  */
 
@@ -30,18 +30,18 @@ type Media = { motion: boolean; reduced: boolean; wide: boolean };
 const CONDITIONS = {
   motion: "(prefers-reduced-motion: no-preference)",
   reduced: "(prefers-reduced-motion: reduce)",
-  /** Tailwind's `lg` — where the bracket tree and the podium grid appear. */
+  /** Tailwind's `lg` - where the bracket tree and the podium grid appear. */
   wide: "(min-width: 64rem)",
 };
 
-/** Tailwind's `xl` — where the journey stepper turns horizontal. */
+/** Tailwind's `xl` - where the journey stepper turns horizontal. */
 const STEPPER_CONDITIONS = { ...CONDITIONS, wide: "(min-width: 80rem)" };
 
 const REST = { clearProps: "opacity,transform,transformOrigin" };
 
 /**
  * The tournament hero's render: arrives from the right and settles, as the
- * character heroes' figures do. Not scroll-triggered — the hero is in view on
+ * character heroes' figures do. Not scroll-triggered - the hero is in view on
  * arrival, so it plays once on mount.
  */
 const heroFigure: SceneBuilder = (gsap, _q, root) => {
@@ -76,7 +76,7 @@ const facts: SceneBuilder = (gsap, q, root) => {
 
 /**
  * The journey: stages rise one after another and the link between each pair
- * draws itself from the stage before — along the row at `xl`, down the column
+ * draws itself from the stage before - along the row at `xl`, down the column
  * below it.
  */
 const stepper: SceneBuilder = (gsap, q, root) => {
@@ -123,7 +123,7 @@ const matchups: SceneBuilder = (gsap, q, root) => {
 };
 
 /**
- * The four figures: the cards rise and each number counts up to its value —
+ * The four figures: the cards rise and each number counts up to its value -
  * a figure that arrives at 128 reads as a figure, one that is simply printed
  * reads as a label. Counted through a proxy so the text can be grouped the
  * way the page groups every other number.
@@ -164,7 +164,7 @@ const stats: SceneBuilder = (gsap, q, root) => {
 
 /**
  * The bracket, round by round: a round's cards rise, then the lines out of
- * them draw across the gutter, meet, and run on into the round they decide —
+ * them draw across the gutter, meet, and run on into the round they decide -
  * so the tree grows the way a tournament does. The same tree at every width;
  * on a phone only the first round is in view and the rest plays into the
  * scroll.
@@ -196,8 +196,8 @@ const bracket: SceneBuilder = (gsap, q, root) => {
 };
 
 /**
- * The podium: the three blocks rise from the ground — the edges first, the
- * gold in the middle last and highest — the portraits drop onto them and the
+ * The podium: the three blocks rise from the ground - the edges first, the
+ * gold in the middle last and highest - the portraits drop onto them and the
  * points chips snap in. The phone's stacked cards rise in rank order.
  */
 const podium: SceneBuilder = (gsap, q, root) => {

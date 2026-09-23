@@ -15,12 +15,12 @@ import type { Messages } from "@/lib/utils/messages";
 import type { Character } from "@/types/character";
 
 /**
- * SOULS OF THE ARENA — three of the roster on The Game page.
+ * SOULS OF THE ARENA - three of the roster on The Game page.
  *
  * THIS SECTION IS THE ROSTER'S WINDOW, NOT A LIST OF ITS OWN (the human,
  * 2026-09-22: "it is supposed to be connected to the character page … it seems
  * like it is independent"). The page hands it the same characters The
- * Characters page draws, and it shows the FIRST THREE in roster order — so
+ * Characters page draws, and it shows the FIRST THREE in roster order - so
  * which three appear is the editor's `order`, set in /admin, and a character
  * switched off is never here either.
  *
@@ -63,7 +63,7 @@ export function SoulsSection({
         const { motion } = context.conditions as { motion: boolean };
 
         // Reduced motion gets the composed result and nothing else. Not a
-        // faster version — no movement at all, per overview section 10.
+        // faster version - no movement at all, per overview section 10.
         if (!motion) {
           gsap.set([title, intro, ...cardEls, cta], { clearProps: "all" });
           return;
@@ -105,7 +105,7 @@ export function SoulsSection({
   return (
     <section ref={root} className="relative overflow-x-clip">
       {/* The carousel track scrolls horizontally by design, inside its own
-        scroller. This clips what sits OUTSIDE that — a card whose
+        scroller. This clips what sits OUTSIDE that - a card whose
         `w-[calc(100vw-3.4375rem)]` ran past the viewport at 768 and let the whole
         page scroll with it. `clip` rather than `hidden` for the same reason as the
         other two sections: it leaves the vertical axis alone. */}

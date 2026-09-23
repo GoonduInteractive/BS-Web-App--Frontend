@@ -78,7 +78,7 @@ export function Leaderboard({
     <div ref={root} className="mx-auto w-full px-5 pt-16 lg:px-20 lg:pt-[6.3125rem]">
       {/* ---- FILTER BY ---- */}
       {/* Above the podium: the Reveal's translate makes it a stacking context,
-          so the menu's own z-index cannot climb out of it — the row lifts as a
+          so the menu's own z-index cannot climb out of it - the row lifts as a
           whole, or the podium card drawn after it covers the open menu (the
           human's phone screenshot). */}
       <Reveal className="relative z-20 flex flex-wrap items-center justify-end gap-x-3.5 gap-y-3">

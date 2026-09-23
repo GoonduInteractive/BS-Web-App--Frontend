@@ -7,15 +7,15 @@ import { cn } from "@/lib/utils/cn";
 /**
  * The torn cream plate, at whatever size its box happens to be.
  *
- * Same artwork as `ornaments/onu-uzo-chip.svg` — a rect torn by an feTurbulence
- * + feDisplacementMap pair, the same technique as the page wipe — but drawn
+ * Same artwork as `ornaments/onu-uzo-chip.svg` - a rect torn by an feTurbulence
+ * + feDisplacementMap pair, the same technique as the page wipe - but drawn
  * inline so it can stretch.
  *
  * WHY NOT THE ASSET. The delivered SVG is a fixed 96x30 and carries no
  * `preserveAspectRatio="none"`, so as a CSS background it letterboxes rather
  * than stretching: a wider box leaves the plate at its own aspect ratio, floating
  * in the middle. The Ọnụ Ụzọ chip does not care, because every gate label is the
- * same length and the box is exactly 96x30 — that case is what `Chip` still
+ * same length and the box is exactly 96x30 - that case is what `Chip` still
  * uses, and it is signed off. This is the case `Chip` flagged and deferred: a
  * label of any other length needs a plate that scales. Nothing was changed about
  * the delivered file.
@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils/cn";
  *
  * The filter id is per-instance. SVG filter ids are document-global, so two
  * plates sharing one id would have the second silently re-use the first's
- * filter region — fine at identical sizes, wrong at different ones.
+ * filter region - fine at identical sizes, wrong at different ones.
  */
 export function TornPlate({ className }: { className?: string }) {
   const filterId = `torn-plate${useId()}`;
