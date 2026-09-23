@@ -12,13 +12,13 @@ import { DEFAULT_LOCALE, LOCALES } from "@/lib/utils/locales";
 /**
  * `/sitemap.xml`: every public route in both locales, each entry carrying its
  * language alternates, read from the same adapters and manifests the routes
- * themselves prerender from — so a new article, product or tournament is in
+ * themselves prerender from - so a new article, product or tournament is in
  * the sitemap the moment it is on the site, and when the CMS replaces an
  * adapter the sitemap follows without a change here.
  *
  * Left out, deliberately: the profile, the cart and the checkout (one
  * visitor's own; also `noindex`), comics with no pages (they 404), and every
- * route in a section the public may not see yet (`lib/hidden-sections.ts` —
+ * route in a section the public may not see yet (`lib/hidden-sections.ts` -
  * they are the Coming Soon page for now, and `noindex`).
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -35,6 +35,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/", priority: 1 },
     ...GATES.map((gate) => ({ path: `/${gate.slug}`, priority: 0.9 })),
     { path: "/about", priority: 0.7 },
+    { path: "/terms", priority: 0.3 },
+    { path: "/privacy", priority: 0.3 },
     { path: "/news", priority: 0.8 },
     { path: "/comics", priority: 0.7 },
     { path: "/merch", priority: 0.7 },
