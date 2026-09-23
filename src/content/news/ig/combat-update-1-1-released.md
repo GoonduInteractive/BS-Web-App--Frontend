@@ -6,6 +6,6 @@ tags:
 coverStyle: torn
 image: /assets/news/soma-mysc.png
 comic: Between worlds
-band: ash
+band: crimson
 bodyImage: /assets/news/news-3.png
 ---
