@@ -1,5 +1,6 @@
-# Machine-translates the Igbo locale whenever English copy or CMS content lands on
-# main — a Decap publish, or a merge from dev — and commits the result back.
+# Machine-translates the Igbo locale whenever English copy or CMS content lands
+# on main, which is production and where Decap publishes, and commits the result
+# back. dev is covered too, for copy changed in development.
 # Only what is untranslated is sent; hand-edited Igbo is never overwritten.
 # See scripts/translate/translate.mjs and README.md → Igbo translation.
 #
@@ -9,7 +10,7 @@ name: Translate Igbo
 
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
     paths:
       - src/messages/en.json
       - src/content/**
