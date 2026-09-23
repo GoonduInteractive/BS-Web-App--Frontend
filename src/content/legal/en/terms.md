@@ -137,7 +137,4 @@ sections:
       Email: support@goondugames.com
 
       Tel: 081-1111-0000
-  - navLabel: Testing
-    heading: Samurai's Voice
-    body: E don change oooooooo
 ---
