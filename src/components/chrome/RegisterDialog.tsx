@@ -12,7 +12,7 @@ import type { Messages } from "@/lib/utils/messages";
  * The sign-up sheet behind the header's REGISTER: first name, last name,
  * WhatsApp number and email, sent to a Google Sheet through
  * `lib/api/register.ts`. Per the human: "use modal bg used in tournament
- * register" — so the JOIN TOURNAMENT sheet: the same `TornDialog`, width,
+ * register" - so the JOIN TOURNAMENT sheet: the same `TornDialog`, width,
  * padding and title, the checkout form's field shape turned for the light
  * ground (labels in the facts' slate, a hairline box in ash), SUBMIT as
  * CONFIRM REGISTRATION is drawn, and REGISTRATION SUCCESSFUL's disc and title
@@ -21,7 +21,7 @@ import type { Messages } from "@/lib/utils/messages";
  * TWO OUTCOMES, per the human ("show another thing that tells the user that
  * has already successfully registered ... that they have submitted before and
  * we have their data"). The script answers `duplicate: true` for an email it
- * already holds, and that opens ALREADY REGISTERED — the same sheet with the
+ * already holds, and that opens ALREADY REGISTERED - the same sheet with the
  * address named, on a gild disc rather than the red one, so the two read as
  * different things at a glance. The title and description ("JOIN THE
  * COMMUNITY" ...) and both outcomes' copy are ours at the human's request;
@@ -29,13 +29,13 @@ import type { Messages } from "@/lib/utils/messages";
  *
  * VALIDATION IS THE BROWSER'S. `required`, `type="email"` and a pattern on the
  * number, so the messages a visitor sees for an empty or malformed field are
- * their browser's own, in its language — no error copy is invented for them.
+ * their browser's own, in its language - no error copy is invented for them.
  * The number field lets through digits, spaces and a leading `+` only, so
  * "0803-000-0000" becomes "0803 000 0000" as it is typed rather than failing
  * the pattern for its dashes. The one line of ours is for a send that fails.
  *
  * NO HONEYPOT, AND THAT IS A CORRECTION (2026-09-19). The first cut had a hidden
- * text field that, when filled, made the sheet say thank you and send nothing —
+ * text field that, when filled, made the sheet say thank you and send nothing -
  * the classic bot trap. Browser autofill fills hidden fields too: the human
  * autofilled their details, the trap fired, REGISTRATION SUCCESSFUL showed, and
  * no request ever left the page. A guard that silently loses real sign-ups is
@@ -172,7 +172,7 @@ export function RegisterDialog({
 }
 
 /**
- * What the sheet ends on: REGISTRATION SUCCESSFUL's disc, title and line —
+ * What the sheet ends on: REGISTRATION SUCCESSFUL's disc, title and line -
  * the red disc with a white tick for a new registration, a gild one with an
  * ink tick for an address already on the list.
  */
@@ -196,7 +196,7 @@ function Outcome({
       maxWidthClassName="max-w-[43.6875rem]"
       className="flex flex-col items-center px-6 pt-16.75 pb-16 text-center"
     >
-      {/* 124 square — REGISTRATION SUCCESSFUL's disc. */}
+      {/* 124 square - REGISTRATION SUCCESSFUL's disc. */}
       <span
         aria-hidden
         className={
@@ -225,7 +225,7 @@ function Outcome({
   );
 }
 
-/** Label over a hairline box — the checkout's field, on the white sheet. */
+/** Label over a hairline box - the checkout's field, on the white sheet. */
 function Field({
   label,
   ...input

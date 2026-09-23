@@ -14,7 +14,7 @@ import type { CommunityNote, NoteTint } from "@/types/community";
  *
  * WHAT THE FRAME MEASURES, on the 684..1100 x 699..931 card:
  *
- *   paper    the delivered card.svg — a 410 x 225 rect displaced by fractal
+ *   paper    the delivered card.svg - a 410 x 225 rect displaced by fractal
  *            noise (baseFrequency 0.0775, scale 15.4, seed 5288) inside a 426
  *            box; so the visible card is ~416 wide and its edge is the tear
  *   avatar   32 circle in --color-gild, centre 48 in and 42 down; the user glyph
@@ -26,7 +26,7 @@ import type { CommunityNote, NoteTint } from "@/types/community";
  * THE PAPER IS THE DELIVERED SVG'S FILTER, PROCEDURALLY. The human sent one
  * card as SVG with "add all colours": `TornPanel` reproduces its displacement
  * at the card's real size (the filter is in user units, so a stretched SVG
- * would smear — the TornDivider lesson), and the four tints are tokens on
+ * would smear - the TornDivider lesson), and the four tints are tokens on
  * `currentColor`. The four fills are flat vector fills read off the frame; the
  * sky one is the SVG's own #EBF8FF.
  *
@@ -81,7 +81,7 @@ export const NoteCard = memo(function NoteCard({
             aria-pressed={liked}
             aria-label={liked ? t.liked : t.like}
             // A drag that starts on the button must still pan; the wall decides
-            // from movement whether this was a click — see CommunityWall.
+            // from movement whether this was a click - see CommunityWall.
             className={cn(
               // `text-[0.875rem]`, not `text-body-sm`: inside cn() twMerge takes the
               // size token for a colour and drops one of the two (the
@@ -116,7 +116,7 @@ const TINT: Record<NoteTint, string> = {
 };
 
 /**
- * The thumbs-up, drawn — no icon was delivered. 16 square, a 1.5 stroke,
+ * The thumbs-up, drawn - no icon was delivered. 16 square, a 1.5 stroke,
  * filled when the visitor has liked the note. FLAGGED like the other drawn
  * glyphs (the profile's, the points chevron).
  */

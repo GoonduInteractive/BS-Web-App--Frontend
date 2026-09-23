@@ -27,7 +27,7 @@ export function CartView({
 
 
   // Products AND comics. Searching the product list alone dropped every comic
-  // line while still counting it in the badge — see `resolveCartLines`.
+  // line while still counting it in the badge - see `resolveCartLines`.
   const resolved = resolveCartLines({ lines, products, comics, messages, locale });
 
   if (count === 0 || resolved.length === 0) {
@@ -323,7 +323,7 @@ function Step({
   );
 }
 
-/** The bin. Drawn — no icon was delivered, and ornaments here are SVG. */
+/** The bin. Drawn - no icon was delivered, and ornaments here are SVG. */
 function TrashGlyph() {
   return (
     <svg

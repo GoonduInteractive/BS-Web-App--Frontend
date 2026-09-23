@@ -26,7 +26,7 @@ import type { CartLine, ProductSize } from "@/types/merch";
  *
  * A LINE IS IDENTIFIED BY SLUG + COLOUR + SIZE, not by slug. Two hoodies in
  * different sizes are two lines, and adding a size you already hold increments
- * that line instead of creating a second one — which is what the cart frame
+ * that line instead of creating a second one - which is what the cart frame
  * shows, three lines each with its own colour and size.
  *
  * WRITES ARE A REDUCER, not a pile of setState calls, because every mutation is

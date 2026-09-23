@@ -19,7 +19,7 @@ export function SiteHeader({
   locale: string;
   onOpenMenu: () => void;
   /**
-   * The signed-in player, or null. Drives the account dropdown's two states —
+   * The signed-in player, or null. Drives the account dropdown's two states -
    * see `AccountMenu`. There is no authentication behind it.
    *
    * PARKED (2026-09-19, per the human): the account control is not ready and
@@ -86,7 +86,7 @@ export function SiteHeader({
   );
 }
 
-/** Under the cursor: linen, and the hand-drawn rule beneath — see NavRules. */
+/** Under the cursor: linen, and the hand-drawn rule beneath - see NavRules. */
 function UtilityLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link

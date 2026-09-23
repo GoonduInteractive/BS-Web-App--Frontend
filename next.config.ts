@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
       {
         // THE EDITOR MUST NEVER RUN AN OLD SCHEMA. Next serves `public/` with
         // `public, max-age=0`, which a browser may reuse without asking, and
-        // Decap reads `config.yml` once when the page loads — so an admin tab
+        // Decap reads `config.yml` once when the page loads - so an admin tab
         // opened before a field was added keeps offering the fields it knew.
         // That happened on 2026-09-22: an article was published with a field
         // that had been removed hours earlier. `no-store` means every load of

@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils/cn";
  *
  *    The artwork is a torn black shape. It is laid over the signal red at half
  *    opacity rather than being tinted, because black at 50% over signal FB0B01 lands
- *    on 7D0500 — within a hair of --color-ember 800C00, the specified hover
+ *    on 7D0500 - within a hair of --color-ember 800C00, the specified hover
  *    fill. So the slide IS the hover colour, and a separate hover:bg-ember
  *    would double up and read too dark.
  *
@@ -54,7 +54,7 @@ import { cn } from "@/lib/utils/cn";
  * of --color-scar.
  *
  * THE TWO FILES FACE OPPOSITE WAYS. `button-bracket.svg` is drawn as the LEFT
- * bracket and `red-button-bracket.svg` as the RIGHT one — the paths are mirrors
+ * bracket and `red-button-bracket.svg` as the RIGHT one - the paths are mirrors
  * of each other, not one path in two colours. So which side needs CSS mirroring
  * depends on which file is in use, which is why `drawn` is recorded here rather
  * than assumed.
@@ -76,8 +76,8 @@ const BRACKET_SIZE = {
  *
  * `signal` is the Primary of overview section 8 and the default everywhere.
  * The Competition frame's featured card adds the other two: REGISTER NOW is the
- * same button on a black fill, and VIEW DETAILS is the sheet's Secondary — no
- * fill, a graphite border and label, blush on hover — drawn on the linen field,
+ * same button on a black fill, and VIEW DETAILS is the sheet's Secondary - no
+ * fill, a graphite border and label, blush on hover - drawn on the linen field,
  * which is the light ground the sheet assumed. The sliding wash is a black
  * shape at half opacity, so on `ink` it changes nothing and on `outline` it
  * would darken a hover the sheet says goes pale; `outline` hides it and
@@ -89,7 +89,7 @@ const TONE = {
   outline:
     "text-graphite border-graphite border-2 bg-transparent hover:bg-blush group-has-focus-visible:bg-blush",
   /**
-   * No fill, no border, white label — the tournament page's VIEW FULL BRACKET,
+   * No fill, no border, white label - the tournament page's VIEW FULL BRACKET,
    * brackets and all, drawn as text between the ornaments. There is no fill for
    * the wash to slide over, so hover fills the button with --color-crimson
    * instead, at the human's direction.
@@ -127,8 +127,8 @@ export function BracketButton({
    */
   size?: keyof typeof BRACKET_SIZE;
   /**
-   * Draw the ornaments. Off, this is the same button — fill, wash, scale,
-   * label — with nothing beside it: the header's REGISTER, per the human ("the
+   * Draw the ornaments. Off, this is the same button - fill, wash, scale,
+   * label - with nothing beside it: the header's REGISTER, per the human ("the
    * button component but without the bracket"). The hover still scales the
    * button; there is simply no gap for it to close.
    */
@@ -139,13 +139,13 @@ export function BracketButton({
    * A CTA that navigates should BE a link: it belongs in the tab order as one,
    * it opens in a new tab on the modifier click people expect, and assistive
    * tech announces where it goes. The empty cart's START SHOPPING is the first
-   * of these on the site — every earlier CTA had no destination at all — so a
+   * of these on the site - every earlier CTA had no destination at all - so a
    * button with a router push would have been a link wearing the wrong hat.
    *
    * Styling is identical either way; only the element changes.
    *
    * AN ABSOLUTE URL IS AN OFF-SITE LINK and renders a plain `<a>` opening a
-   * new tab (`rel="noopener noreferrer"`) rather than a `Link` — the itch.io
+   * new tab (`rel="noopener noreferrer"`) rather than a `Link` - the itch.io
    * store page behind DOWNLOAD GAME. The transition layer already lets any
    * href that does not start with "/" through untouched.
    */
@@ -155,7 +155,7 @@ export function BracketButton({
     TONE[tone],
     // `text-[1.125rem]` IS text-h7. twMerge classifies our `--text-*` tokens as
     // colours, so `text-h7` beside the tone's text colour left one of them on
-    // the floor — the colour, as it happened, and every label read white only
+    // the floor - the colour, as it happened, and every label read white only
     // because the body's colour is white. The outline tone's graphite label
     // made that visible. Same trap SectionTitle documents, same fix.
     "font-body font-semibold text-[1.125rem] leading-none tracking-wide",

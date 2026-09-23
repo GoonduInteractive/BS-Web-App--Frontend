@@ -5,9 +5,9 @@ import type { Messages } from "@/lib/utils/messages";
 
 /**
  * The site's foot. At `md` and up, three columns: the wordmark with the
- * copyright under it, the links, "Created by" with the studio mark — as every
+ * copyright under it, the links, "Created by" with the studio mark - as every
  * 1440 frame draws it. BELOW `md` IT IS A CENTRED STACK: wordmark, the links one
- * under another, "Created by" and the studio mark, and the copyright LAST —
+ * under another, "Created by" and the studio mark, and the copyright LAST -
  * the order the phone frames agree on (`05-community/mobile-active-map`,
  * `08-news/News Details - Mobile`, `09-comics/comic-detail-mobile`, 2026-09-15).
  * Measured off the comic frame: the rule 46 above the mark; links 78 under
@@ -15,7 +15,7 @@ import type { Messages } from "@/lib/utils/messages";
  * under it, the copyright 38 under that and 33 above the end.
  *
  * The wordmark group is `contents` on the phone so its two children take
- * their own places in the stack — the copyright at the end — and a block
+ * their own places in the stack - the copyright at the end - and a block
  * again from `md`, where they share the left column.
  */
 

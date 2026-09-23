@@ -8,12 +8,12 @@ import type { Messages } from "@/lib/utils/messages";
 /**
  * Shipping and payment. Figma: `Merch Store- Checkout-New User.png`.
  *
- * Frame at 1440 — shipping panel 93..873 x 138..998 on `--color-pitch`, payment
+ * Frame at 1440 - shipping panel 93..873 x 138..998 on `--color-pitch`, payment
  * panel 93..873 x 1030..1305 on ink. The two grounds genuinely differ in the
  * frame; that is followed rather than tidied.
  *
  * NOTHING ENTERED HERE IS STORED OR SENT. The values live in component state for
- * the length of the visit and nowhere else — not `localStorage`, not a request.
+ * the length of the visit and nowhere else - not `localStorage`, not a request.
  * There is no backend to receive them and no consent flow to collect under, so
  * keeping them in memory is the only defensible place for a stranger's name,
  * phone number and home address.
@@ -185,7 +185,7 @@ function PhoneField({ messages }: { messages: Messages }) {
 /**
  * A select, with the frame's caret.
  *
- * THE FRAME'S "Warning text" UNDER THESE IS NOT COPY — it is a placeholder for a
+ * THE FRAME'S "Warning text" UNDER THESE IS NOT COPY - it is a placeholder for a
  * validation message, so the slot exists and stays empty until there is
  * something true to put in it. Printing the words themselves would be shipping
  * a designer's note.

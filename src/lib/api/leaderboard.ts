@@ -12,12 +12,12 @@ import type { TournamentRegion } from "@/types/tournament";
  * The leaderboard, behind a typed contract. NO BACKEND.
  *
  * THE PODIUM IS THE FRAME'S: one champion on all three steps, because the
- * delivered gold, silver and bronze frames carry the same portrait — the hall
+ * delivered gold, silver and bronze frames carry the same portrait - the hall
  * of ascension's one mock champion, `somamain`. Points are the frame's 6000 /
  * 2000 / 2000. FLAGGED as the comp's data.
  *
  * THE ROWS ARE NOT THE FRAME'S. It repeats "5 · David Salem · Lagos · 18,000 ·
- * Soma · 82%" eight times with one "4" — a comp filling a table. Mocks here
+ * Soma · 82%" eight times with one "4" - a comp filling a table. Mocks here
  * carry plausible data, so the rows below are eight distinct players across
  * the regions the page already names, in descending points with plausible win
  * rates. Names are invented for the mock, as the team roster's were.
@@ -25,7 +25,7 @@ import type { TournamentRegion } from "@/types/tournament";
  * YOUR JOURNEY IS THE PROFILE'S PERSON. The frame prints David Salem at rank
  * 200; the profile adapter's one mock person is Daniel Israel at #200 with
  * 12,000 points and Kaira, so the row reads from there and the site keeps one
- * account, not two. It exists only for a signed-in viewer — `getViewerState()`
+ * account, not two. It exists only for a signed-in viewer - `getViewerState()`
  * is the same mock flag the store's points panels use.
  */
 const AVATAR = "/assets/comics/soma-gate-character.png";
@@ -88,7 +88,7 @@ export async function getLeaderboard(): Promise<{
 
 /**
  * Apply the board's two filters. Pure, so the client can run it on what the
- * server handed over without asking again — the whole board is a few hundred
+ * server handed over without asking again - the whole board is a few hundred
  * bytes. The podium is filtered too: a region with no champion on it shows an
  * empty step rather than a champion from somewhere else.
  */

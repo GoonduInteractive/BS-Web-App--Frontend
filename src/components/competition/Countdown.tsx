@@ -8,13 +8,13 @@ import { useSyncExternalStore } from "react";
  * A static page cannot print a countdown that is right for more than a second,
  * so this is the one place on the site that runs a clock. It is read through
  * `useSyncExternalStore`: the clock is an external source of truth, the
- * subscription is a one-second interval, and THE SERVER SNAPSHOT IS NULL — a
+ * subscription is a one-second interval, and THE SERVER SNAPSHOT IS NULL - a
  * figure computed at build and one computed on the client can never agree to
  * the second, and React rightly refuses the mismatch, so the HTML carries
  * "--:--:--" and the first client read fills it in. Floors at zero rather than
  * counting past the end.
  *
- * Hours are not capped at 24 — a match that ends in two days reads 48:00:00,
+ * Hours are not capped at 24 - a match that ends in two days reads 48:00:00,
  * which is what a countdown means.
  */
 export function Countdown({ to, pattern }: { to: string; pattern: string }) {

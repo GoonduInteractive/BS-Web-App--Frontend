@@ -1,5 +1,5 @@
 /**
- * PLACEHOLDER AMBIENCE, SYNTHESISED — not Goondu's sound design.
+ * PLACEHOLDER AMBIENCE, SYNTHESISED - not Goondu's sound design.
  *
  * The sound layer needs five beds to be built and heard: one per gate, matched
  * to what that gate's plate shows, and one for every page that is not a gate.
@@ -40,7 +40,7 @@ function prng(seed) {
 
 const noise = (rand) => Array.from({ length: N }, () => rand() * 2 - 1);
 
-/** One-pole filters — enough to turn white noise into wind or water. */
+/** One-pole filters - enough to turn white noise into wind or water. */
 function lowpass(input, cutoff) {
   const a = Math.exp((-2 * Math.PI * cutoff) / RATE);
   const out = new Float64Array(N);
@@ -73,7 +73,7 @@ const swell = (hz, depth, phase = 0) => {
 };
 
 /**
- * A struck sound — bell, drum, bird — placed at `at` seconds, wrapped round the
+ * A struck sound - bell, drum, bird - placed at `at` seconds, wrapped round the
  * loop so a tail that runs past the end continues at the start.
  */
 function strike(buf, at, { hz, decay, amp, harmonics = [1], sweep = 0 }) {

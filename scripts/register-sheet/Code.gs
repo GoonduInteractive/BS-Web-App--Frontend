@@ -1,5 +1,5 @@
 /**
- * Beyond Service — the header's REGISTER sheet → this spreadsheet.
+ * Beyond Service - the header's REGISTER sheet → this spreadsheet.
  *
  * A Google Apps Script web app, bound to the spreadsheet it writes to. The
  * site posts the form (form-encoded: firstName, lastName, whatsapp, email,
@@ -7,7 +7,7 @@
  * tab. Setup, deploy and the site's environment variable are in README.md
  * beside this file.
  *
- * Replies are JSON — `{ ok: true, duplicate }` or `{ ok: false, error }` — and
+ * Replies are JSON - `{ ok: true, duplicate }` or `{ ok: false, error }` - and
  * the site's adapter (`src/lib/api/register.ts`) reads `ok` and nothing else
  * it does not recognise.
  */

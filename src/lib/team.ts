@@ -2,7 +2,7 @@
  * What the team grid knows that the CMS does not: how each delivered portrait
  * is cropped into its card, and how a short last row is centred.
  *
- * WHO IS ON THE TEAM LIVES IN THE CMS since 2026-09-22 — `src/content/team/`,
+ * WHO IS ON THE TEAM LIVES IN THE CMS since 2026-09-22 - `src/content/team/`,
  * read by `src/lib/api/team.ts`. Before that this file held the manifest and
  * the copy sat in `src/messages`; the five people were moved into the
  * collection as they were, stand-in portraits and all.
@@ -32,7 +32,7 @@
  * above it, so cover renders a small head in a large frame.
  *
  * THE 2026-09-19 PORTRAITS HAVE NO FRAME TO SOLVE AGAINST, so their framing is
- * read off the file and chosen by eye — a head-and-shoulders crop like the
+ * read off the file and chosen by eye - a head-and-shoulders crop like the
  * frame's cards:
  *
  *   SOPHIA-2.jpeg   507 x 900, seated full-length, face 30..45% down at 55%
@@ -42,9 +42,9 @@
  *                   17..40% down → 175% wide (covers the 6:7 by height), -41%,
  *                   0: centred on him, arms crossed at the foot
  *   Ogbuagu.png     1230 x 1342 cutout → 107% wide (covers the 6:7 by height),
- *                   -3.5%, 0 — the stand-in for anyone without a portrait yet
+ *                   -3.5%, 0 - the stand-in for anyone without a portrait yet
  *
- * Percentages, not pixels, so the framing survives every breakpoint — the card
+ * Percentages, not pixels, so the framing survives every breakpoint - the card
  * holds a 6:7 aspect at all of them.
  */
 const SOLVED = "h-auto max-w-none";
@@ -69,7 +69,7 @@ export function portraitFraming(image: string): string {
  * expression is the row's own `gap-x-5`, so three cards and two gaps fill the
  * row exactly.
  *
- * THREE ACROSS AT THE WIDEST, per the human (2026-09-22) — it was four, and
+ * THREE ACROSS AT THE WIDEST, per the human (2026-09-22) - it was four, and
  * the step 1 / 2 / 3 / 4 is now 1 / 2 / 3. Four across a 1024 viewport put the
  * card at 196px, two thirds of the frame's 300, and a portrait that small stops
  * being a portrait; three holds the card nearer the frame's size.

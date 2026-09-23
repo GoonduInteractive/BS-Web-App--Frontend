@@ -11,15 +11,15 @@ import type { Article, ArticleCover } from "@/types/news";
 /**
  * One article card. Figma: `context/design/08-news/News.png`.
  *
- * Three sizes, all the same anatomy — cover, title with the date beside it, tag
- * pills, excerpt — differing only in the cover's aspect and the title's size:
+ * Three sizes, all the same anatomy - cover, title with the date beside it, tag
+ * pills, excerpt - differing only in the cover's aspect and the title's size:
  *
  *   lead   735 x 571 cover (1.29), title ~31px    the index's left column
  *   wide   519 x 235 cover (2.21), title ~25px    the two beside it
  *   grid   410 x 236 cover (1.74), title ~25px    MORE NEWS, and the detail row
  *
  * THE COVER IS THE ADMIN'S CHOICE, per article, in the CMS: the picture full
- * bleed, or the frame's torn banner — a coloured band carrying a volume tag,
+ * bleed, or the frame's torn banner - a coloured band carrying a volume tag,
  * the title and an author line, torn vertically, with the picture beside it.
  * `ArticleCover` is that union; `CoverView` draws either.
  */
@@ -79,7 +79,7 @@ export function ArticleCard({
 
         <TagPills tags={article.tags} messages={messages} className="mt-4.5" />
 
-        {/* The frame clips the excerpt rather than wrapping it indefinitely —
+        {/* The frame clips the excerpt rather than wrapping it indefinitely -
             three lines on the lead card, two on the others. */}
         <p
           className={`text-menu-fg/85 font-body text-body-sm mt-5.5 leading-[1.4375rem] ${
@@ -115,7 +115,7 @@ export function CoverView({
         <TornBanner
           figure={cover.src}
           alt={alt}
-          // Whole, on the dark field, as the frame shows its renders — a picture
+          // Whole, on the dark field, as the frame shows its renders - a picture
           // with its own dark ground reads the same; a padded render sits smaller.
           figureClass="object-contain object-[76%_center]"
           seamClass={band.seam}
@@ -143,7 +143,7 @@ export function CoverView({
   );
 }
 
-/** A plain picture in a box the caller has already sized — the detail page's second image. */
+/** A plain picture in a box the caller has already sized - the detail page's second image. */
 export function BodyImage({ src, alt }: { src: string; alt: string }) {
   return <Image src={src} alt={alt} fill sizes="(max-width: 1023px) 92vw, 60vw" className="object-cover object-[50%_38%]" />;
 }

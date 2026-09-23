@@ -1,27 +1,35 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ComingSoon } from "@/components/chrome/ComingSoon";
+import { LegalDocument } from "@/components/legal/LegalDocument";
+import { getLegalPage } from "@/lib/api/legal";
 import { SITE_NAME, pageMetadata } from "@/lib/seo";
-import { isLocale } from "@/lib/utils/locales";
+import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
 /**
- * Privacy Policy — not written yet, so the route opens onto the Coming Soon
- * page with this page's name on the chip. Kept out of search until there is a
- * page to find. When the copy arrives, this file is what changes.
+ * Privacy Policy. Figma: `context/design/terms/`.
+ *
+ * The words are the content team's, in `src/content/legal/`, so this route is
+ * the frame and `LegalDocument` is the page; both legal routes are the same
+ * component with a different document.
  */
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
 
   const messages = getMessages(locale);
+  const page = await getLegalPage(locale, "privacy").catch(() => null);
   return pageMetadata({
     locale,
     path: "/privacy",
     title: `${messages.footer.links.privacy} | ${SITE_NAME}`,
-    description: messages.site.description,
-    noIndex: true,
+    // The opening section says what the document is, better than the site line.
+    description: page?.sections[0]?.body.split("\n")[0].slice(0, 180) ?? messages.site.description,
   });
 }
 
@@ -29,6 +37,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  const messages = getMessages(locale);
-  return <ComingSoon messages={messages} locale={locale} pageTitle={messages.footer.links.privacy} />;
+  const page = await getLegalPage(locale, "privacy").catch(() => null);
+  if (!page) notFound();
+
+  return <LegalDocument page={page} messages={getMessages(locale)} locale={locale} />;
 }

@@ -6,15 +6,15 @@ import { GATES, type GateId } from "@/lib/gates";
  * THE SOUND FOLLOWS THE GROUND YOU ARE STANDING ON, per the human
  * (2026-09-22) and per Thorgal, our reference: each gate's environment has its
  * own bed, the gate's own page keeps that same bed, and everything that is not
- * a gate — About, News, the comics, the merch store, the 404 — shares one
+ * a gate - About, News, the comics, the merch store, the 404 - shares one
  * default. So walking Ọnụ Ụzọ 2's door and then opening The Characters is one
  * continuous sound, and only leaving the gate changes it.
  *
  * ⚠ THE FILES ARE PLACEHOLDERS, synthesised by `npm run audio` (see
  * `scripts/audio/make-placeholders.mjs`) because no sound design has been
- * delivered. Each one is built to match what its plate shows — the grove's
+ * delivered. Each one is built to match what its plate shows - the grove's
  * leaves and birds, the shrine's chimes, the canyon's wind and far water, the
- * arena's drums — but they are stand-ins and must be replaced before launch.
+ * arena's drums - but they are stand-ins and must be replaced before launch.
  * Dropping real files at these five paths is the whole of the swap.
  */
 export type TrackId = GateId | "default";
@@ -38,7 +38,7 @@ export const FADE_MS = 700;
  * The bed for where the visitor is.
  *
  * `shown` is the door the portal is standing at (`GateEntry`), which is state
- * rather than URL — four doors share `/en` — so the portal needs it to know
+ * rather than URL - four doors share `/en` - so the portal needs it to know
  * which gate is on screen. Off the portal the path decides: `/en/characters`
  * and everything under it is gate 2's, `/en/news` is nobody's.
  */

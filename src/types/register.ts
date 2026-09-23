@@ -21,7 +21,7 @@ export type RegistrationResult = {
   duplicate: boolean;
   /**
    * Whether the script's reply was read. False when the browser refused it
-   * and the row's arrival was confirmed blind — then `duplicate` is unknown
+   * and the row's arrival was confirmed blind - then `duplicate` is unknown
    * and reported false. See `lib/api/register.ts`.
    */
   read: boolean;

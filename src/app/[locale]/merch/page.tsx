@@ -22,7 +22,7 @@ import { pageMetadata } from "@/lib/seo";
  * The merch store index. Figma:
  * `context/design/10-merch/Merch Store- Not logged in.png`, 1440 x 3319.
  *
- * A plain page like About — not a gate, so no rail and no curtain. Data comes
+ * A plain page like About - not a gate, so no rail and no curtain. Data comes
  * from the mock adapters in `src/lib/api/merch.ts`; nothing here knows they are
  * mocks.
  *
@@ -49,7 +49,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
   const [featured, listing, comics, viewer, balance] = await Promise.all([
@@ -107,7 +107,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
               {messages.merch.sections.comics}
             </h2>
 
-            {/* Four cards from two issues, alternating — the same repetition the
+            {/* Four cards from two issues, alternating - the same repetition the
                 merch grid and the About team grid use. */}
             <ul className="mt-9 grid grid-cols-1 gap-x-7 gap-y-12 sm:grid-cols-2 lg:mt-5.25 lg:grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => comics[i % comics.length]).map((issue, i) => {

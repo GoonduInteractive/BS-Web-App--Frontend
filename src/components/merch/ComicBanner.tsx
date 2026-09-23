@@ -3,7 +3,7 @@ import type { Messages } from "@/lib/utils/messages";
 import type { ComicIssue } from "@/types/merch";
 
 /**
- * A comic issue as a LANDSCAPE banner — `TornBanner` fed from the issue's
+ * A comic issue as a LANDSCAPE banner - `TornBanner` fed from the issue's
  * cover parts and its copy in `messages.merch.comics`. The composition itself
  * (band, vertical tear, figure) lives in `TornBanner`, which the news cards
  * also draw from CMS fields; this is only the mapping.

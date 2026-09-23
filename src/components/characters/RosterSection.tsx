@@ -14,7 +14,7 @@ import type { Messages } from "@/lib/utils/messages";
 import { CHARACTER_GROUPS, type Character } from "@/types/character";
 
 /**
- * Section 2 of The Characters page — the roster. Figma:
+ * Section 2 of The Characters page - the roster. Figma:
  * `context/design/04-characters/The characters.png`, y 834..4150 at 1440.
  *
  * Three groups on one ground: CHAMPIONS (2 cards), GODS (1), and
@@ -22,7 +22,7 @@ import { CHARACTER_GROUPS, type Character } from "@/types/character";
  *
  * WHO SHOWS IS THE CMS'S (2026-09-22): the page hands this section every
  * character the editor has switched on, already in roster order, and each group
- * draws the ones it has — a group with nobody in it is not drawn, which is
+ * draws the ones it has - a group with nobody in it is not drawn, which is
  * what the GODS group looked like while Ogbun'abali was parked. Nobody at all,
  * and the section draws the empty state under the tear instead. The geometry
  * below is the frame's and still holds: a row is its count of the one card
@@ -36,7 +36,7 @@ import { CHARACTER_GROUPS, type Character } from "@/types/character";
  *   gods       x  519..928    410,          centred (see the nudge below)
  *   legends    x   81..1358   3 x 410 + 48 = 1278, centred
  *
- * So this is NOT a 12-column grid that the groups sit inside — a fluid grid
+ * So this is NOT a 12-column grid that the groups sit inside - a fluid grid
  * would give the champions row 612px cards and the legends row 410px ones. It is
  * a fixed card width, centred, and the group's width follows from its count.
  *
@@ -46,11 +46,11 @@ import { CHARACTER_GROUPS, type Character } from "@/types/character";
  *   cards bottom -> next cap top   214
  *   row gutter (legends)            24, the same as the column gutter
  *
- * NO SECTION BACKGROUND HERE. The ground is a page-level gradient — see
+ * NO SECTION BACKGROUND HERE. The ground is a page-level gradient - see
  * `bg-roster` in globals.css for why the frame puts it there rather than on
  * this box.
  *
- * FLAGGED: the GODS group sits 3.5px right of centre — heading centred at 724
+ * FLAGGED: the GODS group sits 3.5px right of centre - heading centred at 724
  * and card at 723.5 against the page's 720, while champions and legends are dead
  * centre. Same class of Figma nudge as the Game page's two-paths block, and left
  * uncorrected rather than reproduced, since one card is read as centred and a
@@ -77,11 +77,11 @@ import { CHARACTER_GROUPS, type Character } from "@/types/character";
  * So the WIDTH is declared once, on the container, and every grid lays its
  * columns out at `var(--card)`. Because all three grids are the same width, a
  * `calc` against `100%` resolves identically in each of them. The narrowest row
- * — three across — is what sets it at each step, and the wider rows simply use
+ * - three across - is what sets it at each step, and the wider rows simply use
  * fewer tracks of the same size and centre what is left.
  *
  * THE FRAME'S 410 ONLY APPLIES ONCE IT FITS. Three 410s and two 24px gutters is
- * 1278, which needs 1326 with the section's own padding — past `lg` and past
+ * 1278, which needs 1326 with the section's own padding - past `lg` and past
  * `xl`. Pinned at `lg` it overflowed the viewport by 127px at 1024, which is
  * what `min-[1350px]` now prevents. Below that the tracks are fluid and the
  * cards stay square and equal.
@@ -97,7 +97,7 @@ const GRID = "grid grid-cols-1 justify-center gap-6";
 const CARD = "w-full max-w-[25.625rem]";
 
 /**
- * A row's tracks by how many cards it holds — one centred, two across, or the
+ * A row's tracks by how many cards it holds - one centred, two across, or the
  * legends' 3 x N. Whole class strings, since Tailwind scans source text.
  */
 function columnsFor(count: number): string {
@@ -163,7 +163,7 @@ export function RosterSection({
       >
         {groups.length === 0 ? (
           // Nobody switched on yet: the Coming Soon lines under a pair of
-          // swords, to the cart's empty-state anatomy. No CTA — this is the
+          // swords, to the cart's empty-state anatomy. No CTA - this is the
           // middle of a gate page.
           <EmptyState
             icon={Swords}
@@ -218,7 +218,7 @@ function Group({
       <Reveal
         as="h2"
         // SIZE IS --text-story-title, REUSED. The frame's cap is 50, which is
-        // that token's cap at 1440 — the same size as The Story's heading. A
+        // that token's cap at 1440 - the same size as The Story's heading. A
         // third display token for an identical measurement would say nothing.
         //
         // -0.056em is StorySection's value, carried over: same face, same size,

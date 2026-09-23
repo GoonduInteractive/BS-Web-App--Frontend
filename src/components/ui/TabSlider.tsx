@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 
 /**
- * The underline that slides between tabs — the 1px line with 2px end ticks
+ * The underline that slides between tabs - the 1px line with 2px end ticks
  * `PanelTab` draws under the active tab, lifted out of the tab so that when
  * the choice changes it travels to the new tab instead of vanishing from one
  * and appearing under the other. At the human's direction ("a cool
@@ -12,7 +12,7 @@ import { useLayoutEffect, useRef } from "react";
  * It sits absolutely in the tablist (which must be `relative`) and is placed
  * by measurement: the active tab's offset box, written as `left`, `top` and
  * `width` before paint, and transitioned on later moves. A ResizeObserver
- * re-measures on any relayout — a font swap, a wrap, the viewport. The tabs
+ * re-measures on any relayout - a font swap, a wrap, the viewport. The tabs
  * keep their own underline slot for height, drawn invisible, so nothing
  * shifts when this replaces it.
  *
@@ -31,7 +31,7 @@ export function TabSlider({ activeId }: { activeId: string }) {
       if (!tab || tab.parentElement !== list) return;
       // The tab's own (invisible) underline is its last child; the slider
       // takes exactly that box. The slot's distance from the TAB's top is read
-      // as a difference of rects — its `offsetTop` is against the nearest
+      // as a difference of rects - its `offsetTop` is against the nearest
       // positioned ancestor, which is the list, not the tab, so a list with
       // top padding had that padding counted twice and the underline sat a
       // padding's height under its tab (the Competition bar, 61px).

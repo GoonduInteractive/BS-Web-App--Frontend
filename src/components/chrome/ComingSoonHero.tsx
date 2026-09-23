@@ -14,40 +14,40 @@ import { GATES } from "@/lib/gates";
  * The Coming Soon hero: the first gate's plate under ink, and the copy centred
  * in what is left under the header. See `ComingSoon` for the frames.
  *
- * THE PLATE IS `gates/onu-uzo-1.png` AT THE SAME SIZE ON BOTH FRAMES — 1764 x 814
+ * THE PLATE IS `gates/onu-uzo-1.png` AT THE SAME SIZE ON BOTH FRAMES - 1764 x 814
  * (cover for a 1440 x 814 hero), and the phone frame is a 360 x 735 window on
  * that same picture, not the picture shrunk to fit. So the plate's box is the
  * hero or 814px, whichever is taller, and it is cropped at the foot on a
  * short screen. Its arch stands off-centre in the file (53.6% across); the
  * `object-position` is `calc(53.1% - 3.6vw)`, which lands that column at the
- * hero's middle at ANY width — a percentage alone aligns the image's p% with
+ * hero's middle at ANY width - a percentage alone aligns the image's p% with
  * the box's p%, and a length moves the image (rightwards when positive), so
  * the vw term is the (p − 50)% of the box a bare percentage leaves over. Both
  * frames read the arch a few pixels right of centre (729 of 1440, 196 of 360),
  * hence 53.1 rather than 53.6. Darkened by `--color-ink` at 60%: the frames
- * measure 0.32–0.41 of the plate's luminance.
+ * measure 0.32-0.41 of the plate's luminance.
  *
  * THE COPY CENTRES in the space under the header's band (114 / 100 in the
  * frames). The phone frame is exactly that; the 1440 frame drew an 814 hero
  * with the footer under it, so with the hero a full screen the block sits
- * lower than that frame by half the footer's height — the phone's rule at
+ * lower than that frame by half the footer's height - the phone's rule at
  * every width.
  *
- * THE CHIP IS THE Ọnụ Ụzọ CHIP'S PLATE at the label's width — `TornPlate`, as
+ * THE CHIP IS THE Ọnụ Ụzọ CHIP'S PLATE at the label's width - `TornPlate`, as
  * BACK TO ỤZỌ draws it, since `Chip`'s plate is a fixed 96 x 30 and "PRIVACY
- * POLICY" needs 117 — and in its face, the grotesque, not the gates' Teko (the
+ * POLICY" needs 117 - and in its face, the grotesque, not the gates' Teko (the
  * frame draws it as BACK TO ỤZỌ does). The label is the footer link's text; the
  * frame's "THE PAGE TITLE" is its placeholder for exactly that.
  *
  * THE PARALLAX, per the human, is the site's two: motion moment 4's pointer
- * drift — the plate leans 1% against the cursor as the back layer and the copy
+ * drift - the plate leans 1% against the cursor as the back layer and the copy
  * 3% as the front, the gates' depths (`usePointerDrift`: fine pointers only,
- * nothing under reduced motion) — and, on the way down to the footer, the
+ * nothing under reduced motion) - and, on the way down to the footer, the
  * plate scrolling at six tenths of the page's speed (a scrubbed ScrollTrigger
  * moving it 40% of the distance scrolled), so the ground sits behind the copy
  * rather than on the same sheet. THREE WRAPPERS, ONE TRANSFORM EACH: the drift
  * writes `transform` on the outer plate box, the scroll tween owns the middle
- * one, and Ken Burns (the gates' breathing, CSS) the inner — GSAP and the
+ * one, and Ken Burns (the gates' breathing, CSS) the inner - GSAP and the
  * drift would otherwise overwrite each other's transform on the same element.
  * The plate slides down inside a box that is cropped by the hero, and the
  * strip it uncovers at the top has always scrolled off-screen already (it
@@ -64,7 +64,7 @@ export function ComingSoonHero({
   title: string;
   body: string;
   cta: string;
-  /** Where BACK TO HOME goes — the portal. */
+  /** Where BACK TO HOME goes - the portal. */
   home: string;
 }) {
   const section = useRef<HTMLElement>(null);

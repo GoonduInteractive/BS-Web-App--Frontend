@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 import { openShare, type ShareNetwork } from "@/lib/utils/share";
 
 /**
- * The five share marks — Facebook, WhatsApp, X, Instagram, a link — in a row,
+ * The five share marks - Facebook, WhatsApp, X, Instagram, a link - in a row,
  * as the article page and the comic reader draw them (2026-09-15 frames). The
  * marks are the delivered SVGs in `public/assets/social/`, white strokes,
  * drawn through `next/image` at the slot's size the caller sets (24 in the
@@ -15,15 +15,15 @@ import { openShare, type ShareNetwork } from "@/lib/utils/share";
  * draws at three quarters of its slot, as every frame has it.
  *
  * Facebook, WhatsApp and X open the service's own share page with this
- * address (`lib/utils/share.ts` — no SDK, no pixel). The link mark copies the
- * address. INSTAGRAM HAS NO SHARE URL — no web endpoint takes a link into a
- * post or a story — so its mark copies the address too and its label says so.
+ * address (`lib/utils/share.ts` - no SDK, no pixel). The link mark copies the
+ * address. INSTAGRAM HAS NO SHARE URL - no web endpoint takes a link into a
+ * post or a story - so its mark copies the address too and its label says so.
  * FLAGGED: Design may prefer it to open Goondu's profile once there is a
  * handle.
  *
  * A copy the clipboard refuses says nothing rather than claiming a copy that
  * did not happen. One that lands is announced (`aria-live`) and shown under
- * the row for two seconds — out of flow, so nothing below moves — unless the
+ * the row for two seconds - out of flow, so nothing below moves - unless the
  * caller shows it elsewhere (`feedback="none"` and `onCopied`), as the
  * reader's bar does in place of its SHARE VIA label.
  */
@@ -46,7 +46,7 @@ export function ShareMarks({
   feedback = "inline",
   onCopied,
 }: {
-  /** What the share is about — the post's text where a service takes one. */
+  /** What the share is about - the post's text where a service takes one. */
   title: string;
   labels: ShareLabels;
   /** The row: gap and alignment. */

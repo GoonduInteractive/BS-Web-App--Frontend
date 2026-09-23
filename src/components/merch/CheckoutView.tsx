@@ -13,7 +13,7 @@ import type { ComicIssue, Product } from "@/types/merch";
 
 /**
  * Holds the one piece of state the two checkout columns share: which payment
- * method is chosen, because it decides where PLACE ORDER goes — Bank Transfer
+ * method is chosen, because it decides where PLACE ORDER goes - Bank Transfer
  * to the transfer instructions, Paystack straight to the confirmation.
  *
  * Neither destination takes a payment. See CheckoutSummary.
@@ -47,7 +47,7 @@ export function CheckoutView({
         locale={locale}
         onPlaceOrder={() => {
           // NEITHER BRANCH TAKES A PAYMENT. Bank Transfer goes to the account
-          // details, Paystack straight to the confirmation — no provider is
+          // details, Paystack straight to the confirmation - no provider is
           // loaded and no card detail exists to send anywhere.
           if (method === "transfer") {
             router.push(`/${locale}/merch/checkout/transfer`);

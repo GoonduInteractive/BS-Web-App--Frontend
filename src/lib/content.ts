@@ -16,8 +16,8 @@ import { DEFAULT_LOCALE, type Locale } from "@/lib/utils/locales";
  *
  * THE ENGLISH FILE IS THE LIST, AND THE ENGLISH FIELD IS THE FALLBACK. An
  * entry exists when `en/<slug>.md` does. The other locale's file is laid over
- * it field by field: whatever that file has is used, whatever it lacks — the
- * whole file, or a field the editor left empty, or an empty body — reads in
+ * it field by field: whatever that file has is used, whatever it lacks - the
+ * whole file, or a field the editor left empty, or an empty body - reads in
  * English. That is the moment between a publish and the Translate Igbo
  * workflow's commit, and it means a new entry never 404s or half-renders in
  * Igbo.
@@ -64,7 +64,7 @@ function validate<S extends z.ZodType>(schema: S, data: Record<string, unknown>,
   const parsed = schema.safeParse(data);
   if (parsed.success) return parsed.data;
   const detail = parsed.error.issues
-    .map((i) => `${i.path.join(".") || "frontmatter"} — ${i.message.includes("received undefined") ? "is required" : i.message}`)
+    .map((i) => `${i.path.join(".") || "frontmatter"}: ${i.message.includes("received undefined") ? "is required" : i.message}`)
     .join("; ");
   throw new ContentFileError(file.slice(process.cwd().length + 1), detail);
 }

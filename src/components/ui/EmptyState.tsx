@@ -5,7 +5,7 @@ import { BracketButton } from "@/components/ui/BracketButton";
 /**
  * An empty state, to the empty cart's anatomy (`CartView` → `EmptyCart`, from
  * the frame `Merch Store- Cart (1).png`): a flat glyph in `--color-mist` at
- * 208 / 300, a heading, a line under it, and — when the state owns a page —
+ * 208 / 300, a heading, a line under it, and - when the state owns a page -
  * a bracket CTA. No frame exists for the states that use this (the News page
  * before its first article, the team before its first person), so they borrow
  * the cart's shape and speak lines that already exist in both locales.

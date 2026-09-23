@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "./useReducedMotion";
 
 /**
- * Pointer drift — motion moment 4.
+ * Pointer drift - motion moment 4.
  *
  * This is what replaces the 3D environment that was evaluated and cut (overview
  * section 4). It only works because the character ships on its OWN layer:
@@ -49,7 +49,7 @@ export function usePointerDrift<F extends HTMLElement, B extends HTMLElement>() 
 
   useEffect(() => {
     // Reduced motion disables this ENTIRELY, per overview section 10. It is not
-    // slowed down, it does not run — the global CSS block cannot help here
+    // slowed down, it does not run - the global CSS block cannot help here
     // because these are JS transform writes, not CSS transitions.
     if (reduced) return;
 
@@ -75,7 +75,7 @@ export function usePointerDrift<F extends HTMLElement, B extends HTMLElement>() 
       const spanX = window.innerWidth / 2;
       const spanY = window.innerHeight / 2;
 
-      // Against the cursor, hence the negation — the layers lean away from the
+      // Against the cursor, hence the negation - the layers lean away from the
       // pointer, which is what produces the parallax read.
       const fx = -current.x * spanX * DEPTH.front;
       const fy = -current.y * spanY * DEPTH.front;

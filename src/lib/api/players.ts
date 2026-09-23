@@ -6,18 +6,18 @@ import type { PlayerHotspot, PlayerPin } from "@/types/players";
  *
  * The frame (`Active player map.png`) reads LAGOS, NIGERIA / 120 ACTIVE
  * PLAYERS and pins West Africa. Those two numbers are the frame's; the rest of
- * the list is plausible mock data — real cities at their real coordinates,
+ * the list is plausible mock data - real cities at their real coordinates,
  * Nigeria-first as the game is, with a few abroad so the map has somewhere to
  * travel to. FLAGGED as mock throughout.
  *
  * EVERY ACTIVE PLAYER HAS A PLACE. Per the human: zoomed into Nairobi the map
- * said 15 players and showed one pin — "it should show pins of the 15 players
+ * said 15 players and showed one pin - "it should show pins of the 15 players
  * in their different locations in Nairobi". So each city carries as many
  * player positions as its count, scattered around its centre with a seeded
  * normal spread sized to the city (a metropolis spreads wider than a town),
  * so the scatter is the same on every build and every visit. Real positions
- * replace them when the backend lands; until then some will land on water —
- * Lagos's lagoon, Sydney's harbour — which is the mock showing. FLAGGED.
+ * replace them when the backend lands; until then some will land on water -
+ * Lagos's lagoon, Sydney's harbour - which is the mock showing. FLAGGED.
  */
 type Seed = { id: string; city: string; country: string; lon: number; lat: number; active: number; spread: number };
 
@@ -52,7 +52,7 @@ function random(seed: string) {
   };
 }
 
-/** A standard normal pair (Box–Muller) — a city thins out from its centre. */
+/** A standard normal pair (Box - Muller) - a city thins out from its centre. */
 function normalPair(next: () => number): [number, number] {
   const u = Math.max(next(), 1e-9);
   const v = next();
@@ -62,7 +62,7 @@ function normalPair(next: () => number): [number, number] {
 
 function scatter(seed: Seed): readonly PlayerPin[] {
   const next = random(seed.id);
-  // Degrees of longitude shrink with latitude; scale the north–south spread
+  // Degrees of longitude shrink with latitude; scale the north - south spread
   // so the cluster is round on the ground, not on the graticule.
   const ns = seed.spread * Math.cos((seed.lat * Math.PI) / 180);
   return Array.from({ length: seed.active }, (_, i) => {
@@ -88,7 +88,7 @@ export async function getHotspots(): Promise<readonly PlayerHotspot[]> {
 /**
  * The viewer's invite link, for the INVITE FRIENDS block the phone frame draws
  * under the map. The frame's own URL, transcribed. There is no account to mint
- * a real code against, so every visitor sees the same one — FLAGGED, like the
+ * a real code against, so every visitor sees the same one - FLAGGED, like the
  * profile it would belong to.
  */
 export async function getInviteLink(): Promise<string> {

@@ -11,13 +11,13 @@ import type { Profile } from "@/types/profile";
  *
  * The two profile frames are one profile in two states: `standing` is null in
  * the first and populated in the second, which is also what puts `RANK` into
- * the stats row. No boolean flag — the data says it.
+ * the stats row. No boolean flag - the data says it.
  *
  * FLAGGED: the name, handle and location are the frame's own mock values.
  */
 const PROFILE: Profile = {
   // Stored in sentence case: the profile card uppercases it in CSS, and the
-  // header dropdown shows it as written. Casing is presentation, not data —
+  // header dropdown shows it as written. Casing is presentation, not data -
   // the two frames differ on it for exactly that reason.
   name: "Daniel Israel",
   handle: "@somamain",
@@ -43,7 +43,7 @@ const PROFILE: Profile = {
 };
 
 /**
- * The profile. Pass `withStanding: false` for the frame's first state — a player
+ * The profile. Pass `withStanding: false` for the frame's first state - a player
  * registered in no tournament.
  */
 export async function getProfile(withStanding = true): Promise<Profile> {

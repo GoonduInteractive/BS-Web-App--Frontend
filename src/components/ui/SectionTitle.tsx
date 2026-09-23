@@ -28,7 +28,7 @@ export function SectionTitle({
    *
    * The default 45% is a guess, as the note above says. The Souls of the Arena
    * frame measures its muted ARENA at 58% ink over bone, which is a visible
-   * step darker — but that is evidence from ONE frame, and the same span on a
+   * step darker - but that is evidence from ONE frame, and the same span on a
    * dark field is a different sum. So the section that measured it overrides
    * it, and the shared default stays put until Design gives a real value.
    */
@@ -42,7 +42,7 @@ export function SectionTitle({
         // ARBITRARY SIZES, NOT text-h2, AND THAT IS NOT A STYLE PREFERENCE.
         // twMerge misclassifies our custom `text-*` scale tokens as COLOURS, so
         // `text-h2` here and a `text-menu-fg` from the caller landed in the same
-        // group and BOTH were dropped — every SectionTitle rendered at the
+        // group and BOTH were dropped - every SectionTitle rendered at the
         // inherited 16px. An arbitrary value carrying a length unit is
         // unambiguously a font-size, so it survives the merge.
         // Same trap as `text-h7` on BracketButton. Sizes with a `--text-*` token

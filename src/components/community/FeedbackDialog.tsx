@@ -7,20 +7,20 @@ import { TornDialog } from "@/components/ui/TornDialog";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * DROP YOUR FEEDBACK — the sheet SHARE YOUR THOUGHTS opens. Figma:
+ * DROP YOUR FEEDBACK - the sheet SHARE YOUR THOUGHTS opens. Figma:
  * `05-community/Community wall form.png`, an 844 x 618 sheet.
  *
  * WHAT THE FRAME MEASURES, sheet-relative:
  *
  *   title    centred, cap 48 at 80 → --text-section-heading, ink
  *   sub      centred 16px at 152, --color-ash
- *   field    163..680 x 203..417 — 517 x 214, a 1px ink rule, white; the
+ *   field    163..680 x 203..417 - 517 x 214, a 1px ink rule, white; the
  *            placeholder "Input text" 15 in and 28 down
  *   SUBMIT   ink 374..469 x 457..513, the red brackets at 350 and 490
- *   close    752..774 x 62..82 — the shell's
+ *   close    752..774 x 62..82 - the shell's
  *
  * NOTHING IS SENT ANYWHERE. There is no backend; a submitted note is added to
- * this visitor's wall for the length of the visit and to nothing else — the
+ * this visitor's wall for the length of the visit and to nothing else - the
  * same line the checkout and the registration sheet hold. An empty submit
  * puts the focus back in the field rather than posting a blank note.
  */

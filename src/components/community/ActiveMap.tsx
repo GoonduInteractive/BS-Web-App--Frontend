@@ -15,17 +15,17 @@ import type { PlayerHotspot } from "@/types/players";
 
 /**
  * The Active Player Map: a world in a disc that you pan and zoom like a map
- * app, with a pin wherever players are — and, per the human, THE SNAPCHAT
+ * app, with a pin wherever players are - and, per the human, THE SNAPCHAT
  * FEEL: tap a pin and the map flies down to the streets of that city.
- * Figma: `05-community/Active player map.png` — the disc 524..1256 x 664..1342
+ * Figma: `05-community/Active player map.png` - the disc 524..1256 x 664..1342
  * at 1440, white dots on an 8px grid over --color-globe, Europe and Africa in
  * view, pins in West Africa.
  *
  * WHAT DRAWS IT. Leaflet, and only Leaflet: the streets are OpenStreetMap
  * tiles from a provider (see TILES), and Leaflet is the tile map library that
- * does not need WebGL — MapLibre would, and the project forbids it. ~40KB of
+ * does not need WebGL - MapLibre would, and the project forbids it. ~40KB of
  * JS and 14KB of CSS, in this chunk alone; the map loads when its tab is
- * chosen. Tiles cost data only when someone zooms in — nothing streams at
+ * chosen. Tiles cost data only when someone zooms in - nothing streams at
  * rest, which matters on a metered connection.
  *
  * ONE PIN FOR A CITY, THEN ONE FOR EACH PLAYER. Per the human: Nairobi reads
@@ -44,7 +44,7 @@ import type { PlayerHotspot } from "@/types/players";
  * GESTURES are Leaflet's: drag pans, the wheel zooms about the cursor, the
  * keyboard pans and zooms (the disc is focusable), pins are focusable and
  * Enter chooses one. On a touch screen one finger scrolls the PAGE and two
- * fingers move the map — the cooperative rule map embeds settled on, because
+ * fingers move the map - the cooperative rule map embeds settled on, because
  * a 630px disc that fills a phone's width would otherwise trap a thumb.
  * Reduced motion: every flight is a jump and Leaflet's own animations are
  * off.
@@ -55,11 +55,11 @@ import type { PlayerHotspot } from "@/types/players";
 
 /**
  * The street tiles: Stadia Maps' Alidade Smooth Dark over OpenStreetMap
- * data — the site's near-black, roads and names at street level. Stadia
+ * data - the site's near-black, roads and names at street level. Stadia
  * serves localhost without a key, so development just works; ⚠ A DEPLOYED
  * SITE NEEDS ONE. Register the domain on Stadia's free tier (200k credits a
  * month) and set `NEXT_PUBLIC_MAP_TILES` to this template with
- * `?api_key=…` appended — or to any other raster provider's template. CARTO
+ * `?api_key=…` appended - or to any other raster provider's template. CARTO
  * was tried first and now watermarks its keyless tiles API KEY REQUIRED. The
  * attribution is the providers' required line, not copy.
  */
@@ -74,8 +74,8 @@ const TILES = {
 } as const;
 
 /**
- * Where a fresh visitor looks: the frame's view — the Americas' east coast to
- * India, Africa low-centre — at the frame's 732px disc. A smaller disc opens
+ * Where a fresh visitor looks: the frame's view - the Americas' east coast to
+ * India, Africa low-centre - at the frame's 732px disc. A smaller disc opens
  * a step further out so it shows the same slice of the world, as the phone
  * frame does, rather than a narrower one.
  */
@@ -94,11 +94,11 @@ const TILES_FROM = 6.5;
  *
  * The tile layer waits for the map to come to rest (`updateWhenIdle`, so a
  * flight fetches ~20 tiles and not ~200), which means the streets are only
- * requested once the 1.8s flight has landed — and until they arrive the disc
+ * requested once the 1.8s flight has landed - and until they arrive the disc
  * is its own near-black, which on a phone read as the map being covered (the
  * human's screenshot, 2026-09-16). These are the same tiles Leaflet is about to
- * request, at the same URLs — the level it will draw is the zoom rounded, its
- * view the disc's size about the destination — so nothing extra is downloaded;
+ * request, at the same URLs - the level it will draw is the zoom rounded, its
+ * view the disc's size about the destination - so nothing extra is downloaded;
  * they simply start 1.8s earlier and are in the cache when Leaflet asks. Below
  * DOTS_UNTIL there are no tiles to want.
  */
@@ -127,12 +127,12 @@ const topology = land110 as unknown as Topology<{ land: GeometryCollection }>;
 const land = unwrap(feature(topology, topology.objects.land).features[0] as Feature<MultiPolygon>);
 
 /**
- * Natural Earth cuts its polygons at the antimeridian, and three of them —
- * Fiji, Wrangel Island and the Chukotka tip of Afro-Eurasia — carry an edge
+ * Natural Earth cuts its polygons at the antimeridian, and three of them -
+ * Fiji, Wrangel Island and the Chukotka tip of Afro-Eurasia - carry an edge
  * that jumps from 180° to −180°. On a sphere (d3) that is nothing; on
  * Leaflet's flat Mercator it is a straight line across the whole world, one
- * dot row wide, at 16°S. So every ring is unwrapped — a jump of more than 180°
- * shifts what follows by a full turn — and a ring that ends up past ±180° is
+ * dot row wide, at 16°S. So every ring is unwrapped - a jump of more than 180°
+ * shifts what follows by a full turn - and a ring that ends up past ±180° is
  * drawn twice, a turn apart, so it shows at both edges of the world.
  * Antarctica goes: Mercator clamps its coast to the world's bottom edge as
  * a solid band the frame does not draw.
@@ -231,7 +231,7 @@ export function ActiveMap({
         fadeAnimation: !reduced,
         markerZoomAnimation: !reduced,
         inertia: !reduced,
-        // Vectors — the dotted land — on SVG, drawn half a view past the edge
+        // Vectors - the dotted land - on SVG, drawn half a view past the edge
         // so a pan never shows a bare strip before the redraw.
         renderer: L.svg({ padding: 0.5 }),
       });
@@ -274,7 +274,7 @@ export function ActiveMap({
       // ---- the pins ----
       // A div wearing the artwork, not the artwork itself: Leaflet places a
       // marker with a translate on its element, and a CSS scale on that same
-      // element multiplies the translate — hovering a pin flung it 10% of its
+      // element multiplies the translate - hovering a pin flung it 10% of its
       // distance from the map's origin, out from under the cursor. The scale
       // is on the <img> inside; the div is Leaflet's alone.
       const icon = L.divIcon({
@@ -297,7 +297,7 @@ export function ActiveMap({
       // Decorative (no keyboard, no role): the readout carries the count and
       // the city pin the name. Each city's players are one group, added while
       // the map is close enough and the city is near the view, removed again
-      // otherwise — a few hundred markers site-wide never all exist at once.
+      // otherwise - a few hundred markers site-wide never all exist at once.
       const playerIcon = L.divIcon({
         html: `<img src="/assets/community/map pin.svg" alt="" width="27" height="37" draggable="false">`,
         iconSize: [27, 37],
@@ -363,7 +363,7 @@ export function ActiveMap({
     // Hotspots and labels are the page's data; a new set is a new map.
   }, [hotspots, pinLabel]);
 
-  // Fly to whatever is selected — a pin, a search result — down to its streets.
+  // Fly to whatever is selected - a pin, a search result - down to its streets.
   const lastSelected = useRef<string | null>(null);
   useEffect(() => {
     const m = map.current;
@@ -392,7 +392,7 @@ export function ActiveMap({
     return () => observer.disconnect();
   }, []);
 
-  // + and − zoom INTO THE CHOSEN PLACE — the one LOCATION names — not the
+  // + and − zoom INTO THE CHOSEN PLACE - the one LOCATION names - not the
   // middle of the disc. At rest that middle is the Sahara, and a step in there
   // is a screen of dark desert with nothing on it, which read as the map being
   // covered (the human's phone screenshot, 2026-09-16). A short flight keeps

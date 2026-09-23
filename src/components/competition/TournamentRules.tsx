@@ -3,7 +3,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * The two accordions under the journey — TOURNAMENT RULES, then REWARDS.
+ * The two accordions under the journey - TOURNAMENT RULES, then REWARDS.
  * Figma: `Tournament (upcoming).png`, y 1456..2200 at 1440.
  *
  * WHAT THE FRAME MEASURES:
@@ -14,7 +14,7 @@ import type { Messages } from "@/lib/utils/messages";
  *             Teko 20 headings and 14px items at a 23 pitch, ~60 apart
  *   bars      58 between the rules' last line and the REWARDS bar
  *
- * OPEN WHEN THE TOURNAMENT HAS NOT BEGUN, CLOSED ONCE IT RUNS — which is what
+ * OPEN WHEN THE TOURNAMENT HAS NOT BEGUN, CLOSED ONCE IT RUNS - which is what
  * the two frames draw: the upcoming page opens both, the ongoing page closes
  * both above its bracket.
  *

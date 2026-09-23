@@ -10,7 +10,7 @@ import { SITE_NAME } from "@/lib/seo";
  * white theme; this one names the site and takes the page's own black, and
  * points at the two Android icons where they were delivered. The favicon,
  * the 16 and 32 PNGs and the Apple touch icon live beside this file under
- * `src/app/` — Next serves those from the root and writes their `<link>`s.
+ * `src/app/` - Next serves those from the root and writes their `<link>`s.
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {

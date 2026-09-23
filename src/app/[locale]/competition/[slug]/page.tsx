@@ -23,7 +23,7 @@ import { localePath, pageMetadata, SITE_URL } from "@/lib/seo";
  *
  * NOT A GATE ROUTE. It is reached from the competition page's cards and goes
  * back to it, so it renders plainly under the site chrome and ends on the
- * footer, like About — the ending the human chose over the phone frame's
+ * footer, like About - the ending the human chose over the phone frame's
  * pull-up. Every tournament with a `detail` gets a page; one without 404s.
  *
  * Two states, one page: a tournament that is running shows its current
@@ -62,14 +62,14 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!tournament?.detail) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("competition")) return <HiddenSection section="competition" locale={locale} messages={messages} />;
 
   const copy: { name: string; description?: string } =
     messages.competition.tournaments[tournament.copyKey as keyof typeof messages.competition.tournaments];
   const canRegister = tournament.status === "registrationOpen" || tournament.status === "open";
 
-  // The tournament as an event, with only what the record actually carries —
+  // The tournament as an event, with only what the record actually carries -
   // an announced tournament has no dates and says so by leaving them out.
   const structured = {
     "@context": "https://schema.org",

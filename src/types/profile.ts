@@ -35,6 +35,6 @@ export type Profile = {
   location: string;
   gamePoints: number;
   claimablePoints: number;
-  /** Null when the player is in no tournament — the frame's first state. */
+  /** Null when the player is in no tournament - the frame's first state. */
   standing: TournamentStanding | null;
 };

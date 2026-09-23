@@ -7,7 +7,7 @@ import type { Messages } from "@/lib/utils/messages";
 /**
  * The signed-out right column: the offer, on a red plate over a torn sheet.
  *
- * Frame at 1440 — 903..1356 x 192..786, red 333 tall then white 261. The red
+ * Frame at 1440 - 903..1356 x 192..786, red 333 tall then white 261. The red
  * plate's torn bottom lands ON the white sheet, so the two overlap; drawn as
  * neighbours their deckles interlock over black.
  *

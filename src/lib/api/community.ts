@@ -6,14 +6,14 @@ import type { CommunityNote, WallBounds } from "@/types/community";
  * real call when the game team delivers a schema; the shape stays.
  *
  * THE WALL IS THE REFERENCE WALL. `05-community/Frame 1984078901.png` draws the
- * whole board — 161 cards over ~7300 x 4900, touching and here and there
- * lapping by a few pixels — and `community-layout.ts` is that frame read off
+ * whole board - 161 cards over ~7300 x 4900, touching and here and there
+ * lapping by a few pixels - and `community-layout.ts` is that frame read off
  * card by card. The canvas is its extent plus a margin all round, so there is
  * wall to pan to in every direction. A fresh visitor opens on the region that
  * most resembles `Community Wall.png`'s first view.
  *
- * THE COPY IS THE FRAME'S, TWICE OVER. The comp writes two notes — a short one
- * and a long one — and repeats them, all by "Gamenerd 32". Both are kept
+ * THE COPY IS THE FRAME'S, TWICE OVER. The comp writes two notes - a short one
+ * and a long one - and repeats them, all by "Gamenerd 32". Both are kept
  * verbatim (they are the only community copy that exists); the authors cycle
  * through the leaderboard's own handles so the wall does not read as one
  * person, and the like counts and times are spread. FLAGGED as mock data.
@@ -50,7 +50,7 @@ const AUTHORS = [
   "ify_nwa",
 ] as const;
 
-/** Minutes before the build, as an ISO instant — "30 mins ago" at build time. */
+/** Minutes before the build, as an ISO instant - "30 mins ago" at build time. */
 const ago = (minutes: number) => new Date(Date.now() - minutes * 60_000).toISOString();
 
 const NOTES: readonly CommunityNote[] = WALL_LAYOUT.map(([tint, x, y, long], i) => ({

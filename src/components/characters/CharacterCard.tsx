@@ -13,7 +13,7 @@ import { TornDivider } from "@/components/ui/TornDivider";
  * to paint the whole card oxblood with a clot plate, which had the two fields
  * far closer together than the frame does.
  *
- * The corner marks are clot on scar — the plate's colour, reused — and not the
+ * The corner marks are clot on scar - the plate's colour, reused - and not the
  * bright --color-signal they were built with. Measured at 46 x 40 with a 2px
  * stroke, inset 15px, where they had been 28 x 28 at 1px inset 16.
  *
@@ -28,7 +28,7 @@ import { TornDivider } from "@/components/ui/TornDivider";
  *
  * FLAGGED: --color-clot (#680500) is still a sampled value, not confirmed from
  * Figma. --color-scar (#330500) is read from a delivered asset and is solid.
- * The Characters page's frame reads #6b0400 for the same plate — 3/255 off, so
+ * The Characters page's frame reads #6b0400 for the same plate - 3/255 off, so
  * it corroborates the token rather than contradicting it, but it is a second
  * unconfirmed reading of a value Design has never signed off.
  *
@@ -40,19 +40,19 @@ import { TornDivider } from "@/components/ui/TornDivider";
  * on scar, the plate on clot, the name inset 37 at a 30px cap. Only the trim
  * differs, in two ways, and both differences are measured:
  *
- *   `souls`  (default) — The Game page. A SINGLE corner bracket, 46 x 40 at a
+ *   `souls`  (default) - The Game page. A SINGLE corner bracket, 46 x 40 at a
  *            15px inset, and a plate that bottom-pads its content.
  *
- *   `roster` — The Characters page. A DOUBLE bracket: two 40 x 35 brackets
+ *   `roster` - The Characters page. A DOUBLE bracket: two 40 x 35 brackets
  *            offset 6px diagonally, at insets 15/23 and 21/17. Its plate
  *            CENTRES its content, which is what lets a card carry no role at
- *            all — Oji Isi has none, and its name sits 18px lower than its
+ *            all - Oji Isi has none, and its name sits 18px lower than its
  *            neighbours' precisely because the plate centres one line instead
  *            of two.
  *
  * FLAGGED: the two may well be the same card and the Game page's single bracket
  * may simply be a miss. That frame was signed off, so this does not quietly
- * change it — the variant keeps them apart until Design says they are one.
+ * change it - the variant keeps them apart until Design says they are one.
  */
 export function CharacterCard({
   name,
@@ -76,19 +76,19 @@ export function CharacterCard({
    * Framing override for the portrait, as literal Tailwind classes.
    *
    * WHY THIS EXISTS AT ALL. Scored against the frame, plain `object-cover`
-   * reproduces all six legends cards almost exactly — a mean absolute error of
+   * reproduces all six legends cards almost exactly - a mean absolute error of
    * 2.2 to 5.7. It does NOT reproduce Soma, Kaira or Ogbun'abali, which come out
    * at 13.9 to 44.9 however they are fitted, because those three are hand-placed
    * in Figma at their own scale and offset. Solving each gives a zoom of 1.19,
    * 0.78 and 1.27 respectively, none of which any single object-fit rule yields.
    *
    * Passed as complete class strings rather than numbers because Tailwind scans
-   * source text for whole class names — a computed `w-[${n}%]` never reaches the
+   * source text for whole class names - a computed `w-[${n}%]` never reaches the
    * generated CSS.
    */
   portraitClass?: string;
   /**
-   * Extra classes for the fill-fitted portrait. Omalicha's mask — her render
+   * Extra classes for the fill-fitted portrait. Omalicha's mask - her render
    * has no alpha channel, so its black ground is faded into the scar field
    * rather than sitting on it as a rectangle. See the manifest.
    */
@@ -112,7 +112,7 @@ export function CharacterCard({
         <button
           type="button"
           onClick={onSelect}
-          aria-label={role ? `${name} — ${role}` : name}
+          aria-label={role ? `${name}, ${role}` : name}
           className="focus-visible:outline-signal absolute inset-0 z-20 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2"
         />
       ) : null}
@@ -120,7 +120,7 @@ export function CharacterCard({
       <div className="relative aspect-square w-full overflow-hidden">
         {/*
           THE PORTRAIT ZOOMS ON HOVER, and the clip that makes that work is the
-          wrapper's `overflow-hidden`, not the card's — the card also clips, but
+          wrapper's `overflow-hidden`, not the card's - the card also clips, but
           the corner marks sit outside this box and must not scale with the art.
 
           `scale-115` compiles to the `scale` property in v4, so it is safe from
@@ -160,7 +160,7 @@ export function CharacterCard({
 
       {/* Pulled up so the plate tears into the portrait rather than butting it.
           The pull matches the divider's own height, which grew from 24/40 to a
-          flat 56 when it moved onto TornSurface's 47.4 depth — leaving the old
+          flat 56 when it moved onto TornSurface's 47.4 depth - leaving the old
           -mt-6 would have added 32px of plate below the seam. */}
       <TornDivider
         edge="top"
@@ -173,7 +173,7 @@ export function CharacterCard({
           THE ROSTER PLATE IS PULLED UP TO THE SEAM, and that is what makes
           centring land. The divider's box nets to zero height, so an un-pulled
           plate starts at the portrait's bottom edge (410) and centres its
-          content at 461 — but the frame centres on the VISIBLE plate, which
+          content at 461 - but the frame centres on the VISIBLE plate, which
           starts at the seam (383) and centres at 448. `-mt-[27px]` moves the box
           to where the eye reads it, and the card still totals the frame's 513:
           410 portrait + 130 plate - 27 pull. */}
@@ -186,7 +186,7 @@ export function CharacterCard({
       >
         {/* TRACKING IS PART OF THE VARIANT, and it is measured rather than
             styled. Against the Characters frame the souls value of -0.03em sets
-            every name about 9% wide — 218 against 200 for NZE UGWUOKE, 179
+            every name about 9% wide - 218 against 200 for NZE UGWUOKE, 179
             against 165 for LIEUTENANT, 161 against 148 for THE BEAST. Divided by
             each name's advance count those three agree on 1.63px per advance,
             which at 47px is 0.0347em, so -0.065em closes it.
@@ -241,7 +241,7 @@ function SingleMarks() {
  * diagonally so they nest.
  *
  * Measured off the frame's top-left corner, card at (298, 1157): one bracket
- * turns at (319, 1174) and the other at (313, 1180) — insets of 21/17 and 15/23,
+ * turns at (319, 1174) and the other at (313, 1180) - insets of 21/17 and 15/23,
  * both with a 2px stroke, 40px along and 35px down.
  *
  * The offsets mirror per corner, which is why they are derived from the corner's

@@ -14,7 +14,7 @@ import type { Tournament } from "@/types/tournament";
  *   tear     the hero's foot, teeth from ~622, strip to 678, reading #120202
  *   labels   cap 10 at 796 → Host Grotesk 14, #e8e8e8 (menu-fg at 92%)
  *   values   cap 12 at 822 → Teko 20, white, uppercase
- *   columns  330 / 536 / 735 / 876 / 1056 — the row is CENTRED (330..1108 is
+ *   columns  330 / 536 / 735 / 876 / 1056 - the row is CENTRED (330..1108 is
  *            719 about the page's 720), with ~88 between columns
  *
  * THE FACTS FOLLOW THE STATUS, as the tournament cards' do. Registration open:

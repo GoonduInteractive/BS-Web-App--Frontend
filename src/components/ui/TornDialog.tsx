@@ -8,28 +8,28 @@ import { useScrollLock } from "@/hooks/useScrollLock";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * A modal on the torn white sheet — the delivered `merch/tear-bg.svg`,
+ * A modal on the torn white sheet - the delivered `merch/tear-bg.svg`,
  * stretched to the panel the way the transfer screen and the order
- * confirmation stretch it — via `ornaments/tear-sheet.svg`, which is that
+ * confirmation stretch it - via `ornaments/tear-sheet.svg`, which is that
  * file with ONE attribute added: `preserveAspectRatio="none"`. Without it the
  * artwork keeps its 843:689 ratio inside whatever box it is given and
  * letterboxes, so on a 332 x 732 phone sheet the white painted a 271px band
  * through the middle and the copy sat on the backdrop. The BracketButton's
  * hover art carries the same attribute for the same reason. Nothing else in
  * the file differs, and the teeth stretch with the box as TornSurface's note
- * says they will — anisotropic on a phone, exact at the frame's ratio. The Competition frames add two more of these
+ * says they will - anisotropic on a phone, exact at the frame's ratio. The Competition frames add two more of these
  * (JOIN TOURNAMENT, REGISTRATION SUCCESSFUL), so the shell is now shared:
  * backdrop, focus trap, Escape, scroll lock, focus restore, and the close
  * control. What goes on the sheet is the caller's.
  *
  * THE CLOSE CONTROL IS THE DELIVERED `x-cancl-x.svg`, at the top right where the
  * Register frame draws it. The Success frame draws no close control, as the
- * merch one did not; the reasoning there stands — a dialog whose only action
- * navigates away must still be dismissible — so every TornDialog has one.
+ * merch one did not; the reasoning there stands - a dialog whose only action
+ * navigates away must still be dismissible - so every TornDialog has one.
  *
  * PORTALLED TO BODY, and that is a correction, not a preference. The first
- * caller sits inside a `Reveal`, whose `translate` — even the settled
- * `translate: 0 0` — makes it the containing block for `position: fixed`, so
+ * caller sits inside a `Reveal`, whose `translate` - even the settled
+ * `translate: 0 0` - makes it the containing block for `position: fixed`, so
  * an in-place dialog centred itself in the featured card rather than the
  * viewport. Rendering into `document.body` puts it back where fixed means.
  *
@@ -50,7 +50,7 @@ export function TornDialog({
   /** The dialog's accessible name. */
   label: string;
   closeLabel: string;
-  /** The panel's width cap — the frame's sheet width. */
+  /** The panel's width cap - the frame's sheet width. */
   maxWidthClassName: string;
   /** Padding and layout for the sheet's content. */
   className?: string;

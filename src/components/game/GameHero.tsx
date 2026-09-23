@@ -11,7 +11,7 @@ import type { Messages } from "@/lib/utils/messages";
 
 export function GameHero({ messages }: { messages: Messages }) {
   const t = messages.theGame.hero;
-  // Back layer only — see the note above.
+  // Back layer only - see the note above.
   const { backRef } = usePointerDrift<HTMLDivElement, HTMLDivElement>();
 
   return (
@@ -89,7 +89,7 @@ export function GameHero({ messages }: { messages: Messages }) {
 
 
 /**
- * WATCH TRAILER, for now DOWNLOAD GAME (2026-09-19, per the human) — same
+ * WATCH TRAILER, for now DOWNLOAD GAME (2026-09-19, per the human) - same
  * box, no play glyph; the trailer button is one swap back: `BracketButton`
  * with `<PlayGlyph />` before the label, at the same classes.
  */

@@ -1,12 +1,12 @@
 import type { NoteTint } from "@/types/community";
 
 /**
- * The wall's layout — every card of the reference wall, `05-community/Frame
+ * The wall's layout - every card of the reference wall, `05-community/Frame
  * 1984078901.png` (10223 x 5896), read off the frame: tint, top-left, and
  * whether it is the long note or the short one (384 or 232 tall; all are 416
  * wide). 161 cards, offset by 400 on both axes so there is wall to pan
  * to above and to the left of the first one. Cards touch and, here and there,
- * overlap by a few pixels, as the frame draws them — the wall is a pinboard,
+ * overlap by a few pixels, as the frame draws them - the wall is a pinboard,
  * not a grid. Four same-tint pairs that the frame's export merged were split
  * back into two cards each, on whichever diagonal of the merged box overlaps
  * its neighbours least.

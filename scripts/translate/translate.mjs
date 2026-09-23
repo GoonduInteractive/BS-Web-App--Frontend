@@ -15,10 +15,10 @@
  *
  *   ig.json   a key that is absent, or whose value still carries the `TODO ig:`
  *             placeholder. A value identical to the English is NOT untranslated
- *             there — the 34 that match (NNỌỌ, Lagos, Soma, © …) were written that
+ *             there - the 34 that match (NNỌỌ, Lagos, Soma, © …) were written that
  *             way on purpose.
  *   content   a translated field (per the Decap config) that is absent, empty,
- *             or IDENTICAL TO THE ENGLISH — which is what "Fill in from another
+ *             or IDENTICAL TO THE ENGLISH - which is what "Fill in from another
  *             locale" leaves behind on the Igbo tab, and the one-click step the
  *             editor takes before publishing.
  *
@@ -52,7 +52,7 @@ const TARGET = "ig";
 const TODO_PREFIX = `TODO ${TARGET}:`;
 
 /**
- * Message keys that are copied from English rather than translated — a
+ * Message keys that are copied from English rather than translated - a
  * person's name is not a word. One regular expression per key path. Empty
  * since the team moved into the CMS (2026-09-22), where `name` is a
  * `duplicate` field and is never sent; add a pattern here if a name lands in
@@ -93,7 +93,7 @@ const isTodo = (s) => typeof s === "string" && s.startsWith(TODO_PREFIX);
 const isBlank = (s) => typeof s !== "string" || s.trim() === "";
 const PLACEHOLDER = /\{[^{}]+\}/g;
 
-/** All-caps outside its placeholders — `{n} DAYS AGO` counts. */
+/** All-caps outside its placeholders - `{n} DAYS AGO` counts. */
 const isAllCaps = (s) => {
   const t = s.replace(PLACEHOLDER, "");
   return /[A-Za-z]/.test(t) && t === t.toUpperCase();
@@ -113,7 +113,7 @@ function decodeEntities(s) {
     .replace(/&amp;/g, "&");
 }
 
-/** A line's leading whitespace and markdown marker — list bullet, number, heading, quote — which are never sent. */
+/** A line's leading whitespace and markdown marker - list bullet, number, heading, quote - which are never sent. */
 const MARKER = /^(\s*(?:[-*+]\s+|\d+\.\s+|#{1,6}\s+|>\s+)?)/;
 const splitMarker = (line) => {
   const prefix = line.match(MARKER)[1];
@@ -314,8 +314,8 @@ const TEXT_WIDGETS = new Set(["string", "text", "markdown"]);
 /**
  * A plan per field from the Decap config: `translate` a text widget marked
  * `i18n: true`, `copy` anything else, recurse into a list's fields. Decap
- * ignores `i18n` on the fields INSIDE a translated list or object — the whole
- * thing is per locale — so `inherited` carries the parent's flag down.
+ * ignores `i18n` on the fields INSIDE a translated list or object - the whole
+ * thing is per locale - so `inherited` carries the parent's flag down.
  */
 function planFields(fields, inherited = false) {
   const plan = {};
@@ -476,7 +476,7 @@ async function main() {
   const stale = report.untranslated.length - report.translated.length;
   console.log(
     `Translated ${report.translated.length}, copied ${report.copied.length}, kept ${report.kept.length} hand-edited` +
-      ` — ${stats.calls} call(s), ${stats.sent} line(s), ${stats.chars.toLocaleString()} characters.`,
+      ` - ${stats.calls} call(s), ${stats.sent} line(s), ${stats.chars.toLocaleString()} characters.`,
   );
   for (const file of report.files) console.log(`  wrote ${file}`);
   for (const note of report.notes) console.log(`  note: ${note}`);

@@ -9,7 +9,7 @@ import Image from "next/image";
  * chevron in `PointsPanel` and the trash in `CartView`: they are traced from the
  * frame and should be replaced when Design supplies the real set.
  *
- * The flag is the Nigerian national flag — green, white, green in a 2:1 box.
+ * The flag is the Nigerian national flag - green, white, green in a 2:1 box.
  * That is a fact rather than a design decision, so it is drawn rather than
  * treated as a missing asset. The emoji was not used: it renders as a country
  * code on Windows, which is where this is being built and reviewed.

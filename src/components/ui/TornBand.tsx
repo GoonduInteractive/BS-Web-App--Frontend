@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils/cn";
 const DEPTH = 47.4;
 
 /**
- * A full-width band whose TOP AND BOTTOM EDGES ARE TORN — the content itself,
+ * A full-width band whose TOP AND BOTTOM EDGES ARE TORN - the content itself,
  * not a strip laid over it.
  *
  * `TornDivider` paints a coloured strip with a torn edge and lays it over a
@@ -22,7 +22,7 @@ const DEPTH = 47.4;
  *
  * So this masks. An inline SVG `<mask>` holds a `TornSurface` painted white,
  * and the band's box references it through `mask-image: url(#…)`. Whatever is
- * inside — photograph, gild, copy — is clipped to the torn shape, and the teeth
+ * inside - photograph, gild, copy - is clipped to the torn shape, and the teeth
  * are the band's own content rising into the ground. Which is what a torn sheet
  * on a table looks like.
  *

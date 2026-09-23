@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils/cn";
  *
  * Point at the left or right edge of the track and the pointer becomes an arrow;
  * click and it pages. This is the Thorgal affordance, and it is the reason there
- * are no dots and no permanent arrows — the frames have neither, and the human
+ * are no dots and no permanent arrows - the frames have neither, and the human
  * asked for neither.
  *
  * NOT IN FIGMA. There is no designed carousel cursor, so this is built from
@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils/cn";
  *    pointer-driven motion, verbatim.
  *
  * 2. THE EDGES ARE THE TRACK'S, NOT THE WINDOW'S. Measuring `clientX` against
- *    `window.innerWidth` arms the arrow at the edge of the PAGE — so it appears
+ *    `window.innerWidth` arms the arrow at the edge of the PAGE - so it appears
  *    while the pointer is over the nav, or over a section three screens away.
  *    Every measurement here is against the frame's own `getBoundingClientRect`.
  *
@@ -41,12 +41,12 @@ import { cn } from "@/lib/utils/cn";
  *
  *    It is also `absolute` inside the frame rather than `fixed`. A `fixed`
  *    element resolves against the nearest transformed ancestor instead of the
- *    viewport, and this page has GSAP scenes writing transforms up the tree —
+ *    viewport, and this page has GSAP scenes writing transforms up the tree -
  *    so `fixed` would work until it silently did not.
  *
  * 4. IT ONLY ARMS WHEN THERE IS SOMEWHERE TO GO. No overflow, no arrow; already
  *    at the end, no right arrow. At `lg` the three Souls cards fill the row
- *    exactly, so the cursor never appears there — which is correct, and falls
+ *    exactly, so the cursor never appears there - which is correct, and falls
  *    out of the measurement rather than needing a breakpoint rule.
  *
  * REACHABLE WITHOUT A MOUSE. The track is a real scroll container with
@@ -57,7 +57,7 @@ import { cn } from "@/lib/utils/cn";
  * SNAP, ON ONE AXIS, DELIBERATELY. The overview forbids CSS scroll-snap because
  * Lenis and snap fight over the PAGE's vertical scroll. This is a nested
  * element on the horizontal axis; Lenis drives `window` vertically and never
- * touches it. Flagged rather than assumed — if the stutter shows up on a real
+ * touches it. Flagged rather than assumed - if the stutter shows up on a real
  * device, `snap-x` comes off and the arrows still page correctly.
  */
 export function Carousel({
@@ -73,7 +73,7 @@ export function Carousel({
   /** Names the scroll region for assistive tech. Required, not decorative. */
   label: string;
   className?: string;
-  /** Padding, gap and breakout live here — they are the caller's geometry. */
+  /** Padding, gap and breakout live here - they are the caller's geometry. */
   trackClassName?: string;
   /** Slide width per breakpoint. The caller owns how many are in view. */
   itemClassName?: string;
@@ -178,7 +178,7 @@ function useEdgeCursor({
       if (cancelled) return;
 
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      // Reduced motion keeps the arrow — it is an affordance, not decoration —
+      // Reduced motion keeps the arrow - it is an affordance, not decoration -
       // and drops the lag and the scale, so it simply appears where it belongs.
       const followDuration = reduced ? 0 : 0.35;
 
@@ -217,7 +217,7 @@ function useEdgeCursor({
           ease: "power3.out",
           // "auto", NEVER `true`. `overwrite: true` kills every other tween of
           // the target, which here means the two `quickTo` tweens driving x and
-          // y — the arrow appears, then sits frozen at the origin and never
+          // y - the arrow appears, then sits frozen at the origin and never
           // follows the pointer. "auto" only overwrites the properties that
           // actually conflict, so scale and autoAlpha are claimed and the
           // position tweens are left running.
@@ -225,7 +225,7 @@ function useEdgeCursor({
         });
       };
 
-      /** One slide plus one gap — what a click advances by. */
+      /** One slide plus one gap - what a click advances by. */
       const pageDistance = () => {
         const first = trackEl.firstElementChild;
         if (!first) return trackEl.clientWidth;

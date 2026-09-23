@@ -11,7 +11,7 @@ import type { Match } from "@/types/tournament";
  *
  * WHAT THE FRAME MEASURES, on a 271-wide card:
  *
- *   time    270 x 32, white, Teko 16 black at 21 in — "ENDS 24 :00:00" live,
+ *   time    270 x 32, white, Teko 16 black at 21 in - "ENDS 24 :00:00" live,
  *           "SAT, 21 JULY 8:00 AM" scheduled, and the same form for the date a
  *           decided match was played (the frame counts those down too, which
  *           is the comp's clock pasted over finished games)
@@ -27,7 +27,7 @@ import type { Match } from "@/types/tournament";
  *
  * The card lifts a little under the cursor. That is a CSS `translate` on this
  * root, so the scenes that bring the cards in tween the WRAPPER each card sits
- * in, never the card — see the note on `useGsapScene`.
+ * in, never the card - see the note on `useGsapScene`.
  */
 export function MatchCard({
   match,
@@ -87,7 +87,7 @@ export function MatchCard({
 }
 
 /**
- * "SAT, 21 JULY 8:00 AM" — the frame's order, which no locale's default gives:
+ * "SAT, 21 JULY 8:00 AM" - the frame's order, which no locale's default gives:
  * weekday, a comma, day, month, then the time. Assembled from the parts.
  */
 function matchDate(iso: string, locale: Locale): string {

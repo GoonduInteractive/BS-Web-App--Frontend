@@ -3,12 +3,12 @@
 import type { RefObject } from "react";
 
 /**
- * The two masses the tear timeline drives. Purely presentational — it owns no
+ * The two masses the tear timeline drives. Purely presentational - it owns no
  * state and starts no animation; TransitionProvider does both.
  *
  * WHY EACH PANEL IS A SOLID BLOCK PLUS A NARROW TORN STRIP
  *
- * The obvious build — stretch the artwork across the whole panel — looks wrong on
+ * The obvious build - stretch the artwork across the whole panel - looks wrong on
  * desktop. The tear is a long shape (2455x753, about 3.3:1), so if its THICKNESS
  * has to cover a 100vw-wide panel, the background magnifies enormously and crops
  * its LENGTH. Measured: at 1440px only ~24% of the tear's length was in frame,
@@ -26,7 +26,7 @@ import type { RefObject } from "react";
  * Its raggedness is not in the path: the path is a soft blob, and an
  * feDisplacementMap driven by feTurbulence tears it. That filter's `scale` is in
  * user-space units, so rotating inside the SVG re-runs the displacement in a
- * different coordinate space and destroys it — measured, 71% coverage down to 16%.
+ * different coordinate space and destroys it - measured, 71% coverage down to 16%.
  * The browser rasterises the file upright, where the filter behaves, and the inner
  * layer turns that finished raster a quarter turn with CSS.
  *
@@ -59,7 +59,7 @@ export function TransitionOverlay({
       {/* `tear-panel` seeds opacity:0. Without it the two overlapping 100vw
           panels cover the whole viewport in ember until GSAP's idle-time
           gsap.set lands, which paints every route solid red on a slow first
-          load. It must NOT seed a transform — GSAP composes xPercent on top of
+          load. It must NOT seed a transform - GSAP composes xPercent on top of
           any existing one, so a transform seed doubles the travel and the wipe
           stops covering. See the note in globals.css. */}
       <Panel ref={leftRef} className="tear-panel -left-[20vw]" side="left" />

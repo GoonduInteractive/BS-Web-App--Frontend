@@ -23,10 +23,10 @@ export const SITE_URL = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://loca
 /** The default social card: the key art at 1200 x 630, cut from the delivered `brand/trial-of-the-gods.png`. */
 export const OG_IMAGE = { url: "/assets/og/beyond-service.jpg", width: 1200, height: 630 } as const;
 
-/** Open Graph locale tags. Both are Nigerian — the audience is Nigeria-first. */
+/** Open Graph locale tags. Both are Nigerian - the audience is Nigeria-first. */
 const OG_LOCALE: Record<Locale, string> = { en: "en_NG", ig: "ig_NG" };
 
-/** `/en/the-game`, `/ig`, and so on — every route lives under a locale. */
+/** `/en/the-game`, `/ig`, and so on - every route lives under a locale. */
 export function localePath(locale: Locale, path: string): string {
   const clean = path === "/" ? "" : path.replace(/\/$/, "");
   return `/${locale}${clean}`;
@@ -45,8 +45,8 @@ type PageMetadataInput = {
   /** ISO date, for articles. */
   published?: string;
   /**
-   * Keep the page out of search. For the pages that are one visitor's own —
-   * their profile, their cart, their checkout — which have nothing to rank.
+   * Keep the page out of search. For the pages that are one visitor's own -
+   * their profile, their cart, their checkout - which have nothing to rank.
    */
   noIndex?: boolean;
 };
@@ -54,7 +54,7 @@ type PageMetadataInput = {
 export function pageMetadata(input: PageMetadataInput): Metadata {
   // A ROUTE IN A HIDDEN SECTION GIVES NOTHING AWAY. Whatever the page asked
   // for, its head is the section's name, the site's line, the key art and
-  // `noindex` — the Coming Soon page's, at the page's own address — so no
+  // `noindex` - the Coming Soon page's, at the page's own address - so no
   // title, excerpt, price or card of what is behind the section reaches a
   // crawler or a link preview. See `lib/hidden-sections.ts`.
   const hidden = hiddenSectionOf(input.path);

@@ -8,7 +8,7 @@ import { pageMetadata, SITE_NAME } from "@/lib/seo";
 import { notFound } from "next/navigation";
 
 /**
- * Entry screen + the gates — the landing page (overview section 5), the
+ * Entry screen + the gates - the landing page (overview section 5), the
  * portal. The entry screen is the HTML; ENTER stands the visitor at Ọnụ Ụzọ 1,
  * and the cues and the rail move between the four doors without leaving this
  * route. A door's CTA is the only way to a page URL. See `GateEntry`.

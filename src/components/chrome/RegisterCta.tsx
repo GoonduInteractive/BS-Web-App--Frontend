@@ -7,13 +7,13 @@ import { BracketButton } from "@/components/ui/BracketButton";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * REGISTER, at the header's right where the account control sat (parked —
+ * REGISTER, at the header's right where the account control sat (parked -
  * see `SiteHeader`). Per the human: "use the button component but without the
- * bracket" — so `BracketButton` with `brackets={false}`, at the utility links'
+ * bracket" - so `BracketButton` with `brackets={false}`, at the utility links'
  * 14px. No frame draws this; FLAGGED.
  *
  * THE SHEET IS A LAZY CHUNK. The header is on every page, and the form brings
- * Axios and the dialog shell with it — none of which a visitor who never
+ * Axios and the dialog shell with it - none of which a visitor who never
  * clicks should download. `next/dynamic` with no server render mounts it on
  * the first click; a hover or focus on the button starts the fetch early, so
  * the sheet is there when the click lands. Closing unmounts it, which is also

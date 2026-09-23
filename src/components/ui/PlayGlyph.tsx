@@ -1,8 +1,8 @@
 /**
  * The play triangle inside the WATCH TRAILER button.
  *
- * DRAWN, NOT DELIVERED. The frame shows an outlined triangle — hairline stroke,
- * no fill, mitred corners — sitting left of the label at about 14 x 14. No icon
+ * DRAWN, NOT DELIVERED. The frame shows an outlined triangle - hairline stroke,
+ * no fill, mitred corners - sitting left of the label at about 14 x 14. No icon
  * was exported with the section's assets, and this was flagged and shipped as
  * text only until the human asked for the glyph.
  *
@@ -10,7 +10,7 @@
  * geometry, not artwork: three points and a stroke, which is exactly what the
  * frame draws. If Design later exports an icon set, this is one file to swap.
  *
- * 13 wide by 15 tall in the frame — taller than it is wide, not equilateral —
+ * 13 wide by 15 tall in the frame - taller than it is wide, not equilateral -
  * against an 18px label. Sized in em off that ratio so it rides the button's
  * font size, and painted `currentColor`, rather than pinning either.
  */

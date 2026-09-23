@@ -5,18 +5,18 @@ import { BracketButton } from "@/components/ui/BracketButton";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * Section 7 of the Competition page — THE GODS ARE WATCHING, and the scroll
+ * Section 7 of the Competition page - THE GODS ARE WATCHING, and the scroll
  * cue to the next gate. Figma: `context/design/06-competition/Competition.png`,
  * y 5221..6083 at 1440. The last section, so it sits INSIDE the GateCurtain
  * and the pull-up rides over it, as on The Game and The Characters.
  *
  * WHAT THE FRAME MEASURES:
  *
- *   strip     97..124 x 5549..5775 — nsibidi-glyphs-2.svg's 28 x 227 exactly, in ember
+ *   strip     97..124 x 5549..5775 - nsibidi-glyphs-2.svg's 28 x 227 exactly, in ember
  *   heading   ink 202..535, two lines, cap 49 at 5557 and 5625 → --text-story-title
  *             at a 68 pitch, flat #dedede
- *   copy      950..1260, five lines at a 25 pitch from cap 5539 — three hard
- *             breaks and one wrap — #e6e6e6
+ *   copy      950..1260, five lines at a 25 pitch from cap 5539 - three hard
+ *             breaks and one wrap - #e6e6e6
  *   CTA       red 977..1273 x 5691..5746, brackets at 949 and 1290
  *   cue       arrow 692..712 x 5965..5993, label cap 6012, white
  *   panel     the next gate's preview from 6083
@@ -24,8 +24,8 @@ import type { Messages } from "@/lib/utils/messages";
  * THE STRIP IS THE DELIVERED SVG, MASKED. `nsibidi-glyphs-2.svg` is the glyph
  * strip to the pixel, but its fill is #620002 and the frame paints the glyphs
  * in --color-ember (#800c00, read exactly). An `<img>` cannot be recoloured, so
- * the file is a `mask-image` over an ember box — the way TornBand masks its
- * photograph — and the colour comes from the token. FLAGGED: the asset and the
+ * the file is a `mask-image` over an ember box - the way TornBand masks its
+ * photograph - and the colour comes from the token. FLAGGED: the asset and the
  * frame disagree on the red.
  *
  * THE GREYS ARE OPACITIES OF MENU-FG: 89% lands on the heading's #dedede and
@@ -34,7 +34,7 @@ import type { Messages } from "@/lib/utils/messages";
  *
  * THE CTA LABEL DROPS A STRAY "]". The frame reads "REGISTER FOR A TOURNAMENT]";
  * the bracket is a keystroke, not copy, and is treated the way "orignals" was
- * on the merch store — corrected and flagged.
+ * on the merch store - corrected and flagged.
  */
 export function GodsWatching({
   messages,
@@ -93,7 +93,7 @@ export function GodsWatching({
         </Reveal>
       </div>
 
-      {/* 219 under the CTA's foot, which is the row's — the strip is absolute and
+      {/* 219 under the CTA's foot, which is the row's - the strip is absolute and
           runs 29 further, so the frame's 190 under the strip is this. */}
       {nextGate ? (
         <Reveal delay={160} className="flex justify-center pt-24 lg:pt-[13.6875rem]">

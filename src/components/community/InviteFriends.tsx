@@ -9,19 +9,19 @@ import type { Messages } from "@/lib/utils/messages";
 /**
  * INVITE FRIENDS, under the map's readout. Only the phone frame draws it
  * (`mobile-active-map/home/game.png`, 360): the 1440 frame ends at the disc.
- * Rendered below `lg` as drawn and FLAGGED — if Design wants it on the desktop
+ * Rendered below `lg` as drawn and FLAGGED - if Design wants it on the desktop
  * too, the caller drops the `lg:hidden`.
  *
  * Measured at 360: heading 14px at cap 1753; two 12px lines at a 16 pitch from
- * cap 1785, grey; the link field 19..330 x 1825..1873 — a 2px ring, rounded,
+ * cap 1785, grey; the link field 19..330 x 1825..1873 - a 2px ring, rounded,
  * the URL 14px grey from x 36; COPY LINK a 70 x 32 red button at 36 with 21px
- * brackets at 19 and 121. The label is Teko — 48px wide for nine characters
- * is the condensed face, not Host Grotesk — the scale's Button style, which
+ * brackets at 19 and 121. The label is Teko - 48px wide for nine characters
+ * is the condensed face, not Host Grotesk - the scale's Button style, which
  * every other BracketButton on the site overrides with the body face per Figma.
  *
  * The field is a read-only input rather than a paragraph so the link can be
  * selected and copied by hand where the clipboard is refused. The button's
- * label only changes when the write actually succeeded — the transfer screen's
+ * label only changes when the write actually succeeded - the transfer screen's
  * rule. "Copied" is ours, as it was there: the frame draws no confirmed state.
  */
 export function InviteFriends({ link, messages, className }: { link: string; messages: Messages; className?: string }) {

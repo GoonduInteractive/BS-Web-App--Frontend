@@ -14,7 +14,7 @@ import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
 
 /**
- * Global chrome — header, menu overlay, sound toggle and gate rail.
+ * Global chrome - header, menu overlay, sound toggle and gate rail.
  */
 export function SiteChrome({
   messages,
@@ -33,12 +33,12 @@ export function SiteChrome({
 
   const segments = pathname.split("/").filter(Boolean);
   const locale = segments[0] ?? "en";
-  // One segment means `/en`, the portal — the entry screen until a door is
+  // One segment means `/en`, the portal - the entry screen until a door is
   // shown, and the entry screen alone goes without the chrome.
   const isEntry = segments.length <= 1 && !shown;
 
   // THE COMIC READER REPLACES THE SITE CHROME WITH ITS OWN BAR. The frame draws
-  // no menu, no wordmark and no account there — just BACK, the issue's title and
+  // no menu, no wordmark and no account there - just BACK, the issue's title and
   // the share row, fixed to the top so it stays with the reader down the page.
   // Rendering both would put two bars over each other. While comics is not
   // public (`lib/hidden-sections.ts`) that address is the Coming Soon page,

@@ -5,15 +5,15 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * A sideways scroller for something wider than the screen — the leaderboard's
- * tables on a phone — built the way the character modal's bio scrolls
+ * A sideways scroller for something wider than the screen - the leaderboard's
+ * tables on a phone - built the way the character modal's bio scrolls
  * (2026-09-16, at the human's direction: "use the same one used in the
  * character modal"):
  *
  *  - a thin scrollbar in the content's own grey (`--color-steel`, the table's
  *    dividers) on nothing, instead of the browser's default bar;
  *  - the end with more content behind it FADES, so the cut-off reads as "there
- *    is more this way" rather than as the table ending — the left edge once
+ *    is more this way" rather than as the table ending - the left edge once
  *    scrolled, the right edge until the end, both in between;
  *  - `overscroll-behavior` contains the gesture, so reaching the end does not
  *    hand the swipe to the page.

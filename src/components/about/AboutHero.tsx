@@ -24,7 +24,7 @@ export function AboutHero({ messages }: { messages: Messages }) {
           {/* HERO.jpg (3600 x 2400, the team on a sofa, faces across the middle
               band) replaces story.png here per the human (2026-09-19); the
               story section keeps story.png. Positioned on the faces at 40% down
-              — no frame, read off the file. */}
+ - no frame, read off the file. */}
           <Image
             src="/assets/about/HERO.jpg"
             alt={t.plateAlt}

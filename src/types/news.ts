@@ -5,8 +5,8 @@ import type { Locale } from "@/lib/utils/locales";
  *
  * Contracts live here so the components never learn where an article came
  * from. Since 2026-09-21 the source is `src/content/news/<locale>/<slug>.md`,
- * read by `src/lib/api/news.ts` at build; the copy is INSIDE the article — one
- * file per locale — rather than a key into `src/messages`, because an editor
+ * read by `src/lib/api/news.ts` at build; the copy is INSIDE the article - one
+ * file per locale - rather than a key into `src/messages`, because an editor
  * writes it, not a developer.
  */
 
@@ -15,7 +15,7 @@ export type ArticleTag = "news" | "announcement";
 
 /**
  * The band colours an admin may choose for a torn cover. These are the names
- * of `--color-*` tokens in `globals.css`, never hex — the site's palette is
+ * of `--color-*` tokens in `globals.css`, never hex - the site's palette is
  * the palette. The classes each one maps to are in `components/news/bands.ts`.
  */
 export const BAND_COLOURS = [
@@ -42,7 +42,7 @@ export type BandColour = (typeof BAND_COLOURS)[number];
  *            picture beside it. `title` falls back to the article's own title
  *            when the editor leaves the cover title empty, `volume` is simply
  *            absent when not written, and the author comes from the article
- *            rather than the cover — it is the byline too.
+ *            rather than the cover - it is the byline too.
  */
 export type ArticleCover =
   | { kind: "image"; src: string }
@@ -66,6 +66,6 @@ export type Article = {
   /** Markdown, as the editor wrote it. */
   body: string;
   tags: readonly ArticleTag[];
-  /** ISO date. Rendered relative — "5 DAYS AGO" — in the reader's locale. */
+  /** ISO date. Rendered relative - "5 DAYS AGO" - in the reader's locale. */
   published: string;
 };

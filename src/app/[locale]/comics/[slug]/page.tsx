@@ -53,7 +53,7 @@ export default async function Page({
   if (!issue || issue.pages.length === 0) notFound();
 
   const messages = getMessages(locale);
-  // Not public yet — the Coming Soon page stands in. See `lib/hidden-sections.ts`.
+  // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("comics")) return <HiddenSection section="comics" locale={locale} messages={messages} />;
 
   const related = await getRelatedComics(slug);

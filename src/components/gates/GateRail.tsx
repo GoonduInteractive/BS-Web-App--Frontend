@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 import { GATES, type GateId } from "@/lib/gates";
 
 /**
- * The gate rail — a fixed stack at the lower right naming the four gates and
+ * The gate rail - a fixed stack at the lower right naming the four gates and
  * marking which one you are standing at. Figma: `02-gates/game.png`
  * (2026-09-11), which replaced the left-edge panel of the first frames.
  *
@@ -25,11 +25,11 @@ import { GATES, type GateId } from "@/lib/gates";
  *
  * IT IS A NAV, NOT A STEPPER. Any gate is reachable from any other; The Game
  * straight to Competition is a normal interaction. So there is no previous/next
- * logic here and no directional variation in the tear — every jump looks
+ * logic here and no directional variation in the tear - every jump looks
  * identical regardless of distance or direction.
  *
  * IT BELONGS TO THE GATE, NOT TO THE SITE. Present while the portal stands at
- * a door, absent on the entry screen and on every page — a read of `shown` and
+ * a door, absent on the entry screen and on every page - a read of `shown` and
  * the route.
  *
  * WHY IT LIVES IN THE LAYOUT

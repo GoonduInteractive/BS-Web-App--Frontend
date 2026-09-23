@@ -8,7 +8,7 @@ import type { Messages } from "@/lib/utils/messages";
 
 /**
  * The cart control, top right of every store screen. Ash plate, white glyph,
- * gild count badge — measured off the frame at roughly 60 x 48.
+ * gild count badge - measured off the frame at roughly 60 x 48.
  *
  * The badge is hidden at zero rather than showing "0", which is what the frames
  * draw, and the accessible name carries the count so it is not colour-only.

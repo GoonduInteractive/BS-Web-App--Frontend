@@ -916,5 +916,8 @@
       ],
       "between": []
     }
+  },
+  "legal": {
+    "lastUpdated": "Last Updated:"
   }
 }

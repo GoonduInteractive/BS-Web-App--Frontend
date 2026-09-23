@@ -3,7 +3,7 @@
  * picture is cropped into a card, a tile, a plate or the hero, and two small
  * helpers for URLs and titles.
  *
- * WHO IS ON THE ROSTER LIVES IN THE CMS since 2026-09-22 — `src/content/
+ * WHO IS ON THE ROSTER LIVES IN THE CMS since 2026-09-22 - `src/content/
  * characters/`, read by `src/lib/api/characters.ts`. Before that this file held
  * the manifest and the copy sat in `src/messages`; the four characters with
  * copy from Goondu's character bible were moved into the collection as they
@@ -11,15 +11,15 @@
  * portrait only, for an editor to complete from the bible.
  *
  * FRAMING IS KEYED BY THE PICTURE FILE, not by the character. A framing
- * constant is only ever valid for the file it was measured on — Kaira had one
+ * constant is only ever valid for the file it was measured on - Kaira had one
  * solved against `kaira-crop.png`, the card later moved to `kaira-full.png`,
- * and the stale numbers shrank her to 78% of the card — so it follows the
+ * and the stale numbers shrank her to 78% of the card - so it follows the
  * file: whoever the editor attaches `soma-gate-character.png` to gets Soma's
  * crop, and a file nobody has measured gets the component's own default.
  */
 
 // ---------------------------------------------------------------------------
-// The roster card and the modal — hand-placed portraits
+// The roster card and the modal - hand-placed portraits
 // ---------------------------------------------------------------------------
 
 /**
@@ -44,11 +44,11 @@ const PORTRAIT_FRAMING: Readonly<Record<string, string>> = {
 /**
  * A PORTRAIT WITH NO CUTOUT IS MASKED INTO ITS FIELD. Most characters have a
  * PNG with an alpha channel for the card, the modal and the hero; the
- * delivered 3D poses are JPEGs — RGB on black, since JPEG has no alpha
+ * delivered 3D poses are JPEGs - RGB on black, since JPEG has no alpha
  * channel at all. Placed as they are, such a portrait sits in a black
  * rectangle on the scar card and the hero's gradient, so it is masked instead
- * — opaque through the middle, fading over the outer 30% of each side and the
- * bottom 30% — and the black melts into the field. (A radial fade centred on
+ * - opaque through the middle, fading over the outer 30% of each side and the
+ * bottom 30% - and the black melts into the field. (A radial fade centred on
  * the head was tried first: on a picture this tall it reaches the top corners
  * still opaque.)
  *
@@ -64,8 +64,8 @@ const isFlat = (image: string) => /\.jpe?g$/i.test(image);
 const FLAT_FIGURE = "mask-x-from-70% mask-b-from-70%";
 
 /**
- * The hero figure's BOX, when the default — the hero's full column, 912 wide,
- * right for the square-ish cutouts — is wrong for the file. The pose renders
+ * The hero figure's BOX, when the default - the hero's full column, 912 wide,
+ * right for the square-ish cutouts - is wrong for the file. The pose renders
  * are 768 x 1376: covered into the wide box they show a head and a shoulder at
  * four times life size, and contained in it the mask falls on empty box rather
  * than on the picture. Their box is the pose's own aspect, so the mask fades
@@ -81,7 +81,7 @@ const FLAT_HERO_BOX = "aspect-[768/1376]";
  * The delivered 3D poses are portrait renders (768 x 1376 and 1536 x 2752,
  * 0.56; 1824 x 2292, 0.8) on black, with the head near the top of the frame.
  * In the 336 x 453 plate (0.74) and the 144 x 130 tile, `object-cover` scales
- * them to the box's width and crops the height — centred, that crop takes the
+ * them to the box's width and crops the height - centred, that crop takes the
  * top of the head off the tall ones, so every plate and tile anchors to the
  * top. Goondu names every pose file with `_3D`, which is the rule here.
  */
@@ -91,12 +91,12 @@ const isPose = (file: string) => /_3D\.[a-z]+$/i.test(file);
 /**
  * soma-nysc.png in the 336 x 453 gallery plate. `object-cover` fits the square
  * canvas to the box's larger axis and lands the figure at the frame's size, so
- * it takes no scale — an earlier 1.27 cropped his head. The translate puts his
+ * it takes no scale - an earlier 1.27 cropped his head. The translate puts his
  * off-centre figure back in the middle: he sits 5.6% right and 8.3% low in his
  * own canvas.
  *
  * `scale` and `translate` are separate CSS properties in Tailwind v4, so both
- * survive on one element — but neither survives GSAP touching it, which is why
+ * survive on one element - but neither survives GSAP touching it, which is why
  * the gallery tweens a wrapper. See DetailBody's scene, note 3.
  *
  * FLAGGED: the frame's tiles show this figure on a dark blue-grey backdrop, but
@@ -116,7 +116,7 @@ export function portraitFraming(image: string): string | undefined {
   return PORTRAIT_FRAMING[image];
 }
 
-/** Extra classes for a fill-fitted portrait — the mask a render without alpha needs. */
+/** Extra classes for a fill-fitted portrait - the mask a render without alpha needs. */
 export function figureClass(image: string): string | undefined {
   return isFlat(image) ? FLAT_FIGURE : undefined;
 }

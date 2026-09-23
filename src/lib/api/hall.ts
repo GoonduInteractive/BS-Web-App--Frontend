@@ -2,7 +2,7 @@ import type { HallEntry } from "@/types/hall";
 
 /**
  * The hall's champions, behind a typed contract. NO BACKEND: these are the
- * Competition frame's three cards — one handle, three seasons, one portrait —
+ * Competition frame's three cards - one handle, three seasons, one portrait -
  * which is what the comp draws and is FLAGGED as such. The handle is the
  * profile's own mock, so the site has one champion, not two.
  *

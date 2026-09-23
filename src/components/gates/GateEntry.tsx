@@ -12,15 +12,15 @@ import type { GateId } from "@/lib/gates";
  * THE GATES LIVE ON THE HOME ROUTE; THE PAGES HAVE THE URLS. Per the human
  * (2026-09-14): "when on any gate the link should be `/en/` … you only see
  * `/en/community` when you enter the main page of a specific gate." So `/en`
- * is the portal — the entry screen first, then whichever Ọnụ Ụzọ the visitor
- * is standing at — and `/en/the-game`, `/en/characters`, `/en/community`,
+ * is the portal - the entry screen first, then whichever Ọnụ Ụzọ the visitor
+ * is standing at - and `/en/the-game`, `/en/characters`, `/en/community`,
  * `/en/competition` are the pages behind the doors, rendered as pages. A gate's
  * CTA is a real link to its page; BACK TO ỤZỌ, the scroll cues and the rail
  * come back here and say which door to stand at.
  *
  * WHY THE STATE LIVES THIS HIGH. Three things read it from opposite sides of
- * the tree — the portal (under `children`), the rail and the chrome (under
- * `SiteChrome`) — and the provider is mounted in `layout.tsx` so it is an
+ * the tree - the portal (under `children`), the rail and the chrome (under
+ * `SiteChrome`) - and the provider is mounted in `layout.tsx` so it is an
  * ancestor of all of them and SURVIVES NAVIGATION: a page can name the gate
  * before pushing the home route, and the portal paints that gate on its first
  * render. It sits inside TransitionProvider because every move plays the tear.
@@ -28,7 +28,7 @@ import type { GateId } from "@/lib/gates";
  * IT IS NOT IN THE URL, deliberately. Four doors at one address is what the
  * human asked for, and the pages keep one canonical URL each with their
  * content in the static HTML. The cost: a cold load of `/en` is always the
- * entry screen, and a shared page link opens straight onto the page — which
+ * entry screen, and a shared page link opens straight onto the page - which
  * is what a page link should do.
  */
 const GateEntryContext = createContext<{
@@ -41,7 +41,7 @@ const GateEntryContext = createContext<{
    */
   showGate: (id: GateId) => void;
   /**
-   * Name the gate with NO transition — the pull-up's move. The visitor has
+   * Name the gate with NO transition - the pull-up's move. The visitor has
    * already travelled the distance by scrolling and the sheet they pulled up
    * IS the gate; the curtain pushes the home route itself, under cover.
    */
@@ -71,7 +71,7 @@ export function GateEntryProvider({ children }: { children: ReactNode }) {
    * Both moves are the same shape: tear, change under full cover, reveal. On
    * the portal there is no route to change, so `reveal` runs the swap itself;
    * elsewhere the gate is named first and `navigate` plays the tear around
-   * the push. The scroll reset matters on the portal too — a gate is one
+   * the push. The scroll reset matters on the portal too - a gate is one
    * viewport tall and must open at its top.
    */
   const showGate = useCallback(

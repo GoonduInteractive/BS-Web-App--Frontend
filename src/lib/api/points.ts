@@ -4,8 +4,8 @@ import type { PointsBalance } from "@/types/merch";
  * The community points balance, behind a typed contract.
  *
  * NO AUTHENTICATION HAPPENS HERE OR ANYWHERE ELSE IN THIS BUILD. The store has
- * three designed states — signed out, signed in with points, signed in with
- * none — and this file supplies the numbers for the last two. Which state the
+ * three designed states - signed out, signed in with points, signed in with
+ * none - and this file supplies the numbers for the last two. Which state the
  * page renders is a mock flag (see `getViewerState`), not a session: nothing is
  * verified, no credential is collected, no token is stored.
  *
@@ -20,7 +20,7 @@ export type ViewerState = "signed-out" | "points" | "no-points";
 /**
  * The state the store renders in.
  *
- * FIXED TO `signed-out`, WHICH IS THE FRAME MARKED "Not logged in" — the base
+ * FIXED TO `signed-out`, WHICH IS THE FRAME MARKED "Not logged in" - the base
  * state and the only one a visitor can reach today. The other two exist as
  * designed screens and are reachable by changing this one return value, which
  * is deliberately the single place that decides.
@@ -40,7 +40,7 @@ export async function getPointsBalance(): Promise<PointsBalance> {
   const state = await getViewerState();
 
   // The "No points" frame is the same two panels with a zero balance and no
-  // perks — the perks list is what swaps POINT PERKS from a list to the single
+  // perks - the perks list is what swaps POINT PERKS from a list to the single
   // "no points yet" line, so an empty array IS that state rather than a flag.
   if (state === "no-points") {
     return { points: 0, nextTierAt: 500, perkKeys: [] };

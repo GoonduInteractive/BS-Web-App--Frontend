@@ -1,7 +1,7 @@
 /**
  * Screenshot helper for the design check in project-overview.md section 3.
  * Captures the same route at desktop and mobile so it can be compared against
- * the Figma reference. Mobile is the majority audience — always check 380.
+ * the Figma reference. Mobile is the majority audience - always check 380.
  *
  * Requires Playwright, which is deliberately not a project dependency:
  *   npm i -D playwright && npx playwright install chromium

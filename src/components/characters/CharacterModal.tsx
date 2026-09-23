@@ -11,7 +11,7 @@ import { useScrollLock } from "@/hooks/useScrollLock";
  * THE PHONE SHEET is its own frame, `04-characters/mobile.png` (a 322-wide sheet):
  *
  *   close     glyph 16 x 17 at 279..294 x 23..39
- *   plate     21..242 x 57..273 — 222 x 217, LEFT-aligned at 69% of the sheet,
+ *   plate     21..242 x 57..273 - 222 x 217, LEFT-aligned at 69% of the sheet,
  *             not full width; the double corner marks inside it
  *   name      cap 40 at 297 → 63px Teko, 24 under the plate
  *   role      cap 10 at 360 → 18px Teko bold, 24 under the name's cap
@@ -27,7 +27,7 @@ export type RosterEntry = {
   image: string;
   /** Portrait framing override, as literal Tailwind classes. See CharacterCard. */
   portraitClass?: string;
-  /** Extra classes for the fill portrait — Omalicha's mask. See the manifest. */
+  /** Extra classes for the fill portrait - Omalicha's mask. See the manifest. */
   figureClass?: string;
   /** The modal's bio paragraphs. Absent for anyone Content has not written yet. */
   bio?: string[];
@@ -53,7 +53,7 @@ export function CharacterModal({
 
   // "There is more below": while the bio can scroll and has not reached its
   // end, its foot fades. Two facts read off the scroller itself, on layout and
-  // on scroll, written as a data attribute the CSS keys off. No state — a
+  // on scroll, written as a data attribute the CSS keys off. No state - a
   // render for every scroll event is the one thing this must not cost.
   useEffect(() => {
     const el = bio.current;
@@ -77,7 +77,7 @@ export function CharacterModal({
 
   useEffect(() => {
     // Focus goes to the close control and, when the dialog goes, back to the
-    // card that opened it — the visitor is returned to where they were.
+    // card that opened it - the visitor is returned to where they were.
     const opener = document.activeElement as HTMLElement | null;
     closer.current?.focus();
 

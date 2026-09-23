@@ -2,23 +2,28 @@
 #
 # The site is on Vercel, so Decap's default Netlify Identity login is not
 # available. Editors log in with GitHub instead, and the token exchange runs on
-# a small OAuth gateway deployed as its own Vercel project — see README.md →
+# a small OAuth gateway deployed as its own Vercel project, see README.md →
 # Content editing for the setup. This repo carries no server code for it.
 #
 # WHAT DECAP OWNS: News, the About page's team, and the Characters. Everything
-# game-side — leaderboards, tournaments, community, merch, players — comes
+# game-side (leaderboards, tournaments, community, merch, players) comes
 # through the adapters in src/lib/api/ and, later, the game backend. Not here.
 
 backend:
-  # name: git-gateway
+  # NOT git-gateway. That backend is Netlify Identity, which this site has no
+  # access to; on Vercel it fails at login with "Your Git Gateway backend is
+  # not returning valid settings".
   name: github
   repo: GoonduInteractive/BS-Web-App--Frontend
-  Vercel builds production from main, so published entries land there.
+  # PRODUCTION. main is production and dev is staging, and this is the branch
+  # Decap lists entries from and commits publishes to, so it has to be the one
+  # Vercel serves the live site from or nothing an editor publishes appears.
   branch: main
-  # The OAuth gateway (daresaydigital/decap-cms-oauth). Decap sends editors to
-  # <base_url>/auth and receives the token from <base_url>/callback.
-  # TODO(human): replace with the gateway's URL once it is deployed on Vercel.
-  base_url: https://decap-cms-oauth-gray.vercel.app/
+  # The OAuth gateway (daresaydigital/decap-cms-oauth), its own Vercel project.
+  # Decap sends editors to <base_url>/auth and takes the token back from
+  # <base_url>/callback. NO TRAILING SLASH: Decap joins the path onto this, so
+  # a slash here asks the gateway for //auth and the popup dies on a 404.
+  base_url: https://decap-cms-oauth-gray.vercel.app
   commit_messages:
     create: 'content({{collection}}): create {{slug}}'
     update: 'content({{collection}}): update {{slug}}'
@@ -31,8 +36,8 @@ backend:
 publish_mode: editorial_workflow
 
 # On localhost with `npm run cms` running, the admin offers to work against the
-# local checkout instead of GitHub — no login, files land in the working tree.
-# local_backend: true
+# local checkout instead of GitHub. No login, and files land in the working tree.
+local_backend: true
 
 # The default upload folder. News uses it; the other two collections point at
 # the folders their pictures already live in.
@@ -62,13 +67,13 @@ slug:
 
 collections:
   # ---------------------------------------------------------------------------
-  # NEWS — the News & Updates page. Mirrors `Article` in src/types/news.ts;
+  # NEWS, the News & Updates page. Mirrors `Article` in src/types/news.ts;
   # src/lib/api/news.ts reads these files at build (lib/schemas/news.ts checks them).
   # ---------------------------------------------------------------------------
   - name: news
     label: News
     label_singular: Article
-    description: Articles for the News & Updates page. Write the English; on the Igbo tab click "Fill in from another locale", then publish — the Igbo is translated automatically afterwards, and any Igbo you write yourself is kept.
+    description: Articles for the News & Updates page. Write the English; on the Igbo tab click "Fill in from another locale", then publish. The Igbo is translated automatically afterwards, and any Igbo you write yourself is kept.
     folder: src/content/news
     create: true
     delete: true
@@ -76,7 +81,7 @@ collections:
     extension: md
     format: frontmatter
     slug: '{{slug}}'
-    summary: '{{title}} — {{published}}'
+    summary: '{{title}} ({{published}})'
     sortable_fields: [published, title]
     view_filters:
       - label: News
@@ -111,15 +116,15 @@ collections:
           - { label: Announcement, value: announcement }
         default: [news]
         i18n: duplicate
-      # The cover: the picture full bleed, or the torn banner — a coloured band
-      # on the left with a volume tag, a title and an author line, its edge
-      # torn, and the picture beside it. The admin's choice per article.
+      # The cover: the picture full bleed, or the torn banner. The banner is a
+      # coloured band on the left with a volume tag, a title and an author
+      # line, torn down its edge, with the picture beside it. Per article.
       - label: Cover style
         name: coverStyle
         widget: select
         options:
-          - { label: Full image — the picture on its own, value: full }
-          - { label: Torn banner — a coloured band with the volume tag, title and author, torn down its edge, with the picture beside it, value: torn }
+          - { label: "Full image: the picture on its own", value: full }
+          - { label: "Torn banner: a coloured band with the volume tag, title and author, torn down its edge, with the picture beside it", value: torn }
         default: full
         hint: Choose Torn banner to get the tear. The three fields named "Torn banner" below do nothing while this says Full image.
         i18n: duplicate
@@ -180,18 +185,18 @@ collections:
         i18n: true
 
   # ---------------------------------------------------------------------------
-  # CHARACTERS — the roster on The Characters page and each character's detail
+  # CHARACTERS, the roster on The Characters page and each character's detail
   # page. src/lib/api/characters.ts reads these files at build
   # (lib/schemas/character.ts checks them). Per-file framing (how a render is
   # cropped into a card, a tile or a plate) is NOT here: it is solved for each
   # picture file and stays in code (lib/characters.ts), keyed by the file.
-  # The paragraph fields are plain text — the pages draw paragraphs, not
-  # markdown — so a blank line is a paragraph break and nothing else is styled.
+  # The paragraph fields are plain text, the pages draw paragraphs, not
+  # markdown, so a blank line is a paragraph break and nothing else is styled.
   # ---------------------------------------------------------------------------
   - name: characters
     label: Characters
     label_singular: Character
-    description: The roster and the character detail pages — Champions, Gods, Legends & Adversaries. Bio is the card's modal; the rest is the detail page. Pictures are the delivered renders; how each one is cropped is set in code, not here. Igbo tab as for News.
+    description: The roster and the character detail pages. Champions, Gods, Legends & Adversaries. Bio is the card's modal; the rest is the detail page. Pictures are the delivered renders; how each one is cropped is set in code, not here. Igbo tab as for News.
     folder: src/content/characters
     create: true
     delete: true
@@ -200,7 +205,7 @@ collections:
     format: frontmatter
     identifier_field: name
     slug: '{{slug}}'
-    summary: '{{name}} — {{group}}'
+    summary: '{{name}} ({{group}})'
     sortable_fields: [order, name]
     media_folder: /public/assets/characters
     public_folder: /assets/characters
@@ -277,7 +282,7 @@ collections:
       - label: Introduction
         name: intro
         widget: text
-        hint: Beside the portrait on the detail page — personality, fighting style, then age and spiritual bond. One paragraph each, a blank line between them.
+        hint: Beside the portrait on the detail page, personality, fighting style, then age and spiritual bond. One paragraph each, a blank line between them.
         i18n: true
       - label: Lore
         name: lore
@@ -318,13 +323,75 @@ collections:
         field: { label: Picture, name: src, widget: image }
 
   # ---------------------------------------------------------------------------
-  # TEAM — the people on the About page. Mirrors src/lib/team.ts plus the copy
+  # LEGAL. Terms & Conditions and Privacy Policy. src/lib/api/legal.ts reads
+  # these at build (lib/schemas/legal.ts checks them).
+  #
+  # `create: false` and `delete: false`: there are exactly two legal pages and
+  # each has a route, so the team rewrites them but cannot add a third or
+  # delete one out from under /terms or /privacy. A section is one nav item and
+  # one block of the document, add, remove or reorder them and the nav follows.
+  # ---------------------------------------------------------------------------
+  - name: legal
+    label: Legal pages
+    label_singular: Legal page
+    description: Terms & Conditions and the Privacy Policy. Editing a section changes both the text and the nav beside it. Igbo tab as for News.
+    folder: src/content/legal
+    create: false
+    delete: false
+    i18n: true
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    slug: '{{slug}}'
+    summary: '{{title}} (updated {{lastUpdated}})'
+    sortable_fields: [order, title]
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: The heading on the band, e.g. TERMS & CONDITIONS.
+        i18n: true
+      - label: Last updated
+        name: lastUpdated
+        widget: string
+        hint: The date alone, e.g. September 2026, "Last Updated:" is added for you.
+        i18n: true
+      - label: Order
+        name: order
+        widget: number
+        value_type: int
+        min: 1
+        default: 1
+        hint: Only used to sort this list in the editor.
+        i18n: duplicate
+      - label: Sections
+        name: sections
+        widget: list
+        summary: '{{fields.navLabel}}'
+        hint: Each one is a block of the document and an item in the nav beside it, in this order.
+        i18n: true
+        fields:
+          - label: Nav label
+            name: navLabel
+            widget: string
+            hint: The short name in the nav, e.g. Account.
+          - label: Heading
+            name: heading
+            widget: string
+            hint: The heading above the text, e.g. YOUR ACCOUNT.
+          - label: Text
+            name: body
+            widget: markdown
+            hint: Paragraphs, bullet lists, links. Leave a blank line between paragraphs.
+
+  # ---------------------------------------------------------------------------
+  # TEAM, the people on the About page. Mirrors src/lib/team.ts plus the copy
   # under messages.about.team.members. Card framing stays in code, as above.
   # ---------------------------------------------------------------------------
   - name: team
     label: Team
     label_singular: Team member
-    description: The people on the About page — Core team, Contributors and Partners, each its own tab, in the order given here. Igbo tab as for News.
+    description: The people on the About page. Core team, Contributors and Partners, each its own tab, in the order given here. Igbo tab as for News.
     folder: src/content/team
     create: true
     delete: true
@@ -333,7 +400,7 @@ collections:
     format: frontmatter
     identifier_field: name
     slug: '{{slug}}'
-    summary: '{{name}} — {{role}}'
+    summary: '{{name}} ({{role}})'
     sortable_fields: [order, name]
     media_folder: /public/assets/about
     public_folder: /assets/about

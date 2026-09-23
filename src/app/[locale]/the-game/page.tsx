@@ -15,7 +15,7 @@ import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
 /**
- * Ọnụ Ụzọ 1 — The Game. Figma: context/design/02-gates/ for the hero,
+ * Ọnụ Ụzọ 1 - The Game. Figma: context/design/02-gates/ for the hero,
  * context/design/03-the-game/ for everything below it.
  *
  * The gate comes from GatePage. These sections are the page BEHIND it, not
@@ -48,11 +48,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <TwoPathsSection messages={messages} />
       <SoulsSection characters={characters} messages={messages} locale={locale} />
       {/* The last section is what the pull-up rides over, so it goes INSIDE the
-          curtain — which makes it sticky and puts the panel after it in flow. */}
+          curtain - which makes it sticky and puts the panel after it in flow. */}
       {/* THE VARIANT: the seam opens onto the Characters PAGE, not its door.
           `preview` is that page's own first section and `href` its route.
 
-          Same rule as the door variant — the preview must BE the destination's
+          Same rule as the door variant - the preview must BE the destination's
           component, not a copy of it, or the swap snaps. */}
       <GateCurtain preview={<CharactersHero messages={messages} />} href={nextHref} title={nextCopy.title}>
         <SummonsSection messages={messages} nextHref={nextHref} />
