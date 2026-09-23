@@ -11,7 +11,7 @@ tags:
 coverStyle: torn
 image: /assets/news/soma-mysc.png
 imageAlt: Between worlds, Beyond Services
-band: abyss
+band: ash
 volume: vol 1
 coverTitle: Between worlds
 author: Glory Okafor
