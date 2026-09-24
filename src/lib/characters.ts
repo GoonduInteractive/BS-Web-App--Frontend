@@ -126,7 +126,7 @@ export function heroBoxClass(image: string): string | undefined {
   return isFlat(image) ? FLAT_HERO_BOX : undefined;
 }
 
-/** Framing for the action shot in the 144 x 130 ability tile. */
+/** Framing for an ability's own action shot in its 144 x 130 tile. */
 export function actionTileClass(image: string): string {
   return isPose(image) ? POSE : "object-cover object-top";
 }

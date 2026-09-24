@@ -19,6 +19,9 @@ const optionalText = z
 
 const ability = z.object({ name: z.string().trim().min(1), text: z.string().trim().default("") });
 
+/** A core ability also carries its own action shot, the picture on its tile. */
+const coreAbility = ability.extend({ image: optionalText });
+
 export const characterFrontmatter = z.object({
   name: z.string().trim().min(1),
   role: optionalText,
@@ -32,11 +35,12 @@ export const characterFrontmatter = z.object({
   chi: optionalText,
   intro: optionalText,
   lore: optionalText,
-  abilities: z.array(ability).default([]),
-  /** The CORE ABILITIES switch. Absent on entries written before it existed, which default on. */
-  showAbilities: z.boolean().default(true),
+  abilities: z.array(coreAbility).default([]),
+  /** The CORE ABILITIES switch, Show or Hide. Absent on entries written before it existed. */
+  abilitiesSection: z.enum(["show", "hide"]).optional(),
+  /** The switch's first form, a boolean Decap could not save as false. Read where the select is unset. */
+  showAbilities: z.boolean().optional(),
   variants: z.array(ability).default([]),
-  action: optionalText,
   gallery: z.array(z.string().trim().min(1)).default([]),
 });
 

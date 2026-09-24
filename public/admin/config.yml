@@ -295,15 +295,24 @@ collections:
         widget: list
         summary: '{{fields.name}}'
         i18n: true
+        hint: Each ability has its own action shot, the picture on its tile. On the Igbo tab, an ability left without one uses the English ability's in the same position.
         fields:
           - { label: Name, name: name, widget: string }
+          - { label: Action shot, name: image, widget: image, required: false, hint: "The pose on this ability's tile. Leave it empty and the portrait stands in." }
           - { label: Description, name: text, widget: text }
-      - label: Show core abilities
-        name: showAbilities
-        widget: boolean
-        default: true
+      # A SELECT, NOT A BOOLEAN. As a boolean with `default: true` Decap never
+      # wrote `false`: switched off and published, the file still said true
+      # (kaira, 2026-09-24). A string it saves as chosen. Entries that still
+      # carry the old `showAbilities` are read by lib/schemas/character.ts.
+      - label: Core abilities section
+        name: abilitiesSection
+        widget: select
+        options:
+          - { label: Show, value: show }
+          - { label: Hide, value: hide }
+        default: show
         required: false
-        hint: Off hides the CORE ABILITIES section on this character's detail page. The abilities above are kept, so switching it back on shows them again.
+        hint: Hide takes the CORE ABILITIES section off this character's detail page. The abilities above are kept, so choosing Show again brings them back.
         i18n: duplicate
       - label: Forms
         name: variants
@@ -315,11 +324,6 @@ collections:
         fields:
           - { label: Name, name: name, widget: string }
           - { label: Description, name: text, widget: text }
-      - label: Action shot
-        name: action
-        widget: image
-        hint: The pose behind the ability tiles on the detail page.
-        i18n: duplicate
       # A list cannot be `duplicate` in Decap, so this one is per locale like the
       # abilities: fill it on the English tab, then "Fill in from another
       # locale" on the Igbo tab copies it across.
