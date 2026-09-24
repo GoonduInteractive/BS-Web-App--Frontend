@@ -13,7 +13,30 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+
+- On a character's page, the left and right edges of the opening section now lead to the
+  previous and next character. With a mouse, the pointer turns into a torn cream plate that
+  names who is next; click and the page wipes across to them. The roster wraps, so the last
+  character leads back to the first. On a phone the same two links sit as chips at the foot of
+  the section.
+- A second version of the red torn wipe. The red drops from the top at a slant and crosses
+  in from the right, then keeps going down and out to the left, uncovering the new page from
+  the top right. It takes turns with the original wipe, which is unchanged, so no two page
+  changes in a row look the same.
+- On the gates, scrolling down moves to the next gate and scrolling up to the previous one,
+  through the wipe. A swipe does the same on a phone, and so do the arrow and Page Up / Page
+  Down keys. One scroll moves one gate, however long the trackpad glides, and nothing moves
+  while the menu is open.
+- The content editor has a Show core abilities switch on each character. Off hides the Core
+  Abilities section on that character's page without deleting what was written, so switching
+  it back on restores it.
+
+### Changed
+
+- The Characters page opens with its name, THE CHARACTERS, as the title, and THE SOULS THAT
+  SHAPE THE REALM moves above it as a smaller line, following the updated design.
+- A character with no core abilities written no longer shows an empty Core Abilities heading.
 
 ---
 

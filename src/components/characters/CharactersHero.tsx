@@ -41,6 +41,20 @@ export function CharactersHero({ messages }: { messages: Messages }) {
             <GateReturn label={messages.characters.backToGate} />
           </Reveal>
 
+          {/* THE EYEBROW (design update, 2026-09-24). The line that was the
+              title now sits above it, small, and the title is the page's name.
+              Measured off the updated frame's crop against the title beside it:
+              a cap 1/5 of the title's 63px is 12.6px, which is Teko at 20px -
+              `text-h6`, an existing token, not a new size. At that size the
+              line's ink runs ~252px, which is what the crop shows. FLAGGED: read
+              from a crop, not the Figma inspector; confirm size and spacing. */}
+          <Reveal
+            as="p"
+            className="font-display text-menu-fg text-h6 mt-[1.625rem] leading-none font-semibold uppercase lg:mt-13"
+          >
+            {t.eyebrow}
+          </Reveal>
+
           <Reveal
             as="h1"
             // SIZE IS --text-game-hero, REUSED. Both frames set a 63px cap at
@@ -60,11 +74,14 @@ export function CharactersHero({ messages }: { messages: Messages }) {
             // than the frame's face. See --text-gate. Third measurement, same
             // finding; overview risk 3 stays open.
             //
-            // THE LINE BREAK COMES FROM THE MAX-WIDTH, not from splitting the
-            // string, which is StorySection's pattern. 36rem clears line 2's
-            // 533px ink and falls short of "THE SOULS THAT SHAPE", so the frame's
-            // two lines fall out of the wrap.
-            className="font-display text-menu-fg text-game-hero mt-[1.625rem] max-w-[36rem] leading-[0.86] font-semibold tracking-[-0.058em] uppercase lg:mt-13"
+            // ONE LINE since the design update: THE CHARACTERS measures ~530px
+            // at 1440, inside the 36rem cap. The cap stays so a longer Igbo
+            // title wraps rather than running under the right column.
+            //
+            // mt-6: the crop puts ~38px between the eyebrow's baseline and this
+            // line's cap top; 24px of margin plus the space the two line boxes
+            // hold above and below their caps makes up the 38.
+            className="font-display text-menu-fg text-game-hero mt-6 max-w-[36rem] leading-[0.86] font-semibold tracking-[-0.058em] uppercase"
           >
             {t.title}
           </Reveal>

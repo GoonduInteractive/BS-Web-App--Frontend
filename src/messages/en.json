@@ -121,7 +121,8 @@
   "characters": {
     "backToGate": "BACK TO ỤZỌ",
     "hero": {
-      "title": "THE SOULS THAT SHAPE THE REALM",
+      "eyebrow": "THE SOULS THAT SHAPE THE REALM",
+      "title": "THE CHARACTERS",
       "body": "The world of Beyond Service is shaped by powerful individuals whose choices ripple across both the mortal and divine realms. Some fight for survival. Some seek power. Others exist to test those bold enough to enter the Trial.",
       "aside": "Meet the champions, gods, and legendary figures whose stories define the Beyond Service universe.",
       "cta": "JOIN THE TRIAL",
@@ -152,7 +153,11 @@
       "variantsHeading": "COMBAT VARIANTS",
       "galleryHeading": "{name}'S GALLERY",
       "otherHeading": "OTHER CHAMPIONS",
-      "galleryAlt": "{name} in the arena"
+      "galleryAlt": "{name} in the arena",
+      "prev": "PREVIOUS",
+      "next": "NEXT",
+      "prevLabel": "Previous character: {name}",
+      "nextLabel": "Next character: {name}"
     },
     "more": {
       "body": "The arena continues to grow. Future seasons will introduce new ascendants, combat styles, and stories, expanding the Beyond Service universe and offering new ways to compete for glory. Enter the arena. Master your champion. Ascend.",
