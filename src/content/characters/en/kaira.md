@@ -31,25 +31,27 @@ lore: >-
   Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption.
 abilities:
   - name: KICK COMBO
+    image: /assets/characters/Pose_01_Kaira_Normal_3D.jpg
     text: A blistering 7-hit chain of alternating heel jabs and cross-kicks, each
       strike snapping with balletic precision before flowing into the next. The
       final hit of the chain lands with slightly more force, punctuating the
       sequence.
   - name: HEEL KICKS
+    image: /assets/characters/Pose_01_Kaira_Normal_3D.jpg
     text: Kaira delivers two swift, devastating heel kicks in succession. The first
       staggers, the second launches enemies airborne in a burst of crimson chi.
       A cinematic, high-commitment strike that reads as her “signature” heavy.
   - name: DEADLY HEELS
+    image: /assets/characters/Pose_01_Kaira_Normal_3D.jpg
     text: Kaira snares her opponent with her legs in one fluid motion, swings them
       through the air with acrobatic control, and releases them into the ground
       — leaving them stunned in a haze of red chi.
   - name: CHAOS HEELS
+    image: /assets/characters/Pose_01_Kaira_Normal_3D.jpg
     text: Kaira crosses fully into spirit mode — her form darkens, heels blazing
       crimson — as she telekinetically lifts her enemies off the ground.
       Suspended and helpless, they hang for a breath before she snaps them down
       with lethal finality.
-showAbilities: true
-action: /assets/characters/Pose_01_Kaira_Normal_3D.jpg
 gallery:
   - /assets/characters/Pose_01_Kaira_3D.png
   - /assets/characters/Pose_01_Kaira_Normal_3D.jpg

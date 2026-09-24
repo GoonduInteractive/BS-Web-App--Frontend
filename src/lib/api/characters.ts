@@ -32,6 +32,25 @@ export class CharacterNotFoundError extends Error {
 
 const paragraphs = (text: string | undefined): readonly string[] => (text ? splitBlocks(text) : []);
 
+/** The CORE ABILITIES switch: the Show / Hide select, else the old boolean, else shown. */
+const showsAbilities = (data: CharacterFrontmatter): boolean =>
+  data.abilitiesSection ? data.abilitiesSection === "show" : (data.showAbilities ?? true);
+
+/**
+ * Each ability's own action shot. The abilities list is per locale, so an Igbo
+ * list translated without its pictures takes the English ability's in the same
+ * position; with no pose delivered at all the portrait stands in, as it did
+ * for anyone whose action art had not arrived.
+ */
+function abilityImage(locale: Locale, slug: string, at: number, own: string | undefined, portrait: string): string {
+  if (own) return own;
+  if (locale !== DEFAULT_LOCALE) {
+    const en = readList(DEFAULT_LOCALE).find((c) => c.slug === slug)?.abilities[at]?.image;
+    if (en) return en;
+  }
+  return portrait;
+}
+
 function toCharacter(locale: Locale, { slug, data }: Entry<CharacterFrontmatter>): Character {
   return {
     slug,
@@ -49,11 +68,10 @@ function toCharacter(locale: Locale, { slug, data }: Entry<CharacterFrontmatter>
     lore: paragraphs(data.lore),
     // Switched off in the CMS, the page gets none; the written abilities stay in
     // the file, so switching it back on restores them unchanged.
-    abilities: data.showAbilities ? data.abilities : [],
+    abilities: showsAbilities(data)
+      ? data.abilities.map((a, i) => ({ ...a, image: abilityImage(locale, slug, i, a.image, data.image) }))
+      : [],
     variants: data.variants,
-    // Without a delivered pose the portrait stands in, as the old manifest did
-    // for anyone whose action art had not arrived.
-    action: data.action ?? data.image,
     gallery: data.gallery.length ? data.gallery : [data.image],
   };
 }

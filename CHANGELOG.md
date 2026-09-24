@@ -28,9 +28,13 @@ blockers live in local working notes and are deliberately not repeated here.
   through the wipe. A swipe does the same on a phone, and so do the arrow and Page Up / Page
   Down keys. One scroll moves one gate, however long the trackpad glides, and nothing moves
   while the menu is open.
-- The content editor has a Show core abilities switch on each character. Off hides the Core
-  Abilities section on that character's page without deleting what was written, so switching
-  it back on restores it.
+- The content editor has a Core abilities section setting on each character, Show or Hide.
+  Hide takes the Core Abilities section off that character's page without deleting what was
+  written, so choosing Show again restores it. (It was first an on/off switch, which the
+  editor could not save as off.)
+- Each core ability has its own action shot in the content editor, the picture on that
+  ability's tile. The single action shot per character is gone; every ability starts on the
+  picture that character's tiles already showed.
 
 ### Changed
 

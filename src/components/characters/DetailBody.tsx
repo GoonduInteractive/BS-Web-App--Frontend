@@ -61,12 +61,12 @@ export function DetailBody({
 
                 <div className="bg-menu relative aspect-144/130 w-full max-w-36 overflow-hidden">
                   <Image
-                    src={character.action}
+                    src={ability.image}
                     alt=""
                     aria-hidden
                     fill
                     sizes="9rem"
-                    className={actionTileClass(character.action)}
+                    className={actionTileClass(ability.image)}
                   />
                 </div>
                 <h3 className="font-display text-menu-fg text-h6 mt-9.5 leading-none font-semibold tracking-[-0.02em] uppercase">

@@ -17,6 +17,9 @@ export type CharacterGroup = (typeof CHARACTER_GROUPS)[number];
 
 export type Ability = { name: string; text: string };
 
+/** A core ability and its own action shot, the picture on its tile. */
+export type CoreAbility = Ability & { image: string };
+
 export type Character = {
   slug: string;
   locale: Locale;
@@ -37,11 +40,9 @@ export type Character = {
   /** Beside the portrait on the detail page, in paragraphs. */
   intro: readonly string[];
   lore: readonly string[];
-  abilities: readonly Ability[];
+  abilities: readonly CoreAbility[];
   /** Nze's two forms. Empty for everyone else, and the section with it. */
   variants: readonly Ability[];
-  /** The pose behind the ability tiles. */
-  action: string;
   /** The detail page's plates, in order. */
   gallery: readonly string[];
 };
