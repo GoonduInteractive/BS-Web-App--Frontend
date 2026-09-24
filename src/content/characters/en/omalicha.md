@@ -24,14 +24,17 @@ lore: |-
   On the night of her 20th birthday, a sun mark of Anyanwu appeared on her forehead, and her Chi surged awake. She now serves as an ascendant, Champion of Anyanwu.
 abilities:
   - name: SUN AND STEEL
+    image: /assets/characters/Pose_02_Omalicha_Normal_Gun_Knife_3D.jpg
     text: "A flowing gun-kata sequence: quick slash, reverse slash, rising spin-slash that lifts her airborne, a double shot fired mid-air, a descending spin-slash, and a charged finishing shot — blade and gun trading rhythm like a duet."
   - name: SOLAR PIERCE
+    image: /assets/characters/Pose_02_Omalicha_Normal_Gun_Knife_3D.jpg
     text: Omalicha charges her blade with concentrated sunlight, lunges forward in a piercing spin-slash, then punctuates the advance with three rapid shots.
   - name: ANYANWU’S GAZE
+    image: /assets/characters/Pose_02_Omalicha_Normal_Gun_Knife_3D.jpg
     text: An upward spin-slash launches the enemy skyward; Omalicha tracks them with three precise shots, the final round striking with enough force to send them spiraling into the ground.
   - name: ANYANWU’S JUDGEMENT
+    image: /assets/characters/Pose_02_Omalicha_Normal_Gun_Knife_3D.jpg
     text: The sun mark on Omalicha's forehead ignites as she launches skyward, descends in a straight kick that drives her enemy down, rides them in a grinding slide to a halt, then executes a single point-blank power shot charged with Anyanwu's full radiance.
-action: /assets/characters/Pose_02_Omalicha_Normal_Gun_Knife_3D.jpg
 gallery:
   - /assets/characters/Pose_01_Omalicha_Normal_3D.jpg
   - /assets/characters/Pose_02_Omalicha_Normal_Gun_Knife_3D.jpg

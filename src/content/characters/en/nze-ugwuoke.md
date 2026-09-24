@@ -29,17 +29,21 @@ lore: >-
   The gods entrusted him with the Ekwu-Ofo, a staff representing balance and judgment — capable of transforming into Okwute, a Chaos battle axe, when he transforms into his spirit mode.
 abilities:
   - name: MYTHIC FIGHTING COMBO
+    image: /assets/characters/01_Nze_3D.png
     text: A ceremonial flow of staff work — a back-spin strike, a forward thrust,
       then Nze levitates while the staff charges a pulsing AOE around him,
       finishing with a chaos blast fired from the air.
   - name: UGWUOKE’S DECREE
+    image: /assets/characters/01_Nze_3D.png
     text: Nze levels the Ekwu-Ofo and pronounces judgment, launching a concentrated
       chaos blast at his target.
   - name: HAND OF GOD
+    image: /assets/characters/01_Nze_3D.png
     text: Nze seizes his enemy telekinetically with the Ofo's authority and slams
       them against the ground four times like a ragdoll, the final slam landing
       with crushing finality.
   - name: ULTIMATE ATTACK
+    image: /assets/characters/01_Nze_3D.png
     text: Nze surrenders to spirit mode — the Ekwu-Ofo screaming as it transforms
       into Okwute — then carves a sweeping side-spin slice that hurls his enemy
       to the floor, launches the axe spinning skyward, leaps to catch it, and
@@ -51,7 +55,6 @@ variants:
   - name: FORM 2 (AXE)
     text: Transforms into spiritual chaos corruption, or open war. Channels
       ancestral rage.
-action: /assets/characters/01_Nze_3D.png
 gallery:
   - /assets/characters/01_Nze_3D.png
   - /assets/characters/nze.png
