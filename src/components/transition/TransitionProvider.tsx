@@ -13,6 +13,7 @@ import {
 } from "react";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import type { Tear } from "@/lib/animation/tear";
 import { TransitionOverlay } from "./TransitionOverlay";
 import { ALL_TEAR_SOURCES } from "./tear-variants";
 
@@ -74,15 +75,21 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
 
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const sideRef = useRef<HTMLDivElement>(null);
 
   const phase = useRef<Phase>("idle");
-  const timeline = useRef<gsap.core.Timeline | null>(null);
+  // The wipe in flight: its close, and how it opens (the two flows differ).
+  const timeline = useRef<Tear | null>(null);
   const failsafe = useRef<ReturnType<typeof setTimeout> | null>(null);
   const coveredAt = useRef(0);
   const [active, setActive] = useState(false);
   const [isPending, startNavTransition] = useTransition();
 
-  const panels = useCallback(() => ({ left: leftRef.current, right: rightRef.current }), []);
+  const panels = useCallback(
+    () => ({ left: leftRef.current, right: rightRef.current, top: topRef.current, side: sideRef.current }),
+    [],
+  );
 
   /**
    * GSAP is dynamically imported so its ~27KB gzipped stays out of the initial
@@ -120,7 +127,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     };
   }, [panels]);
 
-  /** Reveal along the same seam that closed, by reversing the same timeline. */
+  /** Reveal: the classic flow reverses along its seam, the sweep passes through. */
   const openTear = useCallback(async () => {
     // Both the pathname effect and the popstate handler can reach this, so it
     // has to be safe to call twice.
@@ -159,12 +166,10 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         done();
         return;
       }
-      tl.eventCallback("onReverseComplete", () => {
-        tear.resetPanels(panels());
+      tl.open(() => {
         timeline.current = null;
         done();
       });
-      tl.timeScale(tear.OPEN_TIMESCALE).reverse();
     } catch {
       done();
     }
@@ -212,8 +217,8 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
           const tl = tear.createTear(panels(), { reduced });
           timeline.current = tl;
           await new Promise((resolve) => {
-            tl.eventCallback("onComplete", () => resolve(null));
-            tl.timeScale(1).play();
+            tl.close.eventCallback("onComplete", () => resolve(null));
+            tl.close.timeScale(1).play();
           });
         } catch {
           // Navigation is the priority, the animation is decoration.
@@ -254,8 +259,8 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
           const tl = tear.createTear(panels(), { reduced });
           timeline.current = tl;
           await new Promise((resolve) => {
-            tl.eventCallback("onComplete", () => resolve(null));
-            tl.timeScale(1).play();
+            tl.close.eventCallback("onComplete", () => resolve(null));
+            tl.close.timeScale(1).play();
           });
         } catch {
           // The change is the priority, the animation is decoration.
@@ -290,9 +295,8 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       void (async () => {
         const tear = await loadTear();
         const tl = tear.createTear(panels(), { reduced });
-        tl.progress(1).pause();
+        tl.coverNow();
         timeline.current = tl;
-        tear.coverInstantly(panels());
         phase.current = "covered";
         coveredAt.current = performance.now();
         setActive(true);
@@ -344,7 +348,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   return (
     <PageTransitionContext.Provider value={{ navigate, reveal, claim, busy }}>
       {children}
-      <TransitionOverlay leftRef={leftRef} rightRef={rightRef} active={active} />
+      <TransitionOverlay leftRef={leftRef} rightRef={rightRef} topRef={topRef} sideRef={sideRef} active={active} />
     </PageTransitionContext.Provider>
   );
 }

@@ -33,6 +33,8 @@ export const characterFrontmatter = z.object({
   intro: optionalText,
   lore: optionalText,
   abilities: z.array(ability).default([]),
+  /** The CORE ABILITIES switch. Absent on entries written before it existed, which default on. */
+  showAbilities: z.boolean().default(true),
   variants: z.array(ability).default([]),
   action: optionalText,
   gallery: z.array(z.string().trim().min(1)).default([]),
