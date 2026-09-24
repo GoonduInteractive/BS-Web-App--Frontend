@@ -50,6 +50,10 @@ export function DetailBody({
           </div>
         </Block>
 
+        {/* Not drawn when the editor has switched CORE ABILITIES off (the
+            adapter then hands over none), or before any are written - a heading
+            over an empty grid, as Forms below already avoids. */}
+        {character.abilities.length ? (
         <Block heading={t.abilitiesHeading} className="pt-28 lg:pt-41.75">
           <ul className="grid grid-cols-1 gap-x-6 gap-y-15 sm:grid-cols-2 lg:grid-cols-3">
             {character.abilities.map((ability) => (
@@ -73,6 +77,7 @@ export function DetailBody({
             ))}
           </ul>
         </Block>
+        ) : null}
 
         {/* Only Nze's document has forms (Staff / Axe). Where there are none the
             section is not drawn - the frame's slot, empty, rather than filled. */}

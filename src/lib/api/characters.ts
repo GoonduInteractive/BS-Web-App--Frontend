@@ -47,7 +47,9 @@ function toCharacter(locale: Locale, { slug, data }: Entry<CharacterFrontmatter>
     chi: data.chi,
     intro: paragraphs(data.intro),
     lore: paragraphs(data.lore),
-    abilities: data.abilities,
+    // Switched off in the CMS, the page gets none; the written abilities stay in
+    // the file, so switching it back on restores them unchanged.
+    abilities: data.showAbilities ? data.abilities : [],
     variants: data.variants,
     // Without a delivered pose the portrait stands in, as the old manifest did
     // for anyone whose action art had not arrived.
@@ -82,6 +84,24 @@ export async function getCharacter(locale: Locale, slug: string): Promise<Charac
   const character = readList(locale).find((c) => c.slug === slug);
   if (!character) throw new CharacterNotFoundError(slug);
   return character;
+}
+
+/**
+ * The characters either side of this one, for the detail hero's edge
+ * navigation. Roster order, wrapping at both ends, so the last character leads
+ * back to the first. Null when the roster has only this one - no edge to arm.
+ */
+export async function getAdjacentCharacters(
+  locale: Locale,
+  slug: string,
+): Promise<{ prev: Character; next: Character } | null> {
+  const list = readList(locale);
+  const at = list.findIndex((c) => c.slug === slug);
+  if (at === -1 || list.length < 2) return null;
+  return {
+    prev: list[(at - 1 + list.length) % list.length],
+    next: list[(at + 1) % list.length],
+  };
 }
 
 /** Everyone but the one being looked at, for the OTHER CHAMPIONS row. */

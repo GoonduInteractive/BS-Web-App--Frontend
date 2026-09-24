@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { DetailBody } from "@/components/characters/DetailBody";
 import { DetailHero } from "@/components/characters/DetailHero";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
-import { getCharacter, getCharacterSlugs, getOtherCharacters } from "@/lib/api/characters";
+import { getAdjacentCharacters, getCharacter, getCharacterSlugs, getOtherCharacters } from "@/lib/api/characters";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -69,6 +69,8 @@ export default async function Page({
 
   const messages = getMessages(locale);
   const others = await getOtherCharacters(locale, slug);
+  const adjacent = await getAdjacentCharacters(locale, slug);
+  const link = (c: { name: string; slug: string }) => ({ name: c.name, href: `/${locale}/characters/${c.slug}` });
 
   return (
     <main>
@@ -76,6 +78,7 @@ export default async function Page({
         character={character}
         messages={messages}
         backHref={`/${locale}/characters`}
+        adjacent={adjacent ? { prev: link(adjacent.prev), next: link(adjacent.next) } : null}
       />
       <DetailBody
         character={character}

@@ -82,6 +82,11 @@ export function nextGate(gate: Gate): Gate {
   return GATES[(gate.index % GATES.length)];
 }
 
+/** The gate before this one, wrapping gate 1 back to gate 4 - `nextGate` run backwards. */
+export function prevGate(gate: Gate): Gate {
+  return GATES[(gate.index - 2 + GATES.length) % GATES.length];
+}
+
 export function gateHref(locale: string, gate: Gate): string {
   return `/${locale}/${gate.slug}`;
 }

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { useGateEntry } from "@/components/gates/GateEntry";
 import { GateSection } from "@/components/gates/GateSection";
+import { useGateScroll } from "@/components/gates/useGateScroll";
 import { gateHref, getGate, nextGate } from "@/lib/gates";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
@@ -20,6 +21,8 @@ import type { Messages } from "@/lib/utils/messages";
  */
 export function GatePortal({ entry, locale, gates }: { entry: ReactNode; locale: Locale; gates: Messages["gates"] }) {
   const { shown } = useGateEntry();
+  // Scroll, swipe or arrow keys move between the doors; idle on the entry screen.
+  useGateScroll(shown);
   if (!shown) return <>{entry}</>;
 
   const gate = getGate(shown);

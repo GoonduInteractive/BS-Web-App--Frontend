@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Children, useEffect, useRef, type ReactNode } from "react";
+import { Children, useRef, type ReactNode } from "react";
+
+import { useEdgeCursor } from "@/hooks/useEdgeCursor";
 
 import { cn } from "@/lib/utils/cn";
 
@@ -18,6 +20,9 @@ import { cn } from "@/lib/utils/cn";
  * `ornaments/arrow.svg` that the scroll cue uses, turned a quarter, on the same
  * graphite plate the Souls CTA already established for this field. Ask Design
  * whether it wants something of its own.
+ *
+ * THE POINTER MECHANICS ARE `useEdgeCursor`, shared with the character detail
+ * hero. The notes below are why it is built the way it is.
  *
  * FOUR THINGS THIS GETS RIGHT THAT THE OBVIOUS VERSION DOES NOT
  *
@@ -84,7 +89,7 @@ export function Carousel({
   const track = useRef<HTMLUListElement>(null);
   const cursor = useRef<HTMLDivElement>(null);
 
-  useEdgeCursor({ frame, track, cursor });
+  useCarouselCursor({ frame, track, cursor });
 
   return (
     <div
@@ -149,7 +154,21 @@ export function Carousel({
 const EDGE_FRACTION = 0.22;
 const EDGE_MAX = 180;
 
-function useEdgeCursor({
+/** One slide plus one gap - what a click advances by. */
+function pageDistance(trackEl: HTMLUListElement) {
+  const first = trackEl.firstElementChild;
+  if (!first) return trackEl.clientWidth;
+  const gap = parseFloat(getComputedStyle(trackEl).columnGap) || 0;
+  return first.getBoundingClientRect().width + gap;
+}
+
+/**
+ * The carousel's edges: an arrow only where there is somewhere to go, and a
+ * click pages by one slide. The pointer mechanics are the shared
+ * `useEdgeCursor`; this is only the carousel's answer to "which edge" and
+ * "what happens".
+ */
+function useCarouselCursor({
   frame,
   track,
   cursor,
@@ -158,124 +177,27 @@ function useEdgeCursor({
   track: React.RefObject<HTMLUListElement | null>;
   cursor: React.RefObject<HTMLDivElement | null>;
 }) {
-  useEffect(() => {
-    const frameEl = frame.current;
-    const trackEl = track.current;
-    const cursorEl = cursor.current;
-    if (!frameEl || !trackEl || !cursorEl) return;
-
-    // No cursor, no cursor affordance. On touch the track is swiped directly,
-    // and a stand-in pointer parked wherever the last tap landed is worse than
-    // none at all.
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-
-    let cancelled = false;
-    let teardown: (() => void) | undefined;
-
-    void (async () => {
-      // GSAP is already a lazy chunk on this route. `quickTo` is core, no plugin.
-      const { gsap } = await import("gsap");
-      if (cancelled) return;
-
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      // Reduced motion keeps the arrow - it is an affordance, not decoration -
-      // and drops the lag and the scale, so it simply appears where it belongs.
-      const followDuration = reduced ? 0 : 0.35;
-
-      gsap.set(cursorEl, { xPercent: -50, yPercent: -50, scale: reduced ? 1 : 0, autoAlpha: 0 });
-      const xTo = gsap.quickTo(cursorEl, "x", { duration: followDuration, ease: "power3" });
-      const yTo = gsap.quickTo(cursorEl, "y", { duration: followDuration, ease: "power3" });
-
-      let zone: "prev" | "next" | null = null;
-      let lastX = 0;
-
-      const zoneAt = (clientX: number) => {
-        const rect = frameEl.getBoundingClientRect();
-        const maxScroll = trackEl.scrollWidth - trackEl.clientWidth;
-        // Nothing to scroll to: no arrow. This is what keeps the three-up
-        // desktop row from advertising a page that does not exist.
-        if (maxScroll < 2) return null;
-        const edge = Math.min(rect.width * EDGE_FRACTION, EDGE_MAX);
-        if (clientX < rect.left + edge && trackEl.scrollLeft > 1) return "prev";
-        if (clientX > rect.right - edge && trackEl.scrollLeft < maxScroll - 1) return "next";
-        return null;
-      };
-
-      const setZone = (next: "prev" | "next" | null) => {
-        if (next === zone) return;
-        zone = next;
-        if (next) {
-          cursorEl.dataset.dir = next;
-          frameEl.dataset.zone = next;
-        } else {
-          delete frameEl.dataset.zone;
-        }
-        gsap.to(cursorEl, {
-          scale: next ? 1 : reduced ? 1 : 0,
-          autoAlpha: next ? 1 : 0,
-          duration: reduced ? 0 : 0.25,
-          ease: "power3.out",
-          // "auto", NEVER `true`. `overwrite: true` kills every other tween of
-          // the target, which here means the two `quickTo` tweens driving x and
-          // y - the arrow appears, then sits frozen at the origin and never
-          // follows the pointer. "auto" only overwrites the properties that
-          // actually conflict, so scale and autoAlpha are claimed and the
-          // position tweens are left running.
-          overwrite: "auto",
-        });
-      };
-
-      /** One slide plus one gap - what a click advances by. */
-      const pageDistance = () => {
-        const first = trackEl.firstElementChild;
-        if (!first) return trackEl.clientWidth;
-        const gap = parseFloat(getComputedStyle(trackEl).columnGap) || 0;
-        return first.getBoundingClientRect().width + gap;
-      };
-
-      const onMove = (event: PointerEvent) => {
-        const rect = frameEl.getBoundingClientRect();
-        lastX = event.clientX;
-        // quickTo only records the target; the write happens on GSAP's own
-        // ticker, so this handler does no layout and no DOM writing.
-        xTo(event.clientX - rect.left);
-        yTo(event.clientY - rect.top);
-        setZone(zoneAt(event.clientX));
-      };
-
-      const onLeave = () => setZone(null);
-
-      // The reachable end moves as the track scrolls, so the zone has to be
-      // re-tested against the pointer's last known position, not just on move.
-      const onScroll = () => setZone(zoneAt(lastX));
-
-      const onClick = () => {
-        if (!zone) return;
-        const distance = pageDistance();
-        trackEl.scrollBy({
-          left: zone === "prev" ? -distance : distance,
-          behavior: reduced ? "auto" : "smooth",
-        });
-      };
-
-      frameEl.addEventListener("pointermove", onMove);
-      frameEl.addEventListener("pointerleave", onLeave);
-      frameEl.addEventListener("click", onClick);
-      trackEl.addEventListener("scroll", onScroll, { passive: true });
-
-      teardown = () => {
-        frameEl.removeEventListener("pointermove", onMove);
-        frameEl.removeEventListener("pointerleave", onLeave);
-        frameEl.removeEventListener("click", onClick);
-        trackEl.removeEventListener("scroll", onScroll);
-        gsap.killTweensOf(cursorEl);
-        delete frameEl.dataset.zone;
-      };
-    })();
-
-    return () => {
-      cancelled = true;
-      teardown?.();
-    };
-  }, [frame, track, cursor]);
+  useEdgeCursor({
+    frame,
+    cursor,
+    rescan: track,
+    zoneAt: (clientX, _target, rect) => {
+      const trackEl = track.current;
+      if (!trackEl) return null;
+      const maxScroll = trackEl.scrollWidth - trackEl.clientWidth;
+      // Nothing to scroll to: no arrow. This is what keeps the three-up
+      // desktop row from advertising a page that does not exist.
+      if (maxScroll < 2) return null;
+      const edge = Math.min(rect.width * EDGE_FRACTION, EDGE_MAX);
+      if (clientX < rect.left + edge && trackEl.scrollLeft > 1) return "prev";
+      if (clientX > rect.right - edge && trackEl.scrollLeft < maxScroll - 1) return "next";
+      return null;
+    },
+    onPick: (zone, reduced) => {
+      const trackEl = track.current;
+      if (!trackEl) return;
+      const distance = pageDistance(trackEl);
+      trackEl.scrollBy({ left: zone === "prev" ? -distance : distance, behavior: reduced ? "auto" : "smooth" });
+    },
+  });
 }

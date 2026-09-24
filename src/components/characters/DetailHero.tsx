@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 
+import { DetailEdgeNav, type AdjacentLinks } from "@/components/characters/DetailEdgeNav";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
 import { figureClass, heroBoxClass } from "@/lib/characters";
 import { TornDivider } from "@/components/ui/TornDivider";
@@ -15,10 +16,13 @@ export function DetailHero({
   character,
   messages,
   backHref,
+  adjacent,
 }: {
   character: Character;
   messages: Messages;
   backHref: string;
+  /** Previous and next on the roster, for the edge navigation. Null when alone. */
+  adjacent: AdjacentLinks | null;
 }) {
   const t = messages.characters.detail;
   const root = useRef<HTMLElement>(null);
@@ -28,7 +32,8 @@ export function DetailHero({
   return (
     <section
       ref={root}
-      className="bg-detail-hero relative overflow-hidden pb-28 lg:pb-0"
+      // The real pointer hides only while the edge cursor stands in for it.
+      className="bg-detail-hero relative overflow-hidden pb-28 data-[zone=next]:cursor-none data-[zone=prev]:cursor-none lg:pb-0"
     >
       {/* The figure. Anchored to the bottom and cropped by the tear, as the
           frame draws it - it is scenery, so it sits behind everything and takes
@@ -117,6 +122,8 @@ export function DetailHero({
         </div>
        </div>
       </div>
+
+      {adjacent ? <DetailEdgeNav frame={root} adjacent={adjacent} messages={messages} /> : null}
 
       <TornDivider
         edge="top"

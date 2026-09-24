@@ -24,6 +24,7 @@ backend:
   # <base_url>/callback. NO TRAILING SLASH: Decap joins the path onto this, so
   # a slash here asks the gateway for //auth and the popup dies on a 404.
   base_url: https://decap-cms-oauth-gray.vercel.app
+  
   commit_messages:
     create: 'content({{collection}}): create {{slug}}'
     update: 'content({{collection}}): update {{slug}}'
@@ -297,6 +298,13 @@ collections:
         fields:
           - { label: Name, name: name, widget: string }
           - { label: Description, name: text, widget: text }
+      - label: Show core abilities
+        name: showAbilities
+        widget: boolean
+        default: true
+        required: false
+        hint: Off hides the CORE ABILITIES section on this character's detail page. The abilities above are kept, so switching it back on shows them again.
+        i18n: duplicate
       - label: Forms
         name: variants
         widget: list
