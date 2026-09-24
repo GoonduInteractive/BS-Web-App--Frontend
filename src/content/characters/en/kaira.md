@@ -52,6 +52,8 @@ abilities:
       crimson — as she telekinetically lifts her enemies off the ground.
       Suspended and helpless, they hang for a breath before she snaps them down
       with lethal finality.
+showAbilities: true
+action: /assets/characters/Pose_01_Kaira_3D.png
 gallery:
   - /assets/characters/Pose_01_Kaira_3D.png
   - /assets/characters/Pose_01_Kaira_Normal_3D.jpg
