@@ -57,4 +57,5 @@ lore: >-
 
 
   Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption.
+abilitiesSection: hide
 ---
