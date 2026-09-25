@@ -49,6 +49,7 @@ abilities:
       to the floor, launches the axe spinning skyward, leaps to catch it, and
       brings it down in a devastating overhead slam that detonates a chaotic
       AOE.
+abilitiesSection: hide
 variants:
   - name: FORM 1 (STAFF)
     text: Used for rituals, communion with the gods — emits pulses of Mythic light.
