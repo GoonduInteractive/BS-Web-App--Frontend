@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { usePageTransition } from "@/components/transition/TransitionProvider";
 import type { GateId } from "@/lib/gates";
@@ -46,7 +46,21 @@ const GateEntryContext = createContext<{
    * IS the gate; the curtain pushes the home route itself, under cover.
    */
   seedGate: (id: GateId) => void;
+  /**
+   * A SCROLL move to the next or previous door (`dir` 1 or -1): the gate rise,
+   * not the tear. Scrolling moves through the sequence, clicking jumps across
+   * it - two gestures, two transitions. Off the portal it falls back to
+   * `showGate`.
+   */
+  stepGate: (id: GateId, dir: 1 | -1) => void;
+  /** The rise in progress, for the portal to play; null at rest. */
+  step: GateStep | null;
+  /** The portal calls this when the rise has landed. */
+  endStep: () => void;
 } | null>(null);
+
+/** One scroll move between doors: where from, where to, and which way. */
+export type GateStep = { from: GateId; to: GateId; dir: 1 | -1 };
 
 export function useGateEntry() {
   const ctx = useContext(GateEntryContext);
@@ -60,9 +74,11 @@ export function homeHref(pathname: string): string {
 }
 
 export function GateEntryProvider({ children }: { children: ReactNode }) {
-  const { reveal, navigate } = usePageTransition();
+  const { reveal, navigate, claim } = usePageTransition();
   const pathname = usePathname();
   const [shown, setShown] = useState<GateId | null>(null);
+  const [step, setStep] = useState<GateStep | null>(null);
+  const releaseStep = useRef<(() => void) | null>(null);
 
   const home = homeHref(pathname);
   const atHome = pathname === home;
@@ -91,7 +107,50 @@ export function GateEntryProvider({ children }: { children: ReactNode }) {
 
   const seedGate = useCallback((id: GateId) => setShown(id), []);
 
-  const value = useMemo(() => ({ shown, showGate, seedGate }), [shown, showGate, seedGate]);
+  const endStep = useCallback(() => {
+    setStep(null);
+    releaseStep.current?.();
+    releaseStep.current = null;
+  }, []);
+
+  /**
+   * The rise holds the same lock the pull-up does (`claim`), so the tear can
+   * never start under it and a second scroll cannot stack another rise. The
+   * gate is named at once: the rail lights the destination as the new door
+   * starts to rise, which is the "where am I going" the tear never said.
+   * Under reduced motion the door simply changes.
+   */
+  const stepGate = useCallback(
+    (id: GateId, dir: 1 | -1) => {
+      if (!atHome || !shown) {
+        showGate(id);
+        return;
+      }
+      if (id === shown) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setShown(id);
+        window.scrollTo({ top: 0, behavior: "instant" });
+        return;
+      }
+      const release = claim();
+      if (!release) return;
+      releaseStep.current = release;
+      window.scrollTo({ top: 0, behavior: "instant" });
+      setStep({ from: shown, to: id, dir });
+      setShown(id);
+    },
+    [atHome, shown, showGate, claim],
+  );
+
+  // Leaving the portal mid-rise must not strand the lock.
+  useEffect(() => {
+    if (!atHome && releaseStep.current) endStep();
+  }, [atHome, endStep]);
+
+  const value = useMemo(
+    () => ({ shown, showGate, seedGate, stepGate, step, endStep }),
+    [shown, showGate, seedGate, stepGate, step, endStep],
+  );
 
   return <GateEntryContext.Provider value={value}>{children}</GateEntryContext.Provider>;
 }

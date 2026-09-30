@@ -5,6 +5,7 @@ import { CharactersHero } from "@/components/characters/CharactersHero";
 import { MoreChampionsSection } from "@/components/characters/MoreChampionsSection";
 import { RosterSection } from "@/components/characters/RosterSection";
 import { getCharacters } from "@/lib/api/characters";
+import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { GateCurtain } from "@/components/gates/GateCurtain";
 import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
 import { getGate, nextGate } from "@/lib/gates";
@@ -36,7 +37,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <CharactersHero messages={messages} />
         <RosterSection characters={characters} messages={messages} locale={locale} />
         <GateCurtain preview={gatePreview(next, locale, messages)} href={`/${locale}`} gate={next.id} title={nextCopy.title}>
-          <MoreChampionsSection messages={messages} nextGate={next.id} />
+          <MoreChampionsSection messages={messages} nextGate={next.id} footer={<SiteFooter messages={messages} locale={locale} />} />
         </GateCurtain>
       </div>
     </GatePage>

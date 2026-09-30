@@ -131,7 +131,9 @@ export function GateSection({
             difference documented on --text-gate rather than a design value.
             Following the spec here instead. When Design supplies the real face
             the residual should disappear on its own. */}
-        <div className="flex flex-col items-center gap-[3.1dvh] pt-[28.4dvh]">
+        {/* `data-gate-heading`: the portal's gate rise reveals these two after
+            the door lands. */}
+        <div data-gate-heading className="flex flex-col items-center gap-[3.1dvh] pt-[28.4dvh]">
           <Chip>{chip}</Chip>
           <h1 className="font-display text-gate text-menu-fg text-center leading-[0.78] font-semibold tracking-[-0.02em] uppercase">
             {title}
@@ -142,10 +144,21 @@ export function GateSection({
           {/* A real link to the page: TransitionProvider's delegated handler
               plays the tear around the push, and the destination is announced
               and openable in a new tab like any link. */}
-          <BracketButton href={href} className="text-body leading-none tracking-[0.04em] px-4.5">
+          {/* ONE LINE, ALWAYS. At text-body the longest label, DISCOVER THE
+              COMPETITION, needs 358px with its brackets, and the gate's px-6
+              leaves 345 at 393 and 312 at 360, so it was breaking in two. The
+              size is text-body (16px) wherever that fits - about 415px and up -
+              and below that shrinks with the viewport just enough to keep the
+              longest label inside the padding: 14.8px at 393, 12.8 at 360,
+              10.4 at 320. */}
+          <BracketButton
+            href={href}
+            className="text-[length:clamp(0.625rem,calc(6vw-0.55rem),1rem)] leading-none tracking-[0.04em] px-4.5 whitespace-nowrap"
+          >
             {cta}
           </BracketButton>
-          <ScrollCue gate={next} label={cueLabel} />
+          {/* Only the bobbing arrow is clickable at a gate; its label is text. */}
+          <ScrollCue gate={next} label={cueLabel} arrowOnly />
         </div>
       </div>
     </section>

@@ -93,6 +93,15 @@ export function createTear(panels: TearPanels, { reduced }: Options): Tear {
   return flow === "classic" ? classicTear(p, reduced) : sweepTear(p, reduced);
 }
 
+/**
+ * The classic flow on demand, WITHOUT taking a turn in the rotation. The gate
+ * rise uses it to split its red open: it covers the screen with its own sheet,
+ * then hands over to these panels at full cover and plays their open.
+ */
+export function createClassicTear(panels: TearPanels, { reduced }: Options): Tear {
+  return classicTear(assertPanels(panels), reduced);
+}
+
 /** A reduced-motion cross-fade of the given masses, shared by both flows. */
 function fadeTear(masses: HTMLElement[], all: Mounted): Tear {
   // A 0.01ms tear is a red flash, worse than no transition at all for anyone

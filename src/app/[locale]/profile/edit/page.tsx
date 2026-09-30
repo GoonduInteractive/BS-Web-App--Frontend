@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { EditProfileForm } from "@/components/profile/EditProfileForm";
+import { getBanks } from "@/lib/api/banks";
 import { getProfile } from "@/lib/api/profile";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -29,12 +30,12 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  const profile = await getProfile();
+  const [profile, banks] = await Promise.all([getProfile(), getBanks()]);
 
   return (
     <main className="bg-roster min-h-dvh">
       <div className="mx-auto w-full max-w-360 px-6 pt-28 pb-24 md:px-20 md:pt-[11.5625rem]">
-        <EditProfileForm profile={profile} messages={messages} locale={locale} />
+        <EditProfileForm profile={profile} banks={banks} messages={messages} locale={locale} />
       </div>
 
       <SiteFooter messages={messages} locale={locale} />

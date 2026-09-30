@@ -545,7 +545,7 @@
     "cta": "TODO ig: BACK TO HOME"
   },
   "register": {
-    "cta": "TODO ig: REGISTER",
+    "cta": "TODO ig: JOIN BEYOND SERVICE",
     "label": "TODO ig: Register",
     "close": "TODO ig: Close",
     "title": "TODO ig: JOIN THE COMMUNITY",
@@ -567,7 +567,8 @@
       "label": "TODO ig: Already registered",
       "title": "TODO ig: ALREADY REGISTERED",
       "body": "TODO ig: {email} is already on the list — we have your details from an earlier registration. There is nothing more to do; we will reach you on WhatsApp and email."
-    }
+    },
+    "ctaShort": "TODO ig: JOIN BS"
   },
   "footer": {
     "navLabel": "TODO ig: Footer",
@@ -578,7 +579,8 @@
     "links": {
       "terms": "TODO ig: Terms of Use",
       "privacy": "TODO ig: Privacy Policy",
-      "about": "TODO ig: About"
+      "about": "TODO ig: About",
+      "contact": "TODO ig: Contact Support"
     }
   },
   "about": {
@@ -593,7 +595,8 @@
       "emphasis": "TODO ig: We're changing that.",
       "aside": "TODO ig: Goondu Games is a game development studio creating immersive experiences inspired by Igbo mythology, culture, and storytelling.",
       "cta": "TODO ig: EXPLORE OUR WORLD",
-      "plateAlt": "TODO ig: The Goondu Games team and players together at a Beyond Service event"
+      "plateAlt": "TODO ig: The Goondu Games team and players together at a Beyond Service event",
+      "chip": "TODO ig: ABOUT GOONDU"
     },
     "story": {
       "chip": "TODO ig: OUR STORY",
@@ -610,9 +613,11 @@
       "title": "TODO ig: BEHIND GOONDU GAMES",
       "tabs": {
         "core": "TODO ig: Core Team",
-        "contributors": "TODO ig: Contributors",
-        "partners": "TODO ig: Partners"
+        "contributors": "TODO ig: Contributors"
       }
+    },
+    "partners": {
+      "title": "TODO ig: PARTNERS"
     }
   },
   "merch": {
@@ -736,9 +741,9 @@
       "zip": "TODO ig: Zip Code",
       "zipPlaceholder": "TODO ig: eg. 510001",
       "deliveryMethod": "TODO ig: DELIVERY METHOD",
-      "delivery": "TODO ig: Delivery",
+      "delivery": "TODO ig: Home Delivery",
       "pickup": "TODO ig: Pickup",
-      "pickupNote": "TODO ig: Insert the choosen Pickup address for Goondu",
+      "pickupNote": "TODO ig: Item delivered to a partner collection center for you to pick up.",
       "paymentMethod": "TODO ig: PAYMENT METHOD",
       "paystack": "TODO ig: Paystack",
       "bankTransfer": "TODO ig: Bank Transfer",
@@ -750,7 +755,15 @@
       "total": "TODO ig: Total",
       "secureTitle": "TODO ig: Secure Checkout",
       "secureBody": "TODO ig: Your payment information is encrypted and secure.",
-      "placeOrder": "TODO ig: PLACE ORDER"
+      "placeOrder": "TODO ig: PLACE ORDER",
+      "homeDeliveryNote": "TODO ig: Item delivered directly to your address.",
+      "pickupPrivacy": "TODO ig: For Pickup we only need your state and local government, not your home address.",
+      "lga": "TODO ig: Local Government",
+      "lgaPlaceholder": "TODO ig: Select Local Government",
+      "lgaNeedsState": "TODO ig: Select a state first",
+      "chooseLocation": "TODO ig: Choose your state and local government to see shipping.",
+      "shippingPending": "TODO ig: Select a location",
+      "payWith": "TODO ig: Pay with card, bank transfer or USSD in the Paystack window."
     },
     "transfer": {
       "heading": "TODO ig: PLEASE COMPLETE YOUR PAYMENT IN YOUR BANKING APP WITHIN {window}.",
@@ -770,7 +783,8 @@
       "body": "TODO ig: Your order is currently being processed. You will receive an order confirmation email shortly with expected delivery date for your items.",
       "cta": "TODO ig: BACK TO PROFILE",
       "label": "TODO ig: Order confirmed",
-      "close": "TODO ig: Close"
+      "close": "TODO ig: Close",
+      "help": "TODO ig: Need help, contact us at"
     },
     "comics": {
       "partner": "TODO ig: Goondu Games X Partner",
@@ -875,6 +889,20 @@
       "viewProfile": "TODO ig: View Profile",
       "login": "TODO ig: Login",
       "menuLabel": "TODO ig: Account menu"
+    },
+    "payout": {
+      "title": "TODO ig: PAYOUT SETTINGS",
+      "body": "TODO ig: The bank account your tournament prize money is paid into. We confirm these details before any payout.",
+      "bank": "TODO ig: Bank",
+      "bankPlaceholder": "TODO ig: Select bank",
+      "accountNumber": "TODO ig: Account Number",
+      "accountNumberPlaceholder": "TODO ig: 10-digit account number",
+      "accountNumberError": "TODO ig: Enter the 10-digit account number",
+      "accountName": "TODO ig: Account Name",
+      "accountNamePlaceholder": "TODO ig: As it appears on the account",
+      "cardLabel": "TODO ig: PAYOUT ACCOUNT",
+      "cardEmpty": "TODO ig: Not set yet",
+      "cardAdd": "TODO ig: Add bank details"
     }
   },
   "comics": {
@@ -912,7 +940,8 @@
       },
       "pageAlt": "TODO ig: {title}, page {n}",
       "shareHeading": "TODO ig: SHARE THIS COMIC",
-      "shareSub": "TODO ig: Gain claimable community points\nby sharing this comic with friends."
+      "shareSub": "TODO ig: Gain claimable community points\nby sharing this comic with friends.",
+      "shielded": "TODO ig: Reading paused. Come back to this window to keep reading."
     },
     "synopsis": {
       "trial": [
@@ -924,5 +953,10 @@
   },
   "legal": {
     "lastUpdated": "TODO ig: Last Updated:"
+  },
+  "support": {
+    "title": "TODO ig: NEED SUPPORT?",
+    "body": "TODO ig: For payment disputes, account issues, transaction inquiries, or general assistance, contact:",
+    "email": "support@beyondservicegame.com"
   }
 }

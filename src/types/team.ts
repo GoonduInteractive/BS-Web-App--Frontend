@@ -11,11 +11,13 @@ import type { Locale } from "@/lib/utils/locales";
  */
 /**
  * Which tab a person appears under on the About page - the tab order, too.
- * The human named Core Team and Contributors, then Partners (2026-09-22).
+ * The human named Core Team and Contributors (2026-09-22). Partners were a
+ * third tab until 2026-09-28 and are now their own band and collection
+ * (`types/partner.ts`).
  * Adding another is this list, a label in `messages.about.team.tabs`, and the
  * option in the CMS select; nothing else knows how many there are.
  */
-export const TEAM_GROUPS = ["core", "contributors", "partners"] as const;
+export const TEAM_GROUPS = ["core", "contributors"] as const;
 export type TeamGroup = (typeof TEAM_GROUPS)[number];
 
 export type TeamMember = {

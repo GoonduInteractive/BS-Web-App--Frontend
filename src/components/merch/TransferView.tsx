@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useCart } from "@/components/merch/CartProvider";
 import { OrderConfirmed } from "@/components/merch/OrderConfirmed";
+import { SupportNote } from "@/components/ui/SupportNote";
 import type { TransferAccount } from "@/lib/api/payment";
 import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
@@ -47,13 +48,13 @@ export function TransferView({
         {tail}
       </h1>
 
-      <div className="mx-auto mt-10 max-w-[51.125rem] bg-[url('/assets/ornaments/tear-sheet.svg')] bg-size-[100%_100%] bg-center bg-no-repeat px-6 pt-17 pb-12 md:mt-28.25 md:px-21.25 md:pt-20.75 md:pb-15.5">
+      <div className="mx-auto mt-10 max-w-[51.125rem] bg-[url('/assets/ornaments/tear-sheet.svg')] bg-size-[100%_100%] bg-center bg-no-repeat px-6 pt-17 pb-12 md:mt-28.25 md:px-21.25 md:pt-20.75 md:pb-29.5">
         <Detail label={x.accountNumber} value={account.accountNumber} copy={x} big />
-        <Detail label={x.bankName} value={account.bankName} className="mt-11 md:mt-13" big />
-        <Detail label={x.beneficiary} value={account.beneficiary} className="mt-11 md:mt-13" big />
-        <Detail label={x.amount} value={amount} copy={x} className="mt-11 md:mt-13" big />
+        <Detail label={x.bankName} value={account.bankName} className="mt-11 md:mt-10.5" big />
+        <Detail label={x.beneficiary} value={account.beneficiary} className="mt-11 md:mt-10.5" big />
+        <Detail label={x.amount} value={amount} copy={x} className="mt-11 md:mt-10.5" big />
 
-        <p className="text-signal font-body text-body-sm mt-3 flex items-start gap-2 leading-tight md:mt-7 md:items-center md:leading-none">
+        <p className="text-signal font-body text-body-sm mt-3 flex items-start gap-2 leading-tight md:mt-2.5 md:items-center md:leading-none">
           <InfoGlyph />
           {x.warning}
         </p>
@@ -75,6 +76,8 @@ export function TransferView({
           </button>
         </div>
       </div>
+
+      <SupportNote messages={messages} layout="inline" className="mt-8" />
 
       <OrderConfirmed messages={messages} open={confirmed} onClose={() => setConfirmed(false)} />
     </>

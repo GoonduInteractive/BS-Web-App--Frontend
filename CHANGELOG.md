@@ -35,12 +35,64 @@ blockers live in local working notes and are deliberately not repeated here.
 - Each core ability has its own action shot in the content editor, the picture on that
   ability's tile. The single action shot per character is gone; every ability starts on the
   picture that character's tiles already showed.
+- The About page's opening section carries an ABOUT GOONDU chip above the headline, on the
+  same torn plate as the back-to-gate chip.
+- A Contact Support link in the footer on every page, which opens an email to the support
+  inbox.
+- "Need support?" with the support email, under the checkout's order summary and under the
+  bank transfer details. The player profile shows the same line, with Log Out moved to the
+  right.
+- The order confirmation ends by saying where to get help.
+
+- Payout Settings on the Edit Profile page: the bank, account number and account name a
+  player wants tournament prize money paid into. The account number takes digits only and
+  must be ten long. The profile shows a Payout Account line with a link to add the details.
+  Nothing is saved yet.
+
+- The Goondu Games logo in the footer links to goondu.games in a new tab.
+- The online comic reader discourages copying: no right-click, dragging or long-press saving
+  of pages, nothing when printed, and the pages are covered while the window is not being
+  read or a screenshot key is pressed. A website cannot fully prevent screenshots or
+  screen recording.
 
 ### Changed
 
 - The Characters page opens with its name, THE CHARACTERS, as the title, and THE SOULS THAT
   SHAPE THE REALM moves above it as a smaller line, following the updated design.
 - A character with no core abilities written no longer shows an empty Core Abilities heading.
+- Partners are no longer a tab of the About page's team. They have their own PARTNERS band
+  under it: a centred row of logos, each linking to the partner's site when one is given. They
+  are edited as their own Partners collection in the content editor (name, logo, website,
+  order, and a switch to hide one). The band stays hidden until the first partner is
+  published. The team keeps two tabs, Core Team and Contributors.
+- The bank transfer details sit closer together, with more room under the buttons.
+- Checkout asks how the order should arrive before anything else: Home Delivery, to your
+  address, or Pickup, to a partner collection centre near you. Home Delivery comes first and
+  is chosen to begin with.
+- Pickup asks only for your state and local government, never a home address, for anyone who
+  would rather not share one.
+- Checkout asks for your local government, from the full list for your state, and prices
+  shipping from where you are and how it is coming. The total follows as you choose.
+- A signed-in player finds their saved delivery details filled in, and can change any of them
+  to send the order to someone else.
+- Checkout has one payment step: PLACE ORDER, which opens Paystack to pay by card, bank
+  transfer or USSD. This build does not take payment yet and goes straight to the
+  confirmation.
+
+- The header button reads JOIN BEYOND SERVICE, shortened to JOIN BS on phones and on
+  screens where the header links leave it too little room.
+- The support email everywhere on the site is support@beyondservicegame.com.
+
+- The Game, The Characters and Competition pages now end with the site footer, after their
+  last section and before the scroll cue and the pull-up to the next gate.
+
+- Checkout never shows free shipping: every order pays the shipping price for where it is
+  going.
+
+### Removed
+
+- The choice between Paystack and Bank Transfer at checkout. The bank transfer page is no
+  longer reached from the checkout.
 
 ---
 

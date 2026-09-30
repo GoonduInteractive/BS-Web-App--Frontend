@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { useCart } from "@/components/merch/CartProvider";
+import { SupportNote } from "@/components/ui/SupportNote";
 import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
@@ -15,22 +16,29 @@ import type { ComicIssue, Product } from "@/types/merch";
  * Frame at 1440 - summary panel 904..1347 x 137..560, totals 904..1347 x
  * 592..1075.
  *
- * PLACE ORDER TAKES NO PAYMENT. There is no backend, no payment SDK and no card
- * detail anywhere in this build; it advances to the designed confirmation. That
- * is the whole of what it does, and it is recorded here so nobody has to read
- * the handler to find out.
+ * PLACE ORDER IS THE ONLY WAY TO PAY, and on the live site it opens Paystack,
+ * which offers card, bank transfer and USSD. In this build it takes no payment:
+ * there is no backend, no Paystack key and no card detail anywhere, so it
+ * advances straight to the designed confirmation. Recorded here so nobody has
+ * to read the handler to find out.
  */
 export function CheckoutSummary({
   products,
   comics,
   messages,
   locale,
+  rate,
+  placeError,
   onPlaceOrder,
 }: {
   products: readonly Product[];
   comics: readonly ComicIssue[];
   messages: Messages;
   locale: Locale;
+  /** What delivery costs for the chosen method and place; null until a place is chosen. */
+  rate: number | null;
+  /** Why PLACE ORDER can't go on yet, e.g. no place chosen. */
+  placeError?: string | null;
   onPlaceOrder: () => void;
 }) {
   const { lines } = useCart();
@@ -40,7 +48,10 @@ export function CheckoutSummary({
   const resolved = resolveCartLines({ lines, products, comics, messages, locale });
   const itemTotal = resolved.reduce((sum, entry) => sum + entryTotal(entry), 0);
   const pointDiscount = 0;
-  const total = itemTotal - pointDiscount;
+  const subtotal = itemTotal - pointDiscount;
+  // No free shipping (2026-09-30): every order pays its place's price.
+  const shipping = rate;
+  const total = subtotal + (shipping ?? 0);
 
   return (
     <div>
@@ -96,11 +107,17 @@ export function CheckoutSummary({
           bold
           className="mt-6.25"
         />
-        <Row label="" value={formatPrice(total, locale, t.price)} className="mt-6.25" />
+        <Row label="" value={formatPrice(subtotal, locale, t.price)} className="mt-6.25" />
 
         <hr className="border-ink/25 mt-9" />
 
-        <Row label={c.shippingRow} value={c.free} valueClass="text-moss font-semibold" className="mt-5.5" />
+        {/* Priced by method, state and local government. */}
+        <Row
+          label={c.shippingRow}
+          value={shipping === null ? c.shippingPending : formatPrice(shipping, locale, t.price)}
+          valueClass={shipping === null ? "text-ink/60" : ""}
+          className="mt-5.5"
+        />
         <Row
           label={c.total}
           value={formatPrice(total, locale, t.price)}
@@ -125,7 +142,16 @@ export function CheckoutSummary({
           {c.placeOrder}
           <span aria-hidden>›</span>
         </button>
+        {placeError ? (
+          <p role="alert" className="text-signal font-body text-body-sm mt-3 leading-snug">
+            {placeError}
+          </p>
+        ) : null}
+        {/* One button: Paystack's own window offers every way to pay. */}
+        <p className="font-body text-body-sm mt-3 leading-snug">{c.payWith}</p>
       </section>
+
+      <SupportNote messages={messages} layout="stacked" className="mt-9" />
     </div>
   );
 }

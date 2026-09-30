@@ -6,6 +6,7 @@ import { useState, type ReactNode } from "react";
 
 import { PinGlyph } from "@/components/profile/ProfileGlyphs";
 import { BracketButton } from "@/components/ui/BracketButton";
+import type { Bank } from "@/lib/api/banks";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
@@ -28,10 +29,13 @@ import type { Profile } from "@/types/profile";
  */
 export function EditProfileForm({
   profile,
+  banks,
   messages,
   locale,
 }: {
   profile: Profile;
+  /** For Payout Settings: the banks a player can be paid into. */
+  banks: readonly Bank[];
   messages: Messages;
   locale: Locale;
 }) {
@@ -46,6 +50,11 @@ export function EditProfileForm({
   });
   const set = (key: keyof typeof fields) => (value: string) =>
     setFields((prev) => ({ ...prev, [key]: value }));
+
+  const p = t.payout;
+  const [payout, setPayoutState] = useState({ bank: "", accountNumber: "", accountName: "" });
+  const setPayout = (key: keyof typeof payout) => (value: string) =>
+    setPayoutState((prev) => ({ ...prev, [key]: value }));
 
   return (
     <div className="bg-pitch mx-auto w-full max-w-[56.5rem] rounded-[1.25rem] px-6 py-10 md:px-21.5 md:py-13.5">
@@ -121,6 +130,46 @@ export function EditProfileForm({
           />
         </div>
 
+        {/* PAYOUT SETTINGS - where prize money goes. No frame draws this (FLAGGED,
+            2026-09-29); it takes the form's own field style. Paystack would look the
+            account name up from bank + number; with no backend the player types it,
+            and it is confirmed before any payout. Like the rest of this form, nothing
+            is stored or sent. */}
+        <section id="payout" aria-labelledby="payout-title" className="border-menu-fg/15 mt-12 scroll-mt-32 border-t pt-10">
+          <h2 id="payout-title" className="font-display text-menu-fg text-[1.625rem] leading-none font-semibold tracking-[0.01em] uppercase">
+            {p.title}
+          </h2>
+          <p className="text-menu-fg/70 font-body text-body-sm mt-3 max-w-lg leading-snug">{p.body}</p>
+
+          <div className="mt-7">
+            <SelectField
+              label={p.bank}
+              placeholder={p.bankPlaceholder}
+              options={banks}
+              value={payout.bank}
+              onChange={setPayout("bank")}
+            />
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
+            <Field
+              label={p.accountNumber}
+              placeholder={p.accountNumberPlaceholder}
+              value={payout.accountNumber}
+              // Digits only, NUBAN length: an account number is exactly ten.
+              onChange={(v) => setPayout("accountNumber")(v.replace(/\D/g, "").slice(0, 10))}
+              inputMode="numeric"
+              error={payout.accountNumber && payout.accountNumber.length !== 10 ? p.accountNumberError : undefined}
+            />
+            <Field
+              label={p.accountName}
+              placeholder={p.accountNamePlaceholder}
+              value={payout.accountName}
+              onChange={setPayout("accountName")}
+            />
+          </div>
+        </section>
+
         <div className="mt-11 flex justify-center">
           <BracketButton type="submit" className="px-5 py-[1.15rem] tracking-normal">
             {f.save}
@@ -137,12 +186,17 @@ function Field({
   value,
   onChange,
   trailing,
+  inputMode,
+  error,
 }: {
   label: string;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
   trailing?: ReactNode;
+  inputMode?: "numeric" | "text";
+  /** Shown under the field, which turns its border red. */
+  error?: string;
 }) {
   return (
     <label className="block">
@@ -152,8 +206,10 @@ function Field({
           type="text"
           value={value}
           placeholder={placeholder}
+          inputMode={inputMode}
+          aria-invalid={!!error}
           onChange={(event) => onChange(event.target.value)}
-          className="border-menu-fg/25 text-menu-fg placeholder:text-menu-fg/45 font-body text-body focus-visible:outline-signal h-12.5 w-full rounded-md border bg-transparent px-4 leading-none focus-visible:outline-2 focus-visible:-outline-offset-1"
+          className="border-menu-fg/25 text-menu-fg placeholder:text-menu-fg/45 font-body text-body focus-visible:outline-signal aria-invalid:border-signal h-12.5 w-full rounded-md border bg-transparent px-4 leading-none focus-visible:outline-2 focus-visible:-outline-offset-1"
         />
         {trailing ? (
           <span
@@ -163,6 +219,48 @@ function Field({
             {trailing}
           </span>
         ) : null}
+      </span>
+      {error ? <span className="text-signal font-body text-body-sm mt-2 block leading-none">{error}</span> : null}
+    </label>
+  );
+}
+
+/** The form's field, as a select: same border, radius and height, with a caret. */
+function SelectField({
+  label,
+  placeholder,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder: string;
+  options: readonly Bank[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="block">
+      <span className="text-menu-fg/85 font-body text-body-sm leading-none">{label}</span>
+      <span className="relative mt-2.5 block">
+        <select
+          value={value}
+          required
+          onChange={(event) => onChange(event.target.value)}
+          className="border-menu-fg/25 text-menu-fg font-body text-body focus-visible:outline-signal invalid:text-menu-fg/45 h-12.5 w-full appearance-none rounded-md border bg-transparent px-4 pr-11 leading-none focus-visible:outline-2 focus-visible:-outline-offset-1 [&>option]:bg-ash [&>option]:text-menu-fg"
+        >
+          <option value="" disabled>
+            {placeholder}
+          </option>
+          {options.map((bank) => (
+            <option key={bank.code} value={bank.code}>
+              {bank.name}
+            </option>
+          ))}
+        </select>
+        <svg aria-hidden viewBox="0 0 12 8" className="text-menu-fg/60 pointer-events-none absolute top-1/2 right-4 h-2 w-3 -translate-y-1/2" fill="none" stroke="currentColor" strokeWidth="1.6">
+          <path d="M1 1.5L6 6.5L11 1.5" />
+        </svg>
       </span>
     </label>
   );

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EditGlyph, LogOutGlyph, NigeriaFlag } from "@/components/profile/ProfileGlyphs";
+import { SupportNote } from "@/components/ui/SupportNote";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
@@ -86,6 +87,23 @@ export function ProfileCard({
                 {profile.location}
                 <NigeriaFlag />
               </dd>
+
+              {/* Where prize money goes, set in Payout Settings on the edit page. No frame
+                  draws this (FLAGGED, 2026-09-29). Nothing is ever saved in this build, so
+                  it always reads "not set". */}
+              <dt className="text-menu-fg/85 font-body text-body-sm mt-6 leading-none">{t.payout.cardLabel}</dt>
+              <dd className="font-body text-body-sm mt-2.5 leading-none">
+                <span className="text-menu-fg/70">{t.payout.cardEmpty}</span>
+                <span aria-hidden className="text-menu-fg/40 mx-1.5">
+                  ·
+                </span>
+                <Link
+                  href={`/${locale}/profile/edit#payout`}
+                  className="text-menu-fg focus-visible:outline-signal underline underline-offset-4 transition-opacity duration-150 ease-gate hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  {t.payout.cardAdd}
+                </Link>
+              </dd>
             </div>
           </div>
         </div>
@@ -163,7 +181,10 @@ export function ProfileCard({
       {/* FLAGGED: there is no session to end. The control is drawn because the
           frame draws it, and it does nothing - the same state every other
           undestined CTA on this site is in. */}
-      <div className="mt-12 flex justify-center md:mt-[4.125rem]">
+      {/* Support on the left, Log Out moved to the right (`new-updates/Player
+          profile.png`, 2026-09-26). A stack on the phone, Log Out last. */}
+      <div className="mt-12 flex flex-col items-center gap-8 text-center md:mt-9 md:flex-row md:items-center md:justify-between md:gap-6 md:px-1 md:text-left">
+        <SupportNote messages={messages} layout="plain" />
         <button
           type="button"
           className="text-flare font-body focus-visible:outline-signal inline-flex cursor-pointer items-center gap-2.5 text-body leading-none transition-opacity duration-150 ease-gate hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4"

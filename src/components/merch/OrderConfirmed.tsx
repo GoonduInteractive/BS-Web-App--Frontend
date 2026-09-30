@@ -116,11 +116,23 @@ export function OrderConfirmed({
             {t.title}
           </h2>
 
+          {/* The help line runs on as the paragraph's last sentence
+              (`new-updates/Success modal.png`, 2026-09-26). The frame's address is
+              "support@yourdomain.com", a template placeholder; every other new
+              frame gives the support inbox (`support.email`), so that is what ships. */}
           <p className="text-ink font-body text-body mt-4.5 max-w-135 leading-[1.5625rem]">
-            {t.body}
+            {t.body} {t.help}{" "}
+            <a
+              href={`mailto:${messages.support.email}`}
+              className="focus-visible:outline-signal font-semibold transition-opacity duration-150 ease-gate hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {messages.support.email}
+            </a>
+            .
           </p>
 
-          <div className="mt-11">
+          {/* The added line takes its room out of this gap: the button stays where it was. */}
+          <div className="mt-6.25">
             <BracketButton
               field="light"
               className="bg-ink px-4.75 py-[1.15rem] text-body tracking-normal"
