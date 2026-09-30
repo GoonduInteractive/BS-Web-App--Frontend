@@ -1,25 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 
 import { ScrollCue } from "@/components/gates/ScrollCue";
 import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
+import { cn } from "@/lib/utils/cn";
 import type { Messages } from "@/lib/utils/messages";
 
 export function SummonsSection({
   messages,
   nextHref,
   variant = "game",
+  footer,
 }: {
   messages: Messages;
 
   nextHref?: string;
 
   variant?: "game" | "comics";
+  /**
+   * The site footer, on a gate page: drawn after the section and above the scroll
+   * cue, so the page ends content, footer, cue, then the pull-up to the next gate.
+   */
+  footer?: ReactNode;
 }) {
   const comics = variant === "comics";
   const image = comics
@@ -93,9 +100,14 @@ export function SummonsSection({
         </div>
       </div>
 
+      {footer ? <div className="relative z-10">{footer}</div> : null}
+
       <div
         data-summons-cue
-        className={comics ? "relative z-10 flex justify-center pb-28 md:pb-20" : "relative z-10 flex justify-center pb-14 md:pb-20"}
+        className={cn(
+          comics ? "relative z-10 flex justify-center pb-28 md:pb-20" : "relative z-10 flex justify-center pb-14 md:pb-20",
+          footer && "pt-10",
+        )}
       >
         {nextHref ? <ScrollCue href={nextHref} label={t.cue} /> : null}
       </div>

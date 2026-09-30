@@ -38,12 +38,12 @@ const SWIPE_THRESHOLD = 60;
  * <html>, and that lock is the signal.
  */
 export function useGateScroll(current: GateId | null) {
-  const { showGate } = useGateEntry();
+  const { stepGate } = useGateEntry();
   const { busy } = usePageTransition();
   // Read through a ref so the listeners are attached once, not per gate.
-  const state = useRef({ current, showGate, busy });
+  const state = useRef({ current, stepGate, busy });
   useEffect(() => {
-    state.current = { current, showGate, busy };
+    state.current = { current, stepGate, busy };
   });
 
   useEffect(() => {
@@ -60,11 +60,13 @@ export function useGateScroll(current: GateId | null) {
       Array.from(document.querySelectorAll('[aria-modal="true"]')).some((d) => !d.closest('[aria-hidden="true"]'));
 
     const go = (dir: 1 | -1) => {
-      const { current: id, showGate: show, busy: isBusy } = state.current;
+      const { current: id, stepGate: step, busy: isBusy } = state.current;
       // On the entry screen there is no gate to move from: ENTER is the way in.
       if (!id || isBusy() || overlayOpen()) return false;
       const gate = getGate(id);
-      show((dir === 1 ? nextGate(gate) : prevGate(gate)).id);
+      // The gate rise, not the tear: the next door comes up from below, the
+      // previous one down from above (see GatePortal).
+      step((dir === 1 ? nextGate(gate) : prevGate(gate)).id, dir);
       return true;
     };
 

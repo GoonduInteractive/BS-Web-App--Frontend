@@ -5,7 +5,8 @@
 # a small OAuth gateway deployed as its own Vercel project, see README.md →
 # Content editing for the setup. This repo carries no server code for it.
 #
-# WHAT DECAP OWNS: News, the About page's team, and the Characters. Everything
+# WHAT DECAP OWNS: News, the About page's team and partners, the Characters and
+# the legal pages. Everything
 # game-side (leaderboards, tournaments, community, merch, players) comes
 # through the adapters in src/lib/api/ and, later, the game backend. Not here.
 
@@ -403,7 +404,7 @@ collections:
   - name: team
     label: Team
     label_singular: Team member
-    description: The people on the About page. Core team, Contributors and Partners, each its own tab, in the order given here. Igbo tab as for News.
+    description: The people on the About page. Core team and Contributors, each its own tab (Partners are their own collection), in the order given here. Igbo tab as for News.
     folder: src/content/team
     create: true
     delete: true
@@ -433,7 +434,6 @@ collections:
         options:
           - { label: Core team, value: core }
           - { label: Contributors, value: contributors }
-          - { label: Partners, value: partners }
         default: core
         hint: Which tab this person appears under on the About page.
         i18n: duplicate
@@ -459,3 +459,56 @@ collections:
         widget: string
         hint: e.g. Portrait of Michael Apeli.
         i18n: true
+
+  # ---------------------------------------------------------------------------
+  # PARTNERS, the logo row under the team on the About page. Its own collection
+  # since 2026-09-28 (it was a tab of the team before); src/lib/api/partners.ts
+  # reads these files at build (lib/schemas/partner.ts checks them). A logo is
+  # the same in both locales, so nothing here is translated.
+  # ---------------------------------------------------------------------------
+  - name: partners
+    label: Partners
+    label_singular: Partner
+    description: The partner logos on the About page, under the team, in the order given here. On the Igbo tab click "Fill in from another locale", then publish.
+    folder: src/content/partners
+    create: true
+    delete: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    slug: '{{slug}}'
+    summary: '{{name}}'
+    sortable_fields: [order, name]
+    media_folder: /public/assets/partners
+    public_folder: /assets/partners
+    fields:
+      - label: Name
+        name: name
+        widget: string
+        hint: The partner's name, e.g. Solana Foundation. Read out to screen readers in place of the logo.
+        i18n: duplicate
+      - label: Logo
+        name: logo
+        widget: image
+        hint: A transparent PNG or SVG, light on dark, with the name in it if the brand's logo has one. It is shown at a fixed height, so crop it tight.
+        i18n: duplicate
+      - label: Website
+        name: url
+        widget: string
+        required: false
+        hint: Optional, e.g. https://solana.org. The logo links there when set.
+        i18n: duplicate
+      - label: Order
+        name: order
+        widget: number
+        value_type: int
+        min: 1
+        default: 1
+        hint: Position in the row. Lower comes first.
+        i18n: duplicate
+      - label: Show on the site
+        name: visible
+        widget: boolean
+        default: true
+        i18n: duplicate

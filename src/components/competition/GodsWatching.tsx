@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { ScrollCue } from "@/components/gates/ScrollCue";
 import type { GateId } from "@/lib/gates";
 import { Reveal } from "@/components/motion/Reveal";
@@ -40,6 +42,7 @@ export function GodsWatching({
   messages,
   nextGate,
   cta,
+  footer,
 }: {
   messages: Messages;
   /**
@@ -51,6 +54,11 @@ export function GodsWatching({
   nextGate?: GateId;
   /** The CTA's label when it is not the competition page's. */
   cta?: string;
+  /**
+   * The site footer, on a gate page: drawn after the section and above the scroll
+   * cue, so the page ends content, footer, cue, then the pull-up to the next gate.
+   */
+  footer?: ReactNode;
 }) {
   const t = messages.competition.gods;
 
@@ -95,8 +103,10 @@ export function GodsWatching({
 
       {/* 219 under the CTA's foot, which is the row's - the strip is absolute and
           runs 29 further, so the frame's 190 under the strip is this. */}
+      {footer ? <div className="relative z-10 mt-24 lg:mt-[13.6875rem]">{footer}</div> : null}
+
       {nextGate ? (
-        <Reveal delay={160} className="flex justify-center pt-24 lg:pt-[13.6875rem]">
+        <Reveal delay={160} className={footer ? "flex justify-center pt-10" : "flex justify-center pt-24 lg:pt-[13.6875rem]"}>
           <ScrollCue gate={nextGate} label={t.cue} />
         </Reveal>
       ) : null}

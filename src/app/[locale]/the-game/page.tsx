@@ -7,6 +7,7 @@ import { StorySection } from "@/components/game/StorySection";
 import { SummonsSection } from "@/components/game/SummonsSection";
 import { TwoPathsSection } from "@/components/game/TwoPathsSection";
 import { GateCurtain } from "@/components/gates/GateCurtain";
+import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { GatePage, gateMetadata } from "@/components/gates/GatePage";
 import { CharactersHero } from "@/components/characters/CharactersHero";
 import { getCharacters } from "@/lib/api/characters";
@@ -55,7 +56,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           Same rule as the door variant - the preview must BE the destination's
           component, not a copy of it, or the swap snaps. */}
       <GateCurtain preview={<CharactersHero messages={messages} />} href={nextHref} title={nextCopy.title}>
-        <SummonsSection messages={messages} nextHref={nextHref} />
+        <SummonsSection messages={messages} nextHref={nextHref} footer={<SiteFooter messages={messages} locale={locale} />} />
       </GateCurtain>
     </GatePage>
   );

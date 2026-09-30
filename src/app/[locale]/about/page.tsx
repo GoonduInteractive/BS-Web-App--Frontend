@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 
 import { AboutHero } from "@/components/about/AboutHero";
 import { StudioStory } from "@/components/about/StudioStory";
+import { PartnersSection } from "@/components/about/PartnersSection";
 import { TeamSection } from "@/components/about/TeamSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
+import { getPartners } from "@/lib/api/partners";
 import { getTeam } from "@/lib/api/team";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -28,13 +30,14 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  const team = await getTeam(locale);
+  const [team, partners] = await Promise.all([getTeam(locale), getPartners(locale)]);
 
   return (
     <main>
       <AboutHero messages={messages} />
       <StudioStory messages={messages} />
       <TeamSection members={team} messages={messages} />
+      <PartnersSection partners={partners} messages={messages} />
 
       <div className="pt-37.25">
         <SiteFooter messages={messages} locale={locale} />

@@ -26,23 +26,60 @@ import type { GateId } from "@/lib/gates";
  * `arrow.svg` renders at its natural 23x29, which is what the frames measure
  * (21 x 29 of visible ink).
  */
-export function ScrollCue({ href, gate, label }: { href?: string; gate?: GateId; label: string }) {
+export function ScrollCue({
+  href,
+  gate,
+  label,
+  arrowOnly = false,
+}: {
+  href?: string;
+  gate?: GateId;
+  label: string;
+  /**
+   * Only the arrow is the control; the label beneath it is plain text (the
+   * human, 2026-09-26, for the gates). The arrow then carries the label as its
+   * accessible name, since it has no text of its own.
+   */
+  arrowOnly?: boolean;
+}) {
   const { showGate } = useGateEntry();
-  const body = (
-    <>
-      <Image
-        src="/assets/ornaments/arrow.svg"
-        alt=""
-        aria-hidden
-        width={23}
-        height={29}
-        className="scroll-cue-bob h-[29px] w-[23px] transition-[translate] duration-200 ease-gate select-none group-hover:translate-y-1"
-      />
-      <span className="text-menu-fg font-display text-body-sm font-semibold tracking-[0.1em]">{label}</span>
-    </>
+  const arrow = (
+    <Image
+      src="/assets/ornaments/arrow.svg"
+      alt=""
+      aria-hidden
+      width={23}
+      height={29}
+      className="scroll-cue-bob h-[29px] w-[23px] transition-[translate] duration-200 ease-gate select-none group-hover:translate-y-1"
+    />
   );
+  const text = <span className="text-menu-fg font-display text-body-sm font-semibold tracking-[0.1em]">{label}</span>;
   const className =
     "focus-visible:outline-signal group flex cursor-pointer flex-col items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-8";
+
+  if (arrowOnly) {
+    // Same column, same gap; the control is just the arrow's box now.
+    return (
+      <div className="flex flex-col items-center gap-3">
+        <button
+          type="button"
+          aria-label={label}
+          onClick={() => gate && showGate(gate)}
+          className="focus-visible:outline-signal group cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-8"
+        >
+          {arrow}
+        </button>
+        <span className="select-none">{text}</span>
+      </div>
+    );
+  }
+
+  const body = (
+    <>
+      {arrow}
+      {text}
+    </>
+  );
 
   if (href) {
     return (

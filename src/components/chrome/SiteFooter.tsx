@@ -54,13 +54,15 @@ export function SiteFooter({ messages, locale }: { messages: Messages; locale: s
 
           <nav
             aria-label={t.navLabel}
-            className="mt-15.5 flex flex-col items-center gap-y-7.25 md:mt-0 md:flex-row md:flex-wrap md:gap-x-15 md:gap-y-4 md:pt-11.25"
+            className="mt-15.5 flex flex-col items-center gap-y-7.25 md:mt-0 md:flex-row md:flex-wrap md:gap-x-8.25 md:gap-y-4 md:pt-11.25"
           >
             {(
               [
                 ["terms", `/${locale}/terms`],
                 ["privacy", `/${locale}/privacy`],
                 ["about", `/${locale}/about`],
+                // No contact page: support is an inbox (`new-updates`, 2026-09-26).
+                ["contact", `mailto:${messages.support.email}`],
               ] as const
             ).map(([key, href]) => (
               <Link
@@ -75,13 +77,15 @@ export function SiteFooter({ messages, locale }: { messages: Messages; locale: s
 
           <div className="mt-[4.5625rem] md:mt-0 md:pt-3 md:text-right">
             <p className="text-menu-fg/70 font-body text-body-sm">{t.createdBy}</p>
-            <Image
-              src="/assets/brand/goondu-logo.png"
-              alt={t.studioAlt}
-              width={240}
-              height={40}
-              className="mx-auto mt-2.75 h-6 w-auto md:mt-2.5 md:ml-auto md:mr-0"
-            />
+            {/* The studio's own site, in a new tab so the visitor keeps their place here. */}
+            <a
+              href="https://goondu.games"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focus-visible:outline-signal mx-auto mt-2.75 block w-fit transition-opacity duration-150 ease-gate hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 md:mt-2.5 md:mr-0 md:ml-auto"
+            >
+              <Image src="/assets/brand/goondu-logo.png" alt={t.studioAlt} width={240} height={40} className="h-6 w-auto" />
+            </a>
           </div>
         </div>
       </div>

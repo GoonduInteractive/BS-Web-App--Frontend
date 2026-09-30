@@ -1,9 +1,9 @@
 import type { Messages } from "@/lib/utils/messages";
 
 // export type HiddenSectionName = "news" | "merch" | "comics" | "competition";
-export type HiddenSectionName =  "merch" | "comics" | "competition";
+export type HiddenSectionName =  "merch" | "comics" | "competition" ;
 
-export const HIDDEN_SECTIONS: readonly HiddenSectionName[] = ["merch", "comics", "competition"];
+export const HIDDEN_SECTIONS: readonly HiddenSectionName[] = [ "merch", "comics", "competition"];
 
 export function isHidden(section: HiddenSectionName): boolean {
   return HIDDEN_SECTIONS.includes(section);
@@ -32,3 +32,5 @@ export function hiddenSectionLabel(section: HiddenSectionName, messages: Message
       return messages.gates.competition.title;
   }
 }
+
+

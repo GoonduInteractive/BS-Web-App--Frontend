@@ -7,7 +7,7 @@ import { BracketButton } from "@/components/ui/BracketButton";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * REGISTER, at the header's right where the account control sat (parked -
+ * JOIN BEYOND SERVICE (was REGISTER), at the header's right where the account control sat (parked -
  * see `SiteHeader`). Per the human: "use the button component but without the
  * bracket" - so `BracketButton` with `brackets={false}`, at the utility links'
  * 14px. No frame draws this; FLAGGED.
@@ -33,8 +33,16 @@ export function RegisterCta({ messages, locale }: { messages: Messages; locale: 
         onPointerEnter={() => void load()}
         onFocus={() => void load()}
         className="px-2.5 py-2 text-[0.8125rem] tracking-normal whitespace-nowrap md:px-4 md:py-2.5 md:text-[0.875rem]"
+        aria-label={messages.register.cta}
       >
-        {messages.register.cta}
+        {/* JOIN BEYOND SERVICE is too wide beside the centred logo on a phone, and from lg to xl,
+            where the nav links sit between them; it shortens to JOIN BS there (the team's fallback). */}
+        <span aria-hidden className="md:hidden lg:inline xl:hidden">
+          {messages.register.ctaShort}
+        </span>
+        <span aria-hidden className="hidden md:inline lg:hidden xl:inline">
+          {messages.register.cta}
+        </span>
       </BracketButton>
 
       {open && <RegisterDialog messages={messages} locale={locale} onClose={() => setOpen(false)} />}
