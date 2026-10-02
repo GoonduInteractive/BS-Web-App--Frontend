@@ -15,6 +15,7 @@ import { getComics, getFeaturedProduct, getListing } from "@/lib/api/merch";
 import { getPointsBalance, getViewerState } from "@/lib/api/points";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
+import { comicLabel, volumeLabel } from "@/lib/utils/comic-sales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
 
@@ -60,6 +61,13 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     getPointsBalance(),
   ]);
 
+  // The comics shelf: every chapter, then one card per printed volume on sale,
+  // shown on its first chapter's cover and leading to that chapter's volume offer.
+  const shelf = [
+    ...comics.map((issue) => ({ issue, volume: false })),
+    ...comics.filter((issue) => issue.edition && issue.edition.leadSlug === issue.slug).map((issue) => ({ issue, volume: true })),
+  ];
+
   return (
     <main>
       <div className="mx-auto w-full max-w-360 px-6 pt-28 md:px-7 md:pt-33.75">
@@ -101,16 +109,17 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           </ul>
         </section>
 
-        {comics.length > 0 ? (
+        {shelf.length > 0 ? (
           <section className="pt-24 md:pt-51">
             <h2 className="font-display text-menu-fg text-h2 leading-none font-semibold tracking-[-0.075em] uppercase">
               {messages.merch.sections.comics}
             </h2>
 
-            {/* Four cards from two issues, alternating - the same repetition the
-                merch grid and the About team grid use. */}
+            {/* Each chapter, then each printed volume on sale (a volume whose every
+                chapter is out), repeated to the frame's four cards - the same
+                repetition the merch grid and the About team grid use. */}
             <ul className="mt-9 grid grid-cols-1 gap-x-7 gap-y-12 sm:grid-cols-2 lg:mt-5.25 lg:grid-cols-4">
-              {Array.from({ length: 4 }, (_, i) => comics[i % comics.length]).map((issue, i) => {
+              {Array.from({ length: Math.max(4, shelf.length) }, (_, i) => shelf[i % shelf.length]).map(({ issue, volume }, i) => {
                 const copy =
                   messages.merch.comics.issues[
                     issue.copyKey as keyof typeof messages.merch.comics.issues
@@ -118,7 +127,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
                 return (
                   <li key={`${issue.slug}-${i}`}>
                     <Link
-                      href={`/${locale}/merch/comics/${issue.slug}`}
+                      href={`/${locale}/merch/comics/${issue.slug}${volume ? "#volume" : ""}`}
                       className="focus-visible:outline-signal group block focus-visible:outline-2 focus-visible:outline-offset-4"
                     >
                       <ComicCover issue={issue} messages={messages} />
@@ -126,7 +135,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
                         {copy.title}
                       </h3>
                       <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">
-                        {copy.format}
+                        {volume ? volumeLabel(issue, messages) : comicLabel(issue, messages)}
                       </p>
                     </Link>
                   </li>

@@ -44,9 +44,3 @@ next-env.d.ts
 context/
 temporary-screenshots/
 CLAUDE.md
-
-# PLACEHOLDER AMBIENCE, NOT SHIPPED (2026-09-22, the human: only push it live
-# when good sounds are available). `npm run audio` regenerates them locally.
-# DELETE THESE TWO LINES when the real sound design lands — the real files
-# belong in the repo.
-/public/audio/*.mp3

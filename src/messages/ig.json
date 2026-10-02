@@ -510,7 +510,8 @@
       "pinLabel": "TODO ig: {city}, {country}: {n} active players",
       "zoomIn": "TODO ig: Zoom in",
       "zoomOut": "TODO ig: Zoom out",
-      "place": "TODO ig: {city}, {country}"
+      "place": "TODO ig: {city}, {country}",
+      "unavailable": "TODO ig: The map needs WebGL, which is switched off in this browser."
     },
     "invite": {
       "title": "TODO ig: INVITE FRIENDS",
@@ -576,6 +577,13 @@
     "studioAlt": "Goondu Games",
     "copyright": "© 2026 goondugames.",
     "createdBy": "TODO ig: Created by",
+    "social": {
+      "label": "TODO ig: Follow Goondu Games",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "x": "X",
+      "youtube": "YouTube"
+    },
     "links": {
       "terms": "TODO ig: Terms of Use",
       "privacy": "TODO ig: Privacy Policy",
@@ -709,7 +717,9 @@
       "shipping": "TODO ig: Shipping",
       "free": "TODO ig: FREE",
       "total": "TODO ig: Total",
-      "checkout": "TODO ig: PROCEED TO CHECKOUT"
+      "checkout": "TODO ig: PROCEED TO CHECKOUT",
+      "atCheckout": "TODO ig: Calculated at checkout",
+      "freeShippingGap": "TODO ig: Add {amount} more for free shipping"
     },
     "sizes": {
       "XS": "TODO ig: XSmall",
@@ -763,20 +773,8 @@
       "lgaNeedsState": "TODO ig: Select a state first",
       "chooseLocation": "TODO ig: Choose your state and local government to see shipping.",
       "shippingPending": "TODO ig: Select a location",
-      "payWith": "TODO ig: Pay with card, bank transfer or USSD in the Paystack window."
-    },
-    "transfer": {
-      "heading": "TODO ig: PLEASE COMPLETE YOUR PAYMENT IN YOUR BANKING APP WITHIN {window}.",
-      "window": "TODO ig: 25 MINUTES",
-      "accountNumber": "TODO ig: Account Number",
-      "bankName": "TODO ig: Bank Name",
-      "beneficiary": "TODO ig: Beneficiary Name",
-      "amount": "TODO ig: Amount",
-      "copy": "TODO ig: Copy",
-      "copied": "TODO ig: Copied",
-      "warning": "TODO ig: Transfer exact amount to avoid failure.",
-      "changeMethod": "TODO ig: CHANGE PAYMENT METHOD",
-      "sent": "TODO ig: I’VE SENT IT"
+      "payWith": "TODO ig: Pay with card, bank transfer or USSD in the Paystack window.",
+      "nothingToShip": "TODO ig: Nothing to ship: online chapters open in the reader once paid."
     },
     "confirmed": {
       "title": "TODO ig: ORDER CONFIRMED",
@@ -808,6 +806,23 @@
           "coverAlt": "TODO ig: Between Worlds, volume two — Soma mid-stance, trailing fire",
           "coverTitle": "TODO ig: BETWEEN WORLDS"
         }
+      },
+      "formatNames": {
+        "online": "TODO ig: Online",
+        "physical": "TODO ig: Physical"
+      },
+      "formatNotes": {
+        "online": "TODO ig: Read in the reader. Nothing to ship.",
+        "physical": "TODO ig: The printed book, shipped to you."
+      },
+      "label": "TODO ig: {formats} – Vol. {volume}, Ch. {chapter}",
+      "chooseFormat": "TODO ig: Choose a format",
+      "volumeEdition": {
+        "label": "TODO ig: Physical – Vol. {volume}, collected edition",
+        "title": "TODO ig: THE WHOLE VOLUME IN PRINT",
+        "body": "TODO ig: Volume {volume}: every chapter, collected in one printed book.",
+        "add": "TODO ig: ADD VOLUME TO CART",
+        "soldOut": "TODO ig: SOLD OUT"
       }
     }
   },

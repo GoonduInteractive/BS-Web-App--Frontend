@@ -41,6 +41,31 @@ const RATES: readonly StateShipping[] = STATES.map((state) => {
   return { state, homeDelivery, pickup, lgas: OVERRIDES[state] ?? {} };
 });
 
+/**
+ * Free shipping for a promotional campaign (the team, 2026-10-01), set in the
+ * admin's Shipping page: while it runs, an order whose items total reaches
+ * `minimumOrder` ships free by either method. Dates are ISO instants; none
+ * means it runs until switched off.
+ */
+export type FreeShippingPromo = { enabled: boolean; minimumOrder: number; startsAt?: string; endsAt?: string };
+
+/** SAMPLE, mirroring the admin's: live, on orders of ₦30,000 or more. */
+const FREE_SHIPPING: FreeShippingPromo = { enabled: true, minimumOrder: 30_000 };
+
+export async function getFreeShipping(): Promise<FreeShippingPromo> {
+  return FREE_SHIPPING;
+}
+
+/** Whether the promotion is running now. */
+export function promoLive(p: FreeShippingPromo, now = Date.now()): boolean {
+  return p.enabled && (!p.startsAt || now >= Date.parse(p.startsAt)) && (!p.endsAt || now < Date.parse(p.endsAt));
+}
+
+/** Whether an order with this items total ships free right now. */
+export function shipsFree(p: FreeShippingPromo, itemTotal: number, now = Date.now()): boolean {
+  return promoLive(p, now) && itemTotal >= p.minimumOrder;
+}
+
 export async function getShippingRates(): Promise<readonly StateShipping[]> {
   return RATES;
 }
