@@ -9,16 +9,20 @@ import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { entryTotal, resolveCartLines, type CartEntry } from "@/lib/utils/cart-entry";
+import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
+import { needsShipping } from "@/lib/utils/comic-sales";
 import type { ComicIssue, Product } from "@/types/merch";
 
 export function CartView({
   products,
   comics,
+  promo,
   messages,
   locale,
 }: {
   products: readonly Product[];
   comics: readonly ComicIssue[];
+  promo: FreeShippingPromo;
   messages: Messages;
   locale: Locale;
 }) {
@@ -54,7 +58,7 @@ export function CartView({
         </ul>
       </div>
 
-      <OrderSummary lines={resolved} messages={messages} locale={locale} />
+      <OrderSummary lines={resolved} ships={needsShipping(lines, comics)} promo={promo} messages={messages} locale={locale} />
     </div>
   );
 }
@@ -104,7 +108,10 @@ function CartRow({
           </button>
         </div>
 
-        {/* A comic has no colourway and no size, so neither row is drawn. */}
+        {/* A comic has no colourway and no size; it shows its format instead. */}
+        {entry.formatLabel ? (
+          <p className="text-menu-fg font-body text-body mt-0.5 leading-none">{entry.formatLabel}</p>
+        ) : null}
         {entry.variant ? (
           <>
             <p className="text-menu-fg font-body text-body mt-0.5 leading-none">
@@ -122,7 +129,11 @@ function CartRow({
             {formatPrice(entry.price, locale, t.price)}
           </p>
 
-          <div className="border-menu-fg/30 flex h-9.25 w-26.5 shrink-0 items-center justify-between border px-3.5">
+          {/* An online chapter is one copy: it unlocks in the reader, so there is no quantity to change. */}
+          {entry.singleCopy ? (
+            <span className="text-menu-fg/70 font-body text-body-sm shrink-0">× 1</span>
+          ) : (
+            <div className="border-menu-fg/30 flex h-9.25 w-26.5 shrink-0 items-center justify-between border px-3.5">
             <Step
               label={messages.merch.detail.decrease}
               onClick={() =>
@@ -150,7 +161,8 @@ function CartRow({
               }
               glyph="+"
             />
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </li>
@@ -159,10 +171,15 @@ function CartRow({
 
 function OrderSummary({
   lines,
+  ships,
+  promo,
   messages,
   locale,
 }: {
   lines: readonly CartEntry[];
+  /** False when nothing in the cart ships (online chapters only). */
+  ships: boolean;
+  promo: FreeShippingPromo;
   messages: Messages;
   locale: Locale;
 }) {
@@ -173,6 +190,11 @@ function OrderSummary({
 
   const pointDiscount = 0;
   const total = itemTotal - pointDiscount;
+  // The frame draws Shipping FREE. It is free only under a running promotion
+  // whose minimum the items reach; otherwise the place, chosen at checkout,
+  // sets the price.
+  const free = shipsFree(promo, itemTotal);
+  const gap = ships && !free && promoLive(promo) ? promo.minimumOrder - itemTotal : 0;
 
   return (
     <aside className="bg-gild text-ink px-6 pt-7.25 pb-5.75 lg:mt-16.75">
@@ -201,15 +223,22 @@ function OrderSummary({
       <hr className="border-ink/25 mt-10" />
 
       <dl className="mt-4.5">
-        <Row
-          label={s.shipping}
-          value={s.free}
-          valueClass="text-moss font-semibold"
-        />
+        {ships ? (
+          <Row
+            label={s.shipping}
+            value={free ? s.free : s.atCheckout}
+            valueClass={free ? "text-moss font-semibold" : "text-ink/60"}
+          />
+        ) : null}
+        {gap > 0 ? (
+          <p className="font-body text-body-sm mt-2.5 leading-snug">
+            {s.freeShippingGap.replace("{amount}", formatPrice(gap, locale, t.price))}
+          </p>
+        ) : null}
         <Row
           label={s.total}
           value={formatPrice(total, locale, t.price)}
-          className="mt-6"
+          className={ships ? "mt-6" : ""}
           valueClass="font-display text-[2.0625rem] leading-none font-semibold tracking-[-0.04em]"
         />
       </dl>

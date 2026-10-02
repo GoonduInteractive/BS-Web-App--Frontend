@@ -510,7 +510,8 @@
       "pinLabel": "{city}, {country}: {n} active players",
       "zoomIn": "Zoom in",
       "zoomOut": "Zoom out",
-      "place": "{city}, {country}"
+      "place": "{city}, {country}",
+      "unavailable": "The map needs WebGL, which is switched off in this browser."
     },
     "invite": {
       "title": "INVITE FRIENDS",
@@ -576,6 +577,13 @@
     "studioAlt": "Goondu Games",
     "copyright": "© 2026 goondugames.",
     "createdBy": "Created by",
+    "social": {
+      "label": "Follow Goondu Games",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "x": "X",
+      "youtube": "YouTube"
+    },
     "links": {
       "terms": "Terms of Use",
       "privacy": "Privacy Policy",
@@ -709,7 +717,9 @@
       "shipping": "Shipping",
       "free": "FREE",
       "total": "Total",
-      "checkout": "PROCEED TO CHECKOUT"
+      "checkout": "PROCEED TO CHECKOUT",
+      "atCheckout": "Calculated at checkout",
+      "freeShippingGap": "Add {amount} more for free shipping"
     },
     "sizes": {
       "XS": "XSmall",
@@ -763,20 +773,8 @@
       "lgaNeedsState": "Select a state first",
       "chooseLocation": "Choose your state and local government to see shipping.",
       "shippingPending": "Select a location",
-      "payWith": "Pay with card, bank transfer or USSD in the Paystack window."
-    },
-    "transfer": {
-      "heading": "PLEASE COMPLETE YOUR PAYMENT IN YOUR BANKING APP WITHIN {window}.",
-      "window": "25 MINUTES",
-      "accountNumber": "Account Number",
-      "bankName": "Bank Name",
-      "beneficiary": "Beneficiary Name",
-      "amount": "Amount",
-      "copy": "Copy",
-      "copied": "Copied",
-      "warning": "Transfer exact amount to avoid failure.",
-      "changeMethod": "CHANGE PAYMENT METHOD",
-      "sent": "I’VE SENT IT"
+      "payWith": "Pay with card, bank transfer or USSD in the Paystack window.",
+      "nothingToShip": "Nothing to ship: online chapters open in the reader once paid."
     },
     "confirmed": {
       "title": "ORDER CONFIRMED",
@@ -808,6 +806,23 @@
           "coverAlt": "Between Worlds, volume two — Soma mid-stance, trailing fire",
           "coverTitle": "BETWEEN WORLDS"
         }
+      },
+      "formatNames": {
+        "online": "Online",
+        "physical": "Physical"
+      },
+      "formatNotes": {
+        "online": "Read in the reader. Nothing to ship.",
+        "physical": "The printed book, shipped to you."
+      },
+      "label": "{formats} – Vol. {volume}, Ch. {chapter}",
+      "chooseFormat": "Choose a format",
+      "volumeEdition": {
+        "label": "Physical – Vol. {volume}, collected edition",
+        "title": "THE WHOLE VOLUME IN PRINT",
+        "body": "Volume {volume}: every chapter, collected in one printed book.",
+        "add": "ADD VOLUME TO CART",
+        "soldOut": "SOLD OUT"
       }
     }
   },

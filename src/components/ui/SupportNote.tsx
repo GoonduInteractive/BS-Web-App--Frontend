@@ -1,20 +1,19 @@
-import { cn } from "@/lib/utils/cn";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
  * "Need support?" - where to write for payment disputes, account issues and
  * the rest. Added across the account and store screens in
- * `context/design/new-updates` (2026-09-26), in three arrangements:
+ * `context/design/new-updates` (2026-09-26), in two arrangements:
  *
  * - `stacked`: the title, the sentence, and the address on a line of its own,
  *   under the checkout's order summary.
- * - `inline`: the title to the left of the sentence, the address closing it,
- *   centred under the transfer sheet. A stack below `md`.
  * - `plain`: the sentence and address only, no title, on the profile card.
  *
+ * (A third, `inline`, sat under the bank transfer sheet, which went with the
+ * manual transfer route on 2026-09-30.)
+ *
  * Measured off the 1440 frames: the title Teko 17 on its own line; the sentence
- * Host Grotesk 14 on a 23 pitch, wrapping at about 400; 25 between title and
- * sentence in the inline row.
+ * Host Grotesk 14 on a 23 pitch, wrapping at about 400.
  */
 export function SupportNote({
   messages,
@@ -22,7 +21,7 @@ export function SupportNote({
   className,
 }: {
   messages: Messages;
-  layout: "stacked" | "inline" | "plain";
+  layout: "stacked" | "plain";
   className?: string;
 }) {
   const t = messages.support;
@@ -34,16 +33,13 @@ export function SupportNote({
       {t.email}
     </a>
   );
-  const title = (
-    <h2 className="font-display text-menu-fg shrink-0 text-[1.0625rem] leading-none font-semibold tracking-[0.01em] uppercase">
-      {t.title}
-    </h2>
-  );
 
   if (layout === "stacked") {
     return (
       <div className={className}>
-        {title}
+        <h2 className="font-display text-menu-fg shrink-0 text-[1.0625rem] leading-none font-semibold tracking-[0.01em] uppercase">
+          {t.title}
+        </h2>
         <p className="text-menu-fg/85 font-body text-body-sm mt-2.25 max-w-100 leading-[1.4375rem]">{t.body}</p>
         <p className="font-body text-body-sm mt-6.5 leading-none">{email}</p>
       </div>
@@ -51,13 +47,7 @@ export function SupportNote({
   }
 
   return (
-    <div
-      className={cn(
-        layout === "inline" && "flex flex-col items-center gap-3 text-center md:flex-row md:items-start md:justify-center md:gap-6 md:text-left",
-        className,
-      )}
-    >
-      {layout === "inline" && <div className="md:pt-1">{title}</div>}
+    <div className={className}>
       <p className="text-menu-fg/85 font-body text-body-sm max-w-100 leading-[1.4375rem]">
         {t.body} {email}
       </p>

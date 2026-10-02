@@ -13,12 +13,21 @@ import { getMessages } from "@/lib/utils/messages";
  * THE SITE URL IS AN ENVIRONMENT VARIABLE. Canonicals, hreflang alternates and
  * social images all have to be absolute, and the production host is not this
  * repository's to know. Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) at
- * build time; until it is, everything resolves against localhost, which is
- * right for a dev server and wrong for a deploy. FLAGGED in the notes.
+ * build time. Unset on Vercel, it falls back to the project's production
+ * domain (`VERCEL_PROJECT_PRODUCTION_URL`, which Vercel sets on every build) -
+ * the live site shipped with og:image pointing at localhost until 2026-09-30,
+ * so no social card ever showed. Anywhere else it is localhost, which is right
+ * for a dev server. Only server code reads this, so the non-public variable is
+ * safe here.
  */
 export const SITE_NAME = "Beyond Service: Trial of the Gods";
 export const STUDIO_NAME = "Goondu Games";
-export const SITE_URL = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+export const SITE_URL = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
+);
 
 /** The default social card: the key art at 1200 x 630, cut from the delivered `brand/trial-of-the-gods.png`. */
 export const OG_IMAGE = { url: "/assets/og/beyond-service.jpg", width: 1200, height: 630 } as const;

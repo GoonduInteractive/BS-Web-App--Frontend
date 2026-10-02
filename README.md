@@ -119,25 +119,19 @@ asking for it; `dev` is covered too, for copy changed in development.
 
 ## Sound
 
-The site plays one ambient bed at a time, chosen by where the visitor is: each gate has its own,
-a gate's page keeps the same bed as its door, and every other page shares a default. The toggle
-(bottom left, and on the entry screen) turns it on or off everywhere.
+The site plays in two layers. One background bed runs under every page and never changes; while
+the visitor is in one of the four gates, that gate's own track plays **on top of** it — the two are
+composed to be heard together. Everywhere else hears the bed alone. The toggle (bottom left, and on
+the entry screen) turns it on or off everywhere.
 
 Sound is **off by default and never autoplays**, and nothing under `public/audio/` is downloaded
 until someone turns it on. A visitor who never touches the toggle pays nothing for it.
 
-**The five files are placeholders.** No sound design has been delivered, so they are synthesised
-by `npm run audio` ([scripts/audio/make-placeholders.mjs](scripts/audio/make-placeholders.mjs)),
-each built to match what its gate's plate shows. Replace them by dropping real files at the same
-paths; nothing else changes:
-
 | File | Where it plays |
 |---|---|
-| `public/audio/gate-1-grove.mp3` | Ọnụ Ụzọ 1 and The Game |
-| `public/audio/gate-2-shrine.mp3` | Ọnụ Ụzọ 2 and The Characters |
-| `public/audio/gate-3-canyon.mp3` | Ọnụ Ụzọ 3 and Community |
-| `public/audio/gate-4-arena.mp3` | Ọnụ Ụzọ 4 and Competition |
-| `public/audio/default.mp3` | About, News, Comics, Merch, everything else |
-
-When the real files land, this script and its `@breezystack/lamejs` devDependency can be deleted.
+| `public/audio/bgs.mp3` | Everywhere, always |
+| `public/audio/gate-1.mp3` | Over the bed: Ọnụ Ụzọ 1 and The Game |
+| `public/audio/gate-2.mp3` | Over the bed: Ọnụ Ụzọ 2 and The Characters |
+| `public/audio/gate-3.mp3` | Over the bed: Ọnụ Ụzọ 3 and Community |
+| `public/audio/gate-4.mp3` | Over the bed: Ọnụ Ụzọ 4 and Competition |
 

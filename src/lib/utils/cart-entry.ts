@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
+import { isVolumeLine, lineFormat, volumeLabel } from "@/lib/utils/comic-sales";
 import type { CartLine, ComicIssue, Product, TileField } from "@/types/merch";
 
 /** The tile grounds, in one place rather than copied into every consumer. */
@@ -12,7 +13,7 @@ const FIELD: Record<TileField, string> = {
 /**
  * One cart line, flattened to everything a row needs to draw itself.
  *
- * WHY THIS EXISTS. The cart, the checkout summary and the transfer screen each
+ * WHY THIS EXISTS. The cart, the checkout summary and the old transfer screen each
  * resolved a line by searching the PRODUCT list alone:
  *
  *   products.find((p) => p.slug === line.slug)
@@ -43,6 +44,13 @@ export type CartEntry = {
    * colour and size the cart's identity needs and hides both rows.
    */
   variant: boolean;
+  /** A comic line's format, "Online" or "Physical", shown where a garment shows colour and size. */
+  formatLabel?: string;
+  /**
+   * One copy only: an online chapter unlocks in the reader for whoever bought it,
+   * so a second copy buys nothing. Its quantity is fixed at 1.
+   */
+  singleCopy: boolean;
 };
 
 export function resolveCartLines({
@@ -73,12 +81,33 @@ export function resolveCartLines({
           tileClass: FIELD[product.tile],
           href: `/${locale}/merch/${product.slug}`,
           variant: true,
+          singleCopy: false,
         },
       ];
     }
 
     const issue = comics.find((c) => c.slug === line.slug);
+    // The printed volume: keyed on its first chapter, priced as one book. If it has gone off sale since, the line is dropped.
+    if (issue && isVolumeLine(line)) {
+      if (!issue.edition) return [];
+      return [
+        {
+          line,
+          slug: issue.slug,
+          name: t.comics.issues[issue.copyKey as keyof typeof t.comics.issues].title,
+          image: issue.cover.figure,
+          price: issue.edition.price,
+          tileClass: issue.cover.band,
+          href: `/${locale}/merch/comics/${issue.slug}#volume`,
+          variant: false,
+          formatLabel: volumeLabel(issue, messages),
+          singleCopy: false,
+        },
+      ];
+    }
+
     if (issue) {
+      const format = lineFormat(line, issue);
       const copy = t.comics.issues[issue.copyKey as keyof typeof t.comics.issues];
       return [
         {
@@ -88,10 +117,12 @@ export function resolveCartLines({
           // The cover is composed rather than a file, so a row thumbnail uses
           // the issue's own render on the cover's band colour.
           image: issue.cover.figure,
-          price: issue.price,
+          price: issue.formats[format] ?? 0,
           tileClass: issue.cover.band,
           href: `/${locale}/merch/comics/${issue.slug}`,
           variant: false,
+          formatLabel: t.comics.formatNames[format],
+          singleCopy: format === "online",
         },
       ];
     }
@@ -104,5 +135,5 @@ export function resolveCartLines({
 
 /** Line total for one entry. */
 export function entryTotal(entry: CartEntry): number {
-  return entry.price * entry.line.quantity;
+  return entry.price * (entry.singleCopy ? 1 : entry.line.quantity);
 }

@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 
+import { useCart } from "@/components/merch/CartProvider";
 import { CheckoutForm, type DeliveryChoice } from "@/components/merch/CheckoutForm";
 import { CheckoutSummary } from "@/components/merch/CheckoutSummary";
 import { OrderConfirmed } from "@/components/merch/OrderConfirmed";
 import type { Place } from "@/lib/api/geo";
-import type { Lga, StateShipping } from "@/lib/api/shipping";
+import type { FreeShippingPromo, Lga, StateShipping } from "@/lib/api/shipping";
+import { needsShipping } from "@/lib/utils/comic-sales";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { ComicIssue, Product } from "@/types/merch";
@@ -28,6 +30,7 @@ export function CheckoutView({
   states,
   lgasByState,
   rates,
+  promo,
   saved,
   messages,
   locale,
@@ -38,6 +41,7 @@ export function CheckoutView({
   states: readonly Place[];
   lgasByState: Record<string, readonly Lga[]>;
   rates: readonly StateShipping[];
+  promo: FreeShippingPromo;
   saved: SavedAddress | null;
   messages: Messages;
   locale: Locale;
@@ -50,6 +54,9 @@ export function CheckoutView({
   const [placeError, setPlaceError] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
 
+  // Online chapters ship nothing; only a garment or a printed comic needs a delivery method and address.
+  const { lines } = useCart();
+  const ships = needsShipping(lines, comics);
   const stateRates = rates.find((r) => r.state === delivery.state);
   const rate = stateRates && delivery.lgaId ? (stateRates.lgas[delivery.lgaId]?.[delivery.method] ?? stateRates[delivery.method]) : null;
 
@@ -61,6 +68,7 @@ export function CheckoutView({
         states={states}
         lgasByState={lgasByState}
         saved={saved}
+        shipping={ships}
         onDeliveryChange={(choice) => {
           setDelivery(choice);
           setPlaceError(null);
@@ -72,10 +80,12 @@ export function CheckoutView({
         messages={messages}
         locale={locale}
         rate={rate}
+        promo={promo}
+        shipping={ships}
         placeError={placeError}
         onPlaceOrder={() => {
           // Shipping can't be priced, so the order can't be placed, until the place is chosen.
-          if (rate === null) return setPlaceError(messages.merch.checkout.chooseLocation);
+          if (ships && rate === null) return setPlaceError(messages.merch.checkout.chooseLocation);
           // NO PAYMENT IS TAKEN: no Paystack key or backend in this build. Live, Paystack opens here.
           setConfirmed(true);
         }}

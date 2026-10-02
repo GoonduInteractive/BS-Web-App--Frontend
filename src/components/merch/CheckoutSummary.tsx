@@ -8,6 +8,7 @@ import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { entryTotal, resolveCartLines } from "@/lib/utils/cart-entry";
+import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
 import type { ComicIssue, Product } from "@/types/merch";
 
 /**
@@ -28,6 +29,8 @@ export function CheckoutSummary({
   messages,
   locale,
   rate,
+  promo,
+  shipping: ships = true,
   placeError,
   onPlaceOrder,
 }: {
@@ -37,6 +40,10 @@ export function CheckoutSummary({
   locale: Locale;
   /** What delivery costs for the chosen method and place; null until a place is chosen. */
   rate: number | null;
+  /** The free shipping promotion: an order reaching its minimum ships free. */
+  promo: FreeShippingPromo;
+  /** False when nothing in the cart ships: no shipping line, and nothing added for it. */
+  shipping?: boolean;
   /** Why PLACE ORDER can't go on yet, e.g. no place chosen. */
   placeError?: string | null;
   onPlaceOrder: () => void;
@@ -49,8 +56,11 @@ export function CheckoutSummary({
   const itemTotal = resolved.reduce((sum, entry) => sum + entryTotal(entry), 0);
   const pointDiscount = 0;
   const subtotal = itemTotal - pointDiscount;
-  // No free shipping (2026-09-30): every order pays its place's price.
-  const shipping = rate;
+  // Free under a running promotion whose minimum the items reach (2026-10-01);
+  // otherwise the place's price, unknown until a place is chosen.
+  const free = ships && shipsFree(promo, itemTotal);
+  const shipping = !ships || free ? 0 : rate;
+  const gap = ships && !free && promoLive(promo) ? promo.minimumOrder - itemTotal : 0;
   const total = subtotal + (shipping ?? 0);
 
   return (
@@ -79,7 +89,10 @@ export function CheckoutSummary({
                     <h3 className="font-display text-menu-fg text-[1.375rem] leading-none font-semibold tracking-[-0.03em] uppercase">
                       {entry.name}
                     </h3>
-                    {/* A comic has no colourway or size to name. */}
+                    {/* A comic has no colourway or size; it names its format instead. */}
+                    {entry.formatLabel ? (
+                      <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">{entry.formatLabel}</p>
+                    ) : null}
                     {entry.variant ? (
                       <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">
                         {colour ? t.colours[colour.labelKey] : line.colourId}
@@ -111,13 +124,20 @@ export function CheckoutSummary({
 
         <hr className="border-ink/25 mt-9" />
 
-        {/* Priced by method, state and local government. */}
+        {/* Priced by method, state and local government. Not drawn when nothing ships. */}
+        {ships ? (
         <Row
           label={c.shippingRow}
-          value={shipping === null ? c.shippingPending : formatPrice(shipping, locale, t.price)}
-          valueClass={shipping === null ? "text-ink/60" : ""}
+          value={free ? c.free : shipping === null ? c.shippingPending : formatPrice(shipping, locale, t.price)}
+          valueClass={free ? "text-moss font-semibold" : shipping === null ? "text-ink/60" : ""}
           className="mt-5.5"
         />
+        ) : null}
+        {gap > 0 ? (
+          <p className="font-body text-body-sm mt-2.5 leading-snug">
+            {t.summary.freeShippingGap.replace("{amount}", formatPrice(gap, locale, t.price))}
+          </p>
+        ) : null}
         <Row
           label={c.total}
           value={formatPrice(total, locale, t.price)}

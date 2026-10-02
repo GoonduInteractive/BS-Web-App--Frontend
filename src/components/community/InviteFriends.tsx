@@ -21,7 +21,7 @@ import type { Messages } from "@/lib/utils/messages";
  *
  * The field is a read-only input rather than a paragraph so the link can be
  * selected and copied by hand where the clipboard is refused. The button's
- * label only changes when the write actually succeeded - the transfer screen's
+ * label only changes when the write actually succeeded - the old transfer screen's
  * rule. "Copied" is ours, as it was there: the frame draws no confirmed state.
  */
 export function InviteFriends({ link, messages, className }: { link: string; messages: Messages; className?: string }) {

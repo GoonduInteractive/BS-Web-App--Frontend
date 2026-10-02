@@ -34,6 +34,7 @@ export function CheckoutForm({
   states,
   lgasByState,
   saved,
+  shipping = true,
   onDeliveryChange,
 }: {
   messages: Messages;
@@ -42,6 +43,8 @@ export function CheckoutForm({
   /** Local governments by state name, from `nigeria-lga-data`. */
   lgasByState: Record<string, readonly Lga[]>;
   saved: SavedAddress | null;
+  /** False when nothing in the cart ships (online chapters only): no delivery method or address is asked for. */
+  shipping?: boolean;
   onDeliveryChange: (choice: DeliveryChoice) => void;
 }) {
   const t = messages.merch.checkout;
@@ -102,14 +105,21 @@ export function CheckoutForm({
         {t.shipping}
       </h2>
 
-      <h3 className="font-display text-menu-fg mt-8 text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase">
-        {t.deliveryMethod}
-      </h3>
+      {shipping ? (
+        <>
+          <h3 className="font-display text-menu-fg mt-8 text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase">
+            {t.deliveryMethod}
+          </h3>
 
-      <div role="radiogroup" aria-label={t.deliveryMethod} className="mt-4.75 flex flex-col gap-3.75">
-        <Choice checked={method === "homeDelivery"} onSelect={() => chooseMethod("homeDelivery")} label={t.delivery} note={t.homeDeliveryNote} />
-        <Choice checked={method === "pickup"} onSelect={() => chooseMethod("pickup")} label={t.pickup} note={t.pickupNote} />
-      </div>
+          <div role="radiogroup" aria-label={t.deliveryMethod} className="mt-4.75 flex flex-col gap-3.75">
+            <Choice checked={method === "homeDelivery"} onSelect={() => chooseMethod("homeDelivery")} label={t.delivery} note={t.homeDeliveryNote} />
+            <Choice checked={method === "pickup"} onSelect={() => chooseMethod("pickup")} label={t.pickup} note={t.pickupNote} />
+          </div>
+        </>
+      ) : (
+        // Online chapters only: they open in the reader, so there is nowhere to send anything.
+        <p className="text-menu-fg/70 font-body text-body-sm mt-5 leading-snug">{t.nothingToShip}</p>
+      )}
 
       <h3 className="font-display text-menu-fg mt-8.25 text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase">
         {t.contact}
@@ -124,7 +134,7 @@ export function CheckoutForm({
         <PhoneField messages={messages} value={values.phone} onChange={set("phone")} />
       </div>
 
-      {method === "homeDelivery" ? (
+      {!shipping ? null : method === "homeDelivery" ? (
         <>
           <div className="mt-3.5">
             <Field label={t.address} placeholder={t.addressPlaceholder} autoComplete="street-address" value={values.line1} onChange={set("line1")} />

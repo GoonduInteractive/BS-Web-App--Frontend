@@ -89,10 +89,31 @@ blockers live in local working notes and are deliberately not repeated here.
 - Checkout never shows free shipping: every order pays the shipping price for where it is
   going.
 
+- Comics are sold by the chapter. A chapter's page offers Online and Physical, each at its
+  own price; online is one copy, so it has no quantity. The store labels each comic with its
+  formats, volume and chapter, and the cart and checkout show which format each line is.
+- A cart of online chapters only skips shipping at checkout: no delivery method, no address
+  and no shipping charge, just contact details.
+- A finished volume can be bought as one printed book. Each of its chapters' pages offers
+  THE WHOLE VOLUME IN PRINT with its price, and the store shows the volume as its own card.
+  It is print only and always ships. Online, a volume is still bought chapter by chapter.
+- Free shipping is back as a promotion. While one is running, an order whose items reach the
+  minimum ships free, and the cart and checkout show Shipping as FREE. Below the minimum they
+  say how much more to add. With no promotion, the cart says shipping is calculated at
+  checkout instead of always showing FREE.
+- The footer has links to Goondu's social accounts, and its wordmark is the transparent
+  footer version, lined up with the copyright under it.
+- Sound plays in two layers, with the real tracks in place of the placeholders. One background
+  track runs under every page and never stops between them. In each of the four gates, that
+  gate's own track fades in on top of it and fades out on leaving. Every other page plays the
+  background alone.
+
 ### Removed
 
 - The choice between Paystack and Bank Transfer at checkout. The bank transfer page is no
   longer reached from the checkout.
+- The bank transfer page itself (`/merch/checkout/transfer`) is gone. Every payment goes
+  through Paystack, which offers bank transfer itself.
 
 ---
 
