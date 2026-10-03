@@ -9,57 +9,7 @@ import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
 import { getLenis } from "@/lib/animation/lenis";
 import type { GateId } from "@/lib/gates";
 
-/**
- * The gate pull-up, matched to Thorgal's numbers (read from its bundle,
- * 2026-09-26).
- *
- * AT REST THE FOOT IS THE FRAME. The page ends on the next gate's name ghosted
- * across a seam, with a strip of that gate's plate showing beneath it - 237px
- * of it at 1440, 135 on the phone frame - its top edge straight, as the frame
- * draws it. Nothing moves on its own; the arch only forms under a pull.
- *
- * THE PULL BENDS THE EDGE. Within `FOOT_ZONE` px of the end of the page, every
- * further wheel notch or finger movement adds to `arc` (0..`ARC_MAX`). Each
- * push counts for less as `arc` grows (`* (1 - arc / ARC_MAX)`), so it
- * stretches like a rubber band. The strip's top edge becomes a parabola whose
- * crown rises by `arc * ARC_HEIGHT` of the viewport while its ends stay put.
- * The page is not held: it scrolls as it always does, and the sheet is
- * re-placed every frame so it stays glued to the strip.
- *
- * LETTING GO. `IDLE_FRAMES` frames with no pull and the arc springs back on a
- * real spring (`SPRING`), not a tween - it can overshoot a hair, which is the
- * feel. Scrolling up does not release it early; it just stops feeding it.
- *
- * COMMITTING. At `THRESHOLD` (0.7), or `MOBILE_THRESHOLD` (0.3) below 768px
- * where a thumb covers less ground, the sheet sweeps up over `SWEEP` seconds to
- * cover the viewport. Its crown arcs to `ARC_MAX` mid-travel (`sin(pi * t)`)
- * and is flat on arrival. Then the route changes underneath it, invisibly.
- * Thorgal slides a sheet away on the new page; here the sheet IS the new page's
- * first section, so it simply becomes the page.
- *
- * WHAT CSS CANNOT DO. Thorgal draws this in WebGL and bends the plate column by
- * column with the curve. This project has no WebGL, so the curve is an exact
- * parabola clip and the plate inside is lifted by the curve's average height
- * (two-thirds of the crown) - the nearest a flat element gets to that bend.
- * At the very end of the sweep the lift is capped so the plate's foot never
- * leaves the bottom of the screen.
- *
- * HOW THE SHEET IS IN TWO PLACES AT ONCE. At rest it is absolutely positioned
- * in the strip, top-aligned, its lower two-thirds clipped by the strip
- * (`overflow: clip`, which also keeps a viewport-tall element from lengthening
- * the page). The moment a pull begins it is switched to `position: fixed` at
- * exactly where the strip is on screen, so the switch is invisible, and from
- * there it can bulge past the strip's top edge. A fixed element escapes an
- * ancestor's clip, which is the whole trick.
- *
- * THE PREVIEW IS THE REAL COMPONENT - the same `GateSection` the next route
- * paints, built by the page with the same props. Rebuilding the hero by hand
- * would guarantee a visible snap at the swap. It is `inert`: its CTA, cue and
- * chip must not be reachable while it is scenery.
- *
- * REDUCED MOTION gets none of this: the foot as drawn, still, and the cue above
- * it is a plain link with an instant route change.
- */
+
 export function GateCurtain({
   children,
   preview,
@@ -166,10 +116,12 @@ export function GateCurtain({
            * on the viewport's bottom (growing it by moving it up would lift its
            * bottom and show the page beneath mid-sweep). The plate is pinned
            * `room` down inside it, so it stays exactly viewport-sized. The clip
-           * is a quadratic whose control point sits twice the rise above the
-           * ends, which draws the 4x(1-x) parabola with its crown `rise` up.
+           * is half an ellipse, `w / 2` across and `rise` tall: it leaves the
+           * screen's sides steeply and rounds over the top, so it reads as a
+           * dome. The parabola it replaced (2026-10-03) left the sides at a
+           * shallow angle and, across a 1440 screen, read as a flat line.
            *
-           * The plate lifts by two-thirds of the rise - the curve's average -
+           * The plate lifts by pi/4 of the rise - the half-ellipse's average -
            * but never more than the edge is from the top, or its foot would
            * clear the viewport's bottom at the end of the sweep.
            */
@@ -179,9 +131,9 @@ export function GateCurtain({
             const w = sheet.offsetWidth;
             const h = sheet.offsetHeight;
             gsap.set(sheet, {
-              clipPath: `path("M0 ${room} Q ${w / 2} ${room - 2 * rise} ${w} ${room} L ${w} ${h} L 0 ${h} Z")`,
+              clipPath: `path("M0 ${room} A ${w / 2} ${rise} 0 0 1 ${w} ${room} L ${w} ${h} L 0 ${h} Z")`,
             });
-            gsap.set(plate, { top: room, y: -Math.min((2 * rise) / 3, Math.max(0, edge)) });
+            gsap.set(plate, { top: room, y: -Math.min((Math.PI / 4) * rise, Math.max(0, edge)) });
           };
 
           /** Every frame of a pull: glue the sheet to the strip, count idle frames, run the spring. */
