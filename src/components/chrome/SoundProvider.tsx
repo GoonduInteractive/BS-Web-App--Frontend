@@ -18,18 +18,15 @@ import { type GateId } from "@/lib/gates";
  * both, beside `GateEntryProvider` whose `shown` decides which gate the portal
  * is on.
  *
- * NOTHING IS FETCHED UNTIL THE VISITOR ASKS FOR SOUND. The elements carry
- * `preload="none"` and have no `src` at all until the first time sound is
- * turned on: a visitor who never touches the toggle - which is everyone, by
- * default - pays nothing for the tracks on a metered connection. A gate's track
- * is only fetched the first time the visitor stands in that gate with sound on.
+ * A gate's track is only fetched the first time the visitor stands in that
+ * gate with sound on, and nothing is fetched at all once they turn it off.
  *
- * SOUND IS OFF BY DEFAULT AND NEVER AUTOPLAYS, per the accessibility rule.
- * `play()` is only ever called from the click that turns it on, or from
- * walking into a gate while it is already playing - after a gesture the
- * visitor made. The preference is deliberately NOT remembered across visits:
- * restoring "on" would either autoplay or show a lie until the visitor touched
- * the page.
+ * SOUND IS ON BY DEFAULT, per the human (2026-10-03). Browsers refuse unmuted
+ * playback until the visitor has interacted with the page, so a refused
+ * `play()` is not a failure: the switch stays on and the tracks start on the
+ * visitor's first tap or key - in practice the NNỌỌ / WELCOME choice on the
+ * entry screen. The retry runs inside that gesture's handler, which is what
+ * Safari insists on.
  *
  * THE BED NEVER STOPS FOR NAVIGATION. Only the gate layer moves: walking into
  * a gate fades its track up over the bed, leaving fades it out, and going gate
@@ -45,12 +42,17 @@ export function useSound() {
   return ctx;
 }
 
+/** Autoplay held back for a gesture, as opposed to a file that will not play. */
+const refused = (err: unknown) => err instanceof DOMException && err.name === "NotAllowedError";
+
 export function SoundProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { shown } = useGateEntry();
-  const [on, setOn] = useState(false);
+  const [on, setOn] = useState(true);
   /** Read inside `play()` callbacks, which can resolve after the switch moved. */
-  const onRef = useRef(false);
+  const onRef = useRef(true);
+  /** Set while the browser is holding playback back for a first gesture. */
+  const awaitingGesture = useRef(false);
 
   const bed = useRef<HTMLAudioElement>(null);
   const bedFade = useRef<number | null>(null);
@@ -97,6 +99,40 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     layerPlaying.current = null;
   }, []);
 
+  /**
+   * The browser said "not until the visitor interacts". Wait for that, then
+   * start whatever should be playing by then - from inside the gesture.
+   */
+  const waitForGesture = useCallback(() => {
+    if (awaitingGesture.current) return;
+    awaitingGesture.current = true;
+    const events = ["pointerdown", "keydown", "touchend"] as const;
+
+    const resume = () => {
+      events.forEach((e) => window.removeEventListener(e, resume, true));
+      awaitingGesture.current = false;
+      if (!onRef.current) return;
+
+      const b = bed.current;
+      if (b?.paused) {
+        b.volume = 0;
+        void b.play().then(() => {
+          if (onRef.current) rampTo(b, bedFade, VOLUME);
+        }, giveUp);
+      }
+      const l = layer.current;
+      const want = layerPlaying.current;
+      if (l && want && l.paused) {
+        l.volume = 0;
+        void l.play().then(() => {
+          if (layerPlaying.current === want) rampTo(l, layerFade, VOLUME);
+        }, dropLayer);
+      }
+    };
+
+    events.forEach((e) => window.addEventListener(e, resume, true));
+  }, [rampTo, giveUp, dropLayer]);
+
   useEffect(() => {
     const b = bed.current;
     const l = layer.current;
@@ -109,8 +145,8 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     };
   }, [giveUp, dropLayer]);
 
-  // The bed: on and off with the switch, and nothing else. The `play()` here
-  // runs inside the click that set `on`, which is the gesture browsers require.
+  // The bed: on and off with the switch, and nothing else. On first load the
+  // browser usually refuses this `play()`; `waitForGesture` picks it up.
   useEffect(() => {
     onRef.current = on;
     const el = bed.current;
@@ -126,8 +162,8 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     el.volume = 0;
     void el.play().then(() => {
       if (onRef.current) rampTo(el, bedFade, VOLUME);
-    }, giveUp);
-  }, [on, rampTo, giveUp]);
+    }, (err) => (refused(err) ? waitForGesture() : giveUp()));
+  }, [on, rampTo, giveUp, waitForGesture]);
 
   // The gate layer: follows the switch and where the visitor is standing.
   useEffect(() => {
@@ -151,12 +187,12 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       el.volume = 0;
       void el.play().then(() => {
         if (layerPlaying.current === want) rampTo(el, layerFade, VOLUME);
-      }, dropLayer);
+      }, (err) => (refused(err) ? waitForGesture() : dropLayer()));
     };
 
     if (was && !el.paused) rampTo(el, layerFade, 0, start);
     else start();
-  }, [on, gate, rampTo, dropLayer]);
+  }, [on, gate, rampTo, dropLayer, waitForGesture]);
 
   useEffect(
     () => () => {
@@ -171,7 +207,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
   return (
     <SoundContext.Provider value={value}>
       {children}
-      {/* No `src` until the visitor asks; `loop` because neither has an end. */}
+      {/* `src` is set when a track is first wanted; `loop` because neither has an end. */}
       <audio ref={bed} loop preload="none" aria-hidden />
       <audio ref={layer} loop preload="none" aria-hidden />
     </SoundContext.Provider>
