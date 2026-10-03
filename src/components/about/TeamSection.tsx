@@ -18,7 +18,8 @@ import { TEAM_GROUPS, type TeamGroup, type TeamMember } from "@/types/team";
  * The people come from the CMS through the page (`lib/api/team.ts`); this
  * component only lays them out and animates them in.
  *
- * TABBED SINCE 2026-09-22, per the human: Core Team, Contributors and Partners,
+ * TABBED SINCE 2026-09-22, per the human: Core Team and Contributors (Partners
+ * moved out to their own band, `PartnersSection`, on 2026-09-28),
  * drawn with the Community page's own switcher (`PanelTabs`) rather than a
  * second control that looks like it - the same tabs, ids, keyboard pattern and
  * sliding underline the Community Wall and the Competition standings use.
@@ -59,9 +60,9 @@ export function TeamSection({ members, messages }: { members: readonly TeamMembe
             tabs={TEAM_GROUPS.map((key) => ({ key, label: t.tabs[key] }))}
             active={group}
             onChange={setGroup}
-            // Three tabs measure 333px against a 332px phone viewport, so the row
-            // wraps there - the slider reads each tab's own offset and follows it to
-            // the second line. One line, centred, from md, at the frame's gap.
+            // Wraps if the tabs ever outgrow a phone - the slider reads each tab's
+            // own offset and follows it to the second line. One line, centred, from
+            // md, at the frame's gap.
             className="mt-9 -ml-2.5 flex-wrap gap-x-4 gap-y-3 md:ml-0 md:justify-center md:gap-x-[1.875rem]"
           />
         </header>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ComicCover } from "@/components/merch/ComicCover";
 import { BracketButton } from "@/components/ui/BracketButton";
 import type { Locale } from "@/lib/utils/locales";
+import { comicLabel } from "@/lib/utils/comic-sales";
 import type { Messages } from "@/lib/utils/messages";
 import type { ComicIssue } from "@/types/merch";
 
@@ -114,7 +115,7 @@ export function ExploreComics({
                   {copy.title}
                 </h3>
                 <p className="text-menu-fg/85 font-body mt-2 text-[0.8125rem] leading-none">
-                  {copy.format}
+                  {comicLabel(issue, messages)}
                 </p>
               </Link>
             </li>

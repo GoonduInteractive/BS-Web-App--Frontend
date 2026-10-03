@@ -11,6 +11,7 @@ import { GodsWatching } from "@/components/competition/GodsWatching";
 import { HallOfAscension } from "@/components/competition/HallOfAscension";
 import { Leaderboard } from "@/components/competition/Leaderboard";
 import { RegionalLeagues } from "@/components/competition/RegionalLeagues";
+import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { GateCurtain } from "@/components/gates/GateCurtain";
 import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
 import { getJourney, getLeaderboard } from "@/lib/api/leaderboard";
@@ -87,7 +88,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
             puts the pull-up panel after it in flow - the arrangement The Game
             and The Characters use. */}
         <GateCurtain preview={gatePreview(next, locale, messages)} href={`/${locale}`} gate={next.id} title={nextCopy.title}>
-          <GodsWatching messages={messages} nextGate={next.id} />
+          <GodsWatching messages={messages} nextGate={next.id} footer={<SiteFooter messages={messages} locale={locale} />} />
         </GateCurtain>
       </div>
     </GatePage>

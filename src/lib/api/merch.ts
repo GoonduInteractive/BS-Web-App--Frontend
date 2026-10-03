@@ -165,9 +165,10 @@ const COMICS: readonly ComicIssue[] = [
   {
     slug: "trial-of-the-gods",
     copyKey: "trial",
-    price: 10000,
-    format: "physical",
+    // Print at the public store's ₦10,000. FLAGGED: online at ₦3,000 is the admin's placeholder, not Goondu's.
+    formats: { online: 3000, physical: 10000 },
     volume: 1,
+    chapter: 1,
     pages: ["/assets/comics/c1.png", "/assets/comics/c1.png", "/assets/comics/c1.png"],
     cover: {
       band: "bg-menu",
@@ -204,9 +205,10 @@ const COMICS: readonly ComicIssue[] = [
   {
     slug: "between-worlds",
     copyKey: "between",
-    price: 10000,
-    format: "online",
+    // Online only, at the frame's ₦10,000.
+    formats: { online: 10000 },
     volume: 2,
+    chapter: 1,
     pages: [],
     cover: {
       band: "bg-dusk",
@@ -225,19 +227,36 @@ const COMICS: readonly ComicIssue[] = [
   },
 ] as const;
 
+/**
+ * Printed volumes on sale, by volume number. SAMPLE: Volume 1 is complete (its
+ * one chapter is out), so it is offered in print; FLAGGED, the price and stock
+ * are placeholders, not Goondu's. Live, the admin's volume page sets these.
+ */
+const VOLUME_EDITIONS: Record<number, { price: number; stock: number }> = {
+  1: { price: 25000, stock: 40 },
+};
+
+/** Each chapter, with its volume's printed edition attached when one is on sale. */
+const SOLD: readonly ComicIssue[] = COMICS.map((issue) => {
+  const edition = VOLUME_EDITIONS[issue.volume];
+  if (!edition) return issue;
+  const lead = [...COMICS].filter((c) => c.volume === issue.volume).sort((a, b) => a.chapter - b.chapter)[0];
+  return { ...issue, edition: { ...edition, leadSlug: lead.slug } };
+});
+
 export async function getComics(): Promise<readonly ComicIssue[]> {
-  return COMICS;
+  return SOLD;
 }
 
 export async function getComic(slug: string): Promise<ComicIssue> {
-  const issue = COMICS.find((c) => c.slug === slug);
+  const issue = SOLD.find((c) => c.slug === slug);
   if (!issue) throw new MerchNotFoundError(slug);
   return issue;
 }
 
 /** The detail page's row: the other issues, repeated to the four the frame draws. */
 export async function getRelatedComics(slug: string): Promise<readonly ComicIssue[]> {
-  const others = COMICS.filter((c) => c.slug !== slug);
+  const others = SOLD.filter((c) => c.slug !== slug);
   if (!others.length) return [];
   return Array.from({ length: 4 }, (_, i) => others[i % others.length]);
 }

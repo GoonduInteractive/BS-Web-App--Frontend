@@ -15,20 +15,6 @@ bio: >-
   Kaira was once a corper in an academic institution, known for her elegance and strict code of respect. After a betrayal by her students and fellow teachers, she became bound to her signature crimson heels — vessels of her wrath. Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption.
 weapon: RED HEEL SHOES
 chi: SPIRITUAL / MYSTICAL RED CHI
-intro: >-
-  Elegant, vengeful, and poetic in speech. Kaira speaks softly but strikes
-  decisively. She demands respect and gives no second chances to those who mock
-  justice.
-
-
-  Age 23. Spiritual bond: Madam Koi Koi.
-lore: >-
-  Kaira was once a corper in an academic institution, known for her elegance and
-  strict code of respect. After a betrayal by her students and fellow teachers,
-  she became bound to her signature crimson heels — vessels of her wrath.
-
-
-  Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption.
 abilities:
   - name: KICK COMBO
     image: /assets/characters/Pose_01_Kaira_Normal_3D.jpg
@@ -52,7 +38,24 @@ abilities:
       crimson — as she telekinetically lifts her enemies off the ground.
       Suspended and helpless, they hang for a breath before she snaps them down
       with lethal finality.
+showAbilities: true
+intro: >-
+  Elegant, vengeful, and poetic in speech. Kaira speaks softly but strikes
+  decisively. She demands respect and gives no second chances to those who mock
+  justice.
+
+
+  Age 23. Spiritual bond: Madam Koi Koi.
 gallery:
   - /assets/characters/Pose_01_Kaira_3D.png
   - /assets/characters/Pose_01_Kaira_Normal_3D.jpg
+action: /assets/characters/Pose_01_Kaira_3D.png
+lore: >-
+  Kaira was once a corper in an academic institution, known for her elegance and
+  strict code of respect. After a betrayal by her students and fellow teachers,
+  she became bound to her signature crimson heels — vessels of her wrath.
+
+
+  Now an Ascendant, she walks the realms between the living and the dead, seeking balance through fear, justice, and redemption.
+abilitiesSection: hide
 ---

@@ -44,6 +44,17 @@ type PageTransition = {
    */
   claim: () => (() => void) | null;
   busy: () => boolean;
+  /**
+   * Open a cover some other transition has already drawn, the classic way.
+   *
+   * For the gate rise, which covers the screen with a red sheet of its own:
+   * at full cover the classic panels are snapped closed over it (same ember,
+   * so the handover is invisible), `commit` swaps what is underneath, and the
+   * panels split open left and right to reveal it. The caller holds `claim`
+   * for the whole thing; this does not touch the tear's own phase. Resolves
+   * once the panels are parked.
+   */
+  wipeOpen: (commit: () => void) => Promise<void>;
 };
 
 /** Named to avoid collision with React's own useTransition. */
@@ -280,6 +291,34 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     [openTear, panels, reduced],
   );
 
+  const wipeOpen = useCallback(
+    async (commit: () => void) => {
+      let committed = false;
+      try {
+        const tear = await loadTear();
+        const tl = tear.createClassicTear(panels(), { reduced });
+        tl.coverNow();
+        setActive(true);
+        committed = true;
+        commit();
+        // Let the swapped-in content paint before the split starts, for the
+        // reason `openTear` gives.
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        await new Promise<void>((resolve) => tl.open(resolve));
+      } catch {
+        // The swap is the priority, the animation is decoration: never leave
+        // the screen red or the new gate unswapped.
+        if (!committed) commit();
+        await loadTear()
+          .then((tear) => tear.resetPanels(panels()))
+          .catch(() => {});
+      } finally {
+        setActive(false);
+      }
+    },
+    [panels, reduced],
+  );
+
   /**
    * Back and forward play the transition too, per Design.
    *
@@ -346,7 +385,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   }, [navigate]);
 
   return (
-    <PageTransitionContext.Provider value={{ navigate, reveal, claim, busy }}>
+    <PageTransitionContext.Provider value={{ navigate, reveal, claim, busy, wipeOpen }}>
       {children}
       <TransitionOverlay leftRef={leftRef} rightRef={rightRef} topRef={topRef} sideRef={sideRef} active={active} />
     </PageTransitionContext.Provider>

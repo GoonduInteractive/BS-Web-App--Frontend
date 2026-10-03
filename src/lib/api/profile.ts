@@ -1,4 +1,5 @@
-import type { Profile } from "@/types/profile";
+import { getViewerState } from "@/lib/api/points";
+import type { Profile, SavedAddress } from "@/types/profile";
 
 /**
  * The player profile, from a mock adapter.
@@ -49,4 +50,25 @@ const PROFILE: Profile = {
 export async function getProfile(withStanding = true): Promise<Profile> {
   if (withStanding) return PROFILE;
   return { ...PROFILE, rank: undefined, standing: null };
+}
+
+/**
+ * FLAGGED: the frame's own mock values (`Merch Store- Checkout-Old User.png`),
+ * with Nsukka as the local government to match its city. Only a signed-in
+ * viewer has one, so today's signed-out store pre-fills nothing.
+ */
+const SAVED_ADDRESS: SavedAddress = {
+  firstName: "John",
+  lastName: "Doe",
+  phone: "801 234 5678",
+  line1: "123 Lagos Street, Victoria Island, Enugu",
+  city: "Nsukka",
+  zip: "410001",
+  state: "Enugu",
+  lgaId: "enugu-nsukka",
+};
+
+/** The viewer's saved delivery details, or null when signed out. */
+export async function getSavedAddress(): Promise<SavedAddress | null> {
+  return (await getViewerState()) === "signed-out" ? null : SAVED_ADDRESS;
 }

@@ -77,14 +77,29 @@ export type ListingEntry = {
  * `characters.ts` and `team.ts` hand-place art that no single object-fit rule
  * reproduces.
  */
+/** How a chapter is bought: read in the reader, or the printed book shipped. */
+export type ComicFormat = "online" | "physical";
+
+/**
+ * One chapter of a comic, as the store sells it (the team's rules, 2026-10-01):
+ * every chapter is sold on its own, online and/or in print. A whole volume is
+ * never sold online; a printed volume comes later, once a volume is complete.
+ */
 export type ComicIssue = {
   slug: string;
   /** Key into `messages.merch.comics.issues`. */
   copyKey: string;
-  price: number;
-  /** `Online` or `Physical`, as the frame labels them. */
-  format: "online" | "physical";
+  /** What each format costs. A format left out is not sold for this chapter. */
+  formats: Partial<Record<ComicFormat, number>>;
   volume: number;
+  /** Its place in the volume: Chapter 1, 2… */
+  chapter: number;
+  /**
+   * The printed volume this chapter belongs to, when it is on sale: the whole
+   * volume as one book, only once every chapter is out. `leadSlug` is the
+   * volume's first chapter, which its cart line and page are keyed on.
+   */
+  edition?: { price: number; stock: number; leadSlug: string };
   /**
    * The reader's pages, in order. Empty means the issue is not readable yet and
    * START READING has nowhere to go.

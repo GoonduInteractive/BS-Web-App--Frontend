@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils/cn";
 
 /**
  * A modal on the torn white sheet - the delivered `merch/tear-bg.svg`,
- * stretched to the panel the way the transfer screen and the order
- * confirmation stretch it - via `ornaments/tear-sheet.svg`, which is that
+ * stretched to the panel the way the order
+ * confirmation stretches it - via `ornaments/tear-sheet.svg`, which is that
  * file with ONE attribute added: `preserveAspectRatio="none"`. Without it the
  * artwork keeps its 843:689 ratio inside whatever box it is given and
  * letterboxes, so on a 332 x 732 phone sheet the white painted a 271px band

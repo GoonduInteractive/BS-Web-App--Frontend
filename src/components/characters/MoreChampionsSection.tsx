@@ -1,21 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 
 import { ScrollCue } from "@/components/gates/ScrollCue";
 import type { GateId } from "@/lib/gates";
 import { DownloadGameButton } from "@/components/ui/DownloadGameButton";
 import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
+import { cn } from "@/lib/utils/cn";
 import type { Messages } from "@/lib/utils/messages";
 
 export function MoreChampionsSection({
   messages,
   nextGate,
+  footer,
 }: {
   messages: Messages;
   /** The door the cue leads to, on the portal. */
   nextGate: GateId;
+  /**
+   * The site footer, on a gate page: drawn after the section and above the scroll
+   * cue, so the page ends content, footer, cue, then the pull-up to the next gate.
+   */
+  footer?: ReactNode;
 }) {
   const t = messages.characters.more;
   const root = useRef<HTMLElement>(null);
@@ -83,7 +90,12 @@ export function MoreChampionsSection({
         </div>
       </div>
 
-      <div data-more-cue className="relative z-10 flex justify-center pt-4 pb-20 lg:pt-[7.15%] lg:pb-[9.44%]">
+      {footer ? <div className="relative z-10">{footer}</div> : null}
+
+      <div
+        data-more-cue
+        className={cn("relative z-10 flex justify-center pb-20 lg:pb-[9.44%]", footer ? "pt-10" : "pt-4 lg:pt-[7.15%]")}
+      >
         <ScrollCue gate={nextGate} label={t.cue} />
       </div>
     </section>

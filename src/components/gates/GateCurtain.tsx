@@ -9,53 +9,7 @@ import { useGsapScene, type SceneBuilder } from "@/hooks/useGsapScene";
 import { getLenis } from "@/lib/animation/lenis";
 import type { GateId } from "@/lib/gates";
 
-/**
- * The gate pull-up, the way Thorgal does it.
- *
- * AT REST THE FOOT IS THE FRAME. The page ends on the next gate's name ghosted
- * across a seam, with a strip of that gate's plate showing beneath it - 237px
- * of it at 1440, 135 on the phone frame - and ordinary scrolling stops there.
- * Nothing moves on its own.
- *
- * THE PULL IS THE VISITOR'S. Scrolling on, once the page has nothing left to
- * give, starts to draw the next gate up over this one - not one-to-one with the
- * wheel, but as if something were drawing it up and it were heavy: each notch
- * adds to a target the sheet eases towards, so it lags the hand and keeps
- * moving a moment after it. Stop, and it settles back down to the seam. Keep
- * going past the point of no return (`THRESHOLD`), and it draws itself the rest
- * of the way and the route changes underneath it, invisibly.
- *
- * HOW THE SHEET IS IN TWO PLACES AT ONCE. At rest it is absolutely positioned
- * in the strip, top-aligned, its lower two-thirds clipped by the strip
- * (`overflow: clip`, which also keeps a viewport-tall element from lengthening
- * the page). The moment a pull begins it is switched to `position: fixed` and
- * translated to exactly where it already appears - the strip's top at the foot
- * of a fully scrolled viewport - so the switch is invisible, and from there the
- * translate carries it up over the outgoing page, which holds still underneath
- * because the page is not scrolling at all while it pulls. A fixed element
- * escapes an ancestor's clip, which is the whole trick. (The outgoing section
- * used to be `sticky` so a viewport-tall panel could ride over it in flow;
- * with a 237px strip in flow, sticky would shove the section down over the
- * strip and bury the scroll cue, so it is plain flow now.)
- *
- * THE PAGE HOLDS STILL WHILE IT PULLS. Lenis is asked to stop for the length of
- * the pull and started again when the sheet settles or the route changes;
- * scrolling back during a pull lowers the sheet first, and only once it is
- * down does the page scroll again.
- *
- * THE ARCH is an elliptical radius across the full width, `50% 50% 0 0 / 12%
- * 12% 0 0`, with the vertical component going 12% -> 0 as the sheet rises - a
- * dome, not two corners. The seam title fades out by 30% of the rise, before
- * the gate's own title arrives, so the name is never on screen twice.
- *
- * THE PREVIEW IS THE REAL COMPONENT - the same `GateSection` the next route
- * paints, built by the page with the same props. Rebuilding the hero by hand
- * would guarantee a visible snap at the swap. It is `inert`: its CTA, cue and
- * chip must not be reachable while it is scenery.
- *
- * REDUCED MOTION gets none of this: the foot as drawn, still, and the cue above
- * it is a plain link with an instant route change.
- */
+
 export function GateCurtain({
   children,
   preview,
@@ -63,7 +17,7 @@ export function GateCurtain({
   title,
   gate,
 }: {
-  /** The outgoing page's last section; the sheet rides over it while it holds still. */
+  /** The outgoing page's last section; the sheet rides over it. */
   children: ReactNode;
   /** What rises - the next gate's door (`gatePreview`) or the next page's first section. */
   preview: ReactNode;
@@ -102,7 +56,7 @@ export function GateCurtain({
       // `scroll: false` stops Next restoring a scroll position, then the jump to
       // the top happens while the sheet still covers everything, so the new
       // route paints exactly what is already on screen. Through Lenis where it
-      // runs - it was stopped for the pull, and `force` is how a stopped Lenis
+      // runs - it was stopped for the sweep, and `force` is how a stopped Lenis
       // is moved - and started again for the page that is arriving.
       router.push(href, { scroll: false });
       const lenis = getLenis();
@@ -120,8 +74,9 @@ export function GateCurtain({
   const scene = useCallback<SceneBuilder>(
     (gsap, q, host) => {
       const sheet = q("[data-pullup-sheet]")[0] as HTMLElement | undefined;
+      const plate = q("[data-pullup-plate]")[0] as HTMLElement | undefined;
       const seam = q("[data-pullup-seam]")[0] as HTMLElement | undefined;
-      if (!sheet) return;
+      if (!sheet || !plate) return;
 
       gsap.matchMedia().add(
         {
@@ -131,139 +86,191 @@ export function GateCurtain({
         (context) => {
           const { motion } = context.conditions as { motion: boolean };
           if (!motion) {
-            gsap.set([sheet, seam].filter(Boolean) as HTMLElement[], { clearProps: "all" });
+            gsap.set([sheet, plate, seam].filter(Boolean) as HTMLElement[], { clearProps: "all" });
             return;
           }
 
-          /** The distance the sheet travels: from the strip's top to the viewport's. */
-          const travel = () => window.innerHeight - host.getBoundingClientRect().height;
-          /** Scrolled as far as the page goes, within a couple of pixels of Lenis's settling. */
+          /** Near enough the end of the page that further scrolling is a pull. */
           const atFoot = () =>
-            window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+            window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - FOOT_ZONE;
+          const threshold = () => (window.innerWidth < MOBILE_BREAKPOINT ? MOBILE_THRESHOLD : THRESHOLD);
+          /** Where the strip's top edge is on screen right now. */
+          const stripTop = () => host.getBoundingClientRect().top;
+          /** An arc value as px of crown rise. */
+          const crown = (arc: number) => Math.max(0, arc) * ARC_HEIGHT * window.innerHeight;
+          const sweepEase = gsap.parseEase("power1.inOut");
 
-          // `target` is where the hand has asked the sheet to be; `shown` is where
-          // it is, easing towards `target`. The gap between them is the weight.
-          let target = 0;
-          const shown = { p: 0 };
+          let arc = 0;
           let active = false;
           let completing = false;
-          let releaseTimer = 0;
+          let idleFrames = -1;
+          let springVelocity = 0;
+          let springing = false;
 
-          const paint = () => {
-            // Heavy at first, quick at the end: a curve rather than a line.
-            const eased = shown.p ** 1.4;
+          /**
+           * Draw the sheet with its straight edge at `edge` px from the top of
+           * the viewport and its crown `rise` px above that.
+           *
+           * The box grows UPWARD by `room` - the tallest the crown can ever be -
+           * so the crown always has somewhere to go while the box's bottom stays
+           * on the viewport's bottom (growing it by moving it up would lift its
+           * bottom and show the page beneath mid-sweep). The plate is pinned
+           * `room` down inside it, so it stays exactly viewport-sized. The clip
+           * is half an ellipse, `w / 2` across and `rise` tall: it leaves the
+           * screen's sides steeply and rounds over the top, so it reads as a
+           * dome. The parabola it replaced (2026-10-03) left the sides at a
+           * shallow angle and, across a 1440 screen, read as a flat line.
+           *
+           * The plate lifts by pi/4 of the rise - the half-ellipse's average -
+           * but never more than the edge is from the top, or its foot would
+           * clear the viewport's bottom at the end of the sweep.
+           */
+          const draw = (edge: number, rise: number) => {
+            const room = crown(ARC_MAX);
+            gsap.set(sheet, { y: edge - room, height: `calc(100dvh + ${room}px)` });
+            const w = sheet.offsetWidth;
+            const h = sheet.offsetHeight;
             gsap.set(sheet, {
-              y: travel() * (1 - eased),
-              "--arch": `${12 * (1 - eased)}%`,
+              clipPath: `path("M0 ${room} A ${w / 2} ${rise} 0 0 1 ${w} ${room} L ${w} ${h} L 0 ${h} Z")`,
             });
-            if (seam) gsap.set(seam, { opacity: Math.max(0, 1 - shown.p / 0.3) });
+            gsap.set(plate, { top: room, y: -Math.min((Math.PI / 4) * rise, Math.max(0, edge)) });
           };
 
-          const follow = (to: number, duration: number, ease: string, onComplete?: () => void) =>
-            gsap.to(shown, { p: to, duration, ease, overwrite: true, onUpdate: paint, onComplete });
+          /** Every frame of a pull: glue the sheet to the strip, count idle frames, run the spring. */
+          const tick = () => {
+            if (!active || completing) return;
+
+            if (springing) {
+              // Semi-implicit Euler in four sub-steps; stiff springs need them.
+              const dt = Math.min(gsap.ticker.deltaRatio(60) / 60, 1 / 30) / 4;
+              for (let i = 0; i < 4; i++) {
+                const force = -SPRING.stiffness * arc - SPRING.damping * springVelocity;
+                springVelocity += (force / SPRING.mass) * dt;
+                arc += springVelocity * dt;
+              }
+              if (Math.abs(arc) < 0.0005 && Math.abs(springVelocity) < 0.01) {
+                settle();
+                return;
+              }
+            } else if (idleFrames >= 0 && ++idleFrames > IDLE_FRAMES) {
+              // The hand has let go. Motion values report no velocity after a
+              // pause this long, so the spring starts from rest.
+              springing = true;
+              springVelocity = 0;
+            }
+
+            draw(stripTop(), crown(arc));
+          };
 
           /** Switch the sheet from its place in the strip to the viewport. Same pixels. */
           const lift = () => {
             active = true;
-            getLenis()?.stop();
             gsap.set(sheet, { position: "fixed", top: 0, left: 0, width: "100%", zIndex: 30 });
-            paint();
+            // The seam title straddles the edge; keep it over the fixed sheet.
+            if (seam) gsap.set(seam, { zIndex: 31 });
+            gsap.ticker.add(tick);
           };
 
-          /** Put it back in the strip and let the page scroll again. */
+          /** Put it back in the strip. */
           const settle = () => {
+            gsap.ticker.remove(tick);
             active = false;
-            target = 0;
-            gsap.set(sheet, { clearProps: "position,top,left,width,zIndex,transform" });
-            // Back to inheriting the strip's resting 12%.
-            sheet.style.removeProperty("--arch");
-            if (seam) gsap.set(seam, { clearProps: "opacity" });
-            getLenis()?.start();
+            springing = false;
+            idleFrames = -1;
+            arc = 0;
+            gsap.set(sheet, { clearProps: "position,top,left,width,height,zIndex,transform,clipPath" });
+            gsap.set(plate, { clearProps: "top,transform" });
+            if (seam) gsap.set(seam, { clearProps: "opacity,zIndex" });
           };
 
           const complete = () => {
             completing = true;
-            window.clearTimeout(releaseTimer);
-            follow(1, 0.55, "power2.in", () => {
-              // A tear mid-flight owns the screen; leave it alone and come back down.
-              if (busy()) {
+            gsap.ticker.remove(tick);
+            // The page holds still under the sweep so the swap lands on scroll 0.
+            getLenis()?.stop();
+
+            const fromArc = arc;
+            const fromEdge = stripTop();
+            const sweep = { t: 0 };
+
+            const tween = gsap.to(sweep, {
+              t: 1,
+              duration: SWEEP,
+              ease: "none",
+              onUpdate: () => {
+                const t = sweep.t;
+                // The pull's arc hands over to the sweep's, which peaks at
+                // ARC_MAX mid-travel and is gone on arrival.
+                const sweepArc = Math.max(fromArc * (1 - t) ** 2, Math.sin(t * Math.PI) * ARC_MAX);
+                draw(fromEdge * (1 - sweepEase(t)), crown(sweepArc));
+                // The seam title goes before the gate's own title arrives.
+                if (seam) gsap.set(seam, { opacity: Math.max(0, 1 - t / 0.3) });
+              },
+              onComplete: () => {
+                // A tear mid-flight owns the screen; leave it alone and come back down.
+                if (busy()) {
+                  tween.reverse();
+                  return;
+                }
+                swap.current();
+              },
+              onReverseComplete: () => {
                 completing = false;
-                follow(0, 0.6, "power3.out", settle);
-                return;
-              }
-              swap.current();
+                getLenis()?.start();
+                springing = true;
+                springVelocity = 0;
+                gsap.ticker.add(tick);
+              },
             });
           };
 
-          /** The hand has stopped: past the point of no return it finishes, short of it it settles. */
-          const release = () => {
-            if (!active || completing) return;
-            if (target >= THRESHOLD) complete();
-            else follow(0, 0.7, "power3.out", settle);
-          };
-
-          /** One increment of pull, in pixels of scroll intent. Positive pulls up. */
+          /** One increment of pull, in px of scroll intent. Only a pull down the page counts. */
           const nudge = (delta: number) => {
-            if (completing) return;
+            if (completing || delta <= 0) return;
             if (!active) {
-              if (delta <= 0 || !atFoot()) return;
+              if (!atFoot() || busy()) return;
               lift();
             }
-            target = Math.min(1, Math.max(0, target + delta / (travel() * GAIN)));
-            window.clearTimeout(releaseTimer);
-            if (target >= 1) {
-              complete();
-              return;
-            }
-            if (target === 0) {
-              // Pulled back all the way: down at once, and the page is free again.
-              follow(0, 0.35, "power2.out", settle);
-              return;
-            }
-            follow(target, 0.45, "power2.out");
-            releaseTimer = window.setTimeout(release, 180);
+            springing = false;
+            idleFrames = 0;
+            // Rubber band: the further it is stretched, the less each push counts.
+            arc = Math.min(ARC_MAX, arc + delta * SENSITIVITY * (1 - arc / ARC_MAX));
+            draw(stripTop(), crown(arc));
+            if (arc >= threshold()) complete();
           };
 
           const onWheel = (event: WheelEvent) => {
             // A wheel inside a dialog or another scroller is theirs, not a pull.
             if ((event.target as Element | null)?.closest?.("[role='dialog'], [data-lenis-prevent]")) return;
+            // Line and page modes (Firefox) normalised to px.
             const unit = event.deltaMode === 1 ? 40 : event.deltaMode === 2 ? window.innerHeight : 1;
-            nudge(event.deltaY * unit);
+            if (atFoot() || active) nudge(event.deltaY * unit);
           };
 
-          let touchY: number | null = null;
+          let touchY = 0;
           const onTouchStart = (event: TouchEvent) => {
-            touchY = event.touches[0]?.clientY ?? null;
-            window.clearTimeout(releaseTimer);
+            touchY = event.touches[0]?.clientY ?? 0;
           };
           const onTouchMove = (event: TouchEvent) => {
             const y = event.touches[0]?.clientY;
-            if (y === undefined || touchY === null) return;
-            // A finger moving up the screen is a pull up; touch is quicker than a wheel.
-            nudge((touchY - y) * TOUCH_GAIN);
+            if (y === undefined) return;
+            // A finger moving up the screen is a pull up.
+            const delta = touchY - y;
             touchY = y;
-          };
-          const onTouchEnd = () => {
-            touchY = null;
-            window.clearTimeout(releaseTimer);
-            release();
+            if (atFoot() || active) nudge(delta);
           };
 
           window.addEventListener("wheel", onWheel, { passive: true });
           window.addEventListener("touchstart", onTouchStart, { passive: true });
           window.addEventListener("touchmove", onTouchMove, { passive: true });
-          window.addEventListener("touchend", onTouchEnd, { passive: true });
-          window.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
           return () => {
             window.removeEventListener("wheel", onWheel);
             window.removeEventListener("touchstart", onTouchStart);
             window.removeEventListener("touchmove", onTouchMove);
-            window.removeEventListener("touchend", onTouchEnd);
-            window.removeEventListener("touchcancel", onTouchEnd);
-            window.clearTimeout(releaseTimer);
-            // If the page goes while a pull is in flight, do not leave Lenis stopped.
-            if (active) getLenis()?.start();
+            gsap.ticker.remove(tick);
+            // If the page goes mid-sweep, do not leave Lenis stopped.
+            if (completing) getLenis()?.start();
           };
         },
       );
@@ -280,26 +287,15 @@ export function GateCurtain({
       {/* THE FOOT: the strip of the next gate the frames show at rest - 237px at
           1440, 135 on the phone frame. `overflow-clip` clips the viewport-tall
           sheet to it AND keeps it out of the page's scrollable height; a fixed
-          sheet escapes the clip, which is what the pull relies on.
-
-          `--arch` is declared here with a value so GSAP can tween it: an
-          unregistered custom property has no type and would interpolate as a
-          string. Resting at 12% draws the dome on the strip as the frame does. */}
-      <div
-        ref={root}
-        data-pullup
-        style={{ "--arch": "12%" } as React.CSSProperties}
-        className="relative h-[8.4375rem] lg:h-[14.8125rem]"
-      >
+          sheet escapes the clip, which is what the pull relies on. The top edge
+          is straight at rest; the scene draws the arch with a clip-path. */}
+      <div ref={root} data-pullup className="relative h-[8.4375rem] lg:h-[14.8125rem]">
         {/* The clip is its own box so the seam title beside it, which straddles
             the strip's top edge, is not cut in half. */}
         <div className="absolute inset-0 overflow-clip">
-          <div
-            data-pullup-sheet
-            className="absolute top-0 left-0 h-dvh w-full overflow-hidden [border-radius:50%_50%_0_0/var(--arch)_var(--arch)_0_0]"
-          >
+          <div data-pullup-sheet className="absolute top-0 left-0 h-dvh w-full overflow-hidden">
             {/* The next gate's own hero, inert. */}
-            <div inert className="pointer-events-none absolute inset-0 select-none">
+            <div data-pullup-plate inert className="pointer-events-none absolute inset-0 select-none">
               {preview}
             </div>
           </div>
@@ -310,8 +306,8 @@ export function GateCurtain({
             rgb(197,197,197) on black and rgb(218,220,221) on the plate, which no
             flat colour does). At a negative offset so it straddles the sheet's
             top edge exactly as the frame draws it: cap top 67px above the plate
-            line, the rest below. It goes with the seam - gone by 30% of the
-            rise, before the gate's own title arrives - because the preview is
+            line, the rest below. It stays through the pull and goes early in the
+            sweep, before the gate's own title arrives, because the preview is
             the real `GateSection` and renders that title itself.
 
             The chevron and SCROLL TO GO NEXT that complete the seam are rendered
@@ -329,13 +325,28 @@ export function GateCurtain({
   );
 }
 
+/* Thorgal's values, from its bundle. */
+
+/** How close to the end of the page counts as "at the bottom", in px. */
+const FOOT_ZONE = 50;
+/** `arc` gained per px of wheel or finger travel, before the rubber-band falloff. */
+const SENSITIVITY = 0.001;
+/** The ceiling `arc` stretches towards, and the sweep's peak. */
+const ARC_MAX = 1.5;
 /**
- * How much scroll a full pull takes, in multiples of the sheet's travel: 1.1
- * travels of wheel (about four notches on a 900px screen) to the top. The
- * point of no return is a little under half way - enough that a stray notch
- * settles back, and a second one commits.
+ * Crown rise per unit of `arc`, as a share of viewport height. Thorgal's is
+ * 0.075 (0.05 of a canvas padded to 1.5 viewports); raised on request
+ * (2026-09-26) so the arch reads clearly before it commits - about 115px at
+ * the desktop threshold on a 900px screen, rather than Thorgal's ~47px.
  */
-const GAIN = 1.1;
-const THRESHOLD = 0.45;
-/** A finger covers less ground than a wheel; weight it up so a swipe commits. */
-const TOUCH_GAIN = 1.6;
+const ARC_HEIGHT = 0.18;
+/** `arc` that commits to the next gate: desktop, and below `MOBILE_BREAKPOINT`. */
+const THRESHOLD = 0.7;
+const MOBILE_THRESHOLD = 0.3;
+const MOBILE_BREAKPOINT = 768;
+/** Frames without a pull before it lets go. */
+const IDLE_FRAMES = 6;
+/** The spring it lets go on. */
+const SPRING = { stiffness: 300, damping: 25, mass: 0.8 };
+/** Seconds for the sweep up over the page. */
+const SWEEP = 0.7;

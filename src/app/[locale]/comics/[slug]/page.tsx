@@ -11,6 +11,7 @@ import { ComicCover } from "@/components/merch/ComicCover";
 import { getComic, getComics, getRelatedComics } from "@/lib/api/merch";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
+import { comicLabel } from "@/lib/utils/comic-sales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
 
@@ -89,7 +90,7 @@ export default async function Page({
                       {itemCopy.title}
                     </h2>
                     <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">
-                      {itemCopy.format}
+                      {comicLabel(item, messages)}
                     </p>
                   </Link>
                 </li>

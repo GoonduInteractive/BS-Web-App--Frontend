@@ -38,3 +38,19 @@ export type Profile = {
   /** Null when the player is in no tournament - the frame's first state. */
   standing: TournamentStanding | null;
 };
+
+/**
+ * The delivery details a signed-in player saved last time. The checkout
+ * pre-fills from it and every field stays editable, so they can order for
+ * someone else. `state` and `lgaId` are `nigeria-lga-data` names and ids.
+ */
+export type SavedAddress = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  line1: string;
+  city: string;
+  zip: string;
+  state: string;
+  lgaId: string;
+};

@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { BracketButton } from "@/components/ui/BracketButton";
+import { TornPlate } from "@/components/ui/TornPlate";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { usePointerDrift } from "@/hooks/usePointerDrift";
 import type { Messages } from "@/lib/utils/messages";
@@ -41,9 +42,19 @@ export function AboutHero({ messages }: { messages: Messages }) {
       <div className="relative z-10 mx-auto grid w-full max-w-360 flex-1 grid-cols-1 px-6 pb-28 md:px-27 lg:grid-cols-[minmax(0,1fr)_18.5rem] lg:pb-24">
         {/* ---- Left column: title, tagline, body ---- */}
         <div className="pt-32 md:pt-40 lg:pt-72.75">
+          {/* The page indicator (`new-updates/about.png`, 2026-09-26): the
+              back-to-Ọnụ-Ụzọ chip's plate and type (`GateReturn`), without its
+              arrow or action - it names the page, it goes nowhere. It takes the
+              title's old top and the title drops below it. */}
+          <Reveal>
+            <span className="text-ink font-body relative isolate inline-flex h-7.5 items-center px-4 text-caption leading-none font-semibold select-none">
+              <TornPlate className="text-gild" />
+              {t.chip}
+            </span>
+          </Reveal>
           <Reveal
             as="h1"
-            className="font-display text-menu-fg text-game-hero font-semibold tracking-[-0.055em] uppercase"
+            className="font-display text-menu-fg text-game-hero mt-7 font-semibold tracking-[-0.055em] uppercase"
           >
             {t.title.split("\n").map((line) => (
               <span key={line} className="block">

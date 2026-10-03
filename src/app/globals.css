@@ -605,28 +605,34 @@
 }
 
 /*
- * The Active Player Map's Leaflet bits. Leaflet's own stylesheet comes with
- * the map's chunk; these are the site's rules over it. The land is a GeoJSON
- * layer whose fill is the 8px dot pattern ActiveMap puts in the document; the
- * dot pane fades against the street tiles as the zoom crosses continent
- * level. Pins are Leaflet markers wearing the delivered SVG.
+ * The Active Player Map's MapLibre bits. MapLibre's own stylesheet comes with
+ * the map's chunk; these are the site's rules over it. The dotted land, the
+ * cover and the pulse are drawn in WebGL (see ActiveMap); pins are MapLibre
+ * markers wearing the delivered SVG.
  */
-.map-disc.leaflet-container {
+.map-disc.maplibregl-map {
   background: var(--color-globe);
   font: inherit;
 }
 
-.map-land {
-  fill: url(#map-dots);
+.map-disc .maplibregl-canvas:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: -2px;
 }
 
-.leaflet-overlay-pane {
-  transition: opacity 160ms var(--ease-gate);
-}
-
-/* The marker div is Leaflet's (it carries the translate); the pop is the artwork's. */
+/* The marker div is MapLibre's (it carries the translate); the pop is the artwork's. */
 .map-pin {
   cursor: pointer;
+}
+
+.map-pin:hover,
+.map-pin:focus-visible,
+.map-pin.is-selected {
+  z-index: 1;
+}
+
+.map-pin--player {
+  pointer-events: none;
 }
 
 .map-pin img {

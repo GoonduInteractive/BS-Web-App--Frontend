@@ -510,7 +510,8 @@
       "pinLabel": "{city}, {country}: {n} active players",
       "zoomIn": "Zoom in",
       "zoomOut": "Zoom out",
-      "place": "{city}, {country}"
+      "place": "{city}, {country}",
+      "unavailable": "The map needs WebGL, which is switched off in this browser."
     },
     "invite": {
       "title": "INVITE FRIENDS",
@@ -545,7 +546,7 @@
     "cta": "BACK TO HOME"
   },
   "register": {
-    "cta": "REGISTER",
+    "cta": "JOIN BEYOND SERVICE",
     "label": "Register",
     "close": "Close",
     "title": "JOIN THE COMMUNITY",
@@ -567,7 +568,8 @@
       "label": "Already registered",
       "title": "ALREADY REGISTERED",
       "body": "{email} is already on the list — we have your details from an earlier registration. There is nothing more to do; we will reach you on WhatsApp and email."
-    }
+    },
+    "ctaShort": "JOIN BS"
   },
   "footer": {
     "navLabel": "Footer",
@@ -575,10 +577,18 @@
     "studioAlt": "Goondu Games",
     "copyright": "© 2026 goondugames.",
     "createdBy": "Created by",
+    "social": {
+      "label": "Follow Goondu Games",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "x": "X",
+      "youtube": "YouTube"
+    },
     "links": {
       "terms": "Terms of Use",
       "privacy": "Privacy Policy",
-      "about": "About"
+      "about": "About",
+      "contact": "Contact Support"
     }
   },
   "about": {
@@ -593,7 +603,8 @@
       "emphasis": "We're changing that.",
       "aside": "Goondu Games is a game development studio creating immersive experiences inspired by Igbo mythology, culture, and storytelling.",
       "cta": "EXPLORE OUR WORLD",
-      "plateAlt": "The Goondu Games team and players together at a Beyond Service event"
+      "plateAlt": "The Goondu Games team and players together at a Beyond Service event",
+      "chip": "ABOUT GOONDU"
     },
     "story": {
       "chip": "OUR STORY",
@@ -610,9 +621,11 @@
       "title": "BEHIND GOONDU GAMES",
       "tabs": {
         "core": "Core Team",
-        "contributors": "Contributors",
-        "partners": "Partners"
+        "contributors": "Contributors"
       }
+    },
+    "partners": {
+      "title": "PARTNERS"
     }
   },
   "merch": {
@@ -704,7 +717,9 @@
       "shipping": "Shipping",
       "free": "FREE",
       "total": "Total",
-      "checkout": "PROCEED TO CHECKOUT"
+      "checkout": "PROCEED TO CHECKOUT",
+      "atCheckout": "Calculated at checkout",
+      "freeShippingGap": "Add {amount} more for free shipping"
     },
     "sizes": {
       "XS": "XSmall",
@@ -736,9 +751,9 @@
       "zip": "Zip Code",
       "zipPlaceholder": "eg. 510001",
       "deliveryMethod": "DELIVERY METHOD",
-      "delivery": "Delivery",
+      "delivery": "Home Delivery",
       "pickup": "Pickup",
-      "pickupNote": "Insert the choosen Pickup address for Goondu",
+      "pickupNote": "Item delivered to a partner collection center for you to pick up.",
       "paymentMethod": "PAYMENT METHOD",
       "paystack": "Paystack",
       "bankTransfer": "Bank Transfer",
@@ -750,27 +765,24 @@
       "total": "Total",
       "secureTitle": "Secure Checkout",
       "secureBody": "Your payment information is encrypted and secure.",
-      "placeOrder": "PLACE ORDER"
-    },
-    "transfer": {
-      "heading": "PLEASE COMPLETE YOUR PAYMENT IN YOUR BANKING APP WITHIN {window}.",
-      "window": "25 MINUTES",
-      "accountNumber": "Account Number",
-      "bankName": "Bank Name",
-      "beneficiary": "Beneficiary Name",
-      "amount": "Amount",
-      "copy": "Copy",
-      "copied": "Copied",
-      "warning": "Transfer exact amount to avoid failure.",
-      "changeMethod": "CHANGE PAYMENT METHOD",
-      "sent": "I’VE SENT IT"
+      "placeOrder": "PLACE ORDER",
+      "homeDeliveryNote": "Item delivered directly to your address.",
+      "pickupPrivacy": "For Pickup we only need your state and local government, not your home address.",
+      "lga": "Local Government",
+      "lgaPlaceholder": "Select Local Government",
+      "lgaNeedsState": "Select a state first",
+      "chooseLocation": "Choose your state and local government to see shipping.",
+      "shippingPending": "Select a location",
+      "payWith": "Pay with card, bank transfer or USSD in the Paystack window.",
+      "nothingToShip": "Nothing to ship: online chapters open in the reader once paid."
     },
     "confirmed": {
       "title": "ORDER CONFIRMED",
       "body": "Your order is currently being processed. You will receive an order confirmation email shortly with expected delivery date for your items.",
       "cta": "BACK TO PROFILE",
       "label": "Order confirmed",
-      "close": "Close"
+      "close": "Close",
+      "help": "Need help, contact us at"
     },
     "comics": {
       "partner": "Goondu Games X Partner",
@@ -794,6 +806,23 @@
           "coverAlt": "Between Worlds, volume two — Soma mid-stance, trailing fire",
           "coverTitle": "BETWEEN WORLDS"
         }
+      },
+      "formatNames": {
+        "online": "Online",
+        "physical": "Physical"
+      },
+      "formatNotes": {
+        "online": "Read in the reader. Nothing to ship.",
+        "physical": "The printed book, shipped to you."
+      },
+      "label": "{formats} – Vol. {volume}, Ch. {chapter}",
+      "chooseFormat": "Choose a format",
+      "volumeEdition": {
+        "label": "Physical – Vol. {volume}, collected edition",
+        "title": "THE WHOLE VOLUME IN PRINT",
+        "body": "Volume {volume}: every chapter, collected in one printed book.",
+        "add": "ADD VOLUME TO CART",
+        "soldOut": "SOLD OUT"
       }
     }
   },
@@ -875,6 +904,20 @@
       "viewProfile": "View Profile",
       "login": "Login",
       "menuLabel": "Account menu"
+    },
+    "payout": {
+      "title": "PAYOUT SETTINGS",
+      "body": "The bank account your tournament prize money is paid into. We confirm these details before any payout.",
+      "bank": "Bank",
+      "bankPlaceholder": "Select bank",
+      "accountNumber": "Account Number",
+      "accountNumberPlaceholder": "10-digit account number",
+      "accountNumberError": "Enter the 10-digit account number",
+      "accountName": "Account Name",
+      "accountNamePlaceholder": "As it appears on the account",
+      "cardLabel": "PAYOUT ACCOUNT",
+      "cardEmpty": "Not set yet",
+      "cardAdd": "Add bank details"
     }
   },
   "comics": {
@@ -912,7 +955,8 @@
       },
       "pageAlt": "{title}, page {n}",
       "shareHeading": "SHARE THIS COMIC",
-      "shareSub": "Gain claimable community points\nby sharing this comic with friends."
+      "shareSub": "Gain claimable community points\nby sharing this comic with friends.",
+      "shielded": "Reading paused. Come back to this window to keep reading."
     },
     "synopsis": {
       "trial": [
@@ -924,5 +968,10 @@
   },
   "legal": {
     "lastUpdated": "Last Updated:"
+  },
+  "support": {
+    "title": "NEED SUPPORT?",
+    "body": "For payment disputes, account issues, transaction inquiries, or general assistance, contact:",
+    "email": "support@beyondservicegame.com"
   }
 }

@@ -3,10 +3,12 @@
 import Image from "next/image";
 
 import { useCart } from "@/components/merch/CartProvider";
+import { SupportNote } from "@/components/ui/SupportNote";
 import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { entryTotal, resolveCartLines } from "@/lib/utils/cart-entry";
+import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
 import type { ComicIssue, Product } from "@/types/merch";
 
 /**
@@ -15,22 +17,35 @@ import type { ComicIssue, Product } from "@/types/merch";
  * Frame at 1440 - summary panel 904..1347 x 137..560, totals 904..1347 x
  * 592..1075.
  *
- * PLACE ORDER TAKES NO PAYMENT. There is no backend, no payment SDK and no card
- * detail anywhere in this build; it advances to the designed confirmation. That
- * is the whole of what it does, and it is recorded here so nobody has to read
- * the handler to find out.
+ * PLACE ORDER IS THE ONLY WAY TO PAY, and on the live site it opens Paystack,
+ * which offers card, bank transfer and USSD. In this build it takes no payment:
+ * there is no backend, no Paystack key and no card detail anywhere, so it
+ * advances straight to the designed confirmation. Recorded here so nobody has
+ * to read the handler to find out.
  */
 export function CheckoutSummary({
   products,
   comics,
   messages,
   locale,
+  rate,
+  promo,
+  shipping: ships = true,
+  placeError,
   onPlaceOrder,
 }: {
   products: readonly Product[];
   comics: readonly ComicIssue[];
   messages: Messages;
   locale: Locale;
+  /** What delivery costs for the chosen method and place; null until a place is chosen. */
+  rate: number | null;
+  /** The free shipping promotion: an order reaching its minimum ships free. */
+  promo: FreeShippingPromo;
+  /** False when nothing in the cart ships: no shipping line, and nothing added for it. */
+  shipping?: boolean;
+  /** Why PLACE ORDER can't go on yet, e.g. no place chosen. */
+  placeError?: string | null;
   onPlaceOrder: () => void;
 }) {
   const { lines } = useCart();
@@ -40,7 +55,13 @@ export function CheckoutSummary({
   const resolved = resolveCartLines({ lines, products, comics, messages, locale });
   const itemTotal = resolved.reduce((sum, entry) => sum + entryTotal(entry), 0);
   const pointDiscount = 0;
-  const total = itemTotal - pointDiscount;
+  const subtotal = itemTotal - pointDiscount;
+  // Free under a running promotion whose minimum the items reach (2026-10-01);
+  // otherwise the place's price, unknown until a place is chosen.
+  const free = ships && shipsFree(promo, itemTotal);
+  const shipping = !ships || free ? 0 : rate;
+  const gap = ships && !free && promoLive(promo) ? promo.minimumOrder - itemTotal : 0;
+  const total = subtotal + (shipping ?? 0);
 
   return (
     <div>
@@ -68,7 +89,10 @@ export function CheckoutSummary({
                     <h3 className="font-display text-menu-fg text-[1.375rem] leading-none font-semibold tracking-[-0.03em] uppercase">
                       {entry.name}
                     </h3>
-                    {/* A comic has no colourway or size to name. */}
+                    {/* A comic has no colourway or size; it names its format instead. */}
+                    {entry.formatLabel ? (
+                      <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">{entry.formatLabel}</p>
+                    ) : null}
                     {entry.variant ? (
                       <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">
                         {colour ? t.colours[colour.labelKey] : line.colourId}
@@ -96,11 +120,24 @@ export function CheckoutSummary({
           bold
           className="mt-6.25"
         />
-        <Row label="" value={formatPrice(total, locale, t.price)} className="mt-6.25" />
+        <Row label="" value={formatPrice(subtotal, locale, t.price)} className="mt-6.25" />
 
         <hr className="border-ink/25 mt-9" />
 
-        <Row label={c.shippingRow} value={c.free} valueClass="text-moss font-semibold" className="mt-5.5" />
+        {/* Priced by method, state and local government. Not drawn when nothing ships. */}
+        {ships ? (
+        <Row
+          label={c.shippingRow}
+          value={free ? c.free : shipping === null ? c.shippingPending : formatPrice(shipping, locale, t.price)}
+          valueClass={free ? "text-moss font-semibold" : shipping === null ? "text-ink/60" : ""}
+          className="mt-5.5"
+        />
+        ) : null}
+        {gap > 0 ? (
+          <p className="font-body text-body-sm mt-2.5 leading-snug">
+            {t.summary.freeShippingGap.replace("{amount}", formatPrice(gap, locale, t.price))}
+          </p>
+        ) : null}
         <Row
           label={c.total}
           value={formatPrice(total, locale, t.price)}
@@ -125,7 +162,16 @@ export function CheckoutSummary({
           {c.placeOrder}
           <span aria-hidden>›</span>
         </button>
+        {placeError ? (
+          <p role="alert" className="text-signal font-body text-body-sm mt-3 leading-snug">
+            {placeError}
+          </p>
+        ) : null}
+        {/* One button: Paystack's own window offers every way to pay. */}
+        <p className="font-body text-body-sm mt-3 leading-snug">{c.payWith}</p>
       </section>
+
+      <SupportNote messages={messages} layout="stacked" className="mt-9" />
     </div>
   );
 }
