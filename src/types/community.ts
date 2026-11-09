@@ -1,7 +1,6 @@
 /**
- * The community wall's contract. Notes are what the game team will one day
- * serve; until then `src/lib/api/community.ts` mocks them. A component never
- * learns which.
+ * The community wall's contract. Notes come from the game backend through
+ * `src/lib/api/community.ts`.
  */
 
 /** The four papers a note can be written on - the frame's tints, as tokens. */

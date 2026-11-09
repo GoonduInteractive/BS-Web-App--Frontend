@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
-import { isVolumeLine, lineFormat, volumeLabel } from "@/lib/utils/comic-sales";
+import { lineFormat } from "@/lib/utils/comic-sales";
 import type { CartLine, ComicIssue, Product, TileField } from "@/types/merch";
 
 /** The tile grounds, in one place rather than copied into every consumer. */
@@ -51,6 +51,8 @@ export type CartEntry = {
    * so a second copy buys nothing. Its quantity is fixed at 1.
    */
   singleCopy: boolean;
+  /** How many the API has; null where it keeps no count. */
+  stock: number | null;
 };
 
 export function resolveCartLines({
@@ -75,54 +77,38 @@ export function resolveCartLines({
         {
           line,
           slug: product.slug,
-          name: t.products[product.copyKey].name,
+          name: product.copy.name,
           image: product.image,
-          price: product.price,
+          // The variant's own price: a size can cost more than the product.
+          price: product.variants?.find((v) => v.id === line.variantId)?.price ?? product.price,
           tileClass: FIELD[product.tile],
           href: `/${locale}/merch/${product.slug}`,
           variant: true,
           singleCopy: false,
+          stock: product.variants?.find((v) => v.id === line.variantId)?.stock ?? null,
         },
       ];
     }
 
     const issue = comics.find((c) => c.slug === line.slug);
-    // The printed volume: keyed on its first chapter, priced as one book. If it has gone off sale since, the line is dropped.
-    if (issue && isVolumeLine(line)) {
-      if (!issue.edition) return [];
-      return [
-        {
-          line,
-          slug: issue.slug,
-          name: t.comics.issues[issue.copyKey as keyof typeof t.comics.issues].title,
-          image: issue.cover.figure,
-          price: issue.edition.price,
-          tileClass: issue.cover.band,
-          href: `/${locale}/merch/comics/${issue.slug}#volume`,
-          variant: false,
-          formatLabel: volumeLabel(issue, messages),
-          singleCopy: false,
-        },
-      ];
-    }
-
     if (issue) {
       const format = lineFormat(line, issue);
-      const copy = t.comics.issues[issue.copyKey as keyof typeof t.comics.issues];
+      const copy = issue.copy;
       return [
         {
           line,
           slug: issue.slug,
           name: copy.title,
-          // The cover is composed rather than a file, so a row thumbnail uses
-          // the issue's own render on the cover's band colour.
-          image: issue.cover.figure,
+          // A composed cover isn't a file, so a row thumbnail uses the issue's
+          // own render on the cover's band colour; a live cover is one.
+          image: issue.cover.image ?? issue.cover.figure,
           price: issue.formats[format] ?? 0,
           tileClass: issue.cover.band,
           href: `/${locale}/merch/comics/${issue.slug}`,
           variant: false,
           formatLabel: t.comics.formatNames[format],
           singleCopy: format === "online",
+          stock: issue.stock?.[format] ?? null,
         },
       ];
     }

@@ -2,14 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ComicCover } from "@/components/merch/ComicCover";
 import { useCart } from "@/components/merch/CartProvider";
+import { toast } from "@/components/ui/Toaster";
 import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { comicFormats, comicLabel } from "@/lib/utils/comic-sales";
+import { roomLeft } from "@/lib/utils/stock";
 import type { ComicFormat, ComicIssue } from "@/types/merch";
 
 /**
@@ -35,12 +37,20 @@ export function ComicDetail({
 }) {
   const t = messages.merch;
   const c = t.comics;
-  const v = c.volumeEdition;
-  const copy = c.issues[issue.copyKey as keyof typeof c.issues];
-  const { add } = useCart();
+  const copy = issue.copy;
+  const { add, busy, failed, clearFailed, lines } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const added = (ok: boolean) => {
+    if (ok) toast(t.detail.added.replace("{name}", copy.title), { label: t.detail.viewCart, href: `/${locale}/merch/cart` });
+  };
   const formats = comicFormats(issue);
   const [format, setFormat] = useState<ComicFormat>(formats[0] ?? "physical");
+  const stock = issue.stock?.[format] ?? null;
+  const left = roomLeft(stock, issue.variants?.[format], lines);
+  const amount = left === null ? quantity : Math.min(quantity, Math.max(left, 1));
+
+  // A refusal is about what was chosen: it goes with the choice, and doesn't follow to another comic.
+  useEffect(() => clearFailed(), [clearFailed, format, quantity]);
 
   return (
     <>
@@ -109,6 +119,7 @@ export function ComicDetail({
                   <span>
                     <span className="text-menu-fg font-body text-body block leading-none">
                       {c.formatNames[f]} · {formatPrice(issue.formats[f] ?? 0, locale, t.price)}
+                      {issue.stock?.[f] === 0 ? <span className="text-signal"> · {t.detail.soldOut}</span> : null}
                     </span>
                     <span className="text-menu-fg/70 font-body text-body-sm mt-2 block leading-snug">{c.formatNotes[f]}</span>
                   </span>
@@ -128,16 +139,17 @@ export function ComicDetail({
               <div className="border-menu-fg/30 flex h-13.75 w-40 items-center justify-between border px-5">
                 <Step
                   label={t.detail.decrease}
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  disabled={quantity <= 1}
+                  onClick={() => setQuantity(Math.max(1, amount - 1))}
+                  disabled={amount <= 1}
                   glyph="−"
                 />
                 <span className="text-menu-fg font-body text-body">
-                  {quantity}
+                  {amount}
                 </span>
                 <Step
                   label={t.detail.increase}
-                  onClick={() => setQuantity((q) => q + 1)}
+                  onClick={() => setQuantity(amount + 1)}
+                  disabled={left !== null && amount >= left}
                   glyph="+"
                 />
               </div>
@@ -149,41 +161,24 @@ export function ComicDetail({
             <button
               type="button"
               onClick={() =>
-                add({ slug: issue.slug, colourId: format, size: "M", quantity: format === "online" ? 1 : quantity })
+                void add({ slug: issue.slug, colourId: format, size: "M", quantity: format === "online" ? 1 : amount }).then(added)
               }
-              className="bg-signal text-menu-fg font-display focus-visible:outline-signal h-13.75 flex-1 cursor-pointer text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase transition-opacity duration-150 ease-gate hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 lg:min-w-79.75"
+              disabled={busy || left === 0}
+              aria-busy={busy || undefined}
+              className={`bg-signal text-menu-fg font-display focus-visible:outline-signal h-13.75 flex-1 cursor-pointer ${busy ? "disabled:cursor-wait" : "disabled:cursor-not-allowed"} disabled:opacity-60 text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase transition-opacity duration-150 ease-gate hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 lg:min-w-79.75`}
             >
-              {t.detail.addToCart}
+              {stock === 0 ? t.detail.soldOut : left === 0 ? t.detail.allInCart : t.detail.addToCart}
             </button>
           </div>
-
-          {/* THE PRINTED VOLUME, when its volume is complete and on sale in print
-              (the team's rules, 2026-10-01). Online there is no such thing: a
-              volume is read chapter by chapter. No frame draws this; FLAGGED. */}
-          {issue.edition ? (
-            <section id="volume" aria-labelledby="volume-title" className="border-menu-fg/30 mt-10 scroll-mt-32 border px-5.5 py-5">
-              <h2 id="volume-title" className="font-display text-menu-fg text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase">
-                {v.title}
-              </h2>
-              <p className="text-menu-fg/70 font-body text-body-sm mt-2.5 leading-snug">
-                {v.body.replace("{volume}", String(issue.volume))}
-              </p>
-              <div className="mt-4.5 flex flex-wrap items-center justify-between gap-4">
-                <p className="font-display text-gild text-[1.625rem] leading-none font-semibold tracking-[-0.04em]">
-                  {formatPrice(issue.edition.price, locale, t.price)}
-                </p>
-                {/* Keyed on the volume's first chapter, so the same volume added from any of its chapters is one line. */}
-                <button
-                  type="button"
-                  disabled={issue.edition.stock === 0}
-                  onClick={() => add({ slug: issue.edition!.leadSlug, colourId: "volume", size: "M", quantity: 1 })}
-                  className="border-menu-fg/80 text-menu-fg font-display focus-visible:outline-signal hover:bg-menu-fg/10 h-11.5 cursor-pointer border px-5 text-[1.0625rem] leading-none font-semibold tracking-[0.01em] uppercase transition-colors duration-150 ease-gate focus-visible:outline-2 focus-visible:outline-offset-4 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {issue.edition.stock === 0 ? v.soldOut : v.add}
-                </button>
-              </div>
-            </section>
+          {/* Says why + has stopped. */}
+          {left !== null && left > 0 && amount >= left ? (
+            <p className="text-menu-fg/70 font-body text-body-sm mt-3 leading-snug">{t.detail.onlyLeft.replace("{count}", String(left))}</p>
           ) : null}
+          {/* An add the API refused. Always here, so a screen reader hears it; empty, it takes no room. */}
+          <p role="alert" className={`text-signal font-body text-body-sm leading-snug ${failed ? "mt-4" : ""}`}>
+            {failed ? messages.auth.errors[failed] : null}
+          </p>
+
         </div>
       </div>
 
@@ -195,7 +190,7 @@ export function ComicDetail({
 
           <ul className="mt-9 grid grid-cols-1 gap-x-7 gap-y-12 sm:grid-cols-2 lg:mt-5.25 lg:grid-cols-4">
             {related.map((item, i) => {
-              const itemCopy = c.issues[item.copyKey as keyof typeof c.issues];
+              const itemCopy = item.copy;
               return (
                 <li key={`${item.slug}-${i}`}>
                   <Link

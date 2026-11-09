@@ -1,33 +1,37 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 
+import { useAuth } from "@/components/auth/AuthProvider";
 import { PodiumFrame } from "@/components/competition/PodiumFrame";
 import { Scene } from "@/components/competition/Scene";
 import { Reveal } from "@/components/motion/Reveal";
 import { SideScroller } from "@/components/ui/SideScroller";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { filterEntries, type LeaderboardFilter } from "@/lib/api/leaderboard";
+import { getMyStanding } from "@/lib/api/standing";
 import { cn } from "@/lib/utils/cn";
+import { filterEntries } from "@/lib/utils/leaderboard-filter";
 import type { Messages } from "@/lib/utils/messages";
-import type {
-  JourneyEntry,
-  LeaderboardEntry,
-  LeaderboardSeason,
-  PodiumEntry,
-} from "@/types/leaderboard";
+import type { JourneyEntry, LeaderboardEntry, LeaderboardFilter, PodiumEntry } from "@/types/leaderboard";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 
-
+/**
+ * The LEADERBOARD panel: filters, the podium, the table, and YOUR JOURNEY.
+ *
+ * THE FILTERS OFFER WHAT THE BOARD HOLDS: its regions, A-Z, and its seasons,
+ * newest first. A board with no seasons (the live API keeps none) has no
+ * season filter. YOUR JOURNEY is read in the browser as the signed-in player
+ * (`lib/api/standing.ts`).
+ */
 export function Leaderboard({
   podium,
   rows,
-  journey,
   messages,
 }: {
   podium: readonly PodiumEntry[];
   rows: readonly LeaderboardEntry[];
-  journey: JourneyEntry | null;
   messages: Messages;
 }) {
   const t = messages.competition;
@@ -38,6 +42,13 @@ export function Leaderboard({
   const shownPodium = useMemo(() => filterEntries(podium, filter), [podium, filter]);
   const shownRows = useMemo(() => filterEntries(rows, filter), [rows, filter]);
 
+  const { status } = useAuth();
+  const mine = useQuery({
+    queryKey: ["leaderboard", "me"],
+    queryFn: getMyStanding,
+    enabled: status === "signed-in",
+  });
+  const own = mine.data ?? null;
 
   const first = useRef(true);
   useEffect(() => {
@@ -61,17 +72,16 @@ export function Leaderboard({
     };
   }, [filter, reduced]);
 
+  const everyone = [...podium, ...rows];
+  const regions = [...new Set(everyone.map((e) => e.region).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  const seasons = [...new Set(everyone.flatMap((e) => (e.season === null ? [] : [e.season])))].sort((a, b) => b - a);
   const regionOptions: { value: LeaderboardFilter["region"]; label: string }[] = [
     { value: "all", label: t.leaderboard.allRegions },
-    ...(["lagos", "abuja", "southEast", "rivers", "ghana"] as const).map((region) => ({
-      value: region,
-      label: t.regions[region],
-    })),
+    ...regions.map((region) => ({ value: region, label: region })),
   ];
-  const seasonOptions: { value: LeaderboardSeason; label: string }[] = [
+  const seasonOptions: { value: LeaderboardFilter["season"]; label: string }[] = [
     { value: "all", label: t.leaderboard.allTime },
-    { value: 2026, label: t.leaderboard.season.replace("{year}", "2026") },
-    { value: 2025, label: t.leaderboard.season.replace("{year}", "2025") },
+    ...seasons.map((year) => ({ value: year, label: t.leaderboard.season.replace("{year}", String(year)) })),
   ];
 
   return (
@@ -91,12 +101,14 @@ export function Leaderboard({
           value={filter.region}
           onChange={(region) => setFilter((f) => ({ ...f, region }))}
         />
-        <FilterChip
-          label={t.leaderboard.timeFilter}
-          options={seasonOptions}
-          value={filter.season}
-          onChange={(season) => setFilter((f) => ({ ...f, season }))}
-        />
+        {seasons.length ? (
+          <FilterChip
+            label={t.leaderboard.timeFilter}
+            options={seasonOptions}
+            value={filter.season}
+            onChange={(season) => setFilter((f) => ({ ...f, season }))}
+          />
+        ) : null}
       </Reveal>
 
       {/* ---- The podium ---- */}
@@ -109,20 +121,19 @@ export function Leaderboard({
       </Scene>
 
       {/* ---- YOUR JOURNEY ---- */}
-      {journey ? (
+      {own ? (
         <Reveal delay={80} className="mt-16 lg:mt-[6.25rem]">
           <h3 className="font-display text-menu-fg text-h5 font-semibold tracking-[-0.055em] uppercase">
             {t.leaderboard.journey}
           </h3>
           <div className="mt-8 lg:mx-5 lg:mt-[2.6875rem]">
-            <Board rows={[journey]} journey messages={messages} />
+            <Board rows={[own]} journey messages={messages} />
           </div>
         </Reveal>
       ) : null}
     </div>
   );
 }
-
 
 /* -------------------------------------------------------------------------- */
 function FilterChip<V extends string | number>({
@@ -422,7 +433,7 @@ function Board({
                   <span className="flex items-center gap-3">
                     {/* 33 in the frame, with a thin dark-red ring. */}
                     <span className="ring-ember relative size-8.25 shrink-0 overflow-hidden rounded-full ring-1">
-                      <Image src={row.player.avatar} alt="" fill sizes="33px" className="object-cover object-top" />
+                      <Image src={row.player.avatar} unoptimized={isRemoteImage(row.player.avatar)} alt="" fill sizes="33px" className="object-cover object-top" />
                     </span>
                     <span className="min-w-0">
                       <span className="text-menu-fg block truncate leading-tight">{row.player.name}</span>
@@ -432,13 +443,15 @@ function Board({
                     </span>
                   </span>
                 </td>
-                <td className={`${body} ${centre}`}>{t.regions[row.region]}</td>
+                <td className={`${body} ${centre}`}>{row.region || DASH}</td>
                 <td className={`${body} ${centre}`}>{group(row.points)}</td>
-                <td className={`${body} ${centre}`}>{t.champions[row.champion]}</td>
-                <td className={`${body} ${centre}`}>{row.winRate}%</td>
+                <td className={`${body} ${centre}`}>{row.champion ?? DASH}</td>
+                <td className={`${body} ${centre}`}>{row.winRate === null ? DASH : `${Math.round(row.winRate)}%`}</td>
                 {journey && "pointsToNextRank" in row ? (
                   <td className={`${body} ${centre} whitespace-nowrap`}>
-                    {t.leaderboard.pointsAway.replace("{n}", group(row.pointsToNextRank))}
+                    {row.pointsToNextRank === null
+                      ? DASH
+                      : t.leaderboard.pointsAway.replace("{n}", group(row.pointsToNextRank))}
                   </td>
                 ) : null}
               </tr>
@@ -455,6 +468,9 @@ function Board({
     </SideScroller>
   );
 }
+
+/** A cell the source has nothing for. */
+const DASH = "—";
 
 function EmptyNote({ children }: { children: ReactNode }) {
   return <span className="text-mist/80">{children}</span>;

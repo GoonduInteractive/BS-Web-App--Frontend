@@ -1,7 +1,9 @@
 # Beyond Service: Web App
 
 The official web app for **Beyond Service: Trial of the Gods**, a game by
-**Goondu Games Studio**. Frontend only; there is no backend in this phase.
+**Goondu Games Studio**. The frontend only: game data comes from Goondu's Beyond Service API,
+through the typed adapters in `src/lib/api/`. One thing keeps sample data: the Active Player Map
+on Community, until the API has player locations.
 
 ## Getting started
 
@@ -11,6 +13,46 @@ npm run dev
 ```
 
 The app runs on http://localhost:3000 and redirects to the default locale at `/en`.
+
+### The game backend
+
+Copy `.env.example` to `.env`. `NEXT_PUBLIC_API_URL` (the Beyond Service API,
+`https://backend-a5um.onrender.com`) is required: `next.config.ts` stops the dev server and the
+build without it. Set it in the host's environment (Vercel) too. Every call goes through
+`src/lib/api/client.ts`.
+
+Connected so far:
+
+- **Regional Leagues** on Competition reads `GET /v1/regions`, the list admins manage in the
+  admin's Regions page. The page is prerendered and refreshed at most hourly, so a new region
+  shows without a redeploy.
+- **Accounts**: sign up, sign in, confirm email, resend, forgot and reset password
+  (`/v1/auth/*`), and who is signed in (`GET /v1/player/profile`). Tokens live in this browser
+  (`src/lib/api/session.ts`); `authedRequest` sends them and refreshes once on a 401. Create
+  Account also asks for the Gamer ID and region the API requires. There is no Google sign-in: the
+  API has none.
+- **Profile**: the player's profile, Edit Profile (name, username, region) and the avatar upload
+  (`/v1/player/*`, `/v1/files/upload`).
+- **Competition**: tournaments, a tournament's page and bracket (`/v1/tournaments/*`), the
+  leaderboard (`/v1/leaderboards`), and, as the player, their own row and registering.
+- **Community**: the wall's approved notes (`/v1/notes`); posting and liking as the player.
+- **Store and comics**: products (`/v1/products`, by category), the player's cart, their saved
+  delivery details, the shipping quote for a place, checkout with where it goes, payment and order
+  summary (`/v1/cart`, `/v1/shipping/*`, `/v1/orders/*`, `/v1/payments/init`), their comics library
+  and a chapter's pages (`/v1/comics`).
+
+What anyone sees is read on the server, at build and again when a page revalidates (hourly; five
+minutes for a tournament's page and the Community Wall). What belongs to the player is read in the
+browser with their token, through TanStack Query.
+
+Uploads go to the API's public storage (since 2026-10-27). Anything uploaded before then sits on the
+old private storage, which no browser can load: upload it again. Waiting on the backend: notes carry
+no like count. See `context/current-feature.md`.
+
+Since 2026-10-28 the account emails carry a 6-digit code rather than a link: the player enters it
+on `/<locale>/confirm-email` or `/<locale>/reset-password`. An old `/<locale>/verify-email` link
+goes to Confirm Email. The API sleeps when idle, so a build after a quiet spell can take a minute
+longer while it wakes.
 
 ## Scripts
 
@@ -33,12 +75,14 @@ no `tailwind.config.ts`.
 
 ## Content editing
 
-Three things are edited in Decap CMS at `/admin`: **news articles**, the **characters** (the
-roster, each detail page and the cards on The Game page) and the **team** on the About page.
+Decap CMS at `/admin` edits **news articles**, the **characters** (the roster, each detail page
+and the cards on The Game page), the **team** and **partners** on the About page, the **legal**
+pages, and the **Hall of Ascension** (the season champions on Competition).
 Everything game-side (leaderboards, tournaments, community, merch, players) comes from the
 adapters in `src/lib/api/` and is not editable here.
 
-A character or team member has a **Show on the site** switch. Off, they have no card and no
+A character, team member, partner or champion has a **Show on the site** switch. With no
+champion switched on, the Hall of Ascension shows Coming Soon. Off, they have no card and no
 page; on the Characters it is how the six set-aside characters wait for their profiles from the
 character bible. How a portrait is cropped is set per picture file in code (`src/lib/characters.ts`,
 `src/lib/team.ts`), not in the editor. A new picture gets a sensible default crop.
@@ -50,7 +94,8 @@ page reads these articles directly; it shows only its heading until the first on
 
 Every entry is written in both English and Igbo, side by side, and lands as markdown in
 `src/content/<collection>/en/` and `src/content/<collection>/ig/`. Pictures go to
-`public/assets/news/`, `public/assets/characters/` and `public/assets/about/`. Publishing opens a
+`public/assets/news/`, `public/assets/characters/`, `public/assets/about/`,
+`public/assets/partners/` and `public/assets/hall/`. Publishing opens a
 pull request against `main`, which is production, and the site rebuilds on Vercel when it merges.
 
 ### Login

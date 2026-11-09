@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import type { Place } from "@/lib/api/geo";
 import type { DeliveryMethod, Lga } from "@/lib/api/shipping";
@@ -9,6 +9,17 @@ import type { SavedAddress } from "@/types/profile";
 
 /** Where the order is going, as far as pricing it needs: method, state, local government. */
 export type DeliveryChoice = { method: DeliveryMethod; state: string; lgaId: string };
+
+/** Everything the form holds: what a live order sends as where it goes. */
+export type CheckoutDetails = DeliveryChoice & {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  line1: string;
+  city: string;
+  zip: string;
+  country: string;
+};
 
 /**
  * Shipping details. Figma: `Merch Store- Checkout-New User.png`, re-ordered by
@@ -24,9 +35,9 @@ export type DeliveryChoice = { method: DeliveryMethod; state: string; lgaId: str
  * - NO PAYMENT SECTION. Every payment goes through Paystack, whose window offers
  *   card, transfer and USSD itself; PLACE ORDER opens it.
  *
- * NOTHING ENTERED HERE IS STORED OR SENT. The values live in component state for
- * the length of the visit and nowhere else - not `localStorage`, not a request.
- * There is no backend to receive them and no consent flow to collect under.
+ * WHERE IT GOES: every change is reported (`onDetailsChange`), and the order
+ * sends them as its delivery details - the API saves them as the player's for
+ * next time, which is where `saved` comes from.
  */
 export function CheckoutForm({
   messages,
@@ -36,6 +47,7 @@ export function CheckoutForm({
   saved,
   shipping = true,
   onDeliveryChange,
+  onDetailsChange,
 }: {
   messages: Messages;
   countries: readonly Place[];
@@ -46,9 +58,11 @@ export function CheckoutForm({
   /** False when nothing in the cart ships (online chapters only): no delivery method or address is asked for. */
   shipping?: boolean;
   onDeliveryChange: (choice: DeliveryChoice) => void;
+  /** Every field, on first draw and after each change. */
+  onDetailsChange?: (details: CheckoutDetails) => void;
 }) {
   const t = messages.merch.checkout;
-  const [method, setMethod] = useState<DeliveryMethod>("homeDelivery");
+  const [method, setMethod] = useState<DeliveryMethod>(saved?.method ?? "homeDelivery");
   const [values, setValues] = useState({
     firstName: saved?.firstName ?? "",
     lastName: saved?.lastName ?? "",
@@ -62,6 +76,10 @@ export function CheckoutForm({
   });
   const set = (key: keyof typeof values) => (value: string) => setValues((v) => ({ ...v, [key]: value }));
   const lgas = values.state ? (lgasByState[values.state] ?? []) : [];
+
+  useEffect(() => {
+    onDetailsChange?.({ method, ...values });
+  }, [method, values, onDetailsChange]);
 
   const report = (next: Partial<DeliveryChoice>) => onDeliveryChange({ method, state: values.state, lgaId: values.lgaId, ...next });
   const chooseMethod = (m: DeliveryMethod) => {

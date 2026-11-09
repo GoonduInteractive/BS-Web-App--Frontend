@@ -3,7 +3,6 @@ import Image from "next/image";
 import type { Messages } from "@/lib/utils/messages";
 import type { PointsBalance } from "@/types/merch";
 
-
 export function PointsPanel({
   balance,
   messages,
@@ -12,8 +11,7 @@ export function PointsPanel({
   messages: Messages;
 }) {
   const t = messages.merch.points;
-  const remaining = Math.max(0, balance.nextTierAt - balance.points);
-  const progress = balance.nextTierAt > 0 ? balance.points / balance.nextTierAt : 0;
+  const { nextTierAt } = balance;
 
   return (
     <div className="lg:ml-4.5">
@@ -22,7 +20,6 @@ export function PointsPanel({
         <h2 className="text-menu-fg/85 font-body text-[1.1875rem] leading-none tracking-wider">
           {t.claimable}
         </h2>
-
 
         <span className="bg-gild absolute top-8.25 right-8.25 grid size-9.5 place-items-center">
           <Image
@@ -44,22 +41,27 @@ export function PointsPanel({
           </span>
         </p>
 
-        <div
-          role="progressbar"
-          aria-valuenow={balance.points}
-          aria-valuemin={0}
-          aria-valuemax={balance.nextTierAt}
-          className="bg-menu-fg/70 mt-6.75 h-1.5 w-[96.5%]"
-        >
-          <div
-            className="bg-crimson h-full"
-            style={{ width: `${Math.min(100, Math.max(0, progress * 100))}%` }}
-          />
-        </div>
+        {/* Live there are no tiers yet (`StoreAside`): no bar, no "next" line. */}
+        {nextTierAt != null ? (
+          <>
+            <div
+              role="progressbar"
+              aria-valuenow={balance.points}
+              aria-valuemin={0}
+              aria-valuemax={nextTierAt}
+              className="bg-menu-fg/70 mt-6.75 h-1.5 w-[96.5%]"
+            >
+              <div
+                className="bg-crimson h-full"
+                style={{ width: `${nextTierAt > 0 ? Math.min(100, Math.max(0, (balance.points / nextTierAt) * 100)) : 0}%` }}
+              />
+            </div>
 
-        <p className="text-menu-fg font-body text-body mt-3.25 leading-none">
-          {t.next.replace("{count}", String(remaining))}
-        </p>
+            <p className="text-menu-fg font-body text-body mt-3.25 leading-none">
+              {t.next.replace("{count}", String(Math.max(0, nextTierAt - balance.points)))}
+            </p>
+          </>
+        ) : null}
       </section>
 
       {/* ---- Point perks ---- */}
@@ -90,7 +92,8 @@ export function PointsPanel({
             <p className="text-menu-fg font-body text-body mt-17.75">{t.more}</p>
           </>
         ) : (
-          <p className="text-menu-fg font-body text-body mt-5.25 max-w-[85%]">{t.none}</p>
+          // Points but no perk list (the API has no perks yet) - the encouragement, not "no points yet".
+          <p className="text-menu-fg font-body text-body mt-5.25 max-w-[85%]">{balance.points > 0 ? t.more : t.none}</p>
         )}
       </section>
     </div>

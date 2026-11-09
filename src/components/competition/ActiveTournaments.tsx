@@ -11,8 +11,10 @@ export async function ActiveTournaments({
   messages: Messages;
   locale: Locale;
 }) {
-  const tournaments = await getActiveTournaments();
+  const tournaments = await getActiveTournaments(locale);
   const t = messages.competition.active;
+  // Nothing beside the featured one: the section has nothing to browse.
+  if (!tournaments.length) return null;
 
   return (
     <section className="mx-auto w-full px-6 pt-24 lg:px-20 lg:pt-44">

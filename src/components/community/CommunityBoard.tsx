@@ -1,7 +1,10 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import { useAuth } from "@/components/auth/AuthProvider";
 import { NsibidiField } from "@/components/chrome/NsibidiField";
 import { CommunityWall, type WallView } from "@/components/community/CommunityWall";
 import { FeedbackDialog } from "@/components/community/FeedbackDialog";
@@ -10,9 +13,14 @@ import { GateReturn } from "@/components/gates/GateReturn";
 import { Reveal } from "@/components/motion/Reveal";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { PanelTabs } from "@/components/ui/PanelTabs";
+import { toast } from "@/components/ui/Toaster";
+import { ApiError } from "@/lib/api/client";
 import { WALL } from "@/lib/api/community";
+import { postNote } from "@/lib/api/notes";
 import { placeNote } from "@/lib/community/place";
+import { authHref } from "@/lib/utils/auth-links";
 import { cn } from "@/lib/utils/cn";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { CommunityNote } from "@/types/community";
 import type { PlayerHotspot } from "@/types/players";
@@ -51,21 +59,24 @@ const VIEWS: readonly CommunityView[] = ["wall", "map"];
  * Wall! …") - transcribed as drawn and FLAGGED as a likely comp slip. Both
  * panels are in the document, the inactive one `hidden`, as the Competition
  * page does; the map's chunk loads only when its tab is chosen.
+ *
+ * SHARE YOUR THOUGHTS posts as the signed-in player (`lib/api/notes.ts`)
+ * and a signed-out visitor is sent to Sign In and back; the note is signed with
+ * the player's name. Liking works the same way, on the wall.
  */
 export function CommunityBoard({
   notes: initial,
   hotspots,
   invite,
   messages,
-  you,
+  locale,
 }: {
   notes: readonly CommunityNote[];
   hotspots: readonly PlayerHotspot[];
   /** The viewer's invite link, for the map's INVITE FRIENDS block. */
   invite: string;
   messages: Messages;
-  /** The display name a submitted note is signed with. */
-  you: string;
+  locale: Locale;
 }) {
   const t = messages.community;
   const [view, setView] = useState<CommunityView>("wall");
@@ -121,18 +132,36 @@ export function CommunityBoard({
   // A new note lands in the middle of what the visitor is looking at, on
   // cream, and the cards already there are pushed aside to make room for it
   // (`placeNote`) - a note never covers another. Per the human.
-  const post = (body: string) => {
-    const id = `you-${Date.now()}`;
+  const { status, user } = useAuth();
+  const router = useRouter();
+  const signedOut = status === "signed-out";
+  const signIn = () => router.push(authHref(locale, "sign-in", window.location.pathname));
+  const author = user ? [user.firstName, user.lastName].join(" ").trim() || user.handle : t.wall.you;
+
+  const send = useMutation({ mutationFn: postNote });
+  const sendFailed = !send.isError
+    ? null
+    : send.error instanceof ApiError && send.error.status === 0
+      ? messages.auth.errors.network
+      : messages.auth.errors.unknown;
+
+  const add = (id: string, body: string, postedAt: string) => {
     setNotes((current) =>
-      placeNote(
-        current,
-        { id, author: you, body, likes: 0, postedAt: new Date().toISOString(), tint: "cream" },
-        wallView.current,
-        WALL,
-      ),
+      placeNote(current, { id, author, body, likes: 0, postedAt, tint: "cream" }, wallView.current, WALL),
     );
     setFresh(id);
     setWriting(false);
+  };
+  const post = async (body: string): Promise<boolean> => {
+    try {
+      const note = await send.mutateAsync(body);
+      add(note.id, body, note.postedAt);
+      // It pops onto this wall at once, but the public wall lists approved notes only.
+      toast(t.wall.posted);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   return (
@@ -190,7 +219,10 @@ export function CommunityBoard({
               frame puts the 48-tall pill exactly where the 55-tall button was. */}
           <Reveal key={`slot-${view}`} delay={160} className="mt-12 flex justify-center lg:mt-12.5">
             {view === "wall" ? (
-              <BracketButton onClick={() => setWriting(true)} className="px-5 py-4.75 leading-none tracking-normal">
+              <BracketButton
+                onClick={() => (signedOut ? signIn() : setWriting(true))}
+                className="px-5 py-4.75 leading-none tracking-normal"
+              >
                 {t.hero.cta}
               </BracketButton>
             ) : (
@@ -209,7 +241,14 @@ export function CommunityBoard({
           className={cn(wallParked && "pointer-events-none invisible absolute inset-x-0 top-0", swap("wall"))}
           onAnimationEnd={settle("wall")}
         >
-          <CommunityWall notes={notes} fresh={fresh} viewRef={wallView} messages={messages} className="h-[54.5rem]" />
+          <CommunityWall
+            notes={notes}
+            fresh={fresh}
+            viewRef={wallView}
+            messages={messages}
+            locale={locale}
+            className="h-[54.5rem]"
+          />
         </div>
         <div
           id="community-panel-map"
@@ -225,7 +264,17 @@ export function CommunityBoard({
         </div>
       </div>
 
-      <FeedbackDialog open={writing} onClose={() => setWriting(false)} onSubmit={post} messages={messages} />
+      <FeedbackDialog
+        open={writing}
+        onClose={() => {
+          setWriting(false);
+          send.reset();
+        }}
+        onSubmit={post}
+        busy={send.isPending}
+        error={sendFailed}
+        messages={messages}
+      />
     </>
   );
 }

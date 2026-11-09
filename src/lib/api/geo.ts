@@ -1,11 +1,7 @@
 /**
- * Places the checkout's selects offer.
- *
- * Mock, like every other adapter here, and deliberately real: Nigeria's states
- * by their actual names, per the coding standard's rule that mocks return
- * plausible data rather than `foo` and `bar`. The store ships Nigeria-first
- * (overview section 2), so that is the only country listed until Goondu says
- * otherwise.
+ * Places the checkout's selects offer: Nigeria's states, by their names. The
+ * store ships Nigeria-first (overview section 2), so that is the only country
+ * listed until Goondu says otherwise.
  */
 
 export type Place = { code: string; name: string };

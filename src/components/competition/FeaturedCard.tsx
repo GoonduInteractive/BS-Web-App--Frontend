@@ -19,8 +19,8 @@ export function FeaturedCard({
   locale: Locale;
 }) {
   const t = messages.competition;
-  const copy: { name: string; description?: string } =
-    t.tournaments[tournament.copyKey as keyof typeof t.tournaments];
+  // The slot can hold a running tournament when none is open: nothing to join.
+  const canRegister = tournament.status === "registrationOpen" || tournament.status === "open";
 
   const days = tournament.closesAt ? daysUntil(tournament.closesAt) : null;
   const participants =
@@ -30,7 +30,6 @@ export function FeaturedCard({
           "{n}",
           new Intl.NumberFormat("en-NG").format(tournament.participants),
         );
-  const rewards = (tournament.rewards ?? []).map((key) => t.rewards[key]).join(" • ");
 
   return (
     <Reveal className="relative grid lg:grid-cols-[649fr_631fr] xl:grid-cols-[minmax(0,1fr)_39.4375rem]">
@@ -47,12 +46,12 @@ export function FeaturedCard({
       <div className="relative px-6 pt-10 pb-10 lg:pl-9 lg:pt-13 lg:pb-12.25">
 
         <h3 className="font-display text-ink text-section-heading max-w-104 font-semibold tracking-[-0.058em] uppercase">
-          {copy.name}
+          {tournament.name}
         </h3>
 
 
         <p className="text-ash font-body text-body mt-3.75 max-w-lg">
-          {copy.description}
+          {tournament.description}
         </p>
 
         <dl className="mt-6.25 flex flex-wrap gap-x-9 gap-y-7">
@@ -61,23 +60,25 @@ export function FeaturedCard({
             label={t.featured.labels.timeRemaining}
             value={days === null ? "" : t.featured.days.replace("{n}", String(days))}
           />
-          <Field label={t.featured.labels.region} value={t.regions[tournament.region]} />
+          <Field label={t.featured.labels.region} value={tournament.region} />
         </dl>
         <dl className="mt-7 flex flex-wrap gap-x-9 gap-y-7">
           <Field label={t.featured.labels.participants} value={participants} />
-          <Field label={t.featured.labels.rewards} value={rewards} />
+          <Field label={t.featured.labels.rewards} value={tournament.rewards ?? ""} />
         </dl>
 
 
         <div className="mt-12.25 -ml-1 flex flex-wrap gap-6.5">
 
-          <RegisterFlow
-            tournament={tournament}
-            messages={messages}
-            locale={locale}
-            profileHref={`/${locale}/profile`}
-          />
-          
+          {canRegister ? (
+            <RegisterFlow
+              tournament={tournament}
+              messages={messages}
+              locale={locale}
+              profileHref={`/${locale}/profile`}
+            />
+          ) : null}
+
           <BracketButton
             tone="outline"
             field="light"

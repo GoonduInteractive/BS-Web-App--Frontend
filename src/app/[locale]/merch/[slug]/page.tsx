@@ -14,6 +14,13 @@ import { getMessages } from "@/lib/utils/messages";
 import { localePath, pageMetadata, SITE_URL, STUDIO_NAME } from "@/lib/seo";
 
 /**
+ * The catalogue is the API's (`lib/api/merch.ts`): rebuilt in the
+ * background at most hourly, so what an admin publishes shows without a
+ * redeploy. A failed refresh keeps the last good page.
+ */
+export const revalidate = 3600;
+
+/**
  * One product. Figma: `context/design/10-merch/Merch Store- Merch Details.png`.
  *
  * Fully static: every locale x slug is enumerated at build time.
@@ -35,7 +42,7 @@ export async function generateMetadata({
   const product = (await getProducts()).find((p) => p.slug === slug);
   if (!product) return {};
 
-  const copy = messages.merch.products[product.copyKey];
+  const copy = product.copy;
   return pageMetadata({
     locale,
     path: `/merch/${product.slug}`,
@@ -64,7 +71,7 @@ export default async function Page({
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
   const related = await getRelated(slug);
-  const copy = messages.merch.products[product.copyKey];
+  const copy = product.copy;
 
   // The product for search engines. Naira, as the page prices it; no
   // availability is claimed, because nothing here can be bought yet.

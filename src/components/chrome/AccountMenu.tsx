@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import { useAuth } from "@/components/auth/AuthProvider";
 import { LogOutGlyph, LoginGlyph, PersonGlyph } from "@/components/profile/ProfileGlyphs";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 
 export function AccountMenu({
   messages,
@@ -15,9 +18,20 @@ export function AccountMenu({
 }: {
   messages: Messages;
   locale: string;
-  profile: Profile | null;
+  profile: Pick<Profile, "name" | "handle" | "avatar"> | null;
 }) {
   const t = messages.profile.account;
+  const { signOut } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // A signed-out visitor cannot stay on a profile page; everywhere else they
+  // stay where they are and the header simply shows JOIN again.
+  const logOut = async () => {
+    setOpen(false);
+    await signOut();
+    if (/^\/[^/]+\/profile(\/|$)/.test(pathname)) router.replace(`/${locale}/the-game`);
+  };
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -64,6 +78,7 @@ export function AccountMenu({
         {profile ? (
           <Image
             src={profile.avatar}
+            unoptimized={isRemoteImage(profile.avatar)}
             alt=""
             aria-hidden
             fill
@@ -94,6 +109,7 @@ export function AccountMenu({
                 <div className="border-signal relative size-9 shrink-0 overflow-hidden rounded-full border">
                   <Image
                     src={profile.avatar}
+                    unoptimized={isRemoteImage(profile.avatar)}
                     alt=""
                     aria-hidden
                     fill
@@ -129,6 +145,7 @@ export function AccountMenu({
               <button
                 type="button"
                 role="menuitem"
+                onClick={logOut}
                 className="text-flare font-body text-body-sm focus-visible:outline-signal hover:bg-menu-fg/6 flex w-full cursor-pointer items-center gap-3 px-4 py-3.5 leading-none transition-colors duration-150 ease-gate focus-visible:outline-2 focus-visible:-outline-offset-2"
               >
                 <LogOutGlyph />

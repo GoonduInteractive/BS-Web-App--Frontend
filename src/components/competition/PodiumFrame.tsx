@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils/cn";
 import type { PodiumEntry } from "@/types/leaderboard";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 
 /**
  * A podium step's frame with the player's own face in it.
@@ -51,7 +52,7 @@ export function PodiumFrame({
         className="absolute overflow-hidden rounded-full"
         style={{ left: pct(f.cx - f.r, f.width), top: pct(f.cy - f.r, f.height), width: pct(f.r * 2, f.width), height: pct(f.r * 2, f.height) }}
       >
-        <Image src={entry.player.avatar} alt={alt} fill sizes={sizes} className="object-cover object-top select-none" />
+        <Image src={entry.player.avatar} unoptimized={isRemoteImage(entry.player.avatar)} alt={alt} fill sizes={sizes} className="object-cover object-top select-none" />
       </div>
       <Image src={f.src} alt="" aria-hidden width={f.width} height={f.height} className="relative h-auto w-full select-none" />
     </div>

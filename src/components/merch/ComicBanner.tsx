@@ -22,7 +22,7 @@ export function ComicBanner({
   priority?: boolean;
 }) {
   const t = messages.merch.comics;
-  const copy = t.issues[issue.copyKey as keyof typeof t.issues];
+  const copy = issue.copy;
   const { cover } = issue;
 
   return (

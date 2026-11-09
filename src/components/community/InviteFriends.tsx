@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
 import { BracketButton } from "@/components/ui/BracketButton";
+import { toast } from "@/components/ui/Toaster";
 import { cn } from "@/lib/utils/cn";
 import type { Messages } from "@/lib/utils/messages";
 
@@ -20,13 +19,12 @@ import type { Messages } from "@/lib/utils/messages";
  * every other BracketButton on the site overrides with the body face per Figma.
  *
  * The field is a read-only input rather than a paragraph so the link can be
- * selected and copied by hand where the clipboard is refused. The button's
- * label only changes when the write actually succeeded - the old transfer screen's
- * rule. "Copied" is ours, as it was there: the frame draws no confirmed state.
+ * selected and copied by hand where the clipboard is refused. Only a write
+ * that actually succeeded says so, in a toast, as every confirmation on the
+ * site does; the frame draws no confirmed state.
  */
 export function InviteFriends({ link, messages, className }: { link: string; messages: Messages; className?: string }) {
   const t = messages.community.invite;
-  const [done, setDone] = useState(false);
 
   return (
     <div className={cn("max-w-[19.5rem]", className)}>
@@ -51,15 +49,12 @@ export function InviteFriends({ link, messages, className }: { link: string; mes
           onClick={() => {
             void navigator.clipboard
               ?.writeText(link)
-              .then(() => {
-                setDone(true);
-                window.setTimeout(() => setDone(false), 2000);
-              })
+              .then(() => toast(t.copied))
               .catch(() => {});
           }}
           className="font-display px-2.75 py-2.25 text-[0.875rem] leading-none tracking-normal whitespace-nowrap"
         >
-          <span aria-live="polite">{done ? t.copied : t.copy}</span>
+          {t.copy}
         </BracketButton>
       </div>
     </div>

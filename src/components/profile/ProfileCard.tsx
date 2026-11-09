@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { EditGlyph, LogOutGlyph, NigeriaFlag } from "@/components/profile/ProfileGlyphs";
+import { LogOutButton } from "@/components/profile/LogOutButton";
+import { EditGlyph, NigeriaFlag } from "@/components/profile/ProfileGlyphs";
 import { SupportNote } from "@/components/ui/SupportNote";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 
 /**
  * The player profile card. Figma: `context/design/12-player-profile/`,
@@ -42,6 +44,7 @@ export function ProfileCard({
         <div className="border-signal relative size-24 shrink-0 overflow-hidden rounded-full border-2">
           <Image
             src={profile.avatar}
+            unoptimized={isRemoteImage(profile.avatar)}
             alt={t.avatarAlt}
             fill
             priority
@@ -72,9 +75,10 @@ export function ProfileCard({
 
           <div className="mt-11 flex flex-wrap items-start justify-between gap-8">
             <dl className="flex flex-wrap gap-x-11 gap-y-5">
-              <Stat label={t.stats.level} value={String(profile.level)} />
-              <Stat label={t.stats.winRate} value={`${profile.winRate}%`} />
-              <Stat label={t.stats.loss} value={`${profile.loss}%`} />
+              {/* A dash where the API hasn't a figure yet, rather than a 0 it never said. */}
+              <Stat label={t.stats.level} value={profile.level === null ? "—" : String(profile.level)} />
+              <Stat label={t.stats.winRate} value={profile.winRate === null ? "—" : `${profile.winRate}%`} />
+              <Stat label={t.stats.loss} value={profile.loss === null ? "—" : `${profile.loss}%`} />
               {/* Only once the player is placed. */}
               {profile.rank !== undefined ? (
                 <Stat label={t.stats.rank} value={`#${profile.rank}`} />
@@ -86,23 +90,6 @@ export function ProfileCard({
               <dd className="font-display text-menu-fg mt-2.5 flex items-center gap-2 text-[0.9375rem] leading-none font-semibold tracking-[0.01em] uppercase">
                 {profile.location}
                 <NigeriaFlag />
-              </dd>
-
-              {/* Where prize money goes, set in Payout Settings on the edit page. No frame
-                  draws this (FLAGGED, 2026-09-29). Nothing is ever saved in this build, so
-                  it always reads "not set". */}
-              <dt className="text-menu-fg/85 font-body text-body-sm mt-6 leading-none">{t.payout.cardLabel}</dt>
-              <dd className="font-body text-body-sm mt-2.5 leading-none">
-                <span className="text-menu-fg/70">{t.payout.cardEmpty}</span>
-                <span aria-hidden className="text-menu-fg/40 mx-1.5">
-                  ·
-                </span>
-                <Link
-                  href={`/${locale}/profile/edit#payout`}
-                  className="text-menu-fg focus-visible:outline-signal underline underline-offset-4 transition-opacity duration-150 ease-gate hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
-                >
-                  {t.payout.cardAdd}
-                </Link>
               </dd>
             </div>
           </div>
@@ -135,7 +122,7 @@ export function ProfileCard({
             <>
               <p className="text-menu-fg font-body text-body-sm mt-6 flex items-center gap-2.5 leading-none">
                 <span className="bg-gild size-1.5 rounded-full" aria-hidden />
-                {t.tournaments[profile.standing.nameKey as keyof typeof t.tournaments]}
+                {profile.standing.name}
               </p>
 
               <dl className="border-menu-fg/15 mt-4 grid grid-cols-2 rounded-lg border sm:grid-cols-4">
@@ -166,9 +153,11 @@ export function ProfileCard({
                 ))}
               </dl>
 
-              <p className="text-menu-fg/70 font-body mt-3.5 text-[0.8125rem] leading-none">
-                {t.rankings.toNextRank.replace("{n}", String(profile.standing.toNextRank))}
-              </p>
+              {profile.standing.toNextRank !== null ? (
+                <p className="text-menu-fg/70 font-body mt-3.5 text-[0.8125rem] leading-none">
+                  {t.rankings.toNextRank.replace("{n}", String(profile.standing.toNextRank))}
+                </p>
+              ) : null}
             </>
           ) : (
             <p className="text-menu-fg/85 font-body text-body-sm mt-6.5 leading-none">
@@ -178,20 +167,11 @@ export function ProfileCard({
         </section>
       </div>
 
-      {/* FLAGGED: there is no session to end. The control is drawn because the
-          frame draws it, and it does nothing - the same state every other
-          undestined CTA on this site is in. */}
       {/* Support on the left, Log Out moved to the right (`new-updates/Player
           profile.png`, 2026-09-26). A stack on the phone, Log Out last. */}
       <div className="mt-12 flex flex-col items-center gap-8 text-center md:mt-9 md:flex-row md:items-center md:justify-between md:gap-6 md:px-1 md:text-left">
         <SupportNote messages={messages} layout="plain" />
-        <button
-          type="button"
-          className="text-flare font-body focus-visible:outline-signal inline-flex cursor-pointer items-center gap-2.5 text-body leading-none transition-opacity duration-150 ease-gate hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4"
-        >
-          <LogOutGlyph />
-          {t.logOut}
-        </button>
+        <LogOutButton label={t.logOut} locale={locale} />
       </div>
     </div>
   );

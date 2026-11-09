@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { formatPrice } from "@/lib/utils/price";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Product, TileField } from "@/types/merch";
@@ -12,7 +13,6 @@ const FIELD: Record<TileField, string> = {
   crimson: "bg-crimson",
   white: "bg-menu-fg",
 };
-
 
 export function ProductCard({
   product,
@@ -25,7 +25,7 @@ export function ProductCard({
   locale: Locale;
   priority?: boolean;
 }) {
-  const copy = messages.merch.products[product.copyKey];
+  const copy = product.copy;
 
   return (
     <Link
@@ -35,6 +35,7 @@ export function ProductCard({
       <div className={`relative aspect-[406/524] w-full overflow-hidden ${FIELD[product.tile]}`}>
         <Image
           src={product.image}
+          unoptimized={isRemoteImage(product.image)}
           alt={copy.imageAlt}
           fill
           priority={priority}

@@ -221,21 +221,6 @@
       "titles": "TODO ig: SEASONAL TITLES",
       "frames": "TODO ig: PROFILE FRAMES"
     },
-    "tournaments": {
-      "wrathOfNze": {
-        "name": "TODO ig: Wrath of Nze Ugwuoke",
-        "description": "TODO ig: The fallen chief priest has returned, corrupting the realm and challenging ascendants to prove their worth. Battle through seasonal competitions, complete event challenges, and rise through the standings before the season comes to an end."
-      },
-      "lagosLeague": {
-        "name": "TODO ig: Lagos Ascendant League"
-      },
-      "easternCup": {
-        "name": "TODO ig: Eastern Province Cup"
-      },
-      "riversTrial": {
-        "name": "TODO ig: Rivers State Trial"
-      }
-    },
     "cta": {
       "register": "TODO ig: REGISTER NOW",
       "details": "TODO ig: VIEW DETAILS"
@@ -284,13 +269,6 @@
       "cta": "TODO ig: VIEW ACTIVE PLAYER MAP",
       "regionsTitle": "TODO ig: ACTIVE REGIONS"
     },
-    "leagues": {
-      "southEastLeague": "TODO ig: South East League",
-      "lagos": "Lagos",
-      "abuja": "Abuja",
-      "ghana": "Ghana",
-      "rivers": "Rivers"
-    },
     "hall": {
       "heading": "TODO ig: HALL OF ASCENSION",
       "aside": "TODO ig: The greatest ascendants have etched their names into the history of the Trial. Their victories continue to inspire those who dare to enter Ogbun’abali’s arena.",
@@ -329,11 +307,6 @@
       "title": "TODO ig: REGISTRATION SUCCESSFUL",
       "body": "TODO ig: Your place in the Trial has been secured.\nYou have successfully registered for {tournament}.\nTournament updates, bracket assignments, and match schedules will be available once registration closes.",
       "cta": "TODO ig: BACK TO PROFILE"
-    },
-    "champions": {
-      "soma": "Soma",
-      "kaira": "Kaira",
-      "ogbunabali": "Ogbun’abali"
     },
     "leaderboard": {
       "filterBy": "TODO ig: FILTER BY:",
@@ -400,6 +373,21 @@
         "nil": "NIL",
         "viewBracket": "TODO ig: VIEW FULL BRACKET",
         "bracketLabel": "TODO ig: Full bracket"
+      },
+      "stageDates": {
+        "range": "TODO ig: {from} – {to}",
+        "from": "TODO ig: From {date}",
+        "until": "TODO ig: Until {date}"
+      },
+      "qualifier": {
+        "heading": "TODO ig: QUALIFIERS",
+        "sub": "TODO ig: More players entered than the bracket seats, so the field plays for points. The top {cutoff} go through to the group stage.",
+        "rank": "TODO ig: Rank",
+        "player": "TODO ig: Player",
+        "region": "TODO ig: Region",
+        "points": "TODO ig: Points",
+        "through": "TODO ig: Through",
+        "label": "TODO ig: Qualifier leaderboard"
       },
       "stats": {
         "registered": "TODO ig: REGISTERED PLAYERS",
@@ -496,7 +484,8 @@
       "minsAgo": "TODO ig: {n} mins ago",
       "hoursAgo": "TODO ig: {n} hours ago",
       "daysAgo": "TODO ig: {n} days ago",
-      "you": "TODO ig: You"
+      "you": "TODO ig: You",
+      "posted": "TODO ig: Your note is posted. Everyone else sees it once it’s approved."
     },
     "map": {
       "title": "TODO ig: ACTIVE PLAYER MAP",
@@ -518,7 +507,7 @@
       "body": "TODO ig: You earn community points when friends join the community through your link.",
       "linkLabel": "TODO ig: Your invite link",
       "copy": "TODO ig: COPY LINK",
-      "copied": "TODO ig: Copied"
+      "copied": "TODO ig: Invite link copied"
     },
     "form": {
       "label": "TODO ig: Drop your feedback",
@@ -653,28 +642,6 @@
       "oxblood": "TODO ig: Oxblood",
       "white": "TODO ig: White"
     },
-    "products": {
-      "hoodie": {
-        "name": "TODO ig: GOONDU HOODIE",
-        "imageAlt": "TODO ig: A black Goondu Games hoodie with the studio wordmark across the chest",
-        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      },
-      "tote": {
-        "name": "TODO ig: GOONDU TOTE",
-        "imageAlt": "TODO ig: A black Goondu Games tote bag with the studio wordmark and a red Nsibidi pattern",
-        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      },
-      "beanie": {
-        "name": "TODO ig: GOONDU BEANIE",
-        "imageAlt": "TODO ig: A white Goondu Games beanie with the studio wordmark on the cuff",
-        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      },
-      "tee": {
-        "name": "TODO ig: GOONDU TEE",
-        "imageAlt": "TODO ig: A black Goondu Games t-shirt with the studio wordmark across the chest",
-        "description": "TODO ig: 100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      }
-    },
     "price": "₦{amount}",
     "points": {
       "claimable": "TODO ig: CLAIMABLE POINTS",
@@ -697,13 +664,19 @@
       "decrease": "TODO ig: Decrease quantity",
       "increase": "TODO ig: Increase quantity",
       "quantity": "TODO ig: Quantity",
-      "added": "TODO ig: Added to cart"
+      "added": "TODO ig: {name} added to cart",
+      "viewCart": "TODO ig: VIEW CART",
+      "soldOut": "TODO ig: SOLD OUT",
+      "allInCart": "TODO ig: ALL IN YOUR CART",
+      "onlyLeft": "TODO ig: Only {count} left."
     },
     "cart": {
       "title": "TODO ig: CART",
       "colour": "TODO ig: Colour:",
       "size": "TODO ig: Size:",
       "remove": "TODO ig: Remove {item}",
+      "soldOut": "TODO ig: Sold out. Remove it to check out.",
+      "onlyLeft": "TODO ig: Only {count} left. Lower the quantity to check out.",
       "empty": {
         "title": "TODO ig: YOUR CART IS EMPTY",
         "subtitle": "TODO ig: It doesn’t have to be",
@@ -774,39 +747,38 @@
       "chooseLocation": "TODO ig: Choose your state and local government to see shipping.",
       "shippingPending": "TODO ig: Select a location",
       "payWith": "TODO ig: Pay with card, bank transfer or USSD in the Paystack window.",
-      "nothingToShip": "TODO ig: Nothing to ship: online chapters open in the reader once paid."
+      "nothingToShip": "TODO ig: Nothing to ship: online chapters open in the reader once paid.",
+      "noRate": "TODO ig: We don't deliver to this place yet. Choose another local government or state.",
+      "needDetails": "TODO ig: Fill in the details above so your order can reach you.",
+      "cartGone": "TODO ig: We couldn't find the items in this cart. Refresh the page and try again."
     },
     "confirmed": {
       "title": "TODO ig: ORDER CONFIRMED",
       "body": "TODO ig: Your order is currently being processed. You will receive an order confirmation email shortly with expected delivery date for your items.",
-      "cta": "TODO ig: BACK TO PROFILE",
+      "cta": "TODO ig: CONTINUE SHOPPING",
       "label": "TODO ig: Order confirmed",
       "close": "TODO ig: Close",
-      "help": "TODO ig: Need help, contact us at"
+      "help": "TODO ig: Need help, contact us at",
+      "confirmingTitle": "TODO ig: CONFIRMING PAYMENT",
+      "confirmingBody": "TODO ig: Hold on while Paystack confirms your payment with us. This usually takes a few seconds.",
+      "pendingTitle": "TODO ig: PAYMENT NOT CONFIRMED YET",
+      "pendingBody": "TODO ig: Paystack hasn’t confirmed this payment to us yet. Your order is saved and will update as soon as it does.",
+      "order": "TODO ig: ORDER {number}",
+      "total": "TODO ig: Total",
+      "shop": "TODO ig: Continue shopping",
+      "readyTitle": "TODO ig: YOUR COMIC IS READY",
+      "readyBody": "TODO ig: It’s in your library now. Start reading straight away, or find it any time on the Comics page.",
+      "readyTitleMany": "TODO ig: YOUR COMICS ARE READY",
+      "readyBodyMany": "TODO ig: They’re in your library now. Find them any time on the Comics page.",
+      "readyAlso": "TODO ig: Your online comics are ready to read now on the Comics page.",
+      "read": "TODO ig: START READING",
+      "unpaidTitle": "TODO ig: FINISH YOUR PAYMENT",
+      "unpaidBody": "TODO ig: This order hasn’t been paid for yet. Your items are in it, so pay now to complete it.",
+      "payNow": "TODO ig: PAY NOW"
     },
     "comics": {
       "partner": "TODO ig: Goondu Games X Partner",
       "related": "TODO ig: YOU MIGHT ALSO LIKE",
-      "issues": {
-        "trial": {
-          "title": "TODO ig: TRIAL OF THE GODS",
-          "volume": "TODO ig: VOL. 1",
-          "meta": "TODO ig: August 27, 2026 – Vol. 1",
-          "format": "TODO ig: Physical – Vol. 1",
-          "description": "TODO ig: Soma was an ordinary young man completing his national youth service when tragedy struck. Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games.",
-          "coverAlt": "TODO ig: Trial of the Gods, volume one — Soma turned away, carrying a crystal-tipped spear",
-          "coverTitle": "TODO ig: TRIAL OF\nTHE GODS"
-        },
-        "between": {
-          "title": "TODO ig: BETWEEN WORLDS",
-          "volume": "TODO ig: VOL. 2",
-          "meta": "TODO ig: August 27, 2026 – Vol. 2",
-          "format": "TODO ig: Online – Vol. 2",
-          "description": "",
-          "coverAlt": "TODO ig: Between Worlds, volume two — Soma mid-stance, trailing fire",
-          "coverTitle": "TODO ig: BETWEEN WORLDS"
-        }
-      },
       "formatNames": {
         "online": "TODO ig: Online",
         "physical": "TODO ig: Physical"
@@ -816,14 +788,7 @@
         "physical": "TODO ig: The printed book, shipped to you."
       },
       "label": "TODO ig: {formats} – Vol. {volume}, Ch. {chapter}",
-      "chooseFormat": "TODO ig: Choose a format",
-      "volumeEdition": {
-        "label": "TODO ig: Physical – Vol. {volume}, collected edition",
-        "title": "TODO ig: THE WHOLE VOLUME IN PRINT",
-        "body": "TODO ig: Volume {volume}: every chapter, collected in one printed book.",
-        "add": "TODO ig: ADD VOLUME TO CART",
-        "soldOut": "TODO ig: SOLD OUT"
-      }
+      "chooseFormat": "TODO ig: Choose a format"
     }
   },
   "news": {
@@ -883,9 +848,6 @@
       "winRate": "TODO ig: WIN RATE",
       "champion": "TODO ig: CHAMPION"
     },
-    "tournaments": {
-      "wrathOfNze": "Wrath of Nze Ugwuoke"
-    },
     "form": {
       "title": "TODO ig: EDIT PROFILE",
       "uploadAvatar": "TODO ig: UPLOAD NEW AVATAR",
@@ -898,26 +860,15 @@
       "locationLabel": "TODO ig: Location",
       "locationPlaceholder": "TODO ig: Enugu, Nigeria",
       "save": "TODO ig: SAVE CHANGES",
+      "saved": "TODO ig: Your profile is saved.",
+      "avatarSaved": "TODO ig: Your new avatar is set.",
+      "usernameTaken": "TODO ig: Another player already uses this username. Choose another.",
       "back": "TODO ig: EDIT PROFILE"
     },
     "account": {
       "viewProfile": "TODO ig: View Profile",
       "login": "TODO ig: Login",
       "menuLabel": "TODO ig: Account menu"
-    },
-    "payout": {
-      "title": "TODO ig: PAYOUT SETTINGS",
-      "body": "TODO ig: The bank account your tournament prize money is paid into. We confirm these details before any payout.",
-      "bank": "TODO ig: Bank",
-      "bankPlaceholder": "TODO ig: Select bank",
-      "accountNumber": "TODO ig: Account Number",
-      "accountNumberPlaceholder": "TODO ig: 10-digit account number",
-      "accountNumberError": "TODO ig: Enter the 10-digit account number",
-      "accountName": "TODO ig: Account Name",
-      "accountNamePlaceholder": "TODO ig: As it appears on the account",
-      "cardLabel": "TODO ig: PAYOUT ACCOUNT",
-      "cardEmpty": "TODO ig: Not set yet",
-      "cardAdd": "TODO ig: Add bank details"
     }
   },
   "comics": {
@@ -929,6 +880,7 @@
     "title": "TODO ig: THE COMICS",
     "subtitle": "TODO ig: Enter a world where death is not the end, gods make the rules, and survival is only the beginning.",
     "startReading": "TODO ig: START READING",
+    "getComic": "TODO ig: GET THIS COMIC",
     "explore": "TODO ig: EXPLORE MORE COMICS",
     "own": {
       "chip": "TODO ig: OWN THE STORY",
@@ -957,13 +909,6 @@
       "shareHeading": "TODO ig: SHARE THIS COMIC",
       "shareSub": "TODO ig: Gain claimable community points\nby sharing this comic with friends.",
       "shielded": "TODO ig: Reading paused. Come back to this window to keep reading."
-    },
-    "synopsis": {
-      "trial": [
-        "TODO ig: Soma was an ordinary young man completing his national youth service when tragedy struck. During a journey home with friends, he was killed in an ambush by armed bandits.",
-        "TODO ig: Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games. Offered a second chance at life in exchange for participating in divine trials, he accepted."
-      ],
-      "between": []
     }
   },
   "legal": {
@@ -973,5 +918,93 @@
     "title": "TODO ig: NEED SUPPORT?",
     "body": "TODO ig: For payment disputes, account issues, transaction inquiries, or general assistance, contact:",
     "email": "support@beyondservicegame.com"
+  },
+  "auth": {
+    "meta": {
+      "signUp": "TODO ig: Create Account",
+      "signIn": "TODO ig: Sign In",
+      "forgot": "TODO ig: Forgot Password",
+      "reset": "TODO ig: Reset Password",
+      "confirm": "TODO ig: Confirm Your Email"
+    },
+    "home": "TODO ig: Beyond Service home",
+    "fields": {
+      "firstName": "TODO ig: First Name",
+      "lastName": "TODO ig: Last Name",
+      "email": "TODO ig: Email Address",
+      "code": "TODO ig: 6-Digit Code",
+      "password": "TODO ig: Password",
+      "newPassword": "TODO ig: Enter New Password",
+      "confirmPassword": "TODO ig: Re-enter New Password",
+      "region": "TODO ig: Region"
+    },
+    "placeholders": {
+      "firstName": "TODO ig: john",
+      "lastName": "TODO ig: doe",
+      "email": "TODO ig: example@domain.com",
+      "code": "000000",
+      "password": "******",
+      "region": "TODO ig: Choose your region"
+    },
+    "showPassword": "TODO ig: Show password",
+    "hidePassword": "TODO ig: Hide password",
+    "signUp": {
+      "title": "TODO ig: CREATE ACCOUNT",
+      "terms": "TODO ig: Terms of Use",
+      "privacy": "TODO ig: Privacy Policy",
+      "submit": "TODO ig: CREATE ACCOUNT",
+      "switchPrompt": "TODO ig: Already have an account?",
+      "switchLink": "TODO ig: Sign In",
+      "termsConsent": "TODO ig: I have read and accept the {terms} and the {privacy}, including the terms for store purchases, payments and returns.",
+      "marketingConsent": "TODO ig: Send me news, tournament updates and offers from Goondu Games by email. I can unsubscribe at any time."
+    },
+    "signIn": {
+      "title": "TODO ig: SIGN IN TO YOUR ACCOUNT",
+      "forgot": "TODO ig: Forgot Password?",
+      "submit": "TODO ig: SIGN IN",
+      "switchPrompt": "TODO ig: Don't have an account?",
+      "switchLink": "TODO ig: Create Account",
+      "resetDone": "TODO ig: Your password has been reset. Sign in with the new one.",
+      "verifiedDone": "TODO ig: Your email is confirmed. Sign in to carry on."
+    },
+    "forgot": {
+      "title": "TODO ig: FORGOT PASSWORD",
+      "body": "TODO ig: Enter the email address associated with this account. We'll email you a code to reset your password.",
+      "submit": "TODO ig: SUBMIT",
+      "back": "TODO ig: Back to sign in"
+    },
+    "reset": {
+      "title": "TODO ig: RESET PASSWORD",
+      "sent": "TODO ig: If an account uses {email}, we've emailed it a 6-digit code. Enter it below with your new password.",
+      "submit": "TODO ig: RESET PASSWORD",
+      "mismatch": "TODO ig: The two passwords do not match.",
+      "newCode": "TODO ig: Get a new code"
+    },
+    "confirm": {
+      "title": "TODO ig: CONFIRM YOUR EMAIL",
+      "sent": "TODO ig: We've sent a 6-digit code to {email}. Enter it below to confirm your email and finish your registration.",
+      "help": "TODO ig: If you can't find the email in your inbox or spam folders, click on the button below to resend the mail.",
+      "submit": "TODO ig: CONFIRM",
+      "resendIn": "TODO ig: Resend email in",
+      "seconds": "TODO ig: {time}secs",
+      "resend": "TODO ig: RESEND EMAIL",
+      "resent": "TODO ig: A new code is on its way.",
+      "yourEmail": "TODO ig: your email"
+    },
+    "errors": {
+      "invalid-credentials": "TODO ig: That email and password do not match an account.",
+      "email-taken": "TODO ig: An account already uses this email. Sign in instead.",
+      "invalid-code": "TODO ig: That code is wrong or has expired. Check the email, or get a new one.",
+      "network": "TODO ig: The server could not be reached. Check your connection and try again.",
+      "unknown": "TODO ig: Something failed on our side. Try again in a moment.",
+      "stock": "TODO ig: We don't have that many in stock. Lower the quantity or choose another option."
+    },
+    "strength": {
+      "label": "TODO ig: Password strength:",
+      "weak": "TODO ig: Weak",
+      "fair": "TODO ig: Fair",
+      "good": "TODO ig: Good",
+      "strong": "TODO ig: Strong"
+    }
   }
 }

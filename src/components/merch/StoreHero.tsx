@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { TornPlate } from "@/components/ui/TornPlate";
 import { formatPrice } from "@/lib/utils/price";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Product, TileField } from "@/types/merch";
@@ -35,7 +36,7 @@ export function StoreHero({
   aside: ReactNode;
 }) {
   const t = messages.merch;
-  const copy = t.products[product.copyKey];
+  const copy = product.copy;
 
   return (
     <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[59.375%_35.4%] lg:justify-between lg:gap-0">
@@ -53,6 +54,7 @@ export function StoreHero({
 
           <Image
             src={product.image}
+            unoptimized={isRemoteImage(product.image)}
             alt={copy.imageAlt}
             fill
             priority

@@ -1,6 +1,7 @@
 import { Scene } from "@/components/competition/Scene";
 import { Reveal } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils/cn";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Stage, StageStatus } from "@/types/tournament";
 
@@ -29,7 +30,7 @@ import type { Stage, StageStatus } from "@/types/tournament";
  * heading wraps to three lines there at a 50 pitch (0.91) and the sub sits 21
  * under it.
  */
-export function JourneyStepper({ stages, messages }: { stages: readonly Stage[]; messages: Messages }) {
+export function JourneyStepper({ stages, messages, locale }: { stages: readonly Stage[]; messages: Messages; locale: Locale }) {
   const t = messages.competition.detail;
 
   return (
@@ -59,11 +60,15 @@ export function JourneyStepper({ stages, messages }: { stages: readonly Stage[];
           return (
             <li key={stage.key} className="flex flex-col items-center xl:flex-row xl:items-start">
               <div data-stage className="flex w-full flex-col items-center xl:w-auto">
-                <Chip status={stage.status}>{t.stages[stage.key]}</Chip>
+                <Chip status={stage.status}>{stage.label}</Chip>
                 <p className="text-menu-fg font-body text-body mt-2.5 flex items-center justify-center gap-1.5 xl:mt-4.5">
                   {stage.status === "completed" ? <Tick /> : null}
                   {t.stageStatus[stage.status]}
                 </p>
+                {/* Live, when the stage runs (no frame draws it: FLAGGED), quieter than the status. */}
+                {stage.startsAt || stage.endsAt ? (
+                  <p className="text-menu-fg/60 font-body text-body-sm mt-1 text-center">{stageDates(stage, t.stageDates, locale)}</p>
+                ) : null}
               </div>
               {next ? (
                 <span
@@ -81,6 +86,15 @@ export function JourneyStepper({ stages, messages }: { stages: readonly Stage[];
       </Scene>
     </section>
   );
+}
+
+/** "Oct 26 – Nov 4", "From Oct 26" or "Until Nov 4", in Lagos time, where the admin sets them. */
+function stageDates(stage: Stage, copy: Messages["competition"]["detail"]["stageDates"], locale: Locale): string {
+  const day = (iso: string) =>
+    new Intl.DateTimeFormat(locale === "ig" ? "ig" : "en-US", { month: "short", day: "numeric", timeZone: "Africa/Lagos" }).format(new Date(iso));
+  if (stage.startsAt && stage.endsAt) return copy.range.replace("{from}", day(stage.startsAt)).replace("{to}", day(stage.endsAt));
+  if (stage.startsAt) return copy.from.replace("{date}", day(stage.startsAt));
+  return copy.until.replace("{date}", day(stage.endsAt!));
 }
 
 const CHIP: Record<StageStatus, string> = {

@@ -11,10 +11,16 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 
+import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/components/auth/AuthProvider";
 import { NoteCard } from "@/components/community/NoteCard";
 import { useGsapScene } from "@/hooks/useGsapScene";
 import { WALL } from "@/lib/api/community";
+import { toggleNoteLike } from "@/lib/api/notes";
 import { COMMUNITY_SCENES } from "@/lib/animation/community-scenes";
+import { authHref } from "@/lib/utils/auth-links";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { CommunityNote } from "@/types/community";
 
@@ -33,9 +39,12 @@ export const CommunityWall = memo(function CommunityWall({
   fresh,
   viewRef,
   messages,
+  locale,
   className,
 }: {
   notes: readonly CommunityNote[];
+  /** For Sign In, where a signed-out like goes. */
+  locale: Locale;
   /** The id of a note just posted, so it arrives with a pop. */
   fresh?: string | null;
   /** Written on every paint with what the visitor can see. */
@@ -186,16 +195,28 @@ export const CommunityWall = memo(function CommunityWall({
     paint();
   };
 
-  // Stable, so a memoised card re-renders only when ITS like changes.
+  // Stable, so a memoised card re-renders only when ITS like changes. The like
+  // is the signed-in player's: shown at once, sent, and taken back if the
+  // API refuses it; a signed-out visitor goes to Sign In and back.
+  const { status } = useAuth();
+  const router = useRouter();
   const toggleLike = useCallback(
-    (id: string) =>
-      setLiked((current) => {
-        const next = new Set(current);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
-        return next;
-      }),
-    [],
+    (id: string) => {
+      if (status === "signed-out") {
+        router.push(authHref(locale, "sign-in", window.location.pathname));
+        return;
+      }
+      const flip = () =>
+        setLiked((current) => {
+          const next = new Set(current);
+          if (next.has(id)) next.delete(id);
+          else next.add(id);
+          return next;
+        });
+      flip();
+      toggleNoteLike(id).catch(flip);
+    },
+    [status, router, locale],
   );
 
   return (

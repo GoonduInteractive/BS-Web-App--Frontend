@@ -65,7 +65,7 @@ export async function RegionalLeagues({ messages }: { messages: Messages }) {
                   height={23}
                   className="h-5.75 w-7 shrink-0 select-none"
                 />
-                {messages.competition.leagues[region.nameKey as keyof typeof messages.competition.leagues]}
+                {region.name}
               </li>
             ))}
           </ul>

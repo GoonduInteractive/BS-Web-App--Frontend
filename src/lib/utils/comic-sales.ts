@@ -16,7 +16,8 @@ export function comicLabel(issue: ComicIssue, messages: Messages): string {
   const c = messages.merch.comics;
   return c.label
     .replace("{formats}", comicFormats(issue).map((f) => c.formatNames[f]).join(" · "))
-    .replace("{volume}", String(issue.volume))
+    // A live chapter's volume number isn't in the API's reply (FLAGGED): a dash.
+    .replace("{volume}", issue.volume ? String(issue.volume) : "—")
     .replace("{chapter}", String(issue.chapter));
 }
 
@@ -34,20 +35,10 @@ export function lineFormat(line: Pick<CartLine, "colourId">, issue: ComicIssue):
   return comicFormats(issue)[0] ?? "physical";
 }
 
-/** Whether a comic cart line is the printed volume rather than a chapter (`colourId` "volume"). */
-export function isVolumeLine(line: Pick<CartLine, "colourId">): boolean {
-  return line.colourId === "volume";
-}
-
-/** "Physical – Vol. 1, collected edition": the printed volume's label. */
-export function volumeLabel(issue: ComicIssue, messages: Messages): string {
-  return messages.merch.comics.volumeEdition.label.replace("{volume}", String(issue.volume));
-}
-
-/** Whether a cart needs shipping: any garment, printed chapter or printed volume. Online chapters ship nothing. */
+/** Whether a cart needs shipping: any garment or printed chapter. Online chapters ship nothing. */
 export function needsShipping(lines: readonly CartLine[], comics: readonly ComicIssue[]): boolean {
   return lines.some((line) => {
     const issue = comics.find((c) => c.slug === line.slug);
-    return !issue || isVolumeLine(line) || lineFormat(line, issue) === "physical";
+    return !issue || lineFormat(line, issue) === "physical";
   });
 }

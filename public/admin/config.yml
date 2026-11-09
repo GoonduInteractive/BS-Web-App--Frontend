@@ -512,3 +512,55 @@ collections:
         widget: boolean
         default: true
         i18n: duplicate
+  # ---------------------------------------------------------------------------
+  # HALL OF ASCENSION, the season champions on the Competition page. Since
+  # 2026-10-15; src/lib/api/hall.ts reads these files at build
+  # (lib/schemas/hall.ts checks them). Only the tournament name is translated:
+  # a handle, a season number and a portrait are the same in both locales.
+  # ---------------------------------------------------------------------------
+  - name: hall
+    label: Hall of Ascension
+    label_singular: Champion
+    description: The season champions on the Competition page, one card each, in season order. A card switched off stays out of the hall; with none on, the section says Coming Soon. On the Igbo tab click "Fill in from another locale", then publish.
+    folder: src/content/hall
+    create: true
+    delete: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    identifier_field: handle
+    slug: 'season-{{season}}-{{slug}}'
+    summary: 'Season {{season}}: {{handle}}'
+    sortable_fields: [season, handle]
+    media_folder: /public/assets/hall
+    public_folder: /assets/hall
+    fields:
+      - label: Champion's handle
+        name: handle
+        widget: string
+        hint: The player's handle without the @, e.g. somamain. The card prints it in capitals.
+        i18n: duplicate
+      - label: Season
+        name: season
+        widget: number
+        value_type: int
+        min: 1
+        default: 1
+        hint: The season they won, e.g. 1. Cards are ordered by season.
+        i18n: duplicate
+      - label: Tournament
+        name: tournament
+        widget: string
+        required: false
+        hint: Optional. The tournament the season was named for, e.g. Wrath of Nze Ugwuoke. Shown after the season, "Season 1 – Wrath of Nze Ugwuoke".
+        i18n: true
+      - label: Portrait
+        name: portrait
+        widget: image
+        hint: A character render on a transparent background, portrait-shaped (about 375 x 442). It fills the card's width from the top; the bottom is cropped.
+        i18n: duplicate
+      - label: Show on the site
+        name: visible
+        widget: boolean
+        default: true
+        i18n: duplicate

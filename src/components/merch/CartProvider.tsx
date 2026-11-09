@@ -1,150 +1,131 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  type ReactNode,
-} from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { createContext, useCallback, useContext, useMemo, type ReactNode } from "react";
 
-import type { CartLine, ProductSize } from "@/types/merch";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { ApiError } from "@/lib/api/client";
+import type { CartIndexEntry } from "@/lib/api/merch";
+import { addToCart, changeCartItem, getCart, isStockRefusal, removeCartItem } from "@/lib/api/store";
+import { authHref } from "@/lib/utils/auth-links";
+import type { Locale } from "@/lib/utils/locales";
+import type { CartLine } from "@/types/merch";
 
-/**
- * The cart. Client state, and only client state.
- *
- * WHY CONTEXT AND NOT TANSTACK QUERY. The coding standard puts server state in
- * TanStack Query and global client state in Context, and a cart in this build is
- * unambiguously the second: there is no server to hold it, nothing is fetched,
- * and nothing is sent. It sits beside `locale`, `sound on/off` and `menu open`.
- *
- * IT NEVER LEAVES THE BROWSER. `localStorage` is the whole of its persistence.
- * No request carries it, no analytics sees it, and the checkout screens read it
- * to draw an order summary rather than to submit one.
- *
- * A LINE IS IDENTIFIED BY SLUG + COLOUR + SIZE, not by slug. Two hoodies in
- * different sizes are two lines, and adding a size you already hold increments
- * that line instead of creating a second one - which is what the cart frame
- * shows, three lines each with its own colour and size.
- *
- * WRITES ARE A REDUCER, not a pile of setState calls, because every mutation is
- * a small transform of the same list and three of the four have to merge or
- * prune rather than append.
- */
+/** The cart's cache key. */
+export const CART = ["store", "cart"] as const;
 
-const STORAGE_KEY = "bs.cart.v1";
+type Identity = Pick<CartLine, "slug" | "colourId" | "size">;
 
-type CartAction =
-  | { type: "add"; line: CartLine }
-  | { type: "setQuantity"; slug: string; colourId: string; size: ProductSize; quantity: number }
-  | { type: "remove"; slug: string; colourId: string; size: ProductSize }
-  | { type: "clear" }
-  | { type: "hydrate"; lines: CartLine[] };
-
-const sameLine = (a: CartLine, b: Pick<CartLine, "slug" | "colourId" | "size">) =>
-  a.slug === b.slug && a.colourId === b.colourId && a.size === b.size;
-
-function reducer(state: CartLine[], action: CartAction): CartLine[] {
-  switch (action.type) {
-    case "hydrate":
-      return action.lines;
-
-    case "add": {
-      const existing = state.find((line) => sameLine(line, action.line));
-      if (!existing) return [...state, action.line];
-      return state.map((line) =>
-        sameLine(line, action.line)
-          ? { ...line, quantity: line.quantity + action.line.quantity }
-          : line,
-      );
-    }
-
-    case "setQuantity":
-      // Zero removes the line rather than leaving an empty one behind, so the
-      // minus button at quantity 1 does the obvious thing.
-      if (action.quantity < 1) {
-        return state.filter((line) => !sameLine(line, action));
-      }
-      return state.map((line) =>
-        sameLine(line, action) ? { ...line, quantity: action.quantity } : line,
-      );
-
-    case "remove":
-      return state.filter((line) => !sameLine(line, action));
-
-    case "clear":
-      return [];
-  }
-}
+const sameLine = (a: CartLine, b: Identity) => a.slug === b.slug && a.colourId === b.colourId && a.size === b.size;
 
 type CartValue = {
   lines: readonly CartLine[];
   /** Total number of items, which is what the cart badge shows. */
   count: number;
-  add: (line: CartLine) => void;
-  setQuantity: (slug: string, colourId: string, size: ProductSize, quantity: number) => void;
-  remove: (slug: string, colourId: string, size: ProductSize) => void;
+  /** Resolves true once the line is in the cart (the caller says so); false if it isn't, or sign-in comes first. */
+  add: (line: CartLine) => Promise<boolean>;
+  setQuantity: (slug: string, colourId: string, size: string, quantity: number) => void;
+  remove: (slug: string, colourId: string, size: string) => void;
   clear: () => void;
+  /** A change is on its way to the API. */
+  busy: boolean;
+  /** Why the last change didn't land - the components word it. */
+  failed: "network" | "stock" | "unknown" | null;
+  /** Forgets `failed`. It is about one item, and this context outlives the page: it goes when the choice does. */
+  clearFailed: () => void;
 };
 
 const CartContext = createContext<CartValue | null>(null);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [lines, dispatch] = useReducer(reducer, []);
+export function CartProvider({
+  children,
+  index = [],
+  locale,
+}: {
+  children: ReactNode;
+  /** Every variant the cart can hold, as a line (`getCartIndex`). */
+  index?: readonly CartIndexEntry[];
+  locale: Locale;
+}) {
+  const { status } = useAuth();
+  const router = useRouter();
+  const queries = useQueryClient();
+  // Read again on coming back to the tab: an order placed elsewhere (a phone, another tab) empties this cart too.
+  const server = useQuery({ queryKey: CART, queryFn: getCart, enabled: status === "signed-in", refetchOnWindowFocus: true });
+  const change = useMutation({
+    mutationFn: (send: () => Promise<void>) => send(),
+    // The shopper sees `failed`, worded; in development the console says what the API said.
+    onError: (e) => {
+      if (process.env.NODE_ENV !== "production") console.error("[cart] the change didn't land:", e instanceof ApiError ? `${e.status} ${e.message}` : e);
+    },
+    onSettled: () => queries.invalidateQueries({ queryKey: CART }),
+  });
 
-  // READ ON MOUNT, NOT DURING RENDER. The server prerenders this page, so the
-  // first client render must match the server's empty cart or React logs a
-  // hydration mismatch and throws the tree away. Reading in an effect means the
-  // badge flicks from 0 to its real count on the first frame, which is correct
-  // rather than merely tolerable: the cart genuinely is unknown until the
-  // browser has been asked.
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return;
-      const parsed: unknown = JSON.parse(stored);
-      if (!Array.isArray(parsed)) return;
-      // Shape-check every line rather than trusting the blob: this is data the
-      // visitor can edit, and a malformed entry would otherwise render as NaN.
-      const lines = parsed.filter(
-        (line): line is CartLine =>
-          !!line &&
-          typeof line === "object" &&
-          typeof (line as CartLine).slug === "string" &&
-          typeof (line as CartLine).colourId === "string" &&
-          typeof (line as CartLine).size === "string" &&
-          Number.isFinite((line as CartLine).quantity) &&
-          (line as CartLine).quantity > 0,
+  const lines = useMemo(() => {
+    const byVariant = new Map(index.map((entry) => [entry.variantId, entry]));
+    return (server.data ?? []).flatMap((item): CartLine[] => {
+      const entry = byVariant.get(item.variant_id);
+      return entry
+        ? [{ slug: entry.slug, colourId: entry.colourId, size: entry.size, quantity: item.quantity, variantId: item.variant_id }]
+        : [];
+    });
+  }, [server.data, index]);
+
+  const variantFor = useCallback(
+    (line: Identity & { variantId?: string }) =>
+      line.variantId ?? index.find((entry) => sameLine({ ...entry, quantity: 0 }, line))?.variantId,
+    [index],
+  );
+
+  /* ---- The verbs ---- */
+
+  const { mutate, mutateAsync, reset: clearFailed } = change;
+  const add = useCallback(
+    async (line: CartLine) => {
+      if (status !== "signed-in") {
+        router.push(authHref(locale, "sign-in", window.location.pathname));
+        return false;
+      }
+      const variant = variantFor(line);
+      // A failure is also `failed`, which the page words under the button.
+      return mutateAsync(() => (variant ? addToCart(variant, line.quantity) : Promise.reject(new Error(`No variant for ${line.slug}`)))).then(
+        () => true,
+        () => false,
       );
-      if (lines.length) dispatch({ type: "hydrate", lines });
-    } catch {
-      // Private mode, cleared storage, or a corrupt value. An empty cart is the
-      // correct fallback and there is nothing to tell the visitor.
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
-    } catch {
-      // Storage full or blocked. The cart still works for this page view.
-    }
-  }, [lines]);
-
-  const add = useCallback((line: CartLine) => dispatch({ type: "add", line }), []);
-  const setQuantity = useCallback(
-    (slug: string, colourId: string, size: ProductSize, quantity: number) =>
-      dispatch({ type: "setQuantity", slug, colourId, size, quantity }),
-    [],
+    },
+    [status, router, locale, variantFor, mutateAsync],
   );
   const remove = useCallback(
-    (slug: string, colourId: string, size: ProductSize) =>
-      dispatch({ type: "remove", slug, colourId, size }),
-    [],
+    (slug: string, colourId: string, size: string) => {
+      const variant = variantFor({ slug, colourId, size });
+      if (variant) mutate(() => removeCartItem(variant));
+    },
+    [variantFor, mutate],
   );
-  const clear = useCallback(() => dispatch({ type: "clear" }), []);
+  const setQuantity = useCallback(
+    (slug: string, colourId: string, size: string, quantity: number) => {
+      const current = lines.find((line) => sameLine(line, { slug, colourId, size }));
+      if (!current?.variantId) return;
+      if (quantity < 1) return remove(slug, colourId, size);
+      const delta = quantity - current.quantity;
+      const variant = current.variantId;
+      if (delta) mutate(() => changeCartItem(variant, delta));
+    },
+    [lines, remove, mutate],
+  );
+  // Placing an order empties the API's cart; this just reads it again.
+  const clear = useCallback(() => {
+    void queries.invalidateQueries({ queryKey: CART });
+  }, [queries]);
+
+  const failed = !change.isError
+    ? null
+    : isStockRefusal(change.error)
+      ? "stock"
+      : change.error instanceof ApiError && change.error.status === 0
+        ? "network"
+        : "unknown";
 
   const value = useMemo<CartValue>(
     () => ({
@@ -154,8 +135,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setQuantity,
       remove,
       clear,
+      busy: change.isPending,
+      failed,
+      clearFailed,
     }),
-    [lines, add, setQuantity, remove, clear],
+    [lines, add, setQuantity, remove, clear, change.isPending, failed, clearFailed],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

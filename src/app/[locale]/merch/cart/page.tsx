@@ -6,11 +6,17 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CartButton } from "@/components/merch/CartButton";
 import { CartView } from "@/components/merch/CartView";
 import { getComics, getProducts } from "@/lib/api/merch";
-import { getFreeShipping } from "@/lib/api/shipping";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
+
+/**
+ * The catalogue is the API's (`lib/api/merch.ts`): rebuilt in the
+ * background at most hourly, so what an admin publishes shows without a
+ * redeploy. A failed refresh keeps the last good page.
+ */
+export const revalidate = 3600;
 
 /**
  * The cart. Figma: `Merch Store- Cart.png` and `Cart (1).png`.
@@ -47,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
-  const [products, comics, promo] = await Promise.all([getProducts(), getComics(), getFreeShipping()]);
+  const [products, comics] = await Promise.all([getProducts(), getComics()]);
 
   return (
     <main>
@@ -58,7 +64,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       </div>
 
       <div className="mx-auto w-full max-w-360 px-6 md:mt-1.5 md:px-20">
-        <CartView products={products} comics={comics} promo={promo} messages={messages} locale={locale} />
+        <CartView products={products} comics={comics} messages={messages} locale={locale} />
         <div className="h-24 md:h-[9.25rem]" />
       </div>
 

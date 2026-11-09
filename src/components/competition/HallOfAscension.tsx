@@ -1,14 +1,21 @@
+import { Trophy } from "lucide-react";
 import Image from "next/image";
 
 import { Reveal } from "@/components/motion/Reveal";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { TornDivider } from "@/components/ui/TornDivider";
 import { getHallOfAscension } from "@/lib/api/hall";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { HallEntry } from "@/types/hall";
 
-
-export async function HallOfAscension({ messages }: { messages: Messages }) {
-  const entries = await getHallOfAscension();
+/**
+ * HALL OF ASCENSION, written in the CMS (`hall` collection). Before the first
+ * champion is published the heading stands over the empty state the team and
+ * the roster use: the Coming Soon lines and a trophy, no CTA mid-page.
+ */
+export async function HallOfAscension({ messages, locale }: { messages: Messages; locale: Locale }) {
+  const entries = await getHallOfAscension(locale);
   const t = messages.competition.hall;
 
   return (
@@ -26,22 +33,22 @@ export async function HallOfAscension({ messages }: { messages: Messages }) {
         </Reveal>
       </div>
 
-      <Reveal delay={160} className="mt-12 grid gap-5.5 sm:grid-cols-2 lg:mt-25 lg:grid-cols-3">
-        {entries.map((entry) => (
-          <HallCard key={entry.slug} entry={entry} messages={messages} />
-        ))}
-      </Reveal>
+      {entries.length === 0 ? (
+        <EmptyState icon={Trophy} title={messages.comingSoon.title} body={messages.comingSoon.body} className="mt-14 xl:mt-23" />
+      ) : (
+        <Reveal delay={160} className="mt-12 grid gap-5.5 sm:grid-cols-2 lg:mt-25 lg:grid-cols-3">
+          {entries.map((entry) => (
+            <HallCard key={entry.slug} entry={entry} messages={messages} />
+          ))}
+        </Reveal>
+      )}
     </section>
   );
 }
 
 function HallCard({ entry, messages }: { entry: HallEntry; messages: Messages }) {
   const t = messages.competition.hall;
-  const tournament = entry.tournamentKey
-    ? messages.competition.tournaments[
-        entry.tournamentKey as keyof typeof messages.competition.tournaments
-      ].name
-    : null;
+  const tournament = entry.tournament;
   const season = t.season.replace("{n}", String(entry.season));
   const alt = t.portraitAlt.replace("{handle}", entry.handle).replace("{n}", String(entry.season));
 
@@ -56,14 +63,17 @@ function HallCard({ entry, messages }: { entry: HallEntry; messages: Messages })
           sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover object-top"
         />
-        <Image
-          src={entry.portrait.src}
-          alt={alt}
-          width={entry.portrait.width}
-          height={entry.portrait.height}
-          sizes="(min-width: 1024px) 28vw, (min-width: 640px) 46vw, 92vw"
-          className="absolute top-0 left-1/2 h-auto w-[92.6cqw] max-w-none -translate-x-1/2"
-        />
+        {/* The frame draws the render 92.6% of the card wide, from the top, cropped at the foot.
+            Cover in a box that wide keeps that for the frame's 375x442 render and fits any upload. */}
+        <div className="absolute top-0 left-1/2 h-full w-[92.6cqw] -translate-x-1/2">
+          <Image
+            src={entry.portrait}
+            alt={alt}
+            fill
+            sizes="(min-width: 1024px) 28vw, (min-width: 640px) 46vw, 92vw"
+            className="object-cover object-top"
+          />
+        </div>
       </div>
 
       <TornDivider edge="top" depth={14} seed={3117} className="text-clot -mt-3.5 relative" />

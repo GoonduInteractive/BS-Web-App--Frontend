@@ -1,16 +1,22 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect } from "react";
 
+import { useAuth } from "@/components/auth/AuthProvider";
 import { ShareMarks } from "@/components/ui/ShareMarks";
 import { useCaptureShield } from "@/hooks/useCaptureShield";
+import { ApiError } from "@/lib/api/client";
+import { getComicPages } from "@/lib/api/library";
+import { authHref } from "@/lib/utils/auth-links";
 import type { Locale } from "@/lib/utils/locales";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 import type { Messages } from "@/lib/utils/messages";
 import type { ComicIssue } from "@/types/merch";
-
 
 export function ComicReader({
   issue,
@@ -24,8 +30,25 @@ export function ComicReader({
   locale: Locale;
 }) {
   const t = messages.comics.reader;
-  const [copied, setCopied] = useState(false);
   const shielded = useCaptureShield();
+
+  // The pages are the owner's: read as the signed-in player. Signed out
+  // goes to Sign In and back; a player who doesn't own the chapter goes to
+  // its page in the store, where it is bought.
+  const { status } = useAuth();
+  const router = useRouter();
+  const live = useQuery({
+    queryKey: ["comics", "pages", issue.slug],
+    queryFn: () => getComicPages(issue.slug),
+    enabled: status === "signed-in",
+    retry: false,
+  });
+  const refused = live.error instanceof ApiError && [403, 404].includes(live.error.status);
+  useEffect(() => {
+    if (status === "signed-out") router.replace(authHref(locale, "sign-in", window.location.pathname));
+    else if (refused) router.replace(`/${locale}/merch/comics/${issue.slug}`);
+  }, [status, refused, router, locale, issue.slug]);
+  const pages = (live.data ?? []);
 
   return (
     <>
@@ -47,19 +70,10 @@ export function ComicReader({
 
           <div className="hidden items-center gap-4.5 md:flex">
             <span className="text-menu-fg font-body text-body-sm leading-none tracking-[0.02em] uppercase">
-              {copied ? t.share.copied : t.shareVia}
+              {t.shareVia}
             </span>
-            <ShareMarks
-              title={title}
-              labels={t.share}
-              className="gap-4"
-              markClassName="size-6"
-              feedback="none"
-              onCopied={() => {
-                setCopied(true);
-                window.setTimeout(() => setCopied(false), 2000);
-              }}
-            />
+            {/* A copied link says so in a toast, as everywhere. */}
+            <ShareMarks title={title} labels={t.share} className="gap-4" markClassName="size-6" />
           </div>
         </div>
       </div>
@@ -74,11 +88,17 @@ export function ComicReader({
         onDragStart={(event) => event.preventDefault()}
         className="relative mx-auto w-full max-w-[65.75rem] px-4.5 pt-42.5 pb-20 select-none [-webkit-touch-callout:none] md:px-0 md:pt-40.25 print:hidden"
       >
-        <div aria-hidden={shielded} className={shielded ? "invisible" : undefined}>
-          {issue.pages.map((page, i) => (
+        <div aria-hidden={shielded} aria-busy={(live.isPending) || undefined} className={shielded ? "invisible" : undefined}>
+          {live.isError && !refused ? (
+            <p role="alert" className="text-menu-fg/85 font-body text-body py-24 text-center">
+              {messages.auth.errors.unknown}
+            </p>
+          ) : null}
+          {pages.map((page, i) => (
             <div key={`${page}-${i}`} className="relative mt-1.5 first:mt-0 md:mt-6.25">
               <Image
                 src={page}
+                unoptimized={isRemoteImage(page)}
                 alt={t.pageAlt.replace("{title}", title).replace("{n}", String(i + 1))}
                 width={1581}
                 height={2768}

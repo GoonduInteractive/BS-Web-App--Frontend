@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { BracketButton } from "@/components/ui/BracketButton";
 import { TornPanel } from "@/components/ui/TornPanel";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
@@ -11,9 +12,9 @@ import type { Messages } from "@/lib/utils/messages";
  * plate's torn bottom lands ON the white sheet, so the two overlap; drawn as
  * neighbours their deckles interlock over black.
  *
- * FLAGGED: LOGIN is inert. There is no auth in this build.
+ * Shown only to a visitor who isn't signed in (`StoreAside`); LOGIN opens Sign In.
  */
-export function LoginCard({ messages }: { messages: Messages }) {
+export function LoginCard({ messages, locale }: { messages: Messages; locale: Locale }) {
   const t = messages.merch.login;
 
   return (
@@ -52,7 +53,7 @@ export function LoginCard({ messages }: { messages: Messages }) {
         </p>
 
         <div className="mt-12.75 -ml-1.25">
-          <BracketButton field="light" className="bg-ink px-4.75 py-[1.15rem] text-body tracking-normal">
+          <BracketButton href={`/${locale}/sign-in`} field="light" className="bg-ink px-4.75 py-[1.15rem] text-body tracking-normal">
             {t.cta}
           </BracketButton>
         </div>

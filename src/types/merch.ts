@@ -3,16 +3,12 @@ import type { Messages } from "@/lib/utils/messages";
 /**
  * Contracts for the merch store.
  *
- * THESE ARE THE SHAPES THE GAME TEAM'S BACKEND WILL EVENTUALLY RETURN, which is
- * why they live here rather than beside a component (coding-standard, "Shared
- * types"). Nothing in `src/components/merch` imports a mock; everything goes
- * through `src/lib/api/merch.ts`, so when a real endpoint lands only the adapter
- * changes and the mapping happens at that boundary.
+ * The store's shapes. They live here rather than beside a component
+ * (coding-standard, "Shared types"); `src/lib/api/merch.ts` maps the API's
+ * replies into them, so a reply that changes changes only that adapter.
  *
- * COPY IS NOT IN HERE. Every user-facing string is a key into `src/messages`,
- * the same join `characters.ts` makes with `castKey`. A product's name and
- * description have to exist in English and Igbo, and a data file is the one
- * place they must never be written.
+ * AN ITEM CARRIES ITS OWN COPY (`copy`): what an admin typed, in English - the
+ * API keeps one language.
  *
  * MONEY IS AN INTEGER NUMBER OF NAIRA, not a formatted string and not a float.
  * The frames show ₦10,000; formatting is the view's job and belongs next to the
@@ -23,30 +19,56 @@ import type { Messages } from "@/lib/utils/messages";
 /** Which flat field a product's tile is painted in. Set by Design, per product. */
 export type TileField = "linen" | "crimson" | "white";
 
-/** A colourway. `swatch` is a token name, never a hex - see coding-standard. */
+/**
+ * A colourway. `swatch` is a token name, never a hex - see coding-standard.
+ * A standard colour's name is a key into the copy; any other is the API's own (`label`).
+ */
 export type ProductColour = {
   id: string;
   /** Key into `messages.merch.colours`. */
-  labelKey: keyof Messages["merch"]["colours"];
+  labelKey?: keyof Messages["merch"]["colours"];
+  /** The colour's name as printed, for one the copy doesn't name. */
+  label?: string;
   /** `--color-*` token name the swatch is painted in. */
   swatch: string;
 };
 
+/** The standard sizes, in order. A product's own are whatever its variants say. */
 export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL";
+
+/** A product's name, description and image text, as printed. */
+export type ProductCopy = { name: string; description: string; imageAlt: string };
+
+/** One thing the cart can hold: a colour in a size, with its own id at the API. */
+export type ProductVariant = {
+  id: string;
+  /** The colour's `id`, or "" for a product with no colours. */
+  colourId: string;
+  /** The size, or "" for a product with no sizes. */
+  size: string;
+  /** Whole naira. */
+  price: number;
+  /** Null where the API keeps no count. */
+  stock: number | null;
+};
 
 export type Product = {
   /** URL segment, English per the route naming rule. */
   slug: string;
-  /** Key into `messages.merch.products`. */
-  copyKey: keyof Messages["merch"]["products"];
+  /** Its name, description and image text, as an admin typed them. */
+  copy: ProductCopy;
   /** Whole naira. */
   price: number;
   image: string;
   tile: TileField;
   /** Drawn as the EXCLUSIVE plate on the tile. */
   exclusive: boolean;
+  /** Empty for a product sold in one colour, which shows no picker. */
   colours: readonly ProductColour[];
-  sizes: readonly ProductSize[];
+  /** Empty for a product sold in one size, which shows no picker. */
+  sizes: readonly string[];
+  /** Live only: what the cart adds, by colour and size. */
+  variants?: readonly ProductVariant[];
 };
 
 /**
@@ -83,33 +105,49 @@ export type ComicFormat = "online" | "physical";
 /**
  * One chapter of a comic, as the store sells it (the team's rules, 2026-10-01):
  * every chapter is sold on its own, online and/or in print. A whole volume is
- * never sold online; a printed volume comes later, once a volume is complete.
+ * never sold online.
  */
+/** A chapter's printed copy. */
+export type IssueCopy = {
+  title: string;
+  /** The cover's chip: "VOL. 1". */
+  volume: string;
+  meta: string;
+  format: string;
+  description: string;
+  coverAlt: string;
+  /** The cover's title, broken where `\n` says. */
+  coverTitle: string;
+};
+
 export type ComicIssue = {
   slug: string;
-  /** Key into `messages.merch.comics.issues`. */
-  copyKey: string;
+  /** Its title and the words around it, as an admin typed them. */
+  copy: IssueCopy;
   /** What each format costs. A format left out is not sold for this chapter. */
   formats: Partial<Record<ComicFormat, number>>;
+  /** Live only: the cart's variant for each format sold. */
+  variants?: Partial<Record<ComicFormat, string>>;
+  /** How many of each format the API has; null where it keeps no count. */
+  stock?: Partial<Record<ComicFormat, number | null>>;
+  /** The volume's number; 0 where the source doesn't say (a live chapter). */
   volume: number;
   /** Its place in the volume: Chapter 1, 2… */
   chapter: number;
-  /**
-   * The printed volume this chapter belongs to, when it is on sale: the whole
-   * volume as one book, only once every chapter is out. `leadSlug` is the
-   * volume's first chapter, which its cart line and page are keyed on.
-   */
-  edition?: { price: number; stock: number; leadSlug: string };
-  /**
-   * The reader's pages, in order. Empty means the issue is not readable yet and
-   * START READING has nowhere to go.
-   *
-   * FLAGGED: one page was delivered (`comics/c1.png`) and the frame stacks
-   * several. It is repeated to fill the reader rather than substituted with
-   * anything invented, and the repetition is visible in this list.
-   */
-  pages: readonly string[];
   cover: {
+    /**
+     * A live chapter's cover, a FILE an admin uploaded. Titled (below), it is
+     * the composition's field; otherwise it is drawn as it is, in place of the
+     * composition (whose fields the adapter still fills, for the cart's
+     * thumbnail ground).
+     */
+    image?: string;
+    /**
+     * The admin's Cover style. True draws the frame's band over the
+     * uploaded file - torn seam, volume chip, title - as the composed covers
+     * have it. False is for a file that already carries its own title.
+     */
+    titled?: boolean;
     /**
      * WHOLE TAILWIND CLASS NAMES, never derived at runtime.
      *
@@ -137,7 +175,10 @@ export type ComicIssue = {
     align: "left" | "center";
     /** Token for the volume chip. */
     chip: string;
-    /** The character render, and how it sits in the cover box. */
+    /**
+     * The character render, and how it sits in the cover box ("figure") or in
+     * the field ("field": `object-*` classes).
+     */
     figure: string;
     figureClass: string;
     /** An optional second render behind the figure - the spear on volume 1. */
@@ -150,8 +191,10 @@ export type ComicIssue = {
 export type CartLine = {
   slug: string;
   colourId: string;
-  size: ProductSize;
+  size: string;
   quantity: number;
+  /** Live only: the variant the API's cart holds. */
+  variantId?: string;
 };
 
 /**
@@ -162,7 +205,8 @@ export type CartLine = {
  */
 export type PointsBalance = {
   points: number;
-  nextTierAt: number;
+  /** The next tier's threshold. Absent: the API has no tiers, so no progress bar. */
+  nextTierAt?: number;
   /** Keys into `messages.merch.points.perks`. */
   perkKeys: readonly string[];
 };
