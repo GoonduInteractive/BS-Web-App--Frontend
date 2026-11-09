@@ -13,8 +13,92 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ## [Unreleased]
 
+### Changed
+
+- The site runs on the live API only. The stand-in data it used without one is gone: sample
+  products, comics, tournaments, leaderboard, wall notes, profile, points and shipping prices, the
+  in-browser accounts, and the Google button, which only ever worked on that stand-in. Without
+  `NEXT_PUBLIC_API_URL` the site now stops with a message instead of starting on sample data. The
+  Active Player Map keeps its sample data until the API has player locations, and Invite Friends
+  links to Create Account rather than a made-up code.
+- Accounts are real now. Creating an account, signing in, confirming your email, resending the
+  confirmation and resetting a forgotten password all go through Goondu's account service, so an
+  account works on any device. Create Account also asks for your Gamer ID and your region.
+- Google sign-in is hidden for now: the account service doesn't offer it yet.
+- Confirming your email and resetting your password now use a 6-digit code from the email
+  instead of a link: enter it on Confirm Email, or on Reset Password with your new password.
+- An uploaded comic cover is drawn in the Comics design: the torn band over the top with the
+  volume tag and title. A cover whose art already carries its title can be shown as it is instead.
+- The featured comic's cover opens its store page, and anyone who doesn't own it gets a GET THIS
+  COMIC button there (START READING stays for owners).
+- The Merch Store shows its login offer only to visitors who aren't signed in, and its LOGIN button
+  opens Sign In. Signed in, the same spot shows your claimable points.
+- Adding to the cart now confirms it with a short message naming the item, with a link to the cart.
+- Checkout reads your cart when it opens and shows the empty cart if there's nothing in it, instead
+  of letting PLACE ORDER end in "Cart is empty". An order left unpaid, by going back from Paystack
+  or because payment wouldn't start, is offered again with PAY NOW.
+- Paying for an order or a tournament entry opens Paystack again, after the payment reply changed.
+- The store respects stock: a sold-out size or print copy says so and can't be added, the quantity
+  stops at what's left, the cart flags a line that has run out, and a refusal for stock says that
+  instead of "Something failed on our side". An error no longer follows you to another product.
+- Every confirmation is now that same short message: profile and avatar saved, a link or invite
+  copied, a new confirmation code sent, password reset or email confirmed (on Sign In), and a
+  community note posted (it reaches the public wall once approved). Errors stay beside the form.
+- Payout settings are gone from Edit Profile, and the payout account line from the profile card.
+- A free comic chapter goes through checkout without Paystack: the order completes at once and the
+  confirmation opens. Paid orders and tournament fees still go to Paystack.
+- Create Account no longer asks for a Gamer ID.
+- An order of online comics now confirms as "YOUR COMIC IS READY", with START READING (the chapter, or
+  the Comics page for several), instead of talking about delivery. Comics bought with physical items
+  keep the usual message, plus a line that they can be read now.
+- The order confirmation's button is CONTINUE SHOPPING (back to the store) instead of BACK TO PROFILE,
+  which showed nothing about the order.
+- A tournament playing qualifiers shows its qualifier leaderboard: ranks, points, and who goes
+  through to the group stage.
+- Each stage of a tournament's journey shows when it runs, e.g. "Oct 26 – Nov 4".
+- Coming back from Paystack, the order confirmation waits while the payment is confirmed, then
+  shows the order number, what was bought and the total. If the payment isn't confirmed within a
+  minute it says so. BACK TO PROFILE opens your profile, and Continue shopping returns to the store.
+
+- Regional Leagues on the Competition page now lists the regions Goondu manages in its admin,
+  instead of a fixed list. A region added there appears on the site within the hour.
+- The Hall of Ascension on the Competition page is now edited in the CMS: each season's
+  champion, their portrait and the tournament they won. Until the first champion is published it
+  says Coming Soon.
+- The profile page shows the signed-in player's own name, avatar, level, standing and points.
+  Edit Profile saves their name, username and region, and uploads a new avatar. Payout details
+  aren't saved yet.
+- Tournaments, their pages and brackets come from Goondu's admin. REGISTER NOW signs the player
+  up for real (signing in first if needed).
+- The leaderboard is the real ranking, and a signed-in player sees their own row under YOUR
+  JOURNEY.
+- The Community Wall shows notes once a moderator approves them. Sharing a note or liking one
+  needs a signed-in player.
+- The store, cart and checkout are connected to Goondu's store: the cart is kept with the
+  player's account, checkout pays through Paystack, and a chapter the player owns opens in the
+  reader. While the store is closed to visitors who aren't signed in, the store and comics pages
+  say Coming Soon.
+- Merch, Comics and Competition are open again: their pages no longer stand behind the Coming
+  Soon page, and they are back in the sitemap.
+- Checkout sends where the order goes, prices shipping for the chosen state and local government
+  (free when a promotion's minimum is reached), and starts from the player's saved delivery
+  details. Choosing a place Goondu doesn't deliver to yet says so.
+- Community Wall notes show who wrote them, and the leaderboard shows players' own avatars.
+
 ### Added
 
+- Accounts. JOIN BEYOND SERVICE now opens Create Account, and there are Sign In, Forgot
+  Password, Reset Password and Confirm Your Email pages, plus Google sign-in. After signing up,
+  a player confirms their email from the link they are sent and is signed in. Accounts are
+  stored only in the visitor's own browser for now, until the game's account service is
+  connected.
+- Once signed in, the header shows the player's avatar in place of JOIN BEYOND SERVICE. Its
+  menu opens their profile or logs them out, and Log Out on the profile page works too.
+- Create Account asks players to tick that they accept the Terms of Use and Privacy Policy
+  (both linked), with a separate, optional box for marketing emails.
+- A password strength meter under the password on Create Account and Reset Password.
+- The profile pages are for signed-in players only. Anyone else is sent to Sign In and comes
+  back to the profile afterwards.
 - On a character's page, the left and right edges of the opening section now lead to the
   previous and next character. With a mouse, the pointer turns into a torn cream plate that
   names who is next; click and the page wipes across to them. The roster wraps, so the last

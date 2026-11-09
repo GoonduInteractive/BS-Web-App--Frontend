@@ -1,9 +1,10 @@
 import Link from "next/link";
 
 import { ComicCover } from "@/components/merch/ComicCover";
-import { BracketButton } from "@/components/ui/BracketButton";
 import type { Locale } from "@/lib/utils/locales";
+import { ReadButton } from "@/components/comics/ReadButton";
 import { comicLabel } from "@/lib/utils/comic-sales";
+import { issueSynopsis } from "@/lib/utils/merch-copy";
 import type { Messages } from "@/lib/utils/messages";
 import type { ComicIssue } from "@/types/merch";
 
@@ -17,13 +18,19 @@ export function FeaturedComic({
   locale: Locale;
 }) {
   const t = messages.comics;
-  const synopsis = t.synopsis[issue.copyKey as keyof typeof t.synopsis];
+  const synopsis = issueSynopsis(issue);
+  const href = issueHref(issue, locale);
 
   return (
     <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[47.5%_37.8%] lg:justify-between lg:gap-0 lg:pr-[15.2%] lg:pl-[17.1%]">
       <div className="relative max-md:mx-0.5">
         <CornerMarks />
-        <ComicCover issue={issue} messages={messages} priority size="cover" />
+        <Link
+          href={href}
+          className="focus-visible:outline-signal block transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
+        >
+          <ComicCover issue={issue} messages={messages} priority size="cover" />
+        </Link>
       </div>
 
       <div className="lg:pt-18.5">
@@ -40,21 +47,17 @@ export function FeaturedComic({
           </div>
         ) : null}
 
-        {issue.pages.length > 0 ? (
-          <div className="mt-12.75 -ml-0.75">
-            <BracketButton
-              href={`/${locale}/comics/${issue.slug}`}
-              className="px-5.75 py-[1.22rem] text-body tracking-normal"
-            >
-              {t.startReading}
-            </BracketButton>
-          </div>
-        ) : null}
+        {/* START READING for whoever can read it, else GET THIS COMIC (`ReadButton`). */}
+        <ReadButton issue={issue} label={t.startReading} getLabel={t.getComic} locale={locale} className="mt-12.75 -ml-0.75" />
       </div>
     </div>
   );
 }
 
+/** Where a cover opens: its store page. Whoever owns the chapter reads it through START READING. */
+function issueHref(issue: ComicIssue, locale: Locale): string {
+  return `/${locale}/merch/comics/${issue.slug}`;
+}
 
 const CORNERS = [
   { side: "top-left", box: "border-t-2 border-l-2", a: "-top-[22px] -left-[26px]", b: "-top-[28px] -left-[20px]" },
@@ -87,7 +90,6 @@ export function ExploreComics({
   locale: Locale;
 }) {
   const t = messages.comics;
-  const c = messages.merch.comics;
 
   return (
     <section className="pt-24 pb-28 md:pt-63.75 md:pb-63.75">
@@ -99,15 +101,11 @@ export function ExploreComics({
           four 238-wide covers with 23px gutters. */}
       <ul className="mx-auto mt-12 grid max-w-255.25 grid-cols-1 gap-x-5.75 gap-y-37.25 sm:grid-cols-2 lg:mt-15.25 lg:grid-cols-4">
         {issues.map((issue, i) => {
-          const copy = c.issues[issue.copyKey as keyof typeof c.issues];
+          const copy = issue.copy;
           return (
             <li key={`${issue.slug}-${i}`}>
               <Link
-                href={
-                  issue.pages.length > 0
-                    ? `/${locale}/comics/${issue.slug}`
-                    : `/${locale}/merch/comics/${issue.slug}`
-                }
+                href={issueHref(issue, locale)}
                 className="focus-visible:outline-signal group block focus-visible:outline-2 focus-visible:outline-offset-4"
               >
                 <ComicCover issue={issue} messages={messages} size="card" />

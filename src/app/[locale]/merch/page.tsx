@@ -1,3 +1,4 @@
+import { ShoppingBag } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -7,15 +8,14 @@ import Link from "next/link";
 
 import { CartButton } from "@/components/merch/CartButton";
 import { ComicCover } from "@/components/merch/ComicCover";
-import { LoginCard } from "@/components/merch/LoginCard";
-import { PointsPanel } from "@/components/merch/PointsPanel";
 import { ProductCard } from "@/components/merch/ProductCard";
+import { StoreAside } from "@/components/merch/StoreAside";
 import { StoreHero } from "@/components/merch/StoreHero";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getComics, getFeaturedProduct, getListing } from "@/lib/api/merch";
-import { getPointsBalance, getViewerState } from "@/lib/api/points";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
-import { comicLabel, volumeLabel } from "@/lib/utils/comic-sales";
+import { comicLabel } from "@/lib/utils/comic-sales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
 
@@ -24,12 +24,18 @@ import { pageMetadata } from "@/lib/seo";
  * `context/design/10-merch/Merch Store- Not logged in.png`, 1440 x 3319.
  *
  * A plain page like About - not a gate, so no rail and no curtain. Data comes
- * from the mock adapters in `src/lib/api/merch.ts`; nothing here knows they are
- * mocks.
+ * from `src/lib/api/merch.ts`.
  *
  * THE CONTAINER IS 80px, not the 108 of The Game or the 90 of About. Measured:
  * the featured tile starts at x 80 and the grid's right edge lands on 1360.
  */
+/**
+ * The catalogue is the API's (`lib/api/merch.ts`): rebuilt in the
+ * background at most hourly, so what an admin publishes shows without a
+ * redeploy. A failed refresh keeps the last good page.
+ */
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
 }
@@ -53,20 +59,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
-  const [featured, listing, comics, viewer, balance] = await Promise.all([
-    getFeaturedProduct(),
-    getListing(),
-    getComics(),
-    getViewerState(),
-    getPointsBalance(),
-  ]);
+  const [featured, listing, comics] = await Promise.all([getFeaturedProduct(), getListing(), getComics()]);
 
-  // The comics shelf: every chapter, then one card per printed volume on sale,
-  // shown on its first chapter's cover and leading to that chapter's volume offer.
-  const shelf = [
-    ...comics.map((issue) => ({ issue, volume: false })),
-    ...comics.filter((issue) => issue.edition && issue.edition.leadSlug === issue.slug).map((issue) => ({ issue, volume: true })),
-  ];
+  // Nothing on sale - or the API closed to anyone not signed in -
+  // the store says COMING SOON, as the Hall of Ascension does. No frame draws it.
+  const empty = !featured && !listing.length && !comics.length;
 
   return (
     <main>
@@ -77,19 +74,21 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       </div>
 
       <div className="mx-auto w-full max-w-360 px-6 md:mt-3.5 md:px-20">
+        {featured ? (
         <StoreHero
           product={featured}
           messages={messages}
           locale={locale}
-          aside={
-            viewer === "signed-out" ? (
-              <LoginCard messages={messages} />
-            ) : (
-              <PointsPanel balance={balance} messages={messages} />
-            )
-          }
+          // Signed out, the login offer; signed in, their points. Decided in the browser (`StoreAside`).
+          aside={<StoreAside messages={messages} locale={locale} />}
         />
+        ) : null}
 
+        {empty ? (
+          <EmptyState icon={ShoppingBag} title={messages.comingSoon.title} body={messages.comingSoon.body} className="pt-24 md:pt-43" />
+        ) : null}
+
+        {listing.length ? (
         <section className="pt-24 md:pt-43">
           <h2 className="font-display text-menu-fg text-h2 leading-none font-semibold tracking-[-0.075em] uppercase">
             {messages.merch.sections.merch}
@@ -108,26 +107,22 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
             ))}
           </ul>
         </section>
+        ) : null}
 
-        {shelf.length > 0 ? (
+        {comics.length > 0 ? (
           <section className="pt-24 md:pt-51">
             <h2 className="font-display text-menu-fg text-h2 leading-none font-semibold tracking-[-0.075em] uppercase">
               {messages.merch.sections.comics}
             </h2>
 
-            {/* Each chapter, then each printed volume on sale (a volume whose every
-                chapter is out), repeated to the frame's four cards - the same
-                repetition the merch grid and the About team grid use. */}
+            {/* Each chapter once. */}
             <ul className="mt-9 grid grid-cols-1 gap-x-7 gap-y-12 sm:grid-cols-2 lg:mt-5.25 lg:grid-cols-4">
-              {Array.from({ length: Math.max(4, shelf.length) }, (_, i) => shelf[i % shelf.length]).map(({ issue, volume }, i) => {
-                const copy =
-                  messages.merch.comics.issues[
-                    issue.copyKey as keyof typeof messages.merch.comics.issues
-                  ];
+              {comics.map((issue, i) => {
+                const copy = issue.copy;
                 return (
                   <li key={`${issue.slug}-${i}`}>
                     <Link
-                      href={`/${locale}/merch/comics/${issue.slug}${volume ? "#volume" : ""}`}
+                      href={`/${locale}/merch/comics/${issue.slug}`}
                       className="focus-visible:outline-signal group block focus-visible:outline-2 focus-visible:outline-offset-4"
                     >
                       <ComicCover issue={issue} messages={messages} />
@@ -135,7 +130,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
                         {copy.title}
                       </h3>
                       <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">
-                        {volume ? volumeLabel(issue, messages) : comicLabel(issue, messages)}
+                        {comicLabel(issue, messages)}
                       </p>
                     </Link>
                   </li>

@@ -161,6 +161,13 @@
   --color-roster-top: #170303;
   --color-roster-bottom: #010101;
 
+  /* Auth flow (human, 2026-10-03, from Figma). The card is --color-pitch and the
+     button --color-signal, both already here. The grey copy was given as
+     #FFFFFF "Black/300", so it is white at an opacity. */
+  --color-smoke: #535353;         /* auth card and input border */
+  --color-coal: #181818;          /* auth social button */
+  --color-white: #ffffff;         /* auth labels and grey copy */
+
   --roster-heading-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.97) 0%, rgba(153, 153, 153, 0.97) 100%);
 
   /* ---- Type scale (overview section 8) ---- */

@@ -7,8 +7,6 @@ import { CommunityBoard } from "@/components/community/CommunityBoard";
 import { GatePage } from "@/components/gates/GatePage";
 import { getWallNotes } from "@/lib/api/community";
 import { getHotspots, getInviteLink } from "@/lib/api/players";
-import { getViewerState } from "@/lib/api/points";
-import { getProfile } from "@/lib/api/profile";
 import { pageMetadata } from "@/lib/seo";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -41,6 +39,13 @@ const bradley = localFont({
  * Same arrangement as the other gate pages: `GatePage` owns the gate and these
  * are the page behind it. No pull-up - the frame ends on the footer.
  */
+/**
+ * Still prerendered, but rebuilt in the background at most every five
+ * minutes: the wall's notes come from the game backend, and one an admin
+ * approves should show without a redeploy.
+ */
+export const revalidate = 300;
+
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   return params.then(({ locale }) => {
     if (!isLocale(locale)) return {};
@@ -54,20 +59,12 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  const [notes, hotspots, invite, viewer] = await Promise.all([
-    getWallNotes(),
-    getHotspots(),
-    getInviteLink(),
-    getViewerState(),
-  ]);
-  // A submitted note is signed by the mock profile when the viewer is "signed
-  // in", else by the copy's "You". No account exists; see the notes.
-  const you = viewer === "signed-out" ? messages.community.wall.you : (await getProfile()).name;
+  const [notes, hotspots] = await Promise.all([getWallNotes(), getHotspots()]);
 
   return (
     <GatePage id="community" params={params}>
       <div className={bradley.variable}>
-        <CommunityBoard notes={notes} hotspots={hotspots} invite={invite} messages={messages} you={you} />
+        <CommunityBoard notes={notes} hotspots={hotspots} invite={getInviteLink(locale)} messages={messages} locale={locale} />
         <SiteFooter messages={messages} locale={locale} />
       </div>
     </GatePage>

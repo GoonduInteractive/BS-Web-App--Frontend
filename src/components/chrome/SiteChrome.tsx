@@ -11,19 +11,20 @@ import { GateRail } from "@/components/gates/GateRail";
 import { GATES, type GateId } from "@/lib/gates";
 import { isHidden } from "@/lib/hidden-sections";
 import type { Messages } from "@/lib/utils/messages";
-import type { Profile } from "@/types/profile";
+
+const AUTH_ROUTES = new Set([
+  "sign-up",
+  "sign-in",
+  "forgot-password",
+  "reset-password",
+  "confirm-email",
+  "verify-email",
+]);
 
 /**
  * Global chrome - header, menu overlay, sound toggle and gate rail.
  */
-export function SiteChrome({
-  messages,
-  profile = null,
-}: {
-  messages: Messages;
-  /** The signed-in player, or null. Mock state, not a session. */
-  profile?: Profile | null;
-}) {
+export function SiteChrome({ messages }: { messages: Messages }) {
   const pathname = usePathname();
   const { shown } = useGateEntry();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,7 +46,11 @@ export function SiteChrome({
   // which has no bar of its own and keeps the chrome.
   const isReader = segments.length === 3 && segments[1] === "comics" && !isHidden("comics");
 
-  if (isEntry || isReader) return null;
+  // The auth frames are the card alone on its ground: no header, rail or sound
+  // toggle. The card's wordmark is the way back.
+  const isAuth = AUTH_ROUTES.has(segments[1] ?? "");
+
+  if (isEntry || isReader || isAuth) return null;
 
   const railLabels = Object.fromEntries(
     GATES.map((gate) => [gate.id, messages.gates[gate.id].rail]),
@@ -53,7 +58,7 @@ export function SiteChrome({
 
   return (
     <>
-      <SiteHeader messages={messages} locale={locale} onOpenMenu={openMenu} profile={profile} />
+      <SiteHeader messages={messages} locale={locale} onOpenMenu={openMenu} />
       <MenuOverlay messages={messages} locale={locale} open={menuOpen} onClose={closeMenu} />
       <GateRail railLabel={messages.gates.railLabel} labels={railLabels} />
 

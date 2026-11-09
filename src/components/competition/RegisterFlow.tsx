@@ -1,14 +1,29 @@
 "use client";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 
+import { useAuth } from "@/components/auth/AuthProvider";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { TornDialog } from "@/components/ui/TornDialog";
+import { ApiError } from "@/lib/api/client";
+import { enterTournament, getMyEntry, payEntryFee } from "@/lib/api/entries";
+import { authHref } from "@/lib/utils/auth-links";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { formatPrice } from "@/lib/utils/price";
 import type { Tournament } from "@/types/tournament";
 
+/**
+ * REGISTER NOW: the JOIN TOURNAMENT sheet, then REGISTRATION SUCCESSFUL.
+ *
+ * It registers the signed-in player (`lib/api/entries.ts`). Signed out,
+ * the trigger goes to Sign In and comes back. A player already in the
+ * tournament goes straight to the success sheet. A PAID tournament's CONFIRM
+ * goes to Paystack instead, and back to the tournament's page. FLAGGED: the
+ * sheet doesn't show the entry fee - no frame draws one.
+ */
 export function RegisterFlow({
   tournament,
   messages,
@@ -45,13 +60,54 @@ export function RegisterFlow({
     setAvailable(false);
   }, []);
 
+  const { status } = useAuth();
+  const router = useRouter();
+  const queries = useQueryClient();
+  const entryKey = ["tournament", tournament.slug, "entry"];
+  const entry = useQuery({
+    queryKey: entryKey,
+    queryFn: () => getMyEntry(tournament.slug),
+    enabled: status === "signed-in",
+  });
+
+  const join = useMutation({
+    mutationFn: async () => {
+      if (tournament.fee) {
+        const back = `${window.location.origin}/${locale}/competition/${tournament.slug}`;
+        window.location.assign(await payEntryFee(tournament.id, back));
+        return "paying" as const;
+      }
+      await enterTournament(tournament.slug);
+      return "joined" as const;
+    },
+    onSuccess: (outcome) => {
+      if (outcome !== "joined") return;
+      void queries.invalidateQueries({ queryKey: entryKey });
+      setStep("done");
+    },
+  });
+
+  const open = () => {
+    if (status === "signed-out") return router.push(authHref(locale, "sign-in", window.location.pathname));
+    // A failure from an earlier try doesn't belong to this one.
+    join.reset();
+    setStep(entry.data?.registered ? "done" : "form");
+  };
+
   const confirm = () => {
     if (!rules) return rulesBox.current?.focus();
     if (!available) return availableBox.current?.focus();
-    setStep("done");
+
+    if (!join.isPending) join.mutate();
   };
 
-  const copy: { name: string } = t.tournaments[tournament.copyKey as keyof typeof t.tournaments];
+  const failed =
+    join.error instanceof ApiError && join.error.status === 0
+      ? messages.auth.errors.network
+      : join.isError
+        ? messages.auth.errors.unknown
+        : null;
+
   const deadline = tournament.closesAt
     ? new Intl.DateTimeFormat(locale === "ig" ? "ig" : "en-US", { month: "short", day: "numeric" }).format(
         new Date(tournament.closesAt),
@@ -69,7 +125,7 @@ export function RegisterFlow({
       <BracketButton
         tone={tone}
         field={field}
-        onClick={() => setStep("form")}
+        onClick={open}
         className="px-4 py-4.75 leading-none tracking-normal whitespace-nowrap"
       >
         {label ?? t.cta.register}
@@ -87,13 +143,13 @@ export function RegisterFlow({
         <h2 className="font-display text-ink text-section-heading font-semibold tracking-[-0.058em] uppercase">
           {t.register.title}
         </h2>
-     
+
         <p className="text-ash font-body text-body mt-1 max-w-115">{t.register.body}</p>
 
         <dl className="mt-6.25 grid grid-cols-2 gap-y-6 sm:grid-cols-[5.375rem_9.25rem_5.625rem_1fr]">
-          <Fact label={t.register.labels.format} value={tournament.format ? t.formats[tournament.format] : ""} />
+          <Fact label={t.register.labels.format} value={tournament.format ?? ""} />
           <Fact label={t.register.labels.prizePool} value={prize} />
-          <Fact label={t.register.labels.region} value={t.regions[tournament.region]} />
+          <Fact label={t.register.labels.region} value={tournament.region} />
           <Fact label={t.register.labels.deadline} value={deadline} />
         </dl>
         <dl className="mt-6.5">
@@ -115,10 +171,16 @@ export function RegisterFlow({
             tone="ink"
             field="light"
             onClick={confirm}
+            disabled={join.isPending}
+            aria-busy={join.isPending || undefined}
             className="px-4 py-4.75 text-center leading-tight tracking-normal sm:leading-none sm:whitespace-nowrap"
           >
             {t.register.confirm}
           </BracketButton>
+          {/* Always in the sheet, so a screen reader hears it; empty, it takes no room. */}
+          <p role="alert" className={`text-signal font-body text-body-sm leading-snug ${failed ? "mt-4" : ""}`}>
+            {failed}
+          </p>
         </div>
       </TornDialog>
 
@@ -151,7 +213,7 @@ export function RegisterFlow({
         </h2>
 
         <p className="text-ash font-body text-body mt-2.5 max-w-120 whitespace-pre-line">
-          {t.registered.body.replace("{tournament}", copy.name)}
+          {t.registered.body.replace("{tournament}", tournament.name)}
         </p>
 
         <div className="mt-13.5">
@@ -181,7 +243,6 @@ function Fact({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-
 
 function Check({
   ref,

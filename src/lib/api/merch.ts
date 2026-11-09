@@ -1,3 +1,6 @@
+import { cache } from "react";
+import { z } from "zod";
+
 import type {
   ComicIssue,
   ListingEntry,
@@ -5,18 +8,23 @@ import type {
   ProductColour,
   ProductSize,
 } from "@/types/merch";
+import type { BandColour } from "@/types/news";
+
+import { ApiError, apiGet, fromMinor } from "./client";
 
 /**
- * The merch catalogue, behind a typed contract.
+ * The merch catalogue, behind a typed contract: the game backend's
+ * `/v1/products`. Apparel becomes `Product`, comics `ComicIssue`, read on the
+ * server at build and whenever the store's pages revalidate. Components read
+ * through these functions and receive `Product`, never a row shape.
  *
- * THIS IS THE MOCK IMPLEMENTATION AND THE ONLY FILE THAT KNOWS IT IS ONE. There
- * is no backend in this phase (overview section 9), so the functions below
- * resolve from the constants in this file. When the game team ships a real
- * endpoint, this file changes and nothing else does: components read through
- * these functions and receive `Product`, never a row shape.
+ * THE STORE IS READ AS ANYONE - public since 2026-10-27 (it answered 401
+ * before). Should the API refuse again, the store is EMPTY - its pages show the
+ * Coming Soon state - rather than a broken build.
  *
- * They are `async` even though nothing awaits, precisely so that swap is not a
- * change of signature at fifty call sites.
+ * THE LIST IS ASKED FOR BY CATEGORY: `category` (apparel | comic) is required
+ * on `/v1/products` and on `/related` (with `relatedToSlug`, the product's own
+ * slug again), so the catalogue is two lists.
  *
  * THE ERRORS ARE NORMALISED. `getProduct` throws `MerchNotFoundError` rather
  * than returning null, per coding-standard's error rule: a caller that asked for
@@ -52,211 +60,256 @@ const COLOURS: readonly ProductColour[] = [
 ] as const;
 
 /**
- * The catalogue.
- *
- * FOUR PRODUCTS, AND THE FRAME'S SIX CARDS ARE THREE OF THEM TWICE. Prices are
- * the frame's ₦10,000 throughout - that is what Design drew on every card, not a
- * placeholder we chose. Tile fields are per product and were read off the
- * frame: the tote sits on white, the beanie on crimson, the tee and the hoodie
- * on linen, in both rows.
+ * The product the store index features above the fold: the first an admin
+ * marked exclusive, else the first. Null for an empty store.
  */
-const PRODUCTS: readonly Product[] = [
-  {
-    slug: "goondu-hoodie",
-    copyKey: "hoodie",
-    price: 10000,
-    image: "/assets/merch/Hoodie 2 2.png",
-    tile: "linen",
-    exclusive: true,
-    colours: COLOURS,
-    sizes: SIZES,
-  },
-  {
-    slug: "goondu-tote",
-    copyKey: "tote",
-    price: 10000,
-    image: "/assets/merch/Tote 2 1.png",
-    tile: "white",
-    exclusive: false,
-    colours: COLOURS,
-    sizes: SIZES,
-  },
-  {
-    slug: "goondu-beanie",
-    copyKey: "beanie",
-    price: 10000,
-    image: "/assets/merch/beanie 1 2.png",
-    tile: "crimson",
-    exclusive: false,
-    colours: COLOURS,
-    sizes: SIZES,
-  },
-  {
-    slug: "goondu-tee",
-    copyKey: "tee",
-    price: 10000,
-    image: "/assets/merch/Tshirt 1 1.png",
-    tile: "linen",
-    exclusive: false,
-    colours: COLOURS,
-    sizes: SIZES,
-  },
-] as const;
-
-/**
- * The grid, in the frame's order: tote, beanie, tee, then beanie, tee, tote.
- *
- * A LISTING IS NOT THE CATALOGUE. Six cards, three products - the repetition is
- * what Design drew, and it lives here as an ordered list of references so the
- * grid never has to know that two cards point at one product.
- */
-const LISTING: readonly ListingEntry[] = [
-  { id: "listing-1", slug: "goondu-tote" },
-  { id: "listing-2", slug: "goondu-beanie" },
-  { id: "listing-3", slug: "goondu-tee" },
-  { id: "listing-4", slug: "goondu-beanie" },
-  { id: "listing-5", slug: "goondu-tee" },
-  { id: "listing-6", slug: "goondu-tote" },
-] as const;
-
-/** The product the store index features above the fold. */
-export async function getFeaturedProduct(): Promise<Product> {
-  return getProduct("goondu-hoodie");
+export async function getFeaturedProduct(): Promise<Product | null> {
+  const { products } = await catalogue();
+  return products.find((p) => p.exclusive) ?? products[0] ?? null;
 }
 
 export async function getProducts(): Promise<readonly Product[]> {
-  return PRODUCTS;
+  return (await catalogue()).products;
 }
 
 export async function getListing(): Promise<readonly (ListingEntry & { product: Product })[]> {
-  return LISTING.map((entry) => {
-    const product = PRODUCTS.find((p) => p.slug === entry.slug);
-    if (!product) throw new MerchNotFoundError(entry.slug);
-    return { ...entry, product };
-  });
+  // Every product once: the frame's repetition was a comp filling a grid.
+  return (await catalogue()).products.map((product) => ({ id: product.slug, slug: product.slug, product }));
 }
 
 export async function getProduct(slug: string): Promise<Product> {
-  const product = PRODUCTS.find((p) => p.slug === slug);
+  const product = (await getProducts()).find((p) => p.slug === slug);
   if (!product) throw new MerchNotFoundError(slug);
   return product;
 }
 
 /**
- * What the detail page's YOU MIGHT ALSO LIKE row shows: the rest of the
- * catalogue, in catalogue order. The frame draws three beside the hoodie, which
- * is what four products minus the one being viewed comes to.
+ * What the detail page's YOU MIGHT ALSO LIKE row shows: the API's own pick
+ * (`/related`), else the rest of the catalogue.
  */
 export async function getRelated(slug: string): Promise<readonly Product[]> {
-  return PRODUCTS.filter((p) => p.slug !== slug);
+  const products = await getProducts();
+  const others = products.filter((p) => p.slug !== slug);
+
+  const query = new URLSearchParams({ limit: "3", category: "apparel", relatedToSlug: slug });
+  const related = await apiGet(`/v1/products/${encodeURIComponent(slug)}/related?${query}`, relatedReply).catch(() => null);
+  const picked = (related ? (Array.isArray(related) ? related : related.items) : []).flatMap(
+    (item) => others.find((p) => p.slug === item.slug) ?? [],
+  );
+  return picked.length ? picked : others.slice(0, 3);
 }
 
-/**
- * The comics.
- *
- * The covers are assembled rather than loaded - see `ComicIssue` - because what
- * Goondu delivered is character renders, which is also what the frames compose
- * their covers from.
- *
- * FLAGGED: volume 2 has no synopsis in any frame. Its `description` key is empty
- * and the detail page renders nothing there rather than borrowing volume 1's.
- */
-const COMICS: readonly ComicIssue[] = [
-  {
-    slug: "trial-of-the-gods",
-    copyKey: "trial",
-    // Print at the public store's ₦10,000. FLAGGED: online at ₦3,000 is the admin's placeholder, not Goondu's.
-    formats: { online: 3000, physical: 10000 },
-    volume: 1,
-    chapter: 1,
-    pages: ["/assets/comics/c1.png", "/assets/comics/c1.png", "/assets/comics/c1.png"],
-    cover: {
-      band: "bg-menu",
-      field: "bg-clot",
-      seam: "text-menu",
-      figureMode: "figure",
-      align: "left",
-      chip: "text-ink bg-[url('/assets/ornaments/onu-uzo-chip.svg')]",
-      figure: "/assets/comics/soma-gate-character.png",
-      // The render is a 4096 square with the figure filling its height, so it
-      // is placed by hand rather than covered.
-      // Recovered by normalised cross-correlation rather than by eye: the
-      // frame's face-and-shoulder patch matched the scaled render at NCC 0.874,
-      // putting a 384px square element at (74, 199) in a 414 x 567 cover.
-      figureClass: "left-[17.9%] top-[35.1%] w-[92.8%]",
-      prop: "/assets/comics/weapon-spear.png",
-      // SOLVED FROM TWO LANDMARKS, NOT BY EYE. The crystal's tip and the gold
-      // binding below it are both visible in the frame and in the file, and two
-      // corresponding points fix scale, angle and position exactly:
-      //
-      //   file   tip (1962.7, 36.6)   binding (1609.7, 369.6)   |v| 485.3  136.7°
-      //   frame  tip (347, 79.5)      binding (321, 177)        |v| 100.9  105.0°
-      //
-      // so scale 0.2079, rotation -31.7°, and solving the element's centre for
-      // the tip's landing gives the offsets below. Checked against the binding:
-      // predicted (320.9, 177.0) against the frame's (321, 177).
-      //
-      // THE FILE HAS BEEN REPLACED ONCE ALREADY (1156x1688 -> 2016x2112), which
-      // silently invalidated the previous numbers. If it changes again, re-solve
-      // rather than nudge.
-      propClass: "top-[25.5%] left-[19.3%] w-[101.2%] rotate-[-31.7deg]",
-    },
-  },
-  {
-    slug: "between-worlds",
-    copyKey: "between",
-    // Online only, at the frame's ₦10,000.
-    formats: { online: 10000 },
-    volume: 2,
-    chapter: 1,
-    pages: [],
-    cover: {
-      band: "bg-dusk",
-      field: "bg-abyss",
-      // The seam is painted in the BAND's colour and laid over the render,
-      // because the render runs up behind it.
-      seam: "text-dusk",
-      figureMode: "field",
-      align: "center",
-      // The cyan plate Goondu delivered - `#5EC1CE`, which closes the colour
-      // `Chip` still raises as unconfirmed for gate 2.
-      chip: "text-ink bg-[url('/assets/ornaments/onu-uzo-blue.svg')]",
-      figure: "/assets/comics/soma-mysc.png",
-      figureClass: "",
-    },
-  },
-] as const;
-
-/**
- * Printed volumes on sale, by volume number. SAMPLE: Volume 1 is complete (its
- * one chapter is out), so it is offered in print; FLAGGED, the price and stock
- * are placeholders, not Goondu's. Live, the admin's volume page sets these.
- */
-const VOLUME_EDITIONS: Record<number, { price: number; stock: number }> = {
-  1: { price: 25000, stock: 40 },
-};
-
-/** Each chapter, with its volume's printed edition attached when one is on sale. */
-const SOLD: readonly ComicIssue[] = COMICS.map((issue) => {
-  const edition = VOLUME_EDITIONS[issue.volume];
-  if (!edition) return issue;
-  const lead = [...COMICS].filter((c) => c.volume === issue.volume).sort((a, b) => a.chapter - b.chapter)[0];
-  return { ...issue, edition: { ...edition, leadSlug: lead.slug } };
-});
-
 export async function getComics(): Promise<readonly ComicIssue[]> {
-  return SOLD;
+  return (await catalogue()).comics;
 }
 
 export async function getComic(slug: string): Promise<ComicIssue> {
-  const issue = SOLD.find((c) => c.slug === slug);
+  const issue = (await getComics()).find((c) => c.slug === slug);
   if (!issue) throw new MerchNotFoundError(slug);
   return issue;
 }
 
-/** The detail page's row: the other issues, repeated to the four the frame draws. */
+/** The detail page's row: the other issues, each once, up to four. */
 export async function getRelatedComics(slug: string): Promise<readonly ComicIssue[]> {
-  const others = SOLD.filter((c) => c.slug !== slug);
+  const others = (await getComics()).filter((c) => c.slug !== slug);
   if (!others.length) return [];
-  return Array.from({ length: 4 }, (_, i) => others[i % others.length]);
+  return others.slice(0, 4);
 }
+
+/**
+ * Every variant the cart can hold, and the cart line it stands for, so the
+ * browser can turn the API's cart (variant ids) back into lines and a line
+ * back into a variant.
+ */
+export type CartIndexEntry = { variantId: string; slug: string; colourId: string; size: string };
+
+export async function getCartIndex(): Promise<readonly CartIndexEntry[]> {
+  const { products, comics } = await catalogue();
+  return [
+    ...products.flatMap((p) =>
+      (p.variants ?? []).map((v) => ({ variantId: v.id, slug: p.slug, colourId: v.colourId, size: v.size })),
+    ),
+    // A comic line carries its format in `colourId` and the cart's placeholder size (`ComicDetail`).
+    ...comics.flatMap((c) =>
+      Object.entries(c.variants ?? {}).map(([format, id]) => ({ variantId: id, slug: c.slug, colourId: format, size: "M" })),
+    ),
+  ];
+}
+
+/* ------------------------------------------------------------------------ */
+/* Live                                                                       */
+/* ------------------------------------------------------------------------ */
+
+const apiVariant = z.object({
+  id: z.string(),
+  price_minor: z.coerce.number().nullish(),
+  stock: z.number().nullish(),
+  fulfillment: z.string().nullish(),
+  size: z.string().nullish(),
+  color: z.string().nullish(),
+});
+
+const apiProduct = z.object({
+  slug: z.string(),
+  title: z.string(),
+  type: z.string(),
+  exclusive: z.boolean().default(false),
+  description: z.string().nullish(),
+  price_minor: z.coerce.number(),
+  cover_image_url: z.string().nullish(),
+  status: z.string().nullish(),
+  deleted: z.boolean().optional(),
+  chapter: z
+    .object({
+      number: z.number().nullish(),
+      description: z.string().nullish(),
+      cover_image_url: z.string().nullish(),
+      // The admin's Cover style - asked of the backend 2026-10-30, not in the API yet (`toIssue`).
+      cover_style: z.string().nullish(),
+      cover_title: z.string().nullish(),
+      cover_volume_label: z.string().nullish(),
+      cover_band: z.string().nullish(),
+    })
+    .nullish(),
+  variants: z.array(apiVariant).default([]),
+});
+type ApiProduct = z.output<typeof apiProduct>;
+
+const listItem = z.object({ slug: z.string() });
+const relatedReply = z.union([z.array(listItem), z.object({ items: z.array(listItem) })]);
+
+/** How many products the store reads. FLAGGED: past this, the rest are left out. */
+const PAGE = 100;
+
+/** The three colourways the frames draw keep their tokens; any other gets a neutral swatch and its own name. */
+function colourOf(name: string): ProductColour {
+  const standard = COLOURS.find((c) => c.id === name.trim().toLowerCase());
+  if (standard) return standard;
+  return { id: `custom-${name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-")}`, label: name.trim(), swatch: "bg-slate" };
+}
+
+/** Sizes in the frames' order, any others after. */
+const sizeOrder = (size: string) => {
+  const at = SIZES.indexOf(size.toUpperCase() as ProductSize);
+  return at < 0 ? SIZES.length : at;
+};
+
+function toProduct(d: ApiProduct, image: string): Product {
+  const price = fromMinor(d.price_minor);
+  const variants = d.variants.map((v) => ({
+    id: v.id,
+    colourId: v.color ? colourOf(v.color).id : "",
+    size: v.size?.trim() ?? "",
+    price: v.price_minor != null ? fromMinor(v.price_minor) : price,
+    stock: v.stock ?? null,
+  }));
+  const colours = [...new Map(d.variants.flatMap((v) => (v.color ? [[colourOf(v.color).id, colourOf(v.color)] as const] : []))).values()];
+  const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean))].sort((a, b) => sizeOrder(a) - sizeOrder(b));
+  return {
+    slug: d.slug,
+    copy: { name: d.title, description: d.description ?? "", imageAlt: d.title },
+    price,
+    image,
+    // Design sets a tile's ground per product and the API has none: linen, the frames' commonest. FLAGGED.
+    tile: "linen",
+    exclusive: d.exclusive,
+    colours,
+    sizes,
+    variants,
+  };
+}
+
+const BLUE_CHIP = "text-ink bg-[url('/assets/ornaments/onu-uzo-blue.svg')]";
+const CREAM_CHIP = "text-ink bg-[url('/assets/ornaments/onu-uzo-chip.svg')]";
+
+/**
+ * A titled cover's band, by the colour the admin picked: the news covers'
+ * palette and chip pairing (`components/news/bands.ts`), as whole classes.
+ */
+const COVER_BANDS: Record<BandColour, Pick<ComicIssue["cover"], "band" | "seam" | "chip">> = {
+  dusk: { band: "bg-dusk", seam: "text-dusk", chip: BLUE_CHIP },
+  clot: { band: "bg-clot", seam: "text-clot", chip: CREAM_CHIP },
+  ember: { band: "bg-ember", seam: "text-ember", chip: CREAM_CHIP },
+  oxblood: { band: "bg-oxblood", seam: "text-oxblood", chip: CREAM_CHIP },
+  blood: { band: "bg-blood", seam: "text-blood", chip: CREAM_CHIP },
+  carmine: { band: "bg-carmine", seam: "text-carmine", chip: CREAM_CHIP },
+  crimson: { band: "bg-crimson", seam: "text-crimson", chip: CREAM_CHIP },
+  menu: { band: "bg-menu", seam: "text-menu", chip: CREAM_CHIP },
+  abyss: { band: "bg-abyss", seam: "text-abyss", chip: BLUE_CHIP },
+  ash: { band: "bg-ash", seam: "text-ash", chip: BLUE_CHIP },
+};
+
+/**
+ * A chapter's cover is TITLED unless its admin chose the full image: the
+ * frame's band over the upload, torn into it, with the volume tag and the
+ * title - the cover title if one was set (a newline breaks the line), else the
+ * chapter's. The band is near-black, as on volume 1, unless another was picked.
+ *
+ * FLAGGED: the Cover style fields (`cover_style`, `cover_title`,
+ * `cover_volume_label`, `cover_band`) were asked of the backend on 2026-10-30.
+ * Until it sends them every cover is titled, with no volume tag: the public
+ * chapter names its volume by id only.
+ */
+function toIssue(d: ApiProduct, image: string): ComicIssue {
+  const online = d.variants.find((v) => v.fulfillment === "digital");
+  const print = d.variants.find((v) => v.fulfillment === "physical");
+  const price = (v: z.output<typeof apiVariant>) => fromMinor(v.price_minor ?? d.price_minor);
+  const c = d.chapter;
+  const band = COVER_BANDS[c?.cover_band as BandColour] ?? COVER_BANDS.menu;
+  return {
+    slug: d.slug,
+    // The meta line needs a date; a chapter product carries none (FLAGGED), so it prints nothing.
+    copy: {
+      title: d.title,
+      volume: c?.cover_volume_label?.trim() ?? "",
+      meta: "",
+      format: "",
+      description: d.description ?? c?.description ?? "",
+      coverAlt: d.title,
+      coverTitle: c?.cover_title?.trim() || d.title,
+    },
+    formats: { ...(online && { online: price(online) }), ...(print && { physical: price(print) }) },
+    variants: { ...(online && { online: online.id }), ...(print && { physical: print.id }) },
+    stock: { ...(online && { online: online.stock ?? null }), ...(print && { physical: print.stock ?? null }) },
+    volume: 0,
+    chapter: d.chapter?.number ?? 0,
+    // Read in the reader by whoever owns it (`/v1/comics/{slug}`), not from here.
+    cover: {
+      image,
+      titled: c?.cover_style !== "full",
+      ...band,
+      field: "bg-abyss",
+      // The upload is the field, covering it from the top down: a figure's head
+      // matters more than its feet.
+      figureMode: "field",
+      align: "left",
+      figure: image,
+      figureClass: "object-cover object-top",
+    },
+  };
+}
+
+/** The whole live store, read once per render. */
+const catalogue = cache(async (): Promise<{ products: readonly Product[]; comics: readonly ComicIssue[] }> => {
+  const listOf = (category: "apparel" | "comic") =>
+    apiGet(`/v1/products?page=1&limit=${PAGE}&category=${category}`, z.object({ items: z.array(listItem) }));
+  let list: z.output<typeof listItem>[];
+  try {
+    const [apparel, comics] = await Promise.all([listOf("apparel"), listOf("comic")]);
+    list = [...apparel.items, ...comics.items];
+  } catch (e) {
+    // Closed to anyone not signed in - see the note at the top.
+    if (e instanceof ApiError && e.status === 401) return { products: [], comics: [] };
+    throw e;
+  }
+  const details = await Promise.all(list.map((item) => apiGet(`/v1/products/${encodeURIComponent(item.slug)}`, apiProduct)));
+  const onSale = details.filter((d) => (!d.status || d.status === "published") && !d.deleted);
+  return {
+    // A product with no picture has nothing for its tile to show: left out. FLAGGED.
+    products: onSale.flatMap((d) => (d.type === "apparel" && d.cover_image_url ? [toProduct(d, d.cover_image_url)] : [])),
+    comics: onSale.flatMap((d) => {
+      const image = d.cover_image_url || d.chapter?.cover_image_url;
+      return d.type === "comic" && image ? [toIssue(d, image)] : [];
+    }),
+  };
+});

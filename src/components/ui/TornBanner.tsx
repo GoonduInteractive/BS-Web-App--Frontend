@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import TornSurface from "@/components/ui/TornSurface";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 
 /** The designer's tear depth, as everywhere else on this site. */
 const DEPTH = 47.4;
@@ -159,6 +160,7 @@ export function TornBanner({
           left part, so what reads is the art to the right of the tear. */}
       <Image
         src={figure}
+        unoptimized={isRemoteImage(figure)}
         alt={alt}
         fill
         priority={priority}

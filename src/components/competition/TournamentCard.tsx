@@ -15,8 +15,6 @@ export function TournamentCard({
   messages: Messages;
   locale: Locale;
 }) {
-  const t = messages.competition;
-  const copy: { name: string } = t.tournaments[tournament.copyKey as keyof typeof t.tournaments];
   const facts = factsFor(tournament, messages, locale);
   const cta = ctaFor(tournament.status, messages);
   // One CTA per card, as the frame draws it, and it goes to the tournament's
@@ -55,7 +53,7 @@ export function TournamentCard({
       <TornDivider edge="top" depth={12} seed={2136} className="text-charcoal relative -mt-5" />
       <div className="bg-charcoal relative flex flex-1 flex-col px-8 pb-12">
         <h3 className="font-display text-menu-fg/92 text-h2 mt-11 min-h-21.5 leading-[0.9] font-semibold tracking-[-0.07em] uppercase">
-          {copy.name}
+          {tournament.name}
         </h3>
 
         <dl className="mt-11 grid grid-cols-2 gap-y-4">
@@ -91,7 +89,7 @@ export function TournamentCard({
  */
 function factsFor(tournament: Tournament, messages: Messages, locale: Locale) {
   const t = messages.competition;
-  const region = { label: t.active.labels.region, value: t.regions[tournament.region] };
+  const region = { label: t.active.labels.region, value: tournament.region };
   const status = { label: t.active.labels.status, value: t.status[tournament.status] };
 
   switch (tournament.status) {

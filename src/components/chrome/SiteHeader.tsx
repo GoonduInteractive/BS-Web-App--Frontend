@@ -3,33 +3,24 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// import { AccountMenu } from "@/components/chrome/AccountMenu";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { AccountMenu } from "@/components/chrome/AccountMenu";
 import { HeaderRule } from "@/components/chrome/NavRules";
 import { RegisterCta } from "@/components/chrome/RegisterCta";
 import type { Messages } from "@/lib/utils/messages";
-import type { Profile } from "@/types/profile";
+import type { AuthUser } from "@/types/auth";
 
 export function SiteHeader({
   messages,
   locale,
   onOpenMenu,
-  // profile = null,
 }: {
   messages: Messages;
   locale: string;
   onOpenMenu: () => void;
-  /**
-   * The signed-in player, or null. Drives the account dropdown's two states -
-   * see `AccountMenu`. There is no authentication behind it.
-   *
-   * PARKED (2026-09-19, per the human): the account control is not ready and
-   * has no backend, so it is commented out below and REGISTER stands in its
-   * place. The prop stays typed so `SiteChrome` keeps passing it; nothing
-   * reads it until the dropdown comes back.
-   */
-  profile?: Profile | null;
 }) {
   const t = messages.nav;
+  const { status, user } = useAuth();
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-3 z-40 px-0 md:px-7">
@@ -69,7 +60,7 @@ export function SiteHeader({
           />
         </Link>
 
-        {/* ---- Right: utility links and REGISTER (the account control is parked) ---- */}
+        {/* ---- Right: utility links, then JOIN or the signed-in player's avatar ---- */}
         <div className="flex items-center gap-6 md:gap-11">
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -78,12 +69,23 @@ export function SiteHeader({
             <UtilityLink href={`/${locale}/merch`}>{t.merch}</UtilityLink>
           </nav>
 
-          {/* <AccountMenu messages={messages} locale={locale} profile={profile} /> */}
-          <RegisterCta messages={messages} locale={locale} />
+          {/* Until the session is read, JOIN holds its place invisibly, so the
+              row does not jump and a signed-in player never sees it flash. */}
+          {user ? (
+            <AccountMenu messages={messages} locale={locale} profile={toAccount(user)} />
+          ) : (
+            <div className={status === "loading" ? "invisible" : undefined}>
+              <RegisterCta messages={messages} locale={locale} />
+            </div>
+          )}
         </div>
       </div>
     </header>
   );
+}
+
+function toAccount(user: AuthUser) {
+  return { name: `${user.firstName} ${user.lastName}`.trim(), handle: user.handle, avatar: user.avatar };
 }
 
 /** Under the cursor: linen, and the hand-drawn rule beneath - see NavRules. */

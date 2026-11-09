@@ -1,7 +1,9 @@
 import Image from "next/image";
 
+import { seedFor } from "@/components/news/bands";
 import { TornDivider } from "@/components/ui/TornDivider";
 import type { Messages } from "@/lib/utils/messages";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 import type { ComicIssue } from "@/types/merch";
 
 /**
@@ -41,13 +43,56 @@ import type { ComicIssue } from "@/types/merch";
  * A single `cqw` value cannot serve all three, which is the whole reason this is
  * a prop rather than one number.
  */
-const TITLE: Record<CoverSize, string> = {
-  cover: "text-[18.2cqw] leading-[0.72]",
-  card: "text-[14.5cqw] leading-[0.82]",
-  mini: "text-[11.8cqw] leading-[0.9]",
+const TITLE: Record<CoverSize, { cap: number; leading: string }> = {
+  cover: { cap: 18.2, leading: "leading-[0.72]" },
+  card: { cap: 14.5, leading: "leading-[0.82]" },
+  mini: { cap: 11.8, leading: "leading-[0.9]" },
 };
 
 export type CoverSize = "cover" | "card" | "mini";
+
+/**
+ * THE TITLE IS SIZED TO FIT THE BAND, because a live chapter's is the admin's
+ * and can be any length; the composed covers' titles fit at the frame's size,
+ * which stays the cap. The arithmetic is `TornBanner`'s: Teko's capitals run
+ * to 0.47em wide at this tracking, the title has 80.2cqw across (9.9% padding
+ * each side) less 5% of air, and from under the chip to the tear about 36cqw
+ * down (42 with no chip). Lines are wrapped greedily at each size, largest
+ * first. Whole classes, since Tailwind scans source text.
+ */
+const TITLE_STEPS = [
+  [18.2, "text-[18.2cqw]"],
+  [16.3, "text-[16.3cqw]"],
+  [14.5, "text-[14.5cqw]"],
+  [13.1, "text-[13.1cqw]"],
+  [11.8, "text-[11.8cqw]"],
+  [10.6, "text-[10.6cqw]"],
+  [9.5, "text-[9.5cqw]"],
+  [8.5, "text-[8.5cqw]"],
+  [7.6, "text-[7.6cqw]"],
+  [6.8, "text-[6.8cqw]"], // the floor, with break-words behind it
+] as const;
+
+function titleClass(title: string, cap: number, room: number): string {
+  const fits = (size: number) => {
+    const perLine = (80.2 * 0.95) / (0.47 * size);
+    let lines = 0;
+    for (const text of title.split("\n")) {
+      let used = 0;
+      lines++;
+      for (const word of text.split(/\s+/).filter(Boolean)) {
+        if (word.length > perLine) return false;
+        if (used && used + 1 + word.length > perLine) {
+          lines++;
+          used = word.length;
+        } else used += (used ? 1 : 0) + word.length;
+      }
+    }
+    return lines * 0.78 * size <= room;
+  };
+  const steps = TITLE_STEPS.filter(([size]) => size <= cap);
+  return (steps.find(([size]) => fits(size)) ?? steps.at(-1)!)[1];
+}
 
 export function ComicCover({
   issue,
@@ -61,9 +106,28 @@ export function ComicCover({
   size?: CoverSize;
 }) {
   const t = messages.merch.comics;
-  const copy = t.issues[issue.copyKey as keyof typeof t.issues];
+  const copy = issue.copy;
   const { cover } = issue;
   const centred = cover.align === "center";
+
+  // A live chapter's cover is a file an admin uploaded. One that carries its own
+  // title is drawn as it is, at the composed cover's size; a titled one is the
+  // composition's field, below.
+  if (cover.image && !cover.titled) {
+    return (
+      <div className={`relative aspect-[410/562] w-full overflow-hidden ${cover.band}`}>
+        <Image
+          src={cover.image}
+          unoptimized={isRemoteImage(cover.image)}
+          alt={copy.coverAlt}
+          fill
+          priority={priority}
+          sizes="(max-width: 767px) 90vw, 30vw"
+          className="object-cover select-none"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={`@container relative aspect-[410/562] w-full overflow-hidden ${cover.band}`}>
@@ -73,17 +137,16 @@ export function ComicCover({
 
       {cover.figureMode === "field" ? (
         <div className="absolute inset-x-0 bottom-0 h-[57.3%] overflow-hidden">
-          {/* CONTAIN, NOT COVER. The render is 297 x 321 against a field nearer
-              410 x 320, so cover scales it 38% and takes the feet off. The file
-              carries its own dark backdrop, which sits close enough to the field
-              token that the letterbox does not read as one. */}
+          {/* How it sits is the issue's: volume 2's render is contained (see
+              its entry), an uploaded cover covers. */}
           <Image
             src={cover.figure}
+            unoptimized={isRemoteImage(cover.figure)}
             alt={copy.coverAlt}
             fill
             priority={priority}
             sizes="(max-width: 767px) 90vw, 30vw"
-            className="object-contain object-bottom select-none"
+            className={`${cover.figureClass} select-none`}
           />
         </div>
       ) : null}
@@ -97,7 +160,7 @@ export function ComicCover({
           above 242 and pulled the whole seam 37px high. */}
       <TornDivider
         edge="bottom"
-        seed={issue.volume * 1471}
+        seed={issue.volume ? issue.volume * 1471 : seedFor(issue.slug)}
         className={`${cover.seam} absolute inset-x-0 top-[42.7%] z-1 -translate-y-[55%]`}
       />
 
@@ -146,18 +209,21 @@ export function ComicCover({
         className={`relative z-4 px-[9.9%] pt-[10.7%] ${centred ? "text-center" : ""}`}
       >
         {/* The chip is the delivered torn plate, stretched to the label rather
-            than letterboxed - the artwork carries no preserveAspectRatio. */}
-        <span
-          className={`font-display inline-grid place-items-center bg-size-[100%_100%] bg-center bg-no-repeat px-[4.5cqw] py-[1.9cqw] text-[2.7cqw] leading-none font-bold tracking-[0.08em] ${cover.chip}`}
-        >
-          {copy.volume}
-        </span>
+            than letterboxed - the artwork carries no preserveAspectRatio. A
+            live chapter with no volume tag set has none. */}
+        {copy.volume ? (
+          <span
+            className={`font-display inline-grid place-items-center bg-size-[100%_100%] bg-center bg-no-repeat px-[4.5cqw] py-[1.9cqw] text-[2.7cqw] leading-none font-bold tracking-[0.08em] ${cover.chip}`}
+          >
+            {copy.volume}
+          </span>
+        ) : null}
 
         {/* The break is in the copy, not here: "TRIAL OF / THE GODS" is a
             decision about those four English words and Igbo will not break in
             the same place. */}
         <h3
-          className={`font-display text-menu-fg mt-[2.4cqw] font-semibold tracking-[-0.03em] uppercase ${TITLE[size]}`}
+          className={`font-display text-menu-fg mt-[2.4cqw] font-semibold tracking-[-0.03em] break-words uppercase ${titleClass(copy.coverTitle, TITLE[size].cap, copy.volume ? 36 : 42)} ${TITLE[size].leading}`}
         >
           {copy.coverTitle.split("\n").map((line) => (
             <span key={line} className="block">

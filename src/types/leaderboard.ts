@@ -1,16 +1,11 @@
-import type { TournamentRegion } from "@/types/tournament";
-
 /**
  * Leaderboard contracts. Overview section 9 names `LeaderboardEntry` as one of
  * the shapes to define now; leaderboards launch Nigeria-first, split by state,
  * which is why a row carries a region and the board filters on it.
+ *
+ * Like a tournament's, a row's copy is RESOLVED: the region and the champion
+ * arrive as the strings to print (`types/tournament.ts`).
  */
-
-/** A season the board can be filtered to. `all` is the frame's ALL TIME. */
-export type LeaderboardSeason = "all" | 2026 | 2025;
-
-/** Keys into `messages.competition.champions`. */
-export type ChampionKey = "soma" | "kaira" | "ogbunabali";
 
 export type LeaderboardEntry = {
   rank: number;
@@ -19,13 +14,15 @@ export type LeaderboardEntry = {
     handle: string;
     avatar: string;
   };
-  region: TournamentRegion;
+  /** Where the player plays, as printed - "Lagos" - and the region filter's value. */
+  region: string;
   points: number;
-  champion: ChampionKey;
-  /** Percentage, 0-100. */
-  winRate: number;
-  /** The season the points were earned in. */
-  season: 2026 | 2025;
+  /** The champion they play, as printed; null where the source doesn't say. */
+  champion: string | null;
+  /** Percentage, 0-100; null before a first match. */
+  winRate: number | null;
+  /** The season the points were earned in; null where the source keeps no seasons. */
+  season: number | null;
 };
 
 /**
@@ -38,7 +35,13 @@ export type PodiumEntry = LeaderboardEntry & {
   step: "gold" | "silver" | "bronze";
 };
 
-/** The signed-in player's own row, with the distance to the rank above. */
+/** The signed-in player's own row, with the distance to the rank above (null at the top). */
 export type JourneyEntry = LeaderboardEntry & {
-  pointsToNextRank: number;
+  pointsToNextRank: number | null;
+};
+
+/** The board's two filters; `all` is ALL REGION and ALL TIME. */
+export type LeaderboardFilter = {
+  region: string | "all";
+  season: number | "all";
 };

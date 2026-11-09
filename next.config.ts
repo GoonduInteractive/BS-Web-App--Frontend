@@ -1,5 +1,12 @@
 import type { NextConfig } from "next";
 
+// The API is where every list, account, cart and order comes from: there is no
+// stand-in data, so a dev server or build without it stops here, plainly,
+// rather than shipping an empty site. Locally, copy `.env.example` to `.env`.
+if (!process.env.NEXT_PUBLIC_API_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL is not set. Copy .env.example to .env, and set it in the host's environment to deploy.");
+}
+
 const nextConfig: NextConfig = {
   devIndicators: false,
   images: {

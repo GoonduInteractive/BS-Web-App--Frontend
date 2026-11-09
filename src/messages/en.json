@@ -221,21 +221,6 @@
       "titles": "SEASONAL TITLES",
       "frames": "PROFILE FRAMES"
     },
-    "tournaments": {
-      "wrathOfNze": {
-        "name": "Wrath of Nze Ugwuoke",
-        "description": "The fallen chief priest has returned, corrupting the realm and challenging ascendants to prove their worth. Battle through seasonal competitions, complete event challenges, and rise through the standings before the season comes to an end."
-      },
-      "lagosLeague": {
-        "name": "Lagos Ascendant League"
-      },
-      "easternCup": {
-        "name": "Eastern Province Cup"
-      },
-      "riversTrial": {
-        "name": "Rivers State Trial"
-      }
-    },
     "cta": {
       "register": "REGISTER NOW",
       "details": "VIEW DETAILS"
@@ -284,13 +269,6 @@
       "cta": "VIEW ACTIVE PLAYER MAP",
       "regionsTitle": "ACTIVE REGIONS"
     },
-    "leagues": {
-      "southEastLeague": "South East League",
-      "lagos": "Lagos",
-      "abuja": "Abuja",
-      "ghana": "Ghana",
-      "rivers": "Rivers"
-    },
     "hall": {
       "heading": "HALL OF ASCENSION",
       "aside": "The greatest ascendants have etched their names into the history of the Trial. Their victories continue to inspire those who dare to enter Ogbun’abali’s arena.",
@@ -329,11 +307,6 @@
       "title": "REGISTRATION SUCCESSFUL",
       "body": "Your place in the Trial has been secured.\nYou have successfully registered for {tournament}.\nTournament updates, bracket assignments, and match schedules will be available once registration closes.",
       "cta": "BACK TO PROFILE"
-    },
-    "champions": {
-      "soma": "Soma",
-      "kaira": "Kaira",
-      "ogbunabali": "Ogbun’abali"
     },
     "leaderboard": {
       "filterBy": "FILTER BY:",
@@ -400,6 +373,21 @@
         "nil": "NIL",
         "viewBracket": "VIEW FULL BRACKET",
         "bracketLabel": "Full bracket"
+      },
+      "stageDates": {
+        "range": "{from} – {to}",
+        "from": "From {date}",
+        "until": "Until {date}"
+      },
+      "qualifier": {
+        "heading": "QUALIFIERS",
+        "sub": "More players entered than the bracket seats, so the field plays for points. The top {cutoff} go through to the group stage.",
+        "rank": "Rank",
+        "player": "Player",
+        "region": "Region",
+        "points": "Points",
+        "through": "Through",
+        "label": "Qualifier leaderboard"
       },
       "stats": {
         "registered": "REGISTERED PLAYERS",
@@ -496,7 +484,8 @@
       "minsAgo": "{n} mins ago",
       "hoursAgo": "{n} hours ago",
       "daysAgo": "{n} days ago",
-      "you": "You"
+      "you": "You",
+      "posted": "Your note is posted. Everyone else sees it once it’s approved."
     },
     "map": {
       "title": "ACTIVE PLAYER MAP",
@@ -518,7 +507,7 @@
       "body": "You earn community points when friends join the community through your link.",
       "linkLabel": "Your invite link",
       "copy": "COPY LINK",
-      "copied": "Copied"
+      "copied": "Invite link copied"
     },
     "form": {
       "label": "Drop your feedback",
@@ -653,28 +642,6 @@
       "oxblood": "Oxblood",
       "white": "White"
     },
-    "products": {
-      "hoodie": {
-        "name": "GOONDU HOODIE",
-        "imageAlt": "A black Goondu Games hoodie with the studio wordmark across the chest",
-        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      },
-      "tote": {
-        "name": "GOONDU TOTE",
-        "imageAlt": "A black Goondu Games tote bag with the studio wordmark and a red Nsibidi pattern",
-        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      },
-      "beanie": {
-        "name": "GOONDU BEANIE",
-        "imageAlt": "A white Goondu Games beanie with the studio wordmark on the cuff",
-        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      },
-      "tee": {
-        "name": "GOONDU TEE",
-        "imageAlt": "A black Goondu Games t-shirt with the studio wordmark across the chest",
-        "description": "100% Cotton, Stretchy, ThickOversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton. Oversized , hoodie . Double woven 100% Cotton."
-      }
-    },
     "price": "₦{amount}",
     "points": {
       "claimable": "CLAIMABLE POINTS",
@@ -697,13 +664,19 @@
       "decrease": "Decrease quantity",
       "increase": "Increase quantity",
       "quantity": "Quantity",
-      "added": "Added to cart"
+      "added": "{name} added to cart",
+      "viewCart": "VIEW CART",
+      "soldOut": "SOLD OUT",
+      "allInCart": "ALL IN YOUR CART",
+      "onlyLeft": "Only {count} left."
     },
     "cart": {
       "title": "CART",
       "colour": "Colour:",
       "size": "Size:",
       "remove": "Remove {item}",
+      "soldOut": "Sold out. Remove it to check out.",
+      "onlyLeft": "Only {count} left. Lower the quantity to check out.",
       "empty": {
         "title": "YOUR CART IS EMPTY",
         "subtitle": "It doesn’t have to be",
@@ -774,39 +747,38 @@
       "chooseLocation": "Choose your state and local government to see shipping.",
       "shippingPending": "Select a location",
       "payWith": "Pay with card, bank transfer or USSD in the Paystack window.",
-      "nothingToShip": "Nothing to ship: online chapters open in the reader once paid."
+      "nothingToShip": "Nothing to ship: online chapters open in the reader once paid.",
+      "noRate": "We don't deliver to this place yet. Choose another local government or state.",
+      "needDetails": "Fill in the details above so your order can reach you.",
+      "cartGone": "We couldn't find the items in this cart. Refresh the page and try again."
     },
     "confirmed": {
       "title": "ORDER CONFIRMED",
       "body": "Your order is currently being processed. You will receive an order confirmation email shortly with expected delivery date for your items.",
-      "cta": "BACK TO PROFILE",
+      "cta": "CONTINUE SHOPPING",
       "label": "Order confirmed",
       "close": "Close",
-      "help": "Need help, contact us at"
+      "help": "Need help, contact us at",
+      "confirmingTitle": "CONFIRMING PAYMENT",
+      "confirmingBody": "Hold on while Paystack confirms your payment with us. This usually takes a few seconds.",
+      "pendingTitle": "PAYMENT NOT CONFIRMED YET",
+      "pendingBody": "Paystack hasn’t confirmed this payment to us yet. Your order is saved and will update as soon as it does.",
+      "order": "ORDER {number}",
+      "total": "Total",
+      "shop": "Continue shopping",
+      "readyTitle": "YOUR COMIC IS READY",
+      "readyBody": "It’s in your library now. Start reading straight away, or find it any time on the Comics page.",
+      "readyTitleMany": "YOUR COMICS ARE READY",
+      "readyBodyMany": "They’re in your library now. Find them any time on the Comics page.",
+      "readyAlso": "Your online comics are ready to read now on the Comics page.",
+      "read": "START READING",
+      "unpaidTitle": "FINISH YOUR PAYMENT",
+      "unpaidBody": "This order hasn’t been paid for yet. Your items are in it, so pay now to complete it.",
+      "payNow": "PAY NOW"
     },
     "comics": {
       "partner": "Goondu Games X Partner",
       "related": "YOU MIGHT ALSO LIKE",
-      "issues": {
-        "trial": {
-          "title": "TRIAL OF THE GODS",
-          "volume": "VOL. 1",
-          "meta": "August 27, 2026 – Vol. 1",
-          "format": "Physical – Vol. 1",
-          "description": "Soma was an ordinary young man completing his national youth service when tragedy struck. Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games.",
-          "coverAlt": "Trial of the Gods, volume one — Soma turned away, carrying a crystal-tipped spear",
-          "coverTitle": "TRIAL OF\nTHE GODS"
-        },
-        "between": {
-          "title": "BETWEEN WORLDS",
-          "volume": "VOL. 2",
-          "meta": "August 27, 2026 – Vol. 2",
-          "format": "Online – Vol. 2",
-          "description": "",
-          "coverAlt": "Between Worlds, volume two — Soma mid-stance, trailing fire",
-          "coverTitle": "BETWEEN WORLDS"
-        }
-      },
       "formatNames": {
         "online": "Online",
         "physical": "Physical"
@@ -816,14 +788,7 @@
         "physical": "The printed book, shipped to you."
       },
       "label": "{formats} – Vol. {volume}, Ch. {chapter}",
-      "chooseFormat": "Choose a format",
-      "volumeEdition": {
-        "label": "Physical – Vol. {volume}, collected edition",
-        "title": "THE WHOLE VOLUME IN PRINT",
-        "body": "Volume {volume}: every chapter, collected in one printed book.",
-        "add": "ADD VOLUME TO CART",
-        "soldOut": "SOLD OUT"
-      }
+      "chooseFormat": "Choose a format"
     }
   },
   "news": {
@@ -883,9 +848,6 @@
       "winRate": "WIN RATE",
       "champion": "CHAMPION"
     },
-    "tournaments": {
-      "wrathOfNze": "Wrath of Nze Ugwuoke"
-    },
     "form": {
       "title": "EDIT PROFILE",
       "uploadAvatar": "UPLOAD NEW AVATAR",
@@ -898,26 +860,15 @@
       "locationLabel": "Location",
       "locationPlaceholder": "Enugu, Nigeria",
       "save": "SAVE CHANGES",
+      "saved": "Your profile is saved.",
+      "avatarSaved": "Your new avatar is set.",
+      "usernameTaken": "Another player already uses this username. Choose another.",
       "back": "EDIT PROFILE"
     },
     "account": {
       "viewProfile": "View Profile",
       "login": "Login",
       "menuLabel": "Account menu"
-    },
-    "payout": {
-      "title": "PAYOUT SETTINGS",
-      "body": "The bank account your tournament prize money is paid into. We confirm these details before any payout.",
-      "bank": "Bank",
-      "bankPlaceholder": "Select bank",
-      "accountNumber": "Account Number",
-      "accountNumberPlaceholder": "10-digit account number",
-      "accountNumberError": "Enter the 10-digit account number",
-      "accountName": "Account Name",
-      "accountNamePlaceholder": "As it appears on the account",
-      "cardLabel": "PAYOUT ACCOUNT",
-      "cardEmpty": "Not set yet",
-      "cardAdd": "Add bank details"
     }
   },
   "comics": {
@@ -929,6 +880,7 @@
     "title": "THE COMICS",
     "subtitle": "Enter a world where death is not the end, gods make the rules, and survival is only the beginning.",
     "startReading": "START READING",
+    "getComic": "GET THIS COMIC",
     "explore": "EXPLORE MORE COMICS",
     "own": {
       "chip": "OWN THE STORY",
@@ -957,13 +909,6 @@
       "shareHeading": "SHARE THIS COMIC",
       "shareSub": "Gain claimable community points\nby sharing this comic with friends.",
       "shielded": "Reading paused. Come back to this window to keep reading."
-    },
-    "synopsis": {
-      "trial": [
-        "Soma was an ordinary young man completing his national youth service when tragedy struck. During a journey home with friends, he was killed in an ambush by armed bandits.",
-        "Caught between life and death, Soma encountered Ogbun’abali, the Igbo deity of punishment and games. Offered a second chance at life in exchange for participating in divine trials, he accepted."
-      ],
-      "between": []
     }
   },
   "legal": {
@@ -973,5 +918,93 @@
     "title": "NEED SUPPORT?",
     "body": "For payment disputes, account issues, transaction inquiries, or general assistance, contact:",
     "email": "support@beyondservicegame.com"
+  },
+  "auth": {
+    "meta": {
+      "signUp": "Create Account",
+      "signIn": "Sign In",
+      "forgot": "Forgot Password",
+      "reset": "Reset Password",
+      "confirm": "Confirm Your Email"
+    },
+    "home": "Beyond Service home",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "code": "6-Digit Code",
+      "password": "Password",
+      "newPassword": "Enter New Password",
+      "confirmPassword": "Re-enter New Password",
+      "region": "Region"
+    },
+    "placeholders": {
+      "firstName": "john",
+      "lastName": "doe",
+      "email": "example@domain.com",
+      "code": "000000",
+      "password": "******",
+      "region": "Choose your region"
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signUp": {
+      "title": "CREATE ACCOUNT",
+      "terms": "Terms of Use",
+      "privacy": "Privacy Policy",
+      "submit": "CREATE ACCOUNT",
+      "switchPrompt": "Already have an account?",
+      "switchLink": "Sign In",
+      "termsConsent": "I have read and accept the {terms} and the {privacy}, including the terms for store purchases, payments and returns.",
+      "marketingConsent": "Send me news, tournament updates and offers from Goondu Games by email. I can unsubscribe at any time."
+    },
+    "signIn": {
+      "title": "SIGN IN TO YOUR ACCOUNT",
+      "forgot": "Forgot Password?",
+      "submit": "SIGN IN",
+      "switchPrompt": "Don't have an account?",
+      "switchLink": "Create Account",
+      "resetDone": "Your password has been reset. Sign in with the new one.",
+      "verifiedDone": "Your email is confirmed. Sign in to carry on."
+    },
+    "forgot": {
+      "title": "FORGOT PASSWORD",
+      "body": "Enter the email address associated with this account. We'll email you a code to reset your password.",
+      "submit": "SUBMIT",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "RESET PASSWORD",
+      "sent": "If an account uses {email}, we've emailed it a 6-digit code. Enter it below with your new password.",
+      "submit": "RESET PASSWORD",
+      "mismatch": "The two passwords do not match.",
+      "newCode": "Get a new code"
+    },
+    "confirm": {
+      "title": "CONFIRM YOUR EMAIL",
+      "sent": "We've sent a 6-digit code to {email}. Enter it below to confirm your email and finish your registration.",
+      "help": "If you can't find the email in your inbox or spam folders, click on the button below to resend the mail.",
+      "submit": "CONFIRM",
+      "resendIn": "Resend email in",
+      "seconds": "{time}secs",
+      "resend": "RESEND EMAIL",
+      "resent": "A new code is on its way.",
+      "yourEmail": "your email"
+    },
+    "errors": {
+      "invalid-credentials": "That email and password do not match an account.",
+      "email-taken": "An account already uses this email. Sign in instead.",
+      "invalid-code": "That code is wrong or has expired. Check the email, or get a new one.",
+      "network": "The server could not be reached. Check your connection and try again.",
+      "unknown": "Something failed on our side. Try again in a moment.",
+      "stock": "We don't have that many in stock. Lower the quantity or choose another option."
+    },
+    "strength": {
+      "label": "Password strength:",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    }
   }
 }

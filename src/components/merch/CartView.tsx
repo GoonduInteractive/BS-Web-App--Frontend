@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 import { useCart } from "@/components/merch/CartProvider";
 import { BracketButton } from "@/components/ui/BracketButton";
@@ -9,26 +10,27 @@ import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { entryTotal, resolveCartLines, type CartEntry } from "@/lib/utils/cart-entry";
-import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
+import { colourLabel, sizeLabel } from "@/lib/utils/merch-copy";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 import { needsShipping } from "@/lib/utils/comic-sales";
 import type { ComicIssue, Product } from "@/types/merch";
 
 export function CartView({
   products,
   comics,
-  promo,
   messages,
   locale,
 }: {
   products: readonly Product[];
   comics: readonly ComicIssue[];
-  promo: FreeShippingPromo;
   messages: Messages;
   locale: Locale;
 }) {
-  const { lines, count } = useCart();
+  const { lines, count, failed, clearFailed } = useCart();
   const t = messages.merch;
 
+  // What was refused on the page before isn't about this one.
+  useEffect(() => clearFailed(), [clearFailed]);
 
   // Products AND comics. Searching the product list alone dropped every comic
   // line while still counting it in the badge - see `resolveCartLines`.
@@ -56,9 +58,13 @@ export function CartView({
             />
           ))}
         </ul>
+        {/* A quantity change or removal the API refused. Always here, so a screen reader hears it; empty, it takes no room. */}
+        <p role="alert" className={`text-signal font-body text-body-sm leading-snug ${failed ? "mt-4" : ""}`}>
+          {failed ? messages.auth.errors[failed] : null}
+        </p>
       </div>
 
-      <OrderSummary lines={resolved} ships={needsShipping(lines, comics)} promo={promo} messages={messages} locale={locale} />
+      <OrderSummary lines={resolved} ships={needsShipping(lines, comics)} messages={messages} locale={locale} />
     </div>
   );
 }
@@ -79,12 +85,14 @@ function CartRow({
   const { line } = entry;
   const product = products.find((p) => p.slug === line.slug);
   const colour = product?.colours.find((c) => c.id === line.colourId);
+  const { stock } = entry;
 
   return (
     <li className="border-ash flex gap-6.25 border-b pt-6 pb-2.5 first:pt-0">
       <div className={`relative size-30 shrink-0 ${entry.tileClass}`}>
         <Image
           src={entry.image}
+          unoptimized={isRemoteImage(entry.image)}
           alt={entry.name}
           fill
           sizes="120px"
@@ -114,13 +122,18 @@ function CartRow({
         ) : null}
         {entry.variant ? (
           <>
-            <p className="text-menu-fg font-body text-body mt-0.5 leading-none">
-              <span className="font-bold">{t.cart.colour}</span>{" "}
-              {colour ? t.colours[colour.labelKey] : line.colourId}
-            </p>
-            <p className="text-menu-fg font-body text-body mt-2 leading-none">
-              <span className="font-bold">{t.cart.size}</span> {t.sizes[line.size]}
-            </p>
+            {/* A product sold in one colour, or one size, has nothing to say there. */}
+            {line.colourId ? (
+              <p className="text-menu-fg font-body text-body mt-0.5 leading-none">
+                <span className="font-bold">{t.cart.colour}</span>{" "}
+                {colour ? colourLabel(colour, messages) : line.colourId}
+              </p>
+            ) : null}
+            {line.size ? (
+              <p className="text-menu-fg font-body text-body mt-2 leading-none">
+                <span className="font-bold">{t.cart.size}</span> {sizeLabel(line.size, messages)}
+              </p>
+            ) : null}
           </>
         ) : null}
 
@@ -159,11 +172,18 @@ function CartRow({
                   line.quantity + 1,
                 )
               }
+              disabled={stock !== null && line.quantity >= stock}
               glyph="+"
             />
             </div>
           )}
         </div>
+        {/* Stock ran out while it sat here: checkout would be refused, so the row says which line. */}
+        {stock !== null && line.quantity > stock ? (
+          <p className="text-signal font-body text-body-sm mt-2 leading-snug">
+            {stock === 0 ? t.cart.soldOut : t.cart.onlyLeft.replace("{count}", String(stock))}
+          </p>
+        ) : null}
       </div>
     </li>
   );
@@ -172,14 +192,12 @@ function CartRow({
 function OrderSummary({
   lines,
   ships,
-  promo,
   messages,
   locale,
 }: {
   lines: readonly CartEntry[];
   /** False when nothing in the cart ships (online chapters only). */
   ships: boolean;
-  promo: FreeShippingPromo;
   messages: Messages;
   locale: Locale;
 }) {
@@ -190,11 +208,8 @@ function OrderSummary({
 
   const pointDiscount = 0;
   const total = itemTotal - pointDiscount;
-  // The frame draws Shipping FREE. It is free only under a running promotion
-  // whose minimum the items reach; otherwise the place, chosen at checkout,
-  // sets the price.
-  const free = shipsFree(promo, itemTotal);
-  const gap = ships && !free && promoLive(promo) ? promo.minimumOrder - itemTotal : 0;
+  // The frame draws Shipping FREE. The price, and any free-shipping promotion,
+  // come with the place chosen at checkout: the API's quote.
 
   return (
     <aside className="bg-gild text-ink px-6 pt-7.25 pb-5.75 lg:mt-16.75">
@@ -226,14 +241,9 @@ function OrderSummary({
         {ships ? (
           <Row
             label={s.shipping}
-            value={free ? s.free : s.atCheckout}
-            valueClass={free ? "text-moss font-semibold" : "text-ink/60"}
+            value={s.atCheckout}
+            valueClass="text-ink/60"
           />
-        ) : null}
-        {gap > 0 ? (
-          <p className="font-body text-body-sm mt-2.5 leading-snug">
-            {s.freeShippingGap.replace("{amount}", formatPrice(gap, locale, t.price))}
-          </p>
         ) : null}
         <Row
           label={s.total}
@@ -292,7 +302,7 @@ function Row({
   );
 }
 
-function EmptyCart({
+export function EmptyCart({
   messages,
   locale,
 }: {
@@ -335,17 +345,22 @@ function Step({
   label,
   onClick,
   glyph,
+  disabled = false,
 }: {
   label: string;
   onClick: () => void;
   glyph: string;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
+      disabled={disabled}
       aria-label={label}
-      className="text-gild font-body focus-visible:outline-signal cursor-pointer text-h7 leading-none focus-visible:outline-2 focus-visible:outline-offset-2"
+      className={`font-body focus-visible:outline-signal text-h7 leading-none focus-visible:outline-2 focus-visible:outline-offset-2 ${
+        disabled ? "text-menu-fg/27 cursor-not-allowed" : "text-gild cursor-pointer"
+      }`}
     >
       {glyph}
     </button>

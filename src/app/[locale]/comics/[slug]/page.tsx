@@ -15,11 +15,17 @@ import { comicLabel } from "@/lib/utils/comic-sales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
 
+/** The catalogue is the API's: rebuilt at most hourly. */
+export const revalidate = 3600;
 
+/**
+ * A reader for every chapter: the pages are the owner's to read
+ * (`ComicReader`), not the page's to carry.
+ */
 export async function generateStaticParams() {
   const comics = await getComics();
   return LOCALES.flatMap((locale) =>
-    comics.filter((c) => c.pages.length > 0).map((c) => ({ locale, slug: c.slug })),
+    comics.map((c) => ({ locale, slug: c.slug })),
   );
 }
 
@@ -33,7 +39,7 @@ export async function generateMetadata({
   const issue = await getComic(slug).catch(() => null);
   if (!issue) return {};
   const messages = getMessages(locale);
-  const copy = messages.merch.comics.issues[issue.copyKey as keyof typeof messages.merch.comics.issues];
+  const copy = issue.copy;
   return pageMetadata({
     locale,
     path: `/comics/${issue.slug}`,
@@ -51,15 +57,14 @@ export default async function Page({
   if (!isLocale(locale)) notFound();
 
   const issue = await getComic(slug).catch(() => null);
-  if (!issue || issue.pages.length === 0) notFound();
+  if (!issue) notFound();
 
   const messages = getMessages(locale);
   // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("comics")) return <HiddenSection section="comics" locale={locale} messages={messages} />;
 
   const related = await getRelatedComics(slug);
-  const c = messages.merch.comics;
-  const copy = c.issues[issue.copyKey as keyof typeof c.issues];
+  const copy = issue.copy;
 
   return (
     <main className="bg-roster">
@@ -74,15 +79,11 @@ export default async function Page({
 
           <ul className="grid grid-cols-1 gap-x-7.25 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((item, i) => {
-              const itemCopy = c.issues[item.copyKey as keyof typeof c.issues];
+              const itemCopy = item.copy;
               return (
                 <li key={`${item.slug}-${i}`}>
                   <Link
-                    href={
-                      item.pages.length > 0
-                        ? `/${locale}/comics/${item.slug}`
-                        : `/${locale}/merch/comics/${item.slug}`
-                    }
+                    href={`/${locale}/merch/comics/${item.slug}`}
                     className="focus-visible:outline-signal group block focus-visible:outline-2 focus-visible:outline-offset-4"
                   >
                     <ComicCover issue={item} messages={messages} size="mini" />

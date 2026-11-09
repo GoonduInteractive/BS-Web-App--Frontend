@@ -1,6 +1,9 @@
+import { Swords } from "lucide-react";
+
 import { FeaturedCard } from "@/components/competition/FeaturedCard";
 import { TrialIntro } from "@/components/competition/TrialIntro";
 import { Reveal } from "@/components/motion/Reveal";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getFeaturedTournament } from "@/lib/api/tournaments";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
@@ -18,6 +21,11 @@ import type { Messages } from "@/lib/utils/messages";
  * size every heading on this page shares. Its 54px box sits at 1101, 101 below
  * the intro's bottom at 1000, and the card follows 44 below it at 1199.
  *
+ * WITH NO TOURNAMENT TO SHOW (the API's list empty, or all finished) the
+ * heading stands over the empty state the Hall of Ascension uses, in the same
+ * COMING SOON words; no frame draws it. ACTIVE TOURNAMENTS, empty too, draws
+ * nothing, so the page says it once.
+ *
  * A Server Component that reads the adapter directly, per the data rule; the
  * card never learns where its tournament came from.
  */
@@ -28,7 +36,7 @@ export async function FeaturedTournament({
   messages: Messages;
   locale: Locale;
 }) {
-  const tournament = await getFeaturedTournament();
+  const tournament = await getFeaturedTournament(locale);
 
   return (
     <section>
@@ -41,9 +49,18 @@ export async function FeaturedTournament({
         >
           {messages.competition.featured.heading}
         </Reveal>
-        <div className="mt-8 lg:mt-11">
-          <FeaturedCard tournament={tournament} messages={messages} locale={locale} />
-        </div>
+        {tournament ? (
+          <div className="mt-8 lg:mt-11">
+            <FeaturedCard tournament={tournament} messages={messages} locale={locale} />
+          </div>
+        ) : (
+          <EmptyState
+            icon={Swords}
+            title={messages.comingSoon.title}
+            body={messages.comingSoon.body}
+            className="mt-14 xl:mt-23"
+          />
+        )}
       </div>
     </section>
   );

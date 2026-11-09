@@ -8,6 +8,8 @@ import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { entryTotal, resolveCartLines } from "@/lib/utils/cart-entry";
+import { colourLabel, sizeLabel } from "@/lib/utils/merch-copy";
+import { isRemoteImage } from "@/lib/utils/remote-image";
 import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
 import type { ComicIssue, Product } from "@/types/merch";
 
@@ -30,8 +32,10 @@ export function CheckoutSummary({
   locale,
   rate,
   promo,
+  freeShipping,
   shipping: ships = true,
   placeError,
+  busy = false,
   onPlaceOrder,
 }: {
   products: readonly Product[];
@@ -42,10 +46,14 @@ export function CheckoutSummary({
   rate: number | null;
   /** The free shipping promotion: an order reaching its minimum ships free. */
   promo: FreeShippingPromo;
+  /** The API's own word on whether this order ships free (its quote). */
+  freeShipping?: boolean;
   /** False when nothing in the cart ships: no shipping line, and nothing added for it. */
   shipping?: boolean;
   /** Why PLACE ORDER can't go on yet, e.g. no place chosen. */
   placeError?: string | null;
+  /** The order is on its way to the API: PLACE ORDER waits. */
+  busy?: boolean;
   onPlaceOrder: () => void;
 }) {
   const { lines } = useCart();
@@ -58,7 +66,7 @@ export function CheckoutSummary({
   const subtotal = itemTotal - pointDiscount;
   // Free under a running promotion whose minimum the items reach (2026-10-01);
   // otherwise the place's price, unknown until a place is chosen.
-  const free = ships && shipsFree(promo, itemTotal);
+  const free = ships && (freeShipping ?? shipsFree(promo, itemTotal));
   const shipping = !ships || free ? 0 : rate;
   const gap = ships && !free && promoLive(promo) ? promo.minimumOrder - itemTotal : 0;
   const total = subtotal + (shipping ?? 0);
@@ -81,7 +89,7 @@ export function CheckoutSummary({
                 className="border-menu-fg/20 flex items-start gap-5 border-b py-3.5 last:border-b-0"
               >
                 <div className={`relative size-19 shrink-0 ${entry.tileClass}`}>
-                  <Image src={entry.image} alt={entry.name} fill sizes="76px" className="object-contain" />
+                  <Image src={entry.image} unoptimized={isRemoteImage(entry.image)} alt={entry.name} fill sizes="76px" className="object-contain" />
                 </div>
 
                 <div className="flex min-w-0 flex-1 items-start justify-between gap-4">
@@ -93,11 +101,12 @@ export function CheckoutSummary({
                     {entry.formatLabel ? (
                       <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">{entry.formatLabel}</p>
                     ) : null}
-                    {entry.variant ? (
+                    {/* Colour | size, each only where the product has one. */}
+                    {entry.variant && (line.colourId || line.size) ? (
                       <p className="text-menu-fg/85 font-body text-body-sm mt-2.5 leading-none">
-                        {colour ? t.colours[colour.labelKey] : line.colourId}
-                        <span className="text-menu-fg mx-1.5 font-bold">|</span>
-                        {t.sizes[line.size]}
+                        {line.colourId ? (colour ? colourLabel(colour, messages) : line.colourId) : null}
+                        {line.colourId && line.size ? <span className="text-menu-fg mx-1.5 font-bold">|</span> : null}
+                        {line.size ? sizeLabel(line.size, messages) : null}
                       </p>
                     ) : null}
                   </div>
@@ -157,7 +166,9 @@ export function CheckoutSummary({
         <button
           type="button"
           onClick={onPlaceOrder}
-          className="bg-ink text-menu-fg font-body focus-visible:outline-signal mt-9 flex h-13.75 w-full cursor-pointer items-center justify-center gap-3 text-[1.125rem] leading-none transition-opacity duration-150 ease-gate hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
+          disabled={busy}
+          aria-busy={busy || undefined}
+          className="bg-ink text-menu-fg font-body focus-visible:outline-signal mt-9 flex h-13.75 w-full cursor-pointer disabled:cursor-wait disabled:opacity-60 items-center justify-center gap-3 text-[1.125rem] leading-none transition-opacity duration-150 ease-gate hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
         >
           {c.placeOrder}
           <span aria-hidden>›</span>

@@ -51,7 +51,7 @@ export function TournamentFacts({
   if (tournament.status === "active" && tournament.endsAt) {
     facts.push({ label: f.ends, value: date(tournament.endsAt) });
   }
-  facts.push({ label: f.region, value: t.regions[tournament.region] });
+  facts.push({ label: f.region, value: tournament.region });
   if (tournament.participants !== undefined) {
     facts.push({
       label: f.participants,
@@ -61,7 +61,7 @@ export function TournamentFacts({
       ),
     });
   }
-  if (tournament.format) facts.push({ label: f.format, value: t.formats[tournament.format] });
+  if (tournament.format) facts.push({ label: f.format, value: tournament.format });
 
   return (
     <section>

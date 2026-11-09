@@ -1,9 +1,6 @@
 /**
- * The player profile.
- *
- * NO ACCOUNT SYSTEM EXISTS. This is the shape a profile will have, served by a
- * mock adapter and switched by the same `getViewerState()` flag the points
- * panels use. Nothing here is authenticated, stored, or sent anywhere.
+ * The player profile: the signed-in player's, from `GET /v1/player/profile`
+ * (`lib/api/player.ts`).
  */
 
 /** One row of the tournament strip, in the order the frame draws them. */
@@ -16,20 +13,21 @@ export type StandingStat = {
 };
 
 export type TournamentStanding = {
-  /** Key into `messages.profile.tournaments`. */
-  nameKey: string;
+  /** The tournament's name, as the API gives it. */
+  name?: string;
   stats: readonly StandingStat[];
-  /** Points to the next rank. Rendered as a sentence beneath the strip. */
-  toNextRank: number;
+  /** Points to the next rank. Rendered as a sentence beneath the strip; null when unknown. */
+  toNextRank: number | null;
 };
 
 export type Profile = {
   name: string;
   handle: string;
   avatar: string;
-  level: number;
-  winRate: number;
-  loss: number;
+  /** Null when the API hasn't one yet: the card prints a dash. */
+  level: number | null;
+  winRate: number | null;
+  loss: number | null;
   /** Present only once the player is placed in a tournament. */
   rank?: number;
   location: string;
@@ -53,4 +51,6 @@ export type SavedAddress = {
   zip: string;
   state: string;
   lgaId: string;
+  /** How they last received an order; the form starts there. */
+  method?: "homeDelivery" | "pickup";
 };

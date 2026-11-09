@@ -6,12 +6,18 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CheckoutView } from "@/components/merch/CheckoutView";
 import { getCountries, getStates } from "@/lib/api/geo";
 import { getComics, getProducts } from "@/lib/api/merch";
-import { getSavedAddress } from "@/lib/api/profile";
-import { getFreeShipping, getLgasByState, getShippingRates } from "@/lib/api/shipping";
+import { getLgasByState } from "@/lib/api/shipping";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
+
+/**
+ * The catalogue is the API's (`lib/api/merch.ts`): rebuilt in the
+ * background at most hourly, so what an admin publishes shows without a
+ * redeploy. A failed refresh keeps the last good page.
+ */
+export const revalidate = 3600;
 
 /**
  * Checkout. Figma: `Merch Store- Checkout-New User.png`.
@@ -50,15 +56,12 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   // Not public yet - the Coming Soon page stands in. See `lib/hidden-sections.ts`.
   if (isHidden("merch")) return <HiddenSection section="merch" locale={locale} messages={messages} />;
 
-  const [products, comics, countries, states, lgasByState, rates, saved, promo] = await Promise.all([
+  const [products, comics, countries, states, lgasByState] = await Promise.all([
     getProducts(),
     getComics(),
     getCountries(),
     getStates("ng"),
     getLgasByState(),
-    getShippingRates(),
-    getSavedAddress(),
-    getFreeShipping(),
   ]);
 
   return (
@@ -69,9 +72,6 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           countries={countries}
           states={states}
           lgasByState={lgasByState}
-          rates={rates}
-          promo={promo}
-          saved={saved}
           messages={messages}
           locale={locale}
         />

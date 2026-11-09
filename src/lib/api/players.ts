@@ -1,3 +1,6 @@
+import { SITE_URL } from "@/lib/seo";
+import { authHref } from "@/lib/utils/auth-links";
+import type { Locale } from "@/lib/utils/locales";
 import type { PlayerHotspot, PlayerPin } from "@/types/players";
 
 /**
@@ -86,11 +89,10 @@ export async function getHotspots(): Promise<readonly PlayerHotspot[]> {
 }
 
 /**
- * The viewer's invite link, for the INVITE FRIENDS block the phone frame draws
- * under the map. The frame's own URL, transcribed. There is no account to mint
- * a real code against, so every visitor sees the same one - FLAGGED, like the
- * profile it would belong to.
+ * The link INVITE FRIENDS hands out: Create Account on this site, in the
+ * visitor's language. FLAGGED: the API has no invite codes, so it can't say
+ * who invited whom.
  */
-export async function getInviteLink(): Promise<string> {
-  return "https://beyondservice.com/invite/3245gt7";
+export function getInviteLink(locale: Locale): string {
+  return new URL(authHref(locale, "sign-up"), SITE_URL).href;
 }

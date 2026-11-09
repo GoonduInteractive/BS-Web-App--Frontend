@@ -5,7 +5,6 @@ import { MatchCard } from "@/components/competition/MatchCard";
 import { Scene } from "@/components/competition/Scene";
 import { Reveal } from "@/components/motion/Reveal";
 import { BracketButton } from "@/components/ui/BracketButton";
-import { daysUntil } from "@/lib/api/tournaments";
 import { cn } from "@/lib/utils/cn";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
@@ -46,9 +45,8 @@ import type { BracketRound, Match, TournamentDetail } from "@/types/tournament";
  * gutter, 20 apart; the figures 254 wide, centred, 20 apart, 156 under the
  * ghost CTA, their numerals 55px.
  *
- * THE FIGURES ARE DERIVED WHERE THEY CAN BE. UNTIL FINALS counts to the final's
- * date, and ROUNDS REMAINING is the stages not yet completed. The frame prints
- * 12 DAYS and 4 rounds; the data says what it says.
+ * THE FIGURES ARE THE DATA'S: the API sends all four. The frame prints 12 DAYS and 4 rounds; the data says what it says,
+ * and a dash where it says nothing.
  *
  * MOTION: three scenes from `competition-scenes` - `matchups` (the cards rise
  * in turn), `stats` (the cards rise and the numbers count up to their values)
@@ -67,9 +65,8 @@ export function TournamentProgress({
 }) {
   const t = messages.competition.detail;
   const bracket = detail.bracket ?? [];
-  const live = bracket.find((round) => round.matches.some((m) => m.endsAt))?.matches ?? [];
+  const live = detail.matchups ?? [];
   const stats = detail.stats;
-  const roundsRemaining = detail.stages.filter((s) => s.status !== "completed" && s.key !== "registration").length;
 
   return (
     <>
@@ -106,10 +103,13 @@ export function TournamentProgress({
         >
           <Stat n={stats.registered} label={t.stats.registered} />
           <Stat n={stats.matchesPlayed} label={t.stats.matchesPlayed} />
-          <Stat n={roundsRemaining} label={t.stats.roundsRemaining} />
-          <Stat n={daysUntil(stats.finalsAt)} pattern={t.stats.days} label={t.stats.untilFinals} />
+          <Stat n={stats.roundsRemaining} label={t.stats.roundsRemaining} />
+          <Stat n={stats.daysToFinal} pattern={t.stats.days} label={t.stats.untilFinals} />
         </Scene>
       ) : null}
+
+      {/* ---- Qualifiers, before the draw ---- */}
+      {detail.qualifier ? <Qualifiers board={detail.qualifier} messages={messages} /> : null}
 
       {/* ---- The bracket ---- */}
       {bracket.length ? (
@@ -122,19 +122,78 @@ export function TournamentProgress({
 }
 
 /**
+ * QUALIFIERS: the API's ranked field while more players are in than the
+ * bracket seats (`qualifier`). No frame draws it (FLAGGED): it takes the
+ * Competition leaderboard's table - its cells, rule colour and banded rows -
+ * with the cut drawn in signal red under the last player through.
+ */
+function Qualifiers({ board, messages }: { board: NonNullable<TournamentDetail["qualifier"]>; messages: Messages }) {
+  const t = messages.competition.detail.qualifier;
+  const group = (n: number) => new Intl.NumberFormat("en-NG").format(n);
+  const cell = "border-steel border-l px-3 first:border-l-0 text-mist font-body text-body";
+  const lastThrough = board.entries.findLastIndex((e) => e.through);
+
+  return (
+    <section aria-label={t.label} className="mx-auto w-full max-w-266.25 px-7 pt-24 lg:px-0 lg:pt-37.5">
+      <Reveal as="h2" className="font-display text-menu-fg text-h3 text-center font-semibold tracking-[-0.058em] uppercase">
+        {t.heading}
+      </Reveal>
+      <p className="text-menu-fg/85 font-body text-body mx-auto mt-3 max-w-xl text-center">
+        {t.sub.replace("{cutoff}", String(board.cutoff))}
+      </p>
+      <div className="mt-9 overflow-x-auto">
+        <table className="w-full min-w-[36rem] border-collapse">
+          <thead>
+            <tr className="bg-iron">
+              <th scope="col" className={`${cell} h-14.5 text-center font-normal`}>{t.rank}</th>
+              <th scope="col" className={`${cell} h-14.5 text-left font-normal`}>{t.player}</th>
+              <th scope="col" className={`${cell} h-14.5 text-center font-normal`}>{t.region}</th>
+              <th scope="col" className={`${cell} h-14.5 text-center font-normal`}>{t.points}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {board.entries.map((e, i) => (
+              <tr
+                key={`${e.rank}-${e.handle}`}
+                className={cn(i % 2 ? "bg-iron" : "bg-slate", !e.through && "opacity-60", i === lastThrough && "border-signal border-b-2")}
+              >
+                <td className={`${cell} h-14 text-center`}>{e.rank}</td>
+                <td className={`${cell} h-14 text-left`}>
+                  <span className="text-menu-fg">{e.handle}</span>
+                  {e.through ? <span className="text-signal text-body-sm ml-2">{t.through}</span> : null}
+                </td>
+                <td className={`${cell} h-14 text-center`}>{e.region ?? "—"}</td>
+                <td className={`${cell} h-14 text-center`}>{group(e.points)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+/**
  * One figure. The number sits in its own span, marked with the value it counts
  * up to; `pattern` wraps it ("{n} DAYS") when the figure has a unit. The
- * outer div is the scene's target, the inner one lifts under the cursor.
+ * outer div is the scene's target, the inner one lifts under the cursor. A
+ * figure the source doesn't know is a dash, with no unit and nothing to count.
  */
-function Stat({ n, pattern = "{n}", label }: { n: number; pattern?: string; label: string }) {
+function Stat({ n, pattern = "{n}", label }: { n: number | null; pattern?: string; label: string }) {
   const [before, after] = pattern.split("{n}");
   return (
     <div data-stat>
       <div className="bg-menu-fg text-ink ease-gate h-36.75 pt-8.5 pl-10 transition-transform duration-300 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
         <p className="font-display text-[3.4375rem] leading-none font-semibold tracking-[-0.058em] uppercase lg:text-section-heading lg:leading-[0.86]">
-          {before}
-          <span data-count={n}>{new Intl.NumberFormat("en-NG").format(n)}</span>
-          {after}
+          {n === null ? (
+            "—"
+          ) : (
+            <>
+              {before}
+              <span data-count={n}>{new Intl.NumberFormat("en-NG").format(n)}</span>
+              {after}
+            </>
+          )}
         </p>
         <p className="font-body text-body mt-1.75 uppercase">{label}</p>
       </div>
@@ -154,7 +213,6 @@ const CARD_W = 271;
 const GUTTER = 158;
 
 function Bracket({ rounds, messages, locale }: { rounds: readonly BracketRound[]; messages: Messages; locale: Locale }) {
-  const t = messages.competition.detail;
   const height = SLOT * rounds[0].matches.length;
   const minWidth = rounds.length * CARD_W + (rounds.length - 1) * GUTTER;
 
@@ -172,7 +230,7 @@ function Bracket({ rounds, messages, locale }: { rounds: readonly BracketRound[]
                   className="font-display text-menu-fg text-h3 absolute font-semibold tracking-[-0.058em] uppercase whitespace-nowrap"
                   style={{ top: cardTop - 85 - 5 } as CSSProperties}
                 >
-                  {t.rounds[round.key]}
+                  {round.label}
                 </h3>
                 {round.matches.map((match, k) => (
                   <div

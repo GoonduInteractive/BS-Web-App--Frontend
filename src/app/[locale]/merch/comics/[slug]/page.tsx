@@ -14,6 +14,10 @@ import { pageMetadata } from "@/lib/seo";
 /**
  * One comic issue. Figma: `Merch Store- Comics Detail.png`.
  */
+
+/** The catalogue is the API's: rebuilt at most hourly, and a new chapter renders on its first visit. */
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const comics = await getComics();
   return LOCALES.flatMap((locale) => comics.map((c) => ({ locale, slug: c.slug })));
@@ -29,7 +33,7 @@ export async function generateMetadata({
   const messages = getMessages(locale);
   const issue = await getComic(slug).catch(() => null);
   if (!issue) return {};
-  const copy = messages.merch.comics.issues[issue.copyKey as keyof typeof messages.merch.comics.issues];
+  const copy = issue.copy;
   return pageMetadata({
     locale,
     path: `/merch/comics/${issue.slug}`,

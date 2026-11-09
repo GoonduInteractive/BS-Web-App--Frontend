@@ -1,21 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useCart } from "@/components/merch/CartProvider";
+import { toast } from "@/components/ui/Toaster";
 import { TornPlate } from "@/components/ui/TornPlate";
+import { colourLabel } from "@/lib/utils/merch-copy";
 import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
-import type { Product, ProductSize, TileField } from "@/types/merch";
+import { isRemoteImage } from "@/lib/utils/remote-image";
+import { roomLeft } from "@/lib/utils/stock";
+import type { Product, TileField } from "@/types/merch";
 
 const FIELD: Record<TileField, string> = {
   linen: "bg-linen",
   crimson: "bg-crimson",
   white: "bg-menu-fg",
 };
-
 
 export function ProductDetail({
   product,
@@ -28,13 +31,24 @@ export function ProductDetail({
 }) {
   const t = messages.merch;
   const d = t.detail;
-  const copy = t.products[product.copyKey];
-  const { add } = useCart();
+  const copy = product.copy;
+  const { add, busy, failed, clearFailed, lines } = useCart();
 
   const sizeGroup = useRef<HTMLDivElement>(null);
-  const [colourId, setColourId] = useState(product.colours[0].id);
-  const [size, setSize] = useState<ProductSize | null>(null);
+  // A product sold in one colour, or one size, has no picker: "" is its only choice.
+  const [colourId, setColourId] = useState(product.colours[0]?.id ?? "");
+  const [size, setSize] = useState<string | null>(product.sizes.length ? null : "");
   const [quantity, setQuantity] = useState(1);
+
+  const variantOf = (colour: string, option: string) => product.variants?.find((v) => v.colourId === colour && v.size === option);
+  const chosen = size === null ? undefined : variantOf(colourId, size);
+  const stock = chosen?.stock ?? null;
+  const left = roomLeft(stock, chosen?.id, lines);
+  // A choice with less stock than the last one holds the quantity down; choosing back restores it.
+  const amount = left === null ? quantity : Math.min(quantity, Math.max(left, 1));
+
+  // A refusal is about what was chosen: it goes with the choice, and doesn't follow to another product.
+  useEffect(() => clearFailed(), [clearFailed, colourId, size, quantity]);
 
   return (
     <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[49.1%_39.5%] lg:gap-[2.4%]">
@@ -49,6 +63,7 @@ export function ProductDetail({
 
         <Image
           src={product.image}
+          unoptimized={isRemoteImage(product.image)}
           alt={copy.imageAlt}
           fill
           priority
@@ -66,7 +81,9 @@ export function ProductDetail({
           {formatPrice(product.price, locale, t.price)}
         </p>
 
-        {/* ---- Colour ---- */}
+        {/* ---- Colour: no picker for a product sold in one ---- */}
+        {product.colours.length ? (
+          <>
         <p id="colour-label" className="font-display text-menu-fg text-h7 mt-7.25 leading-none font-bold tracking-[0.02em] uppercase">
           {d.selectColour}
         </p>
@@ -79,7 +96,7 @@ export function ProductDetail({
                 type="button"
                 role="radio"
                 aria-checked={selected}
-                aria-label={t.colours[colour.labelKey]}
+                aria-label={colourLabel(colour, messages)}
                 onClick={() => setColourId(colour.id)}
 
                 className={`size-6.5 cursor-pointer outline-offset-0 ${colour.swatch} ${
@@ -90,7 +107,12 @@ export function ProductDetail({
           })}
         </div>
 
-        {/* ---- Size ---- */}
+          </>
+        ) : null}
+
+        {/* ---- Size: no picker for a product sold in one ---- */}
+        {product.sizes.length ? (
+          <>
         <p id="size-label" className="font-display text-menu-fg text-h7 mt-6.25 leading-none font-bold tracking-[0.02em] uppercase">
           {d.selectSize}
         </p>
@@ -102,22 +124,26 @@ export function ProductDetail({
         >
           {product.sizes.map((option) => {
             const selected = option === size;
+            const gone = variantOf(colourId, option)?.stock === 0;
             return (
               <button
                 key={option}
                 type="button"
                 role="radio"
                 aria-checked={selected}
+                disabled={gone}
                 onClick={() => setSize(option)}
                 // The colour lives ONLY in the branches. Left in the base
                 // string as well, `text-menu-fg` and `text-ink` are two
                 // same-property utilities in one class attribute and the
                 // generated stylesheet's order decides the winner, not this
                 // one - which is how the chosen chip came out white on white.
-                className={`font-display h-13 w-14.25 cursor-pointer border text-[1.375rem] leading-none font-semibold tracking-[-0.02em] transition-colors duration-150 ease-gate ${
-                  selected
-                    ? "border-menu-fg bg-menu-fg text-ink"
-                    : "border-menu-fg/40 text-menu-fg hover:border-menu-fg/70"
+                className={`font-display h-13 w-14.25 border text-[1.375rem] leading-none font-semibold tracking-[-0.02em] transition-colors duration-150 ease-gate ${
+                  gone
+                    ? "border-menu-fg/15 text-menu-fg/30 cursor-not-allowed line-through"
+                    : selected
+                      ? "border-menu-fg bg-menu-fg text-ink cursor-pointer"
+                      : "border-menu-fg/40 text-menu-fg hover:border-menu-fg/70 cursor-pointer"
                 } focus-visible:outline-signal focus-visible:outline-2 focus-visible:outline-offset-2`}
               >
                 {option}
@@ -125,6 +151,9 @@ export function ProductDetail({
             );
           })}
         </div>
+
+          </>
+        ) : null}
 
         {/* ---- Description ---- */}
         <p className="font-display text-menu-fg text-h7 mt-6.5 leading-none font-bold tracking-[0.02em] uppercase">
@@ -139,16 +168,17 @@ export function ProductDetail({
           <div className="border-menu-fg/30 flex h-13.75 w-40 items-center justify-between border px-5">
             <Stepper
               label={d.decrease}
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              disabled={quantity <= 1}
+              onClick={() => setQuantity(Math.max(1, amount - 1))}
+              disabled={amount <= 1}
               glyph="−"
             />
             <span aria-live="polite" aria-label={d.quantity} className="text-menu-fg font-body text-body">
-              {quantity}
+              {amount}
             </span>
             <Stepper
               label={d.increase}
-              onClick={() => setQuantity((q) => q + 1)}
+              onClick={() => setQuantity(amount + 1)}
+              disabled={left !== null && amount >= left}
               glyph="+"
             />
           </div>
@@ -156,22 +186,33 @@ export function ProductDetail({
           <button
             type="button"
             onClick={() => {
-              if (!size) {
+              if (size === null) {
                 sizeGroup.current?.querySelector("button")?.focus();
                 return;
               }
-              add({ slug: product.slug, colourId, size, quantity });
+              void add({ slug: product.slug, colourId, size, quantity: amount }).then((added) => {
+                if (added) toast(d.added.replace("{name}", copy.name), { label: d.viewCart, href: `/${locale}/merch/cart` });
+              });
             }}
-            className="bg-signal text-menu-fg font-display focus-visible:outline-signal h-13.75 flex-1 cursor-pointer text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase transition-opacity duration-150 ease-gate hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 lg:min-w-79.75"
+            disabled={busy || left === 0}
+            aria-busy={busy || undefined}
+            className={`bg-signal text-menu-fg font-display focus-visible:outline-signal h-13.75 flex-1 ${busy ? "disabled:cursor-wait" : "disabled:cursor-not-allowed"} disabled:opacity-60 cursor-pointer text-[1.375rem] leading-none font-semibold tracking-[0.01em] uppercase transition-opacity duration-150 ease-gate hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 lg:min-w-79.75`}
           >
-            {d.addToCart}
+            {stock === 0 ? d.soldOut : left === 0 ? d.allInCart : d.addToCart}
           </button>
         </div>
+        {/* Says why + has stopped. */}
+        {left !== null && left > 0 && amount >= left ? (
+          <p className="text-menu-fg/70 font-body text-body-sm mt-3 leading-snug">{d.onlyLeft.replace("{count}", String(left))}</p>
+        ) : null}
+        {/* An add the API refused. Always here, so a screen reader hears it; empty, it takes no room. */}
+        <p role="alert" className={`text-signal font-body text-body-sm leading-snug ${failed ? "mt-4" : ""}`}>
+          {failed ? messages.auth.errors[failed] : null}
+        </p>
       </div>
     </div>
   );
 }
-
 
 function Stepper({
   label,

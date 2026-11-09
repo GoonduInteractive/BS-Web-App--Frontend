@@ -62,8 +62,6 @@ export function TournamentHero({
   locale: Locale;
 }) {
   const t = messages.competition;
-  const copy: { name: string; description?: string } =
-    t.tournaments[tournament.copyKey as keyof typeof t.tournaments];
   const { backRef } = usePointerDrift<HTMLDivElement, HTMLDivElement>();
   const canRegister = tournament.status === "registrationOpen" || tournament.status === "open";
 
@@ -85,14 +83,14 @@ export function TournamentHero({
               as="h1"
               className="font-display text-menu-fg text-game-hero mt-13 max-w-144 font-semibold tracking-[-0.058em] uppercase lg:mt-10"
             >
-              {copy.name}
+              {tournament.name}
             </Reveal>
 
             {/* The featured card's description at its 512 box, so the four
                 lines break where they did there and where the frame does. */}
-            {copy.description ? (
+            {tournament.description ? (
               <Reveal delay={80} className="mt-5 max-w-128 lg:mt-2.5">
-                <p className="text-menu-fg font-body text-body">{copy.description}</p>
+                <p className="text-menu-fg font-body text-body">{tournament.description}</p>
               </Reveal>
             ) : null}
           </div>

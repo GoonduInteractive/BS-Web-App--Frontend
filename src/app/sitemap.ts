@@ -42,7 +42,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/merch", priority: 0.7 },
     ...characters.map((c) => ({ path: `/characters/${c.slug}`, priority: 0.8 })),
     ...articles.map((a) => ({ path: `/news/${a.slug}`, priority: 0.6, lastModified: a.published })),
-    ...comics.filter((c) => c.pages.length > 0).map((c) => ({ path: `/comics/${c.slug}`, priority: 0.6 })),
     ...comics.map((c) => ({ path: `/merch/comics/${c.slug}`, priority: 0.5 })),
     ...products.map((p) => ({ path: `/merch/${p.slug}`, priority: 0.5 })),
     ...tournaments.map((slug) => ({ path: `/competition/${slug}`, priority: 0.7 })),

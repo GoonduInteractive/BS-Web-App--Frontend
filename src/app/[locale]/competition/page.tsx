@@ -14,7 +14,7 @@ import { RegionalLeagues } from "@/components/competition/RegionalLeagues";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { GateCurtain } from "@/components/gates/GateCurtain";
 import { GatePage, gateMetadata, gatePreview } from "@/components/gates/GatePage";
-import { getJourney, getLeaderboard } from "@/lib/api/leaderboard";
+import { getLeaderboard } from "@/lib/api/leaderboard";
 import { getGate, nextGate } from "@/lib/gates";
 import { isHidden } from "@/lib/hidden-sections";
 import { isLocale } from "@/lib/utils/locales";
@@ -45,6 +45,14 @@ export function generateMetadata({
   return gateMetadata("competition", params);
 }
 
+/**
+ * Still prerendered, but rebuilt in the background at most hourly: the
+ * tournaments, the leaderboard and Regional Leagues' regions all come from the
+ * game backend, and what an admin adds should show without a redeploy. A
+ * failed refresh keeps the last good page.
+ */
+export const revalidate = 3600;
+
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
@@ -60,7 +68,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   // getGate("characters") in place of nextGate(...).
   const next = nextGate(getGate("competition"));
   const nextCopy = messages.gates[next.id];
-  const [board, journey] = await Promise.all([getLeaderboard(), getJourney()]);
+  const board = await getLeaderboard();
 
   return (
     <GatePage id="competition" params={params}>
@@ -77,11 +85,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
               <ActiveTournaments messages={messages} locale={locale} />
               <EarnAchievements messages={messages} />
               <RegionalLeagues messages={messages} />
-              <HallOfAscension messages={messages} />
+              <HallOfAscension messages={messages} locale={locale} />
             </>
           }
           leaderboard={
-            <Leaderboard podium={board.podium} rows={board.rows} journey={journey} messages={messages} />
+            <Leaderboard podium={board.podium} rows={board.rows} messages={messages} />
           }
         />
         {/* The last section goes INSIDE the curtain, which makes it sticky and

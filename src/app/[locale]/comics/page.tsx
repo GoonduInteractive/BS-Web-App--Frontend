@@ -1,3 +1,4 @@
+import { BookOpen } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -5,11 +6,19 @@ import { HiddenSection } from "@/components/chrome/HiddenSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { ExploreComics, FeaturedComic } from "@/components/comics/FeaturedComic";
 import { OwnTheStory } from "@/components/comics/OwnTheStory";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getComics } from "@/lib/api/merch";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
+
+/**
+ * The catalogue is the API's (`lib/api/merch.ts`): rebuilt in the
+ * background at most hourly, so what an admin publishes shows without a
+ * redeploy. A failed refresh keeps the last good page.
+ */
+export const revalidate = 3600;
 
 /**
  * The Comics. Figma: `context/design/09-comics/One Comics.png` and
@@ -54,10 +63,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const comics = await getComics();
   const [featured] = comics;
 
-  // The frame's grid is eight cards from the issues there are, repeating - the
-  // same repetition the merch grid and the About team grid use.
-  const explore =
-    comics.length > 1 ? Array.from({ length: 8 }, (_, i) => comics[i % comics.length]) : [];
+  // The explore grid: every issue once, when there's more than the featured one.
+  const explore = comics.length > 1 ? comics : [];
 
   return (
     <main className="bg-roster">
@@ -78,7 +85,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           <div className={explore.length > 0 ? "mt-24 md:mt-50" : "mt-24 pb-28 md:mt-50 md:pb-[18.8125rem]"}>
             <FeaturedComic issue={featured} messages={messages} locale={locale} />
           </div>
-        ) : null}
+        ) : (
+          // Live with no chapter on sale (or the API closed to anyone signed out):
+          // COMING SOON, as the store says. No frame draws it.
+          <EmptyState icon={BookOpen} title={messages.comingSoon.title} body={messages.comingSoon.body} className="mt-24 pb-28 md:mt-50" />
+        )}
 
         {explore.length > 0 ? (
           <ExploreComics issues={explore} messages={messages} locale={locale} />

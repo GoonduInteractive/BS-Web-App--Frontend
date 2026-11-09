@@ -1,11 +1,11 @@
 /**
- * Tournament contracts. Overview section 9 names `Tournament` as one of the
- * shapes to define now and build against mocks, so that when the game team
- * delivers a schema only the adapter in `src/lib/api/tournaments.ts` changes.
+ * Tournament contracts, filled from the game backend's `/v1/tournaments` by
+ * the adapter in `src/lib/api/tournaments.ts`.
  *
- * Copy is never carried here. Names, descriptions, statuses, regions and reward
- * names are all KEYS into `messages.competition`, the same arrangement
- * `PointsBalance.perkKeys` uses - the adapter says which, the locale says what.
+ * THE COPY A TOURNAMENT CARRIES IS RESOLVED: its name, description, region,
+ * format and rewards arrive as the strings to print, as admins typed them (in
+ * English - the API keeps one language). Only the STATUS
+ * stays a key, because the site, not the record, says what each one reads.
  */
 
 /**
@@ -19,24 +19,15 @@
  */
 export type TournamentStatus = "registrationOpen" | "active" | "open" | "comingSoon";
 
-/**
- * Where a tournament is played. Leaderboards launch Nigeria-first by state, so
- * regions are states or "global". Keys into `messages.competition.regions`.
- */
-export type TournamentRegion = "global" | "lagos" | "southEast" | "rivers" | "abuja" | "ghana";
-
-/** A prize class in the rewards pool. Keys into `messages.competition.rewards`. */
-export type TournamentReward = "skins" | "titles" | "frames";
-
-/** Match format, as the registration sheet prints it. Keys into `messages.competition.formats`. */
-export type TournamentFormat = "oneVone";
-
 export type Tournament = {
+  /** The API's id - what an entry fee is paid against. */
+  id: string;
   slug: string;
-  /** Key into `messages.competition.tournaments` - name, and description where one exists. */
-  copyKey: string;
+  name: string;
+  description?: string;
   status: TournamentStatus;
-  region: TournamentRegion;
+  /** Where it is played, as printed: "Lagos", "Global". */
+  region: string;
   /** ISO date the tournament begins. Absent while it is only announced. */
   startsAt?: string;
   /** ISO date it ends. Absent until it is scheduled. */
@@ -48,11 +39,14 @@ export type Tournament = {
    */
   closesAt?: string;
   participants?: number;
-  rewards?: readonly TournamentReward[];
-  /** The registration sheet's facts. Present once a tournament can be joined. */
-  format?: TournamentFormat;
+  /** REWARDS POOL, as printed: "EXCLUSIVE SKINS • SEASONAL TITLES • PROFILE FRAMES". */
+  rewards?: string;
+  /** Match format, as the registration sheet prints it: "1V1". */
+  format?: string;
   /** Prize pool in naira. */
   prizePool?: number;
+  /** Entry fee in naira. Absent for a free tournament. */
+  fee?: number;
   /** Places taken and places available. */
   slots?: { taken: number; total: number };
   /** The detail page's content. Absent means the tournament has no page yet. */
@@ -63,22 +57,12 @@ export type Tournament = {
 /* The detail page                                                           */
 /* ------------------------------------------------------------------------ */
 
-/**
- * The six stages of the journey to ascension, in order. Keys into
- * `messages.competition.detail.stages`.
- */
-export type StageKey =
-  | "registration"
-  | "qualifiers"
-  | "groupStage"
-  | "quarterFinals"
-  | "semiFinals"
-  | "finals";
-
 /** Where a stage is, as the frame's chips colour it: amber, red, or scar. */
 export type StageStatus = "inProgress" | "completed" | "upcoming";
 
-export type Stage = { key: StageKey; status: StageStatus };
+/** One step of the journey to ascension, in order. `label` is printed. */
+/** A stage of the journey, with when it started and ends where the API knows (since 2026-11-02). */
+export type Stage = { key: string; label: string; status: StageStatus; startsAt?: string; endsAt?: string };
 
 /** One side of a match. `points` is absent until the match has been played or is live. */
 export type MatchSide = { handle: string; points?: number };
@@ -91,7 +75,7 @@ export type MatchSide = { handle: string; points?: number };
 export type Match = {
   id: string;
   sides: readonly [MatchSide | null, MatchSide | null];
-  /** Live: when it ends, counted down. */
+  /** When it ends, counted down. */
   endsAt?: string;
   /** Scheduled: when it is played, printed. */
   scheduledAt?: string;
@@ -99,10 +83,8 @@ export type Match = {
   playedAt?: string;
 };
 
-/** Which bracket rounds exist. Keys into `messages.competition.detail.rounds`. */
-export type RoundKey = "roundOf16" | "quarterFinals" | "semiFinals" | "finals";
-
-export type BracketRound = { key: RoundKey; matches: readonly Match[] };
+/** One column of the bracket. `label` is the round's heading, printed. */
+export type BracketRound = { key: string; label: string; matches: readonly Match[] };
 
 /**
  * What the detail page needs beyond the card's facts. Present on every
@@ -110,8 +92,24 @@ export type BracketRound = { key: RoundKey; matches: readonly Match[] };
  */
 export type TournamentDetail = {
   stages: readonly Stage[];
+  /** CURRENT MATCHUPS: the matches being played now. */
+  matchups?: readonly Match[];
   /** The bracket, from its first round to the final. Ongoing tournaments only. */
   bracket?: readonly BracketRound[];
-  /** The ongoing frame's four figures. `finalsAt` is what UNTIL FINALS counts to. */
-  stats?: { registered: number; matchesPlayed: number; roundsRemaining: number; finalsAt: string };
+  /**
+   * The qualifier leaderboard, while more players are in than the 32-seat
+   * bracket holds: ranked, the top `cutoff` going through. Live only.
+   */
+  qualifier?: {
+    cutoff: number;
+    entries: readonly { rank: number; handle: string; region?: string; points: number; through: boolean }[];
+  };
+  /** The ongoing frame's four figures; null where the source doesn't know one. */
+  stats?: {
+    registered: number;
+    matchesPlayed: number | null;
+    roundsRemaining: number | null;
+    /** UNTIL FINALS, in whole days. */
+    daysToFinal: number | null;
+  };
 };
