@@ -24,7 +24,7 @@ backend:
   # Decap sends editors to <base_url>/auth and takes the token back from
   # <base_url>/callback. NO TRAILING SLASH: Decap joins the path onto this, so
   # a slash here asks the gateway for //auth and the popup dies on a 404.
-  base_url: https://decap-cms-oauth-gray.vercel.app
+  base_url: https://content.beyondservicegame.com/
   
   commit_messages:
     create: 'content({{collection}}): create {{slug}}'
