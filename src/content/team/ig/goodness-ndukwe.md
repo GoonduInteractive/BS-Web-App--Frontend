@@ -1,6 +1,7 @@
 ---
 name: GOODNESS NDUKWE
+group: core
 order: 2
 visible: true
-image: /assets/characters/Ogbuagu.png
+image: /assets/about/goodness.jpg
 ---
