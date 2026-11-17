@@ -9,7 +9,7 @@ tags:
   - news
   - announcement
 coverStyle: torn
-image: /assets/news/soma-mysc.png
+image: /assets/news/hedera-win-article.png
 imageAlt: Between worlds, Beyond Services
 band: clot
 volume: vol 1

@@ -4,7 +4,7 @@ tags:
   - news
   - announcement
 coverStyle: torn
-image: /assets/news/soma-mysc.png
+image: /assets/news/hedera-win-article.png
 comic: Between worlds
 band: clot
 bodyImage: /assets/news/news-3.png
