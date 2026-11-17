@@ -1,6 +1,7 @@
 ---
 name: MOSES ONWE
+group: core
 order: 3
 visible: true
-image: /assets/characters/Ogbuagu.png
+image: /assets/about/moses.jpg
 ---
