@@ -1,5 +1,5 @@
 ---
-name: LESLIE OSINACHI-OKOK
+name: LESLIE OSINACHI-OKOH
 role: CEO & Lead Game Designer
 group: core
 order: 1
