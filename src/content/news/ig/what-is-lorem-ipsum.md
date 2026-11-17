@@ -1,10 +1,10 @@
 ---
-published: 2026-09-22
+published: 2025-12-27
 tags:
   - news
   - announcement
-coverStyle: torn
+coverStyle: full
 image: /assets/news/news-3.png
 band: clot
-bodyImage: /assets/news/news-2.png
+bodyImage: /assets/news/playstation.png
 ---
