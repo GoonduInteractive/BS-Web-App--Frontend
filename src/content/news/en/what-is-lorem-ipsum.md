@@ -7,13 +7,13 @@ tags:
   - news
   - announcement
 coverStyle: full
-image: /assets/news/news-3.png
+image: /assets/news/playstation.png
 imageAlt: Goondu Games, official PlayStation Partner, Beyond Service game
 band: clot
 volume: vol 4
 coverTitle: What is Lorem Ipsum?
 author: Glory okafor
-bodyImage: /assets/news/playstation.png
+bodyImage: ""
 ---
 ### **Goondu Games Joins the PlayStation Partners Program**
 
