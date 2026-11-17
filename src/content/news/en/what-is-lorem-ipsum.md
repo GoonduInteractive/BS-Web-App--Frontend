@@ -1,33 +1,68 @@
 ---
-title: What is Lorem Ipsum?
-excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting
-  industry. Lorem Ipsum has been the industry's standard dummy text ever since
-  1966, "
-published: 2026-09-22
+title: Goondu Games Joins PlayStation Partners | Beyond Service
+excerpt: Goondu Games, the Nigerian studio behind Beyond Service, is now an
+  official PlayStation Partner, one of few African game studios in the program.
+published: 2025-12-27
 tags:
   - news
   - announcement
-coverStyle: torn
+coverStyle: full
 image: /assets/news/news-3.png
-imageAlt: What is Lorem Ipsum?
+imageAlt: Goondu Games, official PlayStation Partner, Beyond Service game
 band: clot
 volume: vol 4
 coverTitle: What is Lorem Ipsum?
 author: Glory okafor
-bodyImage: /assets/news/news-2.png
+bodyImage: /assets/news/playstation.png
 ---
-### The standard Lorem Ipsum passage, used since 1966
+### **Goondu Games Joins the PlayStation Partners Program**
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+Goondu Games, the Enugu-based Nigerian game studio behind Beyond Service, is now an official member of the PlayStation Partners program. It is a step few studios on the continent have taken, and it opens the door to console for Beyond Service and future Goondu titles.
 
-### Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
+### **What is the PlayStation Partners program?**
 
-"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+PlayStation Partners is Sony's program for studios developing games for PlayStation platforms. Studios apply with details about their team and a project plan for the game they want to build. PlayStation reviews the application and approves studios to join.
 
-### 1914 translation by H. Rackham
+Approved partners get access to:
 
-"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
+* PlayStation's developer documentation and technical resources
+* Guidance on building and publishing for PlayStation platforms
+* PlayStation's partner support teams
 
-### Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
+For an independent studio, that access removes much of the guesswork in bringing a game to console.
 
-"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
+### **An African game studio on PlayStation**
+
+Goondu Games was founded to make games rooted in Nigerian culture and African mythology that can stand next to anything in the global market. The studio is led by CEO and co-founder Leslie Osinachi-Okoh, who has worked in the games industry since co-founding Smart Olive Games in 2015.
+
+"We wanted to make West Africa a dominant force in global gaming," Leslie said.
+
+Joining PlayStation Partners was part of a year spent building relationships across the industry, with partnerships including MSI, Nexal Gaming and Gamr Studio alongside others in Nigeria's growing games ecosystem.
+
+### **About Beyond Service**
+
+Beyond Service is an action game rooted in African mythology. Ancestral power drives the fight, and players battle through the Trial in competitive PvP. The game also took first place in the Immersive Experiences track at the Hedera Africa Hackathon, the world's largest Web3 hackathon. [Read more about the Hedera Africa Hackathon win](https://www.beyondservicegame.com/en/news/beyond-service-hedera-africa-hackathon-winner).
+
+### **Is Beyond Service coming to PlayStation?**
+
+Beyond Service launches on mobile first, because that is how most African players game today. PC and console versions are part of the long-term roadmap. As a PlayStation Partner, the team has direct access to what it needs to bring the Trial to console when the time comes. We will share console news here first.
+
+### **What this means for players**
+
+Beyond Service is being built for players everywhere, not one platform. Starting on mobile lets players across Africa get into the game now. The PlayStation partnership means the game can grow with them onto console later.
+
+[Learn more about the game](https://www.beyondservicegame.com/en/the-game) | [Join the community](https://www.beyondservicegame.com/en/community)
+
+### **FAQ**
+
+**Is Goondu Games a PlayStation Partner?**
+
+Yes. Goondu Games is an official member of the PlayStation Partners program.
+
+**Where is Goondu Games based?**
+
+Enugu, Nigeria.
+
+**Will Beyond Service be on PS5?**
+
+Console versions are on the long-term roadmap. Beyond Service launches on mobile first.
