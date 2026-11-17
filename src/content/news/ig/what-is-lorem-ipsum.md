@@ -4,7 +4,7 @@ tags:
   - news
   - announcement
 coverStyle: full
-image: /assets/news/news-3.png
+image: /assets/news/playstation.png
 band: clot
-bodyImage: /assets/news/playstation.png
+bodyImage: ""
 ---
