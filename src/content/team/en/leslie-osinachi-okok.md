@@ -4,6 +4,6 @@ role: CEO & Lead Game Designer
 group: core
 order: 1
 visible: true
-image: /assets/about/leslie.png
+image: /assets/about/leslie.jpg
 portraitAlt: Portrait of Leslie Osinachi-Okok
 ---
