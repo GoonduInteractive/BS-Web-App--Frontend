@@ -1,11 +1,11 @@
 ---
-published: 2026-09-22
+published: 2026-04-29
 tags:
   - news
   - announcement
-coverStyle: torn
+coverStyle: full
 image: /assets/news/hedera-win-article.png
 comic: Between worlds
-band: clot
-bodyImage: /assets/news/news-3.png
+band: dusk
+bodyImage: ""
 ---
