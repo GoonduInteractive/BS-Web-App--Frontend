@@ -1,3 +1,5 @@
+import type { SeedsBalance } from "@/types/seeds";
+
 /**
  * The player profile: the signed-in player's, from `GET /v1/player/profile`
  * (`lib/api/player.ts`).
@@ -32,7 +34,10 @@ export type Profile = {
   rank?: number;
   location: string;
   gamePoints: number;
-  claimablePoints: number;
+  /** Their Seeds: the Calabash is what the CALABASH tile shows. */
+  seeds: SeedsBalance;
+  /** The Play Games player ID their account is linked to; null until they connect one. */
+  playGamesId: string | null;
   /** Null when the player is in no tournament - the frame's first state. */
   standing: TournamentStanding | null;
 };

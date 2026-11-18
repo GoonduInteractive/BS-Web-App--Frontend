@@ -10,6 +10,7 @@ import type { GeometryCollection, Topology } from "topojson-specification";
 import land110 from "world-atlas/land-110m.json";
 
 import { pulseLayer } from "@/components/community/map-pulse";
+import { scatterPins } from "@/components/community/map-scatter";
 import { cn } from "@/lib/utils/cn";
 import type { Messages } from "@/lib/utils/messages";
 import type { PlayerHotspot } from "@/types/players";
@@ -39,12 +40,13 @@ import type { PlayerHotspot } from "@/types/players";
  * - from street level the buildings rise out of the ground as you zoom in
  *   (an extrusion whose height grows with the zoom).
  *
- * ONE PIN FOR A CITY, THEN ONE FOR EACH PLAYER. Per the human: Nairobi reads
- * 15 active players, so at street level it shows fifteen pins, each where that
- * player is, not one for the city. From PLAYERS_FROM the city pins give way
- * to every in-view city's players (`hotspot.players`), which arrive with a
- * small drop; below it the city pins are back. A flight to a pin lands past
- * the threshold, so tapping Nairobi opens on its fifteen.
+ * A PIN PER REGION, THEN ONE PER ACTIVE PLAYER. The region pins are the API's
+ * (`/v1/regions/active`): each where an admin set it, with its active count.
+ * From PLAYERS_FROM a region's pin gives way to one anonymous pin per active
+ * player, placed AT RANDOM around it (`map-scatter.ts`), per the team
+ * (2026-11-17): the API never says where anyone is and nobody is shown; the
+ * pins say how busy the region is. A region with nobody active keeps its own
+ * pin. A pin pulses only while someone in its region is active.
  *
  * TWO LOOKS, CROSS-FADED BY ZOOM. At rest the frame's dotted world: Natural
  * Earth's 1:110m land filled with an 8px dot pattern over the disc's own
@@ -99,7 +101,7 @@ const STYLE = {
 const HOME = { center: [6.5, 20] as [number, number], zoom: 1.85, disc: 732 };
 /** Where a pin takes you: the city's streets. */
 const STREET_ZOOM = 12;
-/** From this zoom a city's pin gives way to one pin per player in it. */
+/** From this zoom a region's pin gives way to its players' anonymous pins, and the pulse fades out. */
 const PLAYERS_FROM = 9;
 const ZOOM = { min: 1, max: 17 };
 /** The dots are whole below this zoom and gone above the next; the streets the reverse. */
@@ -190,7 +192,8 @@ export function ActiveMap({
   discClassName,
 }: {
   hotspots: readonly PlayerHotspot[];
-  selected: PlayerHotspot;
+  /** The chosen region; null for none. */
+  selected: PlayerHotspot | null;
   onSelect: (spot: PlayerHotspot) => void;
   messages: Messages;
   /** The stage: the box the zoom controls pin to, which clips a disc wider than it. */
@@ -322,10 +325,11 @@ export function ActiveMap({
           paint: { "fill-pattern": "map-dots", "fill-opacity": fade(1, 0), "fill-antialias": false },
         });
 
-        // ---- the pulse under every city pin ----
-        if (!reduced) {
+        // ---- the pulse under every pin with someone active ----
+        const live = hotspots.filter((spot) => spot.active > 0);
+        if (!reduced && live.length) {
           const pulse = pulseLayer({
-            points: hotspots.map((spot) => ({
+            points: live.map((spot) => ({
               lon: spot.lon,
               lat: spot.lat,
               seed: seedOf(spot.id),
@@ -369,51 +373,53 @@ export function ActiveMap({
           markers.current.set(spot.id, marker);
         }
 
-        // ---- the players, one pin each, per city ----
-        // Decorative (no keyboard, no role): the readout carries the count and
-        // the city pin the name. Each city's players are added while the map
-        // is close enough and the city is near the view, removed otherwise -
-        // a few hundred markers site-wide never all exist at once.
+        // ---- one anonymous pin per active player, at random in the region ----
+        // Decorative (no keyboard, no role): the readout carries the count and the region
+        // pin the name. A region's pins are added while the map is close enough and the
+        // region is near the view, removed otherwise; a region with nobody active keeps its
+        // own pin at every zoom, since nothing would take its place.
         const groups = new Map<string, Marker[]>();
         for (const spot of hotspots) {
           groups.set(
             spot.id,
-            spot.players.map((player) => {
+            scatterPins(spot).map((p) => {
               const pin = pinElement("map-pin map-pin--player");
               pin.setAttribute("aria-hidden", "true");
-              return new ml.Marker({ element: pin, anchor: "bottom" }).setLngLat([player.lon, player.lat]);
+              return new ml.Marker({ element: pin, anchor: "bottom" }).setLngLat([p.lon, p.lat]);
             }),
           );
         }
         const shown = new Set<string>();
-        const cityShown = new Set(hotspots.map((spot) => spot.id));
+        const regionShown = new Set(hotspots.map((spot) => spot.id));
         const sync = () => {
           const close = m.getZoom() >= PLAYERS_FROM;
           const bounds = m.getBounds();
           const lonPad = (bounds.getEast() - bounds.getWest()) / 2;
           const latPad = (bounds.getNorth() - bounds.getSouth()) / 2;
           for (const spot of hotspots) {
-            const city = markers.current.get(spot.id);
-            if (!city) continue;
+            const region = markers.current.get(spot.id);
+            const players = groups.get(spot.id) ?? [];
+            if (!region) continue;
             const near =
               spot.lon >= bounds.getWest() - lonPad &&
               spot.lon <= bounds.getEast() + lonPad &&
               spot.lat >= bounds.getSouth() - latPad &&
               spot.lat <= bounds.getNorth() + latPad;
-            const show = close && near;
-            if (show && !shown.has(spot.id)) {
-              for (const p of groups.get(spot.id) ?? []) p.addTo(m);
+            const showPlayers = close && near && players.length > 0;
+            if (showPlayers && !shown.has(spot.id)) {
+              for (const p of players) p.addTo(m);
               shown.add(spot.id);
-            } else if (!show && shown.has(spot.id)) {
-              for (const p of groups.get(spot.id) ?? []) p.remove();
+            } else if (!showPlayers && shown.has(spot.id)) {
+              for (const p of players) p.remove();
               shown.delete(spot.id);
             }
-            if (close && cityShown.has(spot.id)) {
-              city.remove();
-              cityShown.delete(spot.id);
-            } else if (!close && !cityShown.has(spot.id)) {
-              city.addTo(m);
-              cityShown.add(spot.id);
+            const showRegion = !(close && players.length > 0);
+            if (!showRegion && regionShown.has(spot.id)) {
+              region.remove();
+              regionShown.delete(spot.id);
+            } else if (showRegion && !regionShown.has(spot.id)) {
+              region.addTo(m);
+              regionShown.add(spot.id);
             }
           }
         };
@@ -432,11 +438,11 @@ export function ActiveMap({
         streets();
         sync();
 
-        // The pins drop onto the map, west to east as they were added. The
+        // The pins drop onto the map, busiest first, as they were added. The
         // tween is on the artwork, not the marker (MapLibre's translate lives
         // there), and clears the transform properties it neutralised so the
         // hover pop works again once they have landed.
-        if (!reduced) {
+        if (!reduced && hotspots.length) {
           void import("gsap").then(({ gsap }) => {
             if (cancelled) return;
             gsap.from(el.querySelectorAll(".map-pin:not(.map-pin--player) img"), {
@@ -467,19 +473,21 @@ export function ActiveMap({
   }, [hotspots, pinLabel, t.mapLabel]);
 
   // Fly to whatever is selected - a pin, a search result - down to its streets.
-  const lastSelected = useRef<string | null>(null);
+  // `undefined` until the first selection is seen; null is "nothing chosen".
+  const lastSelected = useRef<string | null | undefined>(undefined);
   useEffect(() => {
     const m = map.current;
     if (!m || !ready) return;
+    const chosen = selected?.id ?? null;
     // The chosen pin stands a little taller, as the first build's did.
     for (const [id, marker] of markers.current) {
-      marker.getElement().classList.toggle("is-selected", id === selected.id);
-      marker.getElement().setAttribute("aria-pressed", String(id === selected.id));
+      marker.getElement().classList.toggle("is-selected", id === chosen);
+      marker.getElement().setAttribute("aria-pressed", String(id === chosen));
     }
-    if (lastSelected.current === selected.id) return;
-    const first = lastSelected.current === null;
-    lastSelected.current = selected.id;
-    if (first) return; // the frame's opening view, not a flight to Lagos
+    if (lastSelected.current === chosen) return;
+    const first = lastSelected.current === undefined;
+    lastSelected.current = chosen;
+    if (first || !selected) return; // the frame's opening view, not a flight to the busiest region
     const center: [number, number] = [selected.lon, selected.lat];
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) m.jumpTo({ center, zoom: STREET_ZOOM });
     else m.flyTo({ center, zoom: STREET_ZOOM, pitch: PITCH, duration: 2200, curve: 1.5 });
@@ -502,7 +510,8 @@ export function ActiveMap({
   const zoomBy = (delta: number) => {
     const m = map.current;
     if (!m) return;
-    const center: [number, number] = [selected.lon, selected.lat];
+    // Nothing chosen: about the middle of the view.
+    const center: [number, number] = selected ? [selected.lon, selected.lat] : m.getCenter().toArray();
     const zoom = Math.max(ZOOM.min, Math.min(ZOOM.max, m.getZoom() + delta));
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) m.jumpTo({ center, zoom });
     else m.flyTo({ center, zoom, pitch: zoom >= PITCH_FROM ? PITCH : 0, duration: 600 });

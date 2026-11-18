@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { AccountMenu } from "@/components/chrome/AccountMenu";
 import { HeaderRule } from "@/components/chrome/NavRules";
+import { NotificationsMenu } from "@/components/chrome/NotificationsMenu";
 import { RegisterCta } from "@/components/chrome/RegisterCta";
 import type { Messages } from "@/lib/utils/messages";
 import type { AuthUser } from "@/types/auth";
@@ -72,7 +73,10 @@ export function SiteHeader({
           {/* Until the session is read, JOIN holds its place invisibly, so the
               row does not jump and a signed-in player never sees it flash. */}
           {user ? (
-            <AccountMenu messages={messages} locale={locale} profile={toAccount(user)} />
+            <div className="flex items-center gap-3 md:gap-4">
+              <NotificationsMenu messages={messages} locale={locale} />
+              <AccountMenu messages={messages} locale={locale} profile={toAccount(user)} />
+            </div>
           ) : (
             <div className={status === "loading" ? "invisible" : undefined}>
               <RegisterCta messages={messages} locale={locale} />

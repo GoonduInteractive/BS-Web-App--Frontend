@@ -11,6 +11,7 @@ import { EmptyCart } from "@/components/merch/CartView";
 import { CheckoutForm, type CheckoutDetails } from "@/components/merch/CheckoutForm";
 import { CheckoutSummary } from "@/components/merch/CheckoutSummary";
 import { OrderConfirmed, type ConfirmState, type OrderSummary } from "@/components/merch/OrderConfirmed";
+import { MY_CODES, MY_SEEDS, useMyRewardCodes, useMySeeds, useRewardTiers } from "@/hooks/useSeeds";
 import { ApiError } from "@/lib/api/client";
 import type { Place } from "@/lib/api/geo";
 import type { FreeShippingPromo, Lga } from "@/lib/api/shipping";
@@ -18,6 +19,7 @@ import {
   getOrderSummary,
   getShippingInfo,
   getShippingQuote,
+  isCodeRefusal,
   isPaid,
   isStockRefusal,
   payForOrder,
@@ -176,6 +178,20 @@ export function CheckoutView({
   const ships = needsShipping(lines, comics);
   const itemTotal = resolveCartLines({ lines, products, comics, messages, locale }).reduce((sum, e) => sum + entryTotal(e), 0);
 
+  // A Seeds code takes its discount off the items, up to its reward's cap; one per order.
+  const codes = useMyRewardCodes();
+  const tiers = useRewardTiers();
+  const seeds = useMySeeds();
+  const usableCodes = (codes.data ?? []).filter((c) => c.usable);
+  const [codeId, setCodeId] = useState<string | null>(null);
+  const code = usableCodes.find((c) => c.id === codeId) ?? null;
+  const discount = code
+    ? { pct: code.discountPct, cap: tiers.data?.find((tier) => tier.discountPct === code.discountPct)?.capNaira ?? null }
+    : null;
+  // No code yet, but Seeds enough for one: say where codes come from.
+  const cheapest = tiers.data?.[0]?.cost;
+  const codeHint = !usableCodes.length && cheapest !== undefined && (seeds.data?.calabash ?? 0) >= cheapest;
+
   const savedInfo = useQuery({ queryKey: SHIPPING_INFO, queryFn: getShippingInfo, enabled: status === "signed-in" });
   const prefill = toSaved(savedInfo.data ?? null, lgasByState);
 
@@ -222,8 +238,13 @@ export function CheckoutView({
 
   const place = useMutation({
     mutationFn: placeOrder,
-    onSuccess: (order) => {
+    onSuccess: (order, { discountCode }) => {
       writeUnpaid(order.id);
+      // The code is spent with the order.
+      if (discountCode) {
+        void queries.invalidateQueries({ queryKey: MY_CODES });
+        void queries.invalidateQueries({ queryKey: MY_SEEDS });
+      }
       pay.mutate(order.id, {
         // The order exists now and the cart is gone: only its payment needs trying again.
         onError: () => {
@@ -232,7 +253,13 @@ export function CheckoutView({
         },
       });
     },
-    onError: (e) => {
+    onError: (e, { discountCode }) => {
+      // A code spent elsewhere, or refused: let go of it and say so; the order can go without one.
+      if (discountCode && isCodeRefusal(e)) {
+        setCodeId(null);
+        void queries.invalidateQueries({ queryKey: MY_CODES });
+        return setPlaceError(t.codeRefused);
+      }
       if (!(e instanceof ApiError && e.status === 400 && /cart is empty/i.test(e.message))) return setPlaceError(failure(e));
       // The screen was out of date, so it's read again; this stays only if the items do.
       setPlaceError(t.cartGone);
@@ -318,7 +345,8 @@ export function CheckoutView({
   const submit = () => {
     if (status !== "signed-in") return router.push(authHref(locale, "sign-in", window.location.pathname));
     if (busy) return;
-    if (!ships) return place.mutate(undefined);
+    const discountCode = code?.code;
+    if (!ships) return place.mutate({ discountCode });
     if (!details || !state || !lgaName) return setPlaceError(t.chooseLocation);
     // A place the admin hasn't priced already says so under the button; a quote on its way is waited for.
     if (!quote.data) return;
@@ -329,15 +357,18 @@ export function CheckoutView({
       (method === "homeDelivery" && !details.line1.trim());
     if (missing) return setPlaceError(t.needDetails);
     place.mutate({
-      method,
-      firstName: details.firstName,
-      lastName: details.lastName,
-      phone: details.phone,
-      address: details.line1,
-      city: details.city,
-      zip: details.zip,
-      state,
-      lga: lgaName,
+      shipping: {
+        method,
+        firstName: details.firstName,
+        lastName: details.lastName,
+        phone: details.phone,
+        address: details.line1,
+        city: details.city,
+        zip: details.zip,
+        state,
+        lga: lgaName,
+      },
+      discountCode,
     });
   };
 
@@ -368,6 +399,14 @@ export function CheckoutView({
         freeShipping={quote.data?.free}
         shipping={ships}
         placeError={placeError ?? quoteError}
+        codes={usableCodes}
+        codeId={code?.id ?? null}
+        onCodeChange={(id) => {
+          setCodeId(id);
+          setPlaceError(null);
+        }}
+        discount={discount}
+        codeHint={codeHint}
         busy={busy}
         onPlaceOrder={() => {
           setPlaceError(null);

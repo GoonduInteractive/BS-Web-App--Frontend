@@ -198,16 +198,22 @@ export const isPaid = (o: PlacedOrder) => !["pending_payment", "cancelled"].incl
 /**
  * Turns the cart into an order, to be paid through Paystack. `shipping` is
  * where it goes - left out for an order of online chapters only. The API also
- * saves it as the player's details for next time.
+ * saves it as the player's details for next time. `discountCode` is a Seeds
+ * code (`redeemReward`), one per order; the API takes the discount off.
  */
-export async function placeOrder(shipping?: ShippingDetails): Promise<PlacedOrder> {
+export async function placeOrder({ shipping, discountCode }: { shipping?: ShippingDetails; discountCode?: string }): Promise<PlacedOrder> {
   return toOrder(
     await authedRequest("POST", "/v1/orders/checkout", order, {
       payment_method: "paystack",
       ...(shipping && { shipping: toApiShipping(shipping) }),
+      ...(discountCode && { discount_code: discountCode }),
     }),
   );
 }
+
+/** The API turned the order down over its Seeds code: spent, someone else's, or not a code. */
+export const isCodeRefusal = (e: unknown) =>
+  e instanceof ApiError && e.status >= 400 && e.status < 500 && /code|discount|reward/i.test(e.message);
 
 export async function getOrderSummary(id: string): Promise<PlacedOrder> {
   return toOrder(await authedRequest("GET", `/v1/orders/${encodeURIComponent(id)}/summary`, order));

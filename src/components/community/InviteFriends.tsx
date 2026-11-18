@@ -6,10 +6,17 @@ import { cn } from "@/lib/utils/cn";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
- * INVITE FRIENDS, under the map's readout. Only the phone frame draws it
- * (`mobile-active-map/home/game.png`, 360): the 1440 frame ends at the disc.
- * Rendered below `lg` as drawn and FLAGGED - if Design wants it on the desktop
- * too, the caller drops the `lg:hidden`.
+ * INVITE FRIENDS, under the map's readout. The phone frame draws it
+ * (`mobile-active-map/home/game.png`, 360); the 1440 frame ends at the disc,
+ * and it shows there too, under the count, per the human (2026-11-17).
+ *
+ * `body` replaces the frame's line: the nudge for a player whose region is
+ * short of players (`MapPanel`).
+ *
+ * THE LINK HAS NO REFERRAL CODE YET. The frame's is `…/invite/3245gt7`, and
+ * sign-up takes a `referral_code`, but no route gives a player their own code
+ * (checked against the live spec, 2026-11-17), so the link is Create Account.
+ * FLAGGED: asked of the backend.
  *
  * Measured at 360: heading 14px at cap 1753; two 12px lines at a 16 pitch from
  * cap 1785, grey; the link field 19..330 x 1825..1873 - a 2px ring, rounded,
@@ -23,13 +30,24 @@ import type { Messages } from "@/lib/utils/messages";
  * that actually succeeded says so, in a toast, as every confirmation on the
  * site does; the frame draws no confirmed state.
  */
-export function InviteFriends({ link, messages, className }: { link: string; messages: Messages; className?: string }) {
+export function InviteFriends({
+  link,
+  body,
+  messages,
+  className,
+}: {
+  link: string;
+  /** In place of the frame's line, e.g. the nudge for a region short of players. */
+  body?: string;
+  messages: Messages;
+  className?: string;
+}) {
   const t = messages.community.invite;
 
   return (
     <div className={cn("max-w-[19.5rem]", className)}>
       <h2 className="text-menu-fg font-body text-body-sm leading-none">{t.title}</h2>
-      <p className="text-menu-fg/52 font-body mt-4.5 max-w-[14.5rem] text-[0.75rem] leading-4">{t.body}</p>
+      <p className="text-menu-fg/52 font-body mt-4.5 max-w-[14.5rem] text-[0.75rem] leading-4">{body ?? t.body}</p>
 
       <label className="sr-only" htmlFor="community-invite-link">
         {t.linkLabel}

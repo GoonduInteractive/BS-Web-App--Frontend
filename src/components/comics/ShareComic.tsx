@@ -1,4 +1,4 @@
-import { ShareMarks } from "@/components/ui/ShareMarks";
+import { ComicShareMarks } from "@/components/comics/ComicShareMarks";
 import type { Messages } from "@/lib/utils/messages";
 
 /**
@@ -8,10 +8,11 @@ import type { Messages } from "@/lib/utils/messages";
  * (`ShareMarks`) - 40px slots on a 76 pitch at 1440, 32 on 66 on the phone.
  * The SUBSCRIBE button the earlier frame drew is gone with this one.
  *
- * FLAGGED as before: the copy promises claimable points that nothing here
- * awards, because there is no account to award them to. Transcribed.
+ * The points the copy promises are Seeds: the marks share the player's own
+ * link to the chapter (`ComicShareMarks`), and friends reading through it
+ * earn them.
  */
-export function ShareComic({ title, messages }: { title: string; messages: Messages }) {
+export function ShareComic({ title, chapterId, messages }: { title: string; chapterId?: string; messages: Messages }) {
   const t = messages.comics.reader;
 
   return (
@@ -25,7 +26,8 @@ export function ShareComic({ title, messages }: { title: string; messages: Messa
       {/* #cacccf on both frames - the white at 80%, the pills' grey elsewhere. */}
       <p className="text-menu-fg/80 font-body text-body mt-3 whitespace-pre-line">{t.shareSub}</p>
 
-      <ShareMarks
+      <ComicShareMarks
+        chapterId={chapterId}
         title={title}
         labels={t.share}
         className="mt-9.5 justify-center gap-[2.125rem] md:gap-9"

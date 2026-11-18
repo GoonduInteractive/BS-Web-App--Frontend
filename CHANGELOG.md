@@ -15,6 +15,9 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- Posting a note on the community wall now says only that it's posted: a note goes up straight
+  away rather than waiting for approval.
+
 - The site runs on the live API only. The stand-in data it used without one is gone: sample
   products, comics, tournaments, leaderboard, wall notes, profile, points and shipping prices, the
   in-browser accounts, and the Google button, which only ever worked on that stand-in. Without
@@ -84,9 +87,52 @@ blockers live in local working notes and are deliberately not repeated here.
   (free when a promotion's minimum is reached), and starts from the player's saved delivery
   details. Choosing a place Goondu doesn't deliver to yet says so.
 - Community Wall notes show who wrote them, and the leaderboard shows players' own avatars.
+- Points are Seeds now, in the game's words: CALABASH is what a player can spend (it was CLAIMABLE
+  POINTS, on the profile and in the store), with the Legacy, everything they've ever earned, and
+  what's on hold beside it. The checkout's discount line is Seeds Discount, and the comic and
+  invite copy says Seeds.
+- The store's Seeds panel shows how far the next reward is and lists every reward with what it
+  costs.
 
 ### Added
 
+- Notes on the community wall are checked before they're sent. A note that breaks a community
+  rule (strong language, threats, hate speech, contact details and links, scams, betting,
+  politics, religion, ads, other games and the rest) stays in the box with a short message saying
+  which rule, and can be edited and sent again. A note that suggests the writer is struggling gets
+  a calm support message with the support email instead. The word list comes from the team and
+  updates without a new release.
+- The note box shows how many of its 140 characters you've used, in red once it's full.
+- Reading a comic earns Seeds: the reader reports the pages read and the time spent on them while
+  the chapter is open.
+- Signed in, the comic share buttons share the player's own link to the chapter, so friends who
+  read through it earn them Seeds.
+- A signed-in player with the site open counts as active for the Active Player Map.
+- Notifications: a bell beside the avatar, with the unread count, opens the latest. Opening one
+  marks it read and goes where it leads; Mark all as read clears the count.
+- Redeeming Seeds: REDEEM on any reward the Calabash reaches gives a single-use discount code to
+  copy, and YOUR CODES lists the codes bought. At checkout a player picks one of their codes and the
+  Seeds Discount line takes it off; a code that can no longer be used is let go, with a message.
+- Google Play Games on the profile: CONNECT PLAY ACCOUNT links the player's Play Games account
+  through Google, so the game's Seeds and points reach them; Disconnect unlinks it.
+- Edit Profile has a "Make my location public" switch: on, the player appears on the public
+  Active Player Map, counted under their region. It is off unless they turn it on.
+- The Active Player Map shows live players: one pin for each region an admin has placed on the
+  map, with how many of its players are active now, busiest first. With no region chosen it reads
+  ALL REGIONS and everyone active. A pin pulses only while someone there is active.
+- The profile's Seeds read USABLE SEEDS (what a player can spend, with any on hold beneath) and
+  LEGACY SEEDS (every Seed they've earned in their lifetime). Game points no longer show there:
+  the game keeps its own economy. The store's Seeds panel is headed USABLE SEEDS too.
+- The profile's Google Play Games panel is now BEYOND SERVICE GAME ACCOUNT: CONNECT GAME ACCOUNT
+  syncs the community account with the player's game account, so the Seeds they earn from playing
+  reach them.
+- Zoomed in on the Active Player Map, a region shows one anonymous pin for each of its active
+  players, placed at random around it. Nobody is identified.
+- INVITE FRIENDS shows on the Active Player Map on desktop too, under the readout. A signed-in
+  player whose region has few active players is asked to invite friends so tournaments can run
+  there.
+- Edit Profile's location switch is now "Count me on the player map": it adds the player to their
+  region's active count, and nobody sees who they are or where.
 - Accounts. JOIN BEYOND SERVICE now opens Create Account, and there are Sign In, Forgot
   Password, Reset Password and Confirm Your Email pages, plus Google sign-in. After signing up,
   a player confirms their email from the link they are sent and is signed in. Accounts are
@@ -194,10 +240,22 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Removed
 
+- The location switch on Edit Profile, added earlier in this release: every active player now
+  counts on the Active Player Map, and nobody is ever shown.
+- The Active Player Map's sample cities, and the player-by-player pins at street level: the live
+  count is per region.
 - The choice between Paystack and Bank Transfer at checkout. The bank transfer page is no
   longer reached from the checkout.
 - The bank transfer page itself (`/merch/checkout/transfer`) is gone. Every payment goes
   through Paystack, which offers bank transfer itself.
+
+### Fixed
+
+- Notifications no longer open the admin dashboard: a notification only opens pages on this
+  website, and one that leads nowhere on it is simply marked read.
+- Marking a notification read, or all of them, now stays marked. They no longer turn unread
+  again while the account service is slow to save, and a mark it refuses is undone with a
+  message.
 
 ---
 

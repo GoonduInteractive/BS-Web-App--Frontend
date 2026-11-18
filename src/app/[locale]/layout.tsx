@@ -3,6 +3,7 @@ import { Host_Grotesk, Teko } from "next/font/google";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 
+import { ActivityHeartbeat } from "@/components/auth/ActivityHeartbeat";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { QueryProvider } from "@/components/data/QueryProvider";
 import { JsonLd } from "@/components/chrome/JsonLd";
@@ -123,6 +124,7 @@ export default async function LocaleLayout({
 
               <SiteChrome messages={getMessages(locale)} />
               <Toaster />
+              <ActivityHeartbeat />
             </LocaleProvider>
             </SoundProvider>
           </GateEntryProvider>

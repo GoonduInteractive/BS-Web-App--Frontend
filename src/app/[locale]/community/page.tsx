@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CommunityBoard } from "@/components/community/CommunityBoard";
 import { GatePage } from "@/components/gates/GatePage";
 import { getWallNotes } from "@/lib/api/community";
-import { getHotspots, getInviteLink } from "@/lib/api/players";
+import { getActivePlayers, getInviteLink } from "@/lib/api/players";
 import { pageMetadata } from "@/lib/seo";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -59,12 +59,20 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!isLocale(locale)) notFound();
 
   const messages = getMessages(locale);
-  const [notes, hotspots] = await Promise.all([getWallNotes(), getHotspots()]);
+  const [notes, players] = await Promise.all([getWallNotes(), getActivePlayers()]);
 
   return (
     <GatePage id="community" params={params}>
       <div className={bradley.variable}>
-        <CommunityBoard notes={notes} hotspots={hotspots} invite={getInviteLink(locale)} messages={messages} locale={locale} />
+        <CommunityBoard
+          notes={notes}
+          hotspots={players.hotspots}
+          activeTotal={players.active}
+          regionCounts={players.regions}
+          invite={getInviteLink(locale)}
+          messages={messages}
+          locale={locale}
+        />
         <SiteFooter messages={messages} locale={locale} />
       </div>
     </GatePage>

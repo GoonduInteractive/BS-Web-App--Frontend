@@ -638,10 +638,6 @@
   z-index: 1;
 }
 
-.map-pin--player {
-  pointer-events: none;
-}
-
 .map-pin img {
   display: block;
   transition: scale 200ms var(--ease-gate);
@@ -659,7 +655,11 @@
   outline-offset: 2px;
 }
 
-/* A player's pin arriving as the map gets close: a short drop onto its spot. */
+/* An active player's anonymous pin: not a control, and it drops in as the map gets close. */
+.map-pin--player {
+  pointer-events: none;
+}
+
 .map-pin--player img {
   animation: pin-in 420ms var(--ease-gate) both;
 }

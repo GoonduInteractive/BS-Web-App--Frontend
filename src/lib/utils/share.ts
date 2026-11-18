@@ -1,8 +1,9 @@
 /**
  * Share endpoints, deliberately narrow.
  *
- * Plain URLs to each service's public share page carrying the current address
- * and nothing else - no SDK, no pixel, no third-party script, so nothing loads
+ * Plain URLs to each service's public share page carrying an address - the
+ * current page's, or a reader's own comic link - and nothing else - no SDK,
+ * no pixel, no third-party script, so nothing loads
  * that could watch the reader. Used by the comic reader's bar and by the SHARE
  * THIS COMIC block under the pages, so the two cannot drift apart.
  *
@@ -11,8 +12,9 @@
  */
 export type ShareNetwork = "facebook" | "whatsapp" | "x";
 
-export function shareUrl(network: ShareNetwork, title: string): string {
-  const url = encodeURIComponent(window.location.href);
+/** `address` defaults to the page's own; a signed-in reader's comic link replaces it. */
+export function shareUrl(network: ShareNetwork, title: string, address = window.location.href): string {
+  const url = encodeURIComponent(address);
   const text = encodeURIComponent(title);
   switch (network) {
     case "facebook":
@@ -24,6 +26,6 @@ export function shareUrl(network: ShareNetwork, title: string): string {
   }
 }
 
-export function openShare(network: ShareNetwork, title: string) {
-  window.open(shareUrl(network, title), "_blank", "noopener,noreferrer");
+export function openShare(network: ShareNetwork, title: string, address?: string) {
+  window.open(shareUrl(network, title, address), "_blank", "noopener,noreferrer");
 }

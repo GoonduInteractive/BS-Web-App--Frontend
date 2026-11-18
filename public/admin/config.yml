@@ -17,14 +17,14 @@ backend:
   name: github
   repo: GoonduInteractive/BS-Web-App--Frontend
   # PRODUCTION. main is production and dev is staging, and this is the branch
-  # Decap lists entries from and commits publishes to, so it has to be the one
+  # Decap lists entries from a  nd commits publishes to, so it has to be the one
   # Vercel serves the live site from or nothing an editor publishes appears.
   branch: main
   # The OAuth gateway (daresaydigital/decap-cms-oauth), its own Vercel project.
   # Decap sends editors to <base_url>/auth and takes the token back from
   # <base_url>/callback. NO TRAILING SLASH: Decap joins the path onto this, so
   # a slash here asks the gateway for //auth and the popup dies on a 404.
-  base_url: https://decap-cms-oauth-gray.vercel.app
+  base_url: https://www.beyondservicegame.com
   
   commit_messages:
     create: 'content({{collection}}): create {{slug}}'

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { useCart } from "@/components/merch/CartProvider";
 import { SupportNote } from "@/components/ui/SupportNote";
@@ -12,6 +13,7 @@ import { colourLabel, sizeLabel } from "@/lib/utils/merch-copy";
 import { isRemoteImage } from "@/lib/utils/remote-image";
 import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
 import type { ComicIssue, Product } from "@/types/merch";
+import type { RewardCode } from "@/types/seeds";
 
 /**
  * The checkout's right column: what is being bought, then what it costs.
@@ -35,6 +37,11 @@ export function CheckoutSummary({
   freeShipping,
   shipping: ships = true,
   placeError,
+  codes = [],
+  codeId = null,
+  onCodeChange,
+  discount = null,
+  codeHint = false,
   busy = false,
   onPlaceOrder,
 }: {
@@ -52,6 +59,15 @@ export function CheckoutSummary({
   shipping?: boolean;
   /** Why PLACE ORDER can't go on yet, e.g. no place chosen. */
   placeError?: string | null;
+  /** The player's Seeds codes still to use, offered above the discount line. */
+  codes?: readonly RewardCode[];
+  /** The one chosen; null for none. */
+  codeId?: string | null;
+  onCodeChange?: (id: string | null) => void;
+  /** The chosen code's percent off the items, and the most it takes off (null: no cap known). */
+  discount?: { pct: number; cap: number | null } | null;
+  /** No code, but Seeds enough for one: a line pointing to the store's rewards. */
+  codeHint?: boolean;
   /** The order is on its way to the API: PLACE ORDER waits. */
   busy?: boolean;
   onPlaceOrder: () => void;
@@ -62,7 +78,9 @@ export function CheckoutSummary({
 
   const resolved = resolveCartLines({ lines, products, comics, messages, locale });
   const itemTotal = resolved.reduce((sum, entry) => sum + entryTotal(entry), 0);
-  const pointDiscount = 0;
+  // The chosen Seeds code's share of the items, in whole naira, up to its reward's cap.
+  // Items only, never shipping (the backend, 2026-11-16); the order it places carries the total paid.
+  const pointDiscount = discount ? Math.min(Math.floor((itemTotal * discount.pct) / 100), discount.cap ?? Infinity) : 0;
   const subtotal = itemTotal - pointDiscount;
   // Free under a running promotion whose minimum the items reach (2026-10-01);
   // otherwise the place's price, unknown until a place is chosen.
@@ -123,6 +141,35 @@ export function CheckoutSummary({
 
       <section className="bg-gild text-ink mt-8 px-6.5 pt-6 pb-5.75">
         <Row label={c.itemTotal} value={formatPrice(itemTotal, locale, t.price)} />
+
+        {/* The player's Seeds codes, as a choice; the discount line under it follows. */}
+        {codes.length > 0 ? (
+          <fieldset className="mt-6.25">
+            <legend className="font-body text-body leading-none font-bold">{c.codeTitle}</legend>
+            <div className="mt-3.5 flex flex-wrap gap-2">
+              <CodeChip name="seeds-code" checked={!codeId} onChange={() => onCodeChange?.(null)}>
+                {c.codeNone}
+              </CodeChip>
+              {codes.map((code) => (
+                <CodeChip key={code.id} name="seeds-code" checked={codeId === code.id} onChange={() => onCodeChange?.(code.id)}>
+                  {c.codeOption.replace("{pct}", String(code.discountPct))}
+                  <span className="font-display ml-2 text-[1.0625rem] leading-none tracking-[0.04em] uppercase">{code.code}</span>
+                </CodeChip>
+              ))}
+            </div>
+          </fieldset>
+        ) : codeHint ? (
+          <p className="font-body text-body-sm mt-6.25 leading-snug">
+            {c.codeHint}{" "}
+            <Link
+              href={`/${locale}/merch`}
+              className="focus-visible:outline-signal font-semibold underline underline-offset-4 transition-opacity duration-150 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {c.codeHintLink}
+            </Link>
+          </p>
+        ) : null}
+
         <Row
           label={c.pointDiscount}
           value={`−${formatPrice(pointDiscount, locale, t.price)}.00`}
@@ -205,5 +252,29 @@ function Row({
       <span className={`font-body text-body leading-none ${bold ? "font-bold" : ""}`}>{label}</span>
       <span className={`font-body text-body leading-none ${valueClass}`}>{value}</span>
     </div>
+  );
+}
+
+/** One choice of Seeds code: a square chip on the gold, black once chosen. */
+function CodeChip({
+  name,
+  checked,
+  onChange,
+  children,
+}: {
+  name: string;
+  checked: boolean;
+  onChange: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <label
+      className={`font-body text-body-sm has-focus-visible:outline-signal flex cursor-pointer items-center border px-3.5 py-2.5 leading-none transition-colors duration-150 ease-gate has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${
+        checked ? "bg-ink text-gild border-ink" : "border-ink/40 hover:border-ink"
+      }`}
+    >
+      <input type="radio" name={name} checked={checked} onChange={onChange} className="sr-only" />
+      {children}
+    </label>
   );
 }

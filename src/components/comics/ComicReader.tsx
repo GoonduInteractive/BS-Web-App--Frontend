@@ -5,11 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { useAuth } from "@/components/auth/AuthProvider";
-import { ShareMarks } from "@/components/ui/ShareMarks";
+import { ComicShareMarks } from "@/components/comics/ComicShareMarks";
 import { useCaptureShield } from "@/hooks/useCaptureShield";
+import { useReadingProgress } from "@/hooks/useReadingProgress";
 import { ApiError } from "@/lib/api/client";
 import { getComicPages } from "@/lib/api/library";
 import { authHref } from "@/lib/utils/auth-links";
@@ -50,6 +51,10 @@ export function ComicReader({
   }, [status, refused, router, locale, issue.slug]);
   const pages = (live.data ?? []);
 
+  // Reading earns Seeds: the furthest page and the time spent, reported as it happens.
+  const pagesRef = useRef<HTMLDivElement>(null);
+  useReadingProgress({ chapterId: issue.chapterId, container: pagesRef, pageCount: pages.length, paused: shielded });
+
   return (
     <>
       <div className="bg-ink/60 fixed inset-x-0 top-0 z-40 px-5 pt-5.75 backdrop-blur-md md:px-7">
@@ -73,7 +78,7 @@ export function ComicReader({
               {t.shareVia}
             </span>
             {/* A copied link says so in a toast, as everywhere. */}
-            <ShareMarks title={title} labels={t.share} className="gap-4" markClassName="size-6" />
+            <ComicShareMarks chapterId={issue.chapterId} title={title} labels={t.share} className="gap-4" markClassName="size-6" />
           </div>
         </div>
       </div>
@@ -88,14 +93,14 @@ export function ComicReader({
         onDragStart={(event) => event.preventDefault()}
         className="relative mx-auto w-full max-w-[65.75rem] px-4.5 pt-42.5 pb-20 select-none [-webkit-touch-callout:none] md:px-0 md:pt-40.25 print:hidden"
       >
-        <div aria-hidden={shielded} aria-busy={(live.isPending) || undefined} className={shielded ? "invisible" : undefined}>
+        <div ref={pagesRef} aria-hidden={shielded} aria-busy={(live.isPending) || undefined} className={shielded ? "invisible" : undefined}>
           {live.isError && !refused ? (
             <p role="alert" className="text-menu-fg/85 font-body text-body py-24 text-center">
               {messages.auth.errors.unknown}
             </p>
           ) : null}
           {pages.map((page, i) => (
-            <div key={`${page}-${i}`} className="relative mt-1.5 first:mt-0 md:mt-6.25">
+            <div key={`${page}-${i}`} data-page={i + 1} className="relative mt-1.5 first:mt-0 md:mt-6.25">
               <Image
                 src={page}
                 unoptimized={isRemoteImage(page)}

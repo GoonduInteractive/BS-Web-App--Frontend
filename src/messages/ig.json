@@ -485,14 +485,14 @@
       "hoursAgo": "TODO ig: {n} hours ago",
       "daysAgo": "TODO ig: {n} days ago",
       "you": "TODO ig: You",
-      "posted": "TODO ig: Your note is posted. Everyone else sees it once it’s approved."
+      "posted": "TODO ig: Your note is posted."
     },
     "map": {
       "title": "TODO ig: ACTIVE PLAYER MAP",
       "searchPlaceholder": "TODO ig: Search a Location",
       "searchLabel": "TODO ig: Search a location",
       "results": "TODO ig: Locations",
-      "noResults": "TODO ig: No players there yet",
+      "noResults": "TODO ig: No region by that name on the map",
       "location": "TODO ig: LOCATION",
       "activePlayers": "TODO ig: ACTIVE PLAYERS",
       "mapLabel": "TODO ig: World map of active players — drag to move, scroll to zoom",
@@ -500,14 +500,16 @@
       "zoomIn": "TODO ig: Zoom in",
       "zoomOut": "TODO ig: Zoom out",
       "place": "TODO ig: {city}, {country}",
-      "unavailable": "TODO ig: The map needs WebGL, which is switched off in this browser."
+      "unavailable": "TODO ig: The map needs WebGL, which is switched off in this browser.",
+      "everywhere": "TODO ig: All regions"
     },
     "invite": {
       "title": "TODO ig: INVITE FRIENDS",
-      "body": "TODO ig: You earn community points when friends join the community through your link.",
+      "body": "TODO ig: You earn Seeds when friends join the community through your link.",
       "linkLabel": "TODO ig: Your invite link",
       "copy": "TODO ig: COPY LINK",
-      "copied": "TODO ig: Invite link copied"
+      "copied": "TODO ig: Invite link copied",
+      "nudge": "TODO ig: {region} needs more players. Invite friends so we can run tournaments in {region}."
     },
     "form": {
       "label": "TODO ig: Drop your feedback",
@@ -515,8 +517,28 @@
       "sub": "TODO ig: Let others know what you feel about the game.",
       "placeholder": "TODO ig: Input text",
       "field": "TODO ig: Your feedback",
+      "count": "TODO ig: {n}/{max} characters",
       "submit": "TODO ig: SUBMIT",
       "close": "TODO ig: Close"
+    },
+    "filter": {
+      "self_harm": "TODO ig: It sounds like you might be carrying something heavy right now. You don't have to carry it alone. Please talk to someone you trust, or reach out to a helpline near you. You can also write to us at {email}.",
+      "underage": "TODO ig: This note can't go up because it breaks our community rules. Our team will take a look.",
+      "personal_info": "TODO ig: Hold up. Never share your address, bank details, BVN, passwords or OTPs. Not here, not anywhere. Take it out and try again.",
+      "violence_threats": "TODO ig: Battle talk belongs in the arena. Threats against real people don't fly here. Rewrite your note and try again.",
+      "hate_slurs": "TODO ig: No room for that on the wall. This space is for every player, whatever their tribe, background or identity. Rewrite your note without it.",
+      "sexual_content": "TODO ig: That's not wall material. Keep your note clean and try again.",
+      "scam_fraud": "TODO ig: This looks like a scam or cheat offer, so it can't go up. Goondu will never ask for your password, OTP or money on the wall.",
+      "impersonation": "TODO ig: Only the official Goondu team speaks for Beyond Service. Rewrite your note without claiming to be staff.",
+      "drugs": "TODO ig: Drug talk isn't allowed on the wall. Edit your note and try again.",
+      "gambling_betting": "TODO ig: Betting talk isn't allowed on the wall. Keep your note about the game.",
+      "contact": "TODO ig: For your safety, contact details and links can't go on the wall. Take them out and try again.",
+      "profanity": "TODO ig: Easy there, warrior. Keep it clean on the wall. Take out the strong language and try again.",
+      "political": "TODO ig: No politics on the wall. Keep your note about Beyond Service and try again.",
+      "religious": "TODO ig: We keep religion off the wall so every player feels welcome. Rewrite your note without it.",
+      "marketing_spam": "TODO ig: The wall is for fans, not ads. Take out the promo and post again.",
+      "competitor_brands": "TODO ig: Let's keep the wall about Beyond Service. Try again without naming other games.",
+      "other": "TODO ig: This note can't go up because it breaks our community rules."
     },
     "meta": {
       "title": "TODO ig: Community Wall | Beyond Service: Trial of the Gods",
@@ -644,16 +666,36 @@
     },
     "price": "₦{amount}",
     "points": {
-      "claimable": "TODO ig: CLAIMABLE POINTS",
-      "unit": "TODO ig: PTS",
-      "next": "TODO ig: Next price is {count} points away",
-      "perksTitle": "TODO ig: POINT PERKS",
-      "perks": {
-        "discount": "TODO ig: 5% off all Goondu originals",
-        "featured": "TODO ig: Access to featured products"
-      },
-      "more": "TODO ig: Gather more points to get even better rewards.",
-      "none": "TODO ig: No points yet, read comics, top leaderboard, and engage with community features to win more points."
+      "claimable": "TODO ig: USABLE SEEDS",
+      "unit": "TODO ig: SEEDS",
+      "next": "TODO ig: Next reward is {count} Seeds away",
+      "perksTitle": "TODO ig: SEED REWARDS",
+      "more": "TODO ig: Gather more Seeds to unlock better rewards.",
+      "none": "TODO ig: No Seeds yet. Read comics, climb the leaderboard and join in on the community to earn them.",
+      "legacy": "TODO ig: Legacy seeds: {count}, all you've earned",
+      "pending": "TODO ig: {count} on hold",
+      "cost": "TODO ig: {count} Seeds",
+      "cap": "TODO ig: Up to {amount} off",
+      "redeem": "TODO ig: REDEEM",
+      "redeemLabel": "TODO ig: Redeem {reward} for {count} Seeds",
+      "codesTitle": "TODO ig: YOUR CODES",
+      "codeOff": "TODO ig: {pct}% off",
+      "codeReady": "TODO ig: Ready to use",
+      "codeUsed": "TODO ig: Used",
+      "copy": "TODO ig: Copy code",
+      "copied": "TODO ig: Code copied",
+      "dialog": {
+        "label": "TODO ig: Redeem a reward",
+        "close": "TODO ig: Close",
+        "title": "TODO ig: REDEEM {reward}?",
+        "body": "TODO ig: This spends {count} Seeds from your Calabash. You'll get a single-use code for {pct}% off one order, up to {amount}.",
+        "confirm": "TODO ig: REDEEM",
+        "cancel": "TODO ig: Not now",
+        "doneTitle": "TODO ig: CODE READY",
+        "doneBody": "TODO ig: Use it at checkout for {pct}% off one order, up to {amount}. You have {count} Seeds left in your Calabash.",
+        "done": "TODO ig: DONE",
+        "short": "TODO ig: You don't have enough Seeds for this reward yet."
+      }
     },
     "detail": {
       "selectColour": "TODO ig: SELECT COLOUR",
@@ -686,7 +728,7 @@
     "summary": {
       "title": "TODO ig: ORDER SUMMARY",
       "itemTotal": "TODO ig: Item Total",
-      "pointDiscount": "TODO ig: Point Discount",
+      "pointDiscount": "TODO ig: Seeds Discount",
       "shipping": "TODO ig: Shipping",
       "free": "TODO ig: FREE",
       "total": "TODO ig: Total",
@@ -732,7 +774,7 @@
       "bankTransfer": "TODO ig: Bank Transfer",
       "orderSummary": "TODO ig: ORDER SUMMARY",
       "itemTotal": "TODO ig: Item Total",
-      "pointDiscount": "TODO ig: Community Point Discount",
+      "pointDiscount": "TODO ig: Seeds Discount",
       "shippingRow": "TODO ig: Shipping",
       "free": "TODO ig: FREE",
       "total": "TODO ig: Total",
@@ -750,7 +792,13 @@
       "nothingToShip": "TODO ig: Nothing to ship: online chapters open in the reader once paid.",
       "noRate": "TODO ig: We don't deliver to this place yet. Choose another local government or state.",
       "needDetails": "TODO ig: Fill in the details above so your order can reach you.",
-      "cartGone": "TODO ig: We couldn't find the items in this cart. Refresh the page and try again."
+      "cartGone": "TODO ig: We couldn't find the items in this cart. Refresh the page and try again.",
+      "codeTitle": "TODO ig: Use a Seeds code",
+      "codeNone": "TODO ig: None",
+      "codeOption": "TODO ig: {pct}% off",
+      "codeHint": "TODO ig: You have enough Seeds for a discount. Redeem them for a code in the store.",
+      "codeHintLink": "TODO ig: Go to rewards",
+      "codeRefused": "TODO ig: That Seeds code can't be used any more. Choose another, or place the order without one."
     },
     "confirmed": {
       "title": "TODO ig: ORDER CONFIRMED",
@@ -833,8 +881,6 @@
       "loss": "TODO ig: LOSS",
       "rank": "TODO ig: RANK"
     },
-    "gamePoints": "TODO ig: GAME POINTS",
-    "claimablePoints": "TODO ig: CLAIMABLE POINTS",
     "pointsGlyphAlt": "",
     "rankings": {
       "title": "TODO ig: TOURNAMENT RANKINGS",
@@ -869,7 +915,22 @@
       "viewProfile": "TODO ig: View Profile",
       "login": "TODO ig: Login",
       "menuLabel": "TODO ig: Account menu"
-    }
+    },
+    "play": {
+      "title": "TODO ig: BEYOND SERVICE GAME ACCOUNT",
+      "body": "TODO ig: Connect your Beyond Service game account to sync your data. It's how we know this community account and your game account are the same player, so the Seeds you earn from playing reach you here.",
+      "connect": "TODO ig: CONNECT GAME ACCOUNT",
+      "connected": "TODO ig: Connected as {id}",
+      "disconnect": "TODO ig: Disconnect",
+      "linked": "TODO ig: Game account connected",
+      "unlinked": "TODO ig: Game account disconnected",
+      "cancelled": "TODO ig: Connecting your game account was cancelled.",
+      "failed": "TODO ig: Couldn't connect your game account. Try again in a moment."
+    },
+    "usableSeeds": "TODO ig: USABLE SEEDS",
+    "legacySeeds": "TODO ig: LEGACY SEEDS",
+    "legacyNote": "TODO ig: Total Seeds you've accumulated in your lifetime.",
+    "pendingNote": "TODO ig: {count} on hold"
   },
   "comics": {
     "meta": {
@@ -907,7 +968,7 @@
       },
       "pageAlt": "TODO ig: {title}, page {n}",
       "shareHeading": "TODO ig: SHARE THIS COMIC",
-      "shareSub": "TODO ig: Gain claimable community points\nby sharing this comic with friends.",
+      "shareSub": "TODO ig: Earn Seeds when friends read\nthis comic through your link.",
       "shielded": "TODO ig: Reading paused. Come back to this window to keep reading."
     }
   },
@@ -1006,5 +1067,15 @@
       "good": "TODO ig: Good",
       "strong": "TODO ig: Strong"
     }
+  },
+  "notifications": {
+    "open": "TODO ig: Notifications",
+    "unread": "TODO ig: {n} unread",
+    "title": "TODO ig: Notifications",
+    "markAll": "TODO ig: Mark all as read",
+    "empty": "TODO ig: Nothing new yet. Your orders, tournaments and Seeds will show up here.",
+    "error": "TODO ig: Couldn't load your notifications. Try again in a moment.",
+    "justNow": "TODO ig: Just now",
+    "markFailed": "TODO ig: Couldn’t mark that as read. Try again in a moment."
   }
 }
