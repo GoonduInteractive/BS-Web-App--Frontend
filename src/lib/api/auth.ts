@@ -93,6 +93,7 @@ export async function signUp(input: SignUpInput): Promise<void> {
         first_name: input.firstName.trim(),
         last_name: input.lastName.trim(),
         region_id: input.regionId,
+        ...(input.referralCode && { referral_code: input.referralCode }),
       },
     });
     savePending({ ...tokens, email: input.email.trim() });

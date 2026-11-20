@@ -15,6 +15,11 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- INVITE FRIENDS on the Active Player Map now hands out your own invite link: Create Account with
+  your username as the referral code and a region. It invites to the region you pick on the map,
+  or your own, and its heading says which. Without a username, it asks you to set one.
+- Create Account opened from an invite shows the inviter's referral code and the region, both
+  fixed, so a new player only fills in their name, email and password.
 - Posting a note on the community wall now says only that it's posted: a note goes up straight
   away rather than waiting for approval.
 
@@ -96,6 +101,7 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- Your invite link on your profile, with COPY LINK: the same link the map hands out for your region.
 - Notes on the community wall are checked before they're sent. A note that breaks a community
   rule (strong language, threats, hate speech, contact details and links, scams, betting,
   politics, religion, ads, other games and the rest) stays in the box with a short message saying
@@ -251,6 +257,10 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Fixed
 
+- The menu fits a laptop screen: on a shorter window its links and spacing shrink so all five
+  links and Comics, News and Merch Store show without zooming out. A window too short even for
+  that, such as a phone on its side, scrolls the menu. The page behind it no longer scrolls
+  while the menu is open.
 - Notifications no longer open the admin dashboard: a notification only opens pages on this
   website, and one that leads nowhere on it is simply marked read.
 - Marking a notification read, or all of them, now stays marked. They no longer turn unread

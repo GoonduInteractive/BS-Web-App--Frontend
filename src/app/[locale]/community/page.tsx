@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CommunityBoard } from "@/components/community/CommunityBoard";
 import { GatePage } from "@/components/gates/GatePage";
 import { getWallNotes } from "@/lib/api/community";
-import { getActivePlayers, getInviteLink } from "@/lib/api/players";
+import { getActivePlayers } from "@/lib/api/players";
 import { pageMetadata } from "@/lib/seo";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
@@ -69,7 +69,6 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           hotspots={players.hotspots}
           activeTotal={players.active}
           regionCounts={players.regions}
-          invite={getInviteLink(locale)}
           messages={messages}
           locale={locale}
         />

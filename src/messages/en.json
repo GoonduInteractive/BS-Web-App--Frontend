@@ -509,7 +509,10 @@
       "linkLabel": "Your invite link",
       "copy": "COPY LINK",
       "copied": "Invite link copied",
-      "nudge": "{region} needs more players. Invite friends so we can run tournaments in {region}."
+      "nudge": "{region} needs more players. Invite friends so we can run tournaments in {region}.",
+      "titleRegion": "INVITE FRIENDS TO {region}",
+      "setUsername": "Set a username to get your own invite link. Friends who join with it count as yours.",
+      "setUsernameCta": "Set a username"
     },
     "form": {
       "label": "Drop your feedback",
@@ -997,7 +1000,8 @@
       "password": "Password",
       "newPassword": "Enter New Password",
       "confirmPassword": "Re-enter New Password",
-      "region": "Region"
+      "region": "Region",
+      "referral": "Referral Code"
     },
     "placeholders": {
       "firstName": "john",

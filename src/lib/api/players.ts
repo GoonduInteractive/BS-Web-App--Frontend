@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-import { SITE_URL } from "@/lib/seo";
-import { authHref } from "@/lib/utils/auth-links";
-import type { Locale } from "@/lib/utils/locales";
 import type { ActivePlayers, PlayerHotspot } from "@/types/players";
 
 import { apiGet } from "./client";
@@ -51,7 +48,7 @@ export async function getActivePlayers(): Promise<ActivePlayers> {
 
   const hotspots: PlayerHotspot[] = regions
     .filter((r) => r.slug !== "global" && r.map_lat != null && r.map_lng != null)
-    .map((r) => ({ id: r.id, city: r.name, country: COUNTRY, lat: r.map_lat!, lon: r.map_lng!, active: r.active_players }))
+    .map((r) => ({ id: r.id, slug: r.slug, city: r.name, country: COUNTRY, lat: r.map_lat!, lon: r.map_lng!, active: r.active_players }))
     .sort((a, b) => b.active - a.active || a.city.localeCompare(b.city));
 
   return {
@@ -59,13 +56,4 @@ export async function getActivePlayers(): Promise<ActivePlayers> {
     active: regions.reduce((sum, r) => sum + r.active_players, 0),
     regions: regions.filter((r) => r.slug !== "global").map((r) => ({ slug: r.slug, name: r.name, active: r.active_players })),
   };
-}
-
-/**
- * The link INVITE FRIENDS hands out: Create Account on this site, in the
- * visitor's language. FLAGGED: the API has no invite codes, so it can't say
- * who invited whom.
- */
-export function getInviteLink(locale: Locale): string {
-  return new URL(authHref(locale, "sign-up"), SITE_URL).href;
 }

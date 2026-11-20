@@ -509,7 +509,10 @@
       "linkLabel": "TODO ig: Your invite link",
       "copy": "TODO ig: COPY LINK",
       "copied": "TODO ig: Invite link copied",
-      "nudge": "TODO ig: {region} needs more players. Invite friends so we can run tournaments in {region}."
+      "nudge": "TODO ig: {region} needs more players. Invite friends so we can run tournaments in {region}.",
+      "titleRegion": "TODO ig: INVITE FRIENDS TO {region}",
+      "setUsername": "TODO ig: Set a username to get your own invite link. Friends who join with it count as yours.",
+      "setUsernameCta": "TODO ig: Set a username"
     },
     "form": {
       "label": "TODO ig: Drop your feedback",
@@ -997,7 +1000,8 @@
       "password": "TODO ig: Password",
       "newPassword": "TODO ig: Enter New Password",
       "confirmPassword": "TODO ig: Re-enter New Password",
-      "region": "TODO ig: Region"
+      "region": "TODO ig: Region",
+      "referral": "TODO ig: Referral Code"
     },
     "placeholders": {
       "firstName": "TODO ig: john",

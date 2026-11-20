@@ -7,6 +7,7 @@ import { InviteFriends } from "@/components/community/InviteFriends";
 import { Reveal } from "@/components/motion/Reveal";
 import { useMyProfile } from "@/hooks/useMyProfile";
 import { cn } from "@/lib/utils/cn";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { ActivePlayers, PlayerHotspot } from "@/types/players";
 
@@ -69,8 +70,9 @@ export function MapPanel({
   activeTotal,
   regionCounts,
   onSelect,
-  invite,
+  inviteTo,
   messages,
+  locale,
 }: {
   hotspots: readonly PlayerHotspot[];
   /** The chosen region; null for none, while no region has a pin. */
@@ -80,16 +82,22 @@ export function MapPanel({
   /** Every region's active count, pinned or not: the nudge reads the viewer's own. */
   regionCounts: ActivePlayers["regions"];
   onSelect: (spot: PlayerHotspot) => void;
-  /** The viewer's invite link, for the INVITE FRIENDS block. */
-  invite: string;
+  /** The region the visitor picked (a pin or a search), which INVITE FRIENDS invites to; null for none. */
+  inviteTo: PlayerHotspot | null;
   messages: Messages;
+  locale: Locale;
 }) {
   const t = messages.community.map;
 
   // A signed-in player whose region is short of players is asked to bring more in.
   const me = useMyProfile();
   const mine = me.data?.regionSlug ? regionCounts.find((r) => r.slug === me.data?.regionSlug) : undefined;
-  const nudge = mine && mine.active < FEW_PLAYERS ? messages.community.invite.nudge.replaceAll("{region}", mine.name) : undefined;
+  // INVITE FRIENDS invites to the region picked on the map, else the player's own (the backend, 2026-11-19).
+  const inviteRegion = inviteTo ? { slug: inviteTo.slug, name: inviteTo.city } : mine ? { slug: mine.slug, name: mine.name } : null;
+  const nudge =
+    mine && mine.active < FEW_PLAYERS && (!inviteTo || inviteTo.slug === mine.slug)
+      ? messages.community.invite.nudge.replaceAll("{region}", mine.name)
+      : undefined;
   // With nothing chosen the readout is the whole map: every region's active players.
   const place = selected ? t.place.replace("{city}", selected.city).replace("{country}", selected.country) : t.everywhere;
   const count = selected ? selected.active : activeTotal;
@@ -149,7 +157,7 @@ export function MapPanel({
             column, under the count (the 1440 frame ends at the disc; shown there too, per
             the human, 2026-11-17) ---- */}
         <Reveal delay={40} className="lg:col-start-1 lg:row-start-2 lg:pr-8">
-          <InviteFriends link={invite} body={nudge} messages={messages} className="mt-[4.875rem] lg:mt-16" />
+          <InviteFriends region={inviteRegion} body={nudge} messages={messages} locale={locale} className="mt-[4.875rem] lg:mt-16" />
         </Reveal>
       </div>
     </section>

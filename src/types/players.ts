@@ -7,6 +7,8 @@
 /** A region with a pin on the map, and how many of its players are active now. */
 export type PlayerHotspot = {
   id: string;
+  /** The region's slug: what an invite link names it by (`lib/utils/invite.ts`). */
+  slug: string;
   /** The region's name, e.g. "Lagos". */
   city: string;
   country: string;

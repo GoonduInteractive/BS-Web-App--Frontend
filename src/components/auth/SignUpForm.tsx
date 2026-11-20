@@ -15,6 +15,7 @@ import { useRedirectIfSignedIn } from "@/hooks/useRedirectIfSignedIn";
 import { signUp } from "@/lib/api/auth";
 import type { SignUpRegion } from "@/lib/api/regions";
 import { authHref } from "@/lib/utils/auth-links";
+import { readInviteRegion, readReferral } from "@/lib/utils/invite";
 import type { Messages } from "@/lib/utils/messages";
 
 /** Minimum password length until the backend states its own rule. FLAGGED. */
@@ -33,16 +34,28 @@ export const PASSWORD_MIN = 8;
  * marketing cannot be assumed. Both links open in a new tab so the form is not
  * lost. FLAGGED: no frame draws the boxes.
  *
- * GAMER ID AND REGION ARE THE API'S, NOT THE FRAME'S (2026-10-23): `/v1/auth/create`
- * requires both. They sit side by side under the email, drawn like the fields
- * around them; the regions are the ones admins manage. FLAGGED: no frame.
+ * REGION IS THE API'S, NOT THE FRAME'S (2026-10-23): `/v1/auth/create`
+ * requires it. It sits under the email, drawn like the fields around it; the
+ * regions are the ones admins manage. FLAGGED: no frame.
+ *
+ * FROM AN INVITE (`lib/utils/invite.ts`, 2026-11-19): `?ref=` is the inviting
+ * player's referral code and `?region=` the region they're bringing friends
+ * to. Both show FIXED - a read-only Referral Code, and the region as text in
+ * place of the picker - so the new player only gives their name, email and
+ * password, and the code goes with the account as `referral_code`. A code
+ * that isn't a username, or a region that isn't offered, is ignored and the
+ * form is the ordinary one.
  */
 export function SignUpForm({ messages, locale, regions }: { messages: Messages; locale: string; regions: readonly SignUpRegion[] }) {
   const t = messages.auth;
-  const next = useSearchParams().get("next");
+  const params = useSearchParams();
+  const next = params.get("next");
+  const referral = readReferral(params.get("ref"));
+  const invitedRegion = readInviteRegion(params.get("region"), regions);
   const { navigate } = usePageTransition();
   const { pending, error, run } = useAuthSubmit();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", regionId: "", password: "" });
+  const regionId = invitedRegion?.id ?? form.regionId;
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const terms = useRef<HTMLInputElement>(null);
   const strengthId = useId();
@@ -54,7 +67,13 @@ export function SignUpForm({ messages, locale, regions }: { messages: Messages; 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const result = await run(() =>
-      signUp({ ...form, termsAcceptedAt: new Date().toISOString(), marketingOptIn }),
+      signUp({
+        ...form,
+        regionId,
+        ...(referral && { referralCode: referral }),
+        termsAcceptedAt: new Date().toISOString(),
+        marketingOptIn,
+      }),
     );
     if (result.ok) navigate(`/${locale}/confirm-email?email=${encodeURIComponent(form.email.trim())}`);
   };
@@ -90,14 +109,20 @@ export function SignUpForm({ messages, locale, regions }: { messages: Messages; 
               required
             />
           </div>
-          <AuthSelect
-            label={t.fields.region}
-            placeholder={t.placeholders.region}
-            options={regions.map((r) => ({ value: r.id, label: r.name }))}
-            value={form.regionId}
-            onChange={set("regionId")}
-            required
-          />
+          {/* From an invite the region is the inviter's choice, shown as text: a select can't be read-only. */}
+          {invitedRegion ? (
+            <AuthField label={t.fields.region} value={invitedRegion.name} readOnly aria-readonly />
+          ) : (
+            <AuthSelect
+              label={t.fields.region}
+              placeholder={t.placeholders.region}
+              options={regions.map((r) => ({ value: r.id, label: r.name }))}
+              value={form.regionId}
+              onChange={set("regionId")}
+              required
+            />
+          )}
+          {referral ? <AuthField label={t.fields.referral} value={referral} readOnly aria-readonly /> : null}
           <div className="sm:col-span-2">
             <PasswordField
               label={t.fields.password}

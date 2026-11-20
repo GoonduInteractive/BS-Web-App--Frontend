@@ -34,6 +34,8 @@ export type SignUpInput = {
   password: string;
   /** A region's id from `/v1/regions`. The API requires it. */
   regionId: string;
+  /** The inviting player's code, from an invite link (`lib/utils/invite.ts`). */
+  referralCode?: string;
 } & SignUpConsent;
 
 export type SignInInput = {

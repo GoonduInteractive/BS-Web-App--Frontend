@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { LogOutButton } from "@/components/profile/LogOutButton";
 import { PlayGamesPanel } from "@/components/profile/PlayGamesPanel";
+import { ProfileInvite } from "@/components/profile/ProfileInvite";
 import { EditGlyph, NigeriaFlag } from "@/components/profile/ProfileGlyphs";
 import { SupportNote } from "@/components/ui/SupportNote";
 import type { Locale } from "@/lib/utils/locales";
@@ -174,6 +175,8 @@ export function ProfileCard({
           )}
         </section>
       </div>
+
+      <ProfileInvite messages={messages} locale={locale} />
 
       <PlayGamesPanel playGamesId={profile.playGamesId} messages={messages} />
 

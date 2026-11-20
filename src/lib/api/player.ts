@@ -33,6 +33,8 @@ const apiProfile = z.object({
   first_name: z.string().nullish(),
   last_name: z.string().nullish(),
   username: z.string().nullish(),
+  // The player's referral code (spec of 2026-11-20): the same value as the username, set at sign-up.
+  referral_code: z.string().nullish(),
   game_player_id: z.string().nullish(),
   avatar_url: z.string().nullish(),
   level: z.number().nullish(),
@@ -53,6 +55,8 @@ export type PlayerProfile = Profile & {
   firstName: string;
   lastName: string;
   username: string;
+  /** What their invite links carry (`lib/utils/invite.ts`): the API's `referral_code`, else the username it equals. */
+  referralCode: string;
   /** The region's slug; the edit form matches it to the region list. */
   regionSlug: string | null;
 };
@@ -99,6 +103,7 @@ export async function getMyProfile(): Promise<PlayerProfile> {
     firstName: first,
     lastName: last,
     username: p.username ?? "",
+    referralCode: p.referral_code || p.username || "",
     regionSlug: p.region?.slug ?? null,
   };
 }
