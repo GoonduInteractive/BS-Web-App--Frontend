@@ -6,7 +6,7 @@ excerpt: Michael Apeli leads environment art on Beyond Service. He talks about
 published: 2026-11-24
 tags:
   - news
-coverStyle: torn
+coverStyle: full
 image: /assets/news/meet-the-team-b-michael-apeli-1x.png
 imageAlt: "Meet the Team cover: Michael Apeli, Lead Technical Environment Artist
   at Goondu Games"
