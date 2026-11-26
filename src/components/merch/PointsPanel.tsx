@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import { SeedIcon } from "@/components/ui/CurrencyIcons";
 import { toast } from "@/components/ui/Toaster";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import { cn } from "@/lib/utils/cn";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
@@ -65,7 +66,11 @@ export function PointsPanel({
         <h2 className="text-menu-fg/85 font-body text-[1.1875rem] leading-none tracking-wider">{t.claimable}</h2>
 
         <span className="bg-gild absolute top-8.25 right-8.25 grid size-9.5 place-items-center">
-          <SeedIcon className="text-ink size-5.5" />
+          {HEDERA_ON ? (
+            <SeedIcon className="text-ink size-5.5" />
+          ) : (
+            <Image src="/assets/merch/nsibidi-black.svg" alt="" aria-hidden width={22} height={22} className="size-5.5 select-none" />
+          )}
         </span>
 
         <p className="mt-4.5 flex items-baseline gap-2.5">

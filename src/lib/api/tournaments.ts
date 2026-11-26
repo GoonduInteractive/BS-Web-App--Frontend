@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import type { Locale } from "@/lib/utils/locales";
 import { getMessages, type Messages } from "@/lib/utils/messages";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import { formatPrice } from "@/lib/utils/price";
 import type {
   BracketRound,
@@ -134,8 +135,9 @@ function statusOf(status: string, slot: Slot): TournamentStatus | null {
       return "comingSoon";
     // A finished one keeps its page, so a prize won in it can lead there (the human,
     // 2026-11-23); the lists and the featured slot still leave it out.
+    // HEDERA BUILD ONLY (the human, 2026-11-26): off, a finished one has no page, as before.
     case "completed":
-      return slot === "page" ? "completed" : null;
+      return HEDERA_ON && slot === "page" ? "completed" : null;
     default:
       return null;
   }

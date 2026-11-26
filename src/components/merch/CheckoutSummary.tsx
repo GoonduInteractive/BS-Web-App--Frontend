@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { useCart } from "@/components/merch/CartProvider";
 import { CALABASH_ID } from "@/components/calabash/id";
@@ -49,6 +50,7 @@ export function CheckoutSummary({
   codeId = null,
   onCodeChange,
   discount = null,
+  codeHint = false,
   seeds = null,
   tiers = [],
   onRedeem,
@@ -79,6 +81,8 @@ export function CheckoutSummary({
   onCodeChange?: (id: string | null) => void;
   /** The chosen code's percent off the items, and the most it takes off (null: no cap known). */
   discount?: { pct: number; cap: number | null } | null;
+  /** No code, but Seeds enough for one: a line pointing to the store's rewards (switch off only). */
+  codeHint?: boolean;
   /** The signed-in player's Seeds; null signed out or still loading (no YOUR SEEDS box). */
   seeds?: SeedsBalance | null;
   /** The rewards, cheapest first: the ones the Seeds reach get a REDEEM here. */
@@ -237,6 +241,16 @@ export function CheckoutSummary({
           </div>
         ) : codes.length > 0 ? (
           codeChoice("mt-6.25")
+        ) : codeHint ? (
+          <p className="font-body text-body-sm mt-6.25 leading-snug">
+            {c.codeHint}{" "}
+            <Link
+              href={`/${locale}/merch`}
+              className="focus-visible:outline-signal font-semibold underline underline-offset-4 transition-opacity duration-150 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {c.codeHintLink}
+            </Link>
+          </p>
         ) : null}
 
         <Row

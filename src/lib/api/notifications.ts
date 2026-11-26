@@ -50,7 +50,7 @@ export async function getMyNotifications(): Promise<{ items: readonly PlayerNoti
     ...(n.cta_url && { href: n.cta_url }),
   }));
   return {
-    items: [...items, ...hedera].sort((a, b) => b.sentAt.localeCompare(a.sentAt)).slice(0, LATEST),
+    items: hedera.length ? [...items, ...hedera].sort((a, b) => b.sentAt.localeCompare(a.sentAt)).slice(0, LATEST) : items,
     unread: reply.unread_count + hedera.filter((n) => !n.read).length,
   };
 }

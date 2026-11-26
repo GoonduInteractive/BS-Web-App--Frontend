@@ -2,11 +2,13 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 import { BracketButton } from "@/components/ui/BracketButton";
 import { SeedIcon } from "@/components/ui/CurrencyIcons";
 import { TornDialog } from "@/components/ui/TornDialog";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import { toast } from "@/components/ui/Toaster";
 import { MY_PROFILE } from "@/hooks/useMyProfile";
 import { MY_CODES, MY_SEEDS } from "@/hooks/useSeeds";
@@ -92,7 +94,11 @@ export function RedeemDialog({
         </span>
       ) : (
         <span aria-hidden className="bg-gild grid size-31 shrink-0 place-items-center rounded-full">
-          <SeedIcon className="text-ink size-14" />
+          {HEDERA_ON ? (
+            <SeedIcon className="text-ink size-14" />
+          ) : (
+            <Image src="/assets/merch/nsibidi-black.svg" alt="" width={22} height={22} className="size-14 select-none" />
+          )}
         </span>
       )}
 

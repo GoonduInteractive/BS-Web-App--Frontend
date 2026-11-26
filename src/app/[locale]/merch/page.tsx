@@ -9,9 +9,11 @@ import Link from "next/link";
 import { CartButton } from "@/components/merch/CartButton";
 import { ComicCover } from "@/components/merch/ComicCover";
 import { ProductCard } from "@/components/merch/ProductCard";
+import { StoreAside } from "@/components/merch/StoreAside";
 import { StoreHero } from "@/components/merch/StoreHero";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { getComics, getFeaturedProduct, getListing } from "@/lib/api/merch";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import { isHidden } from "@/lib/hidden-sections";
 import { LOCALES, isLocale } from "@/lib/utils/locales";
 import { comicLabel } from "@/lib/utils/comic-sales";
@@ -78,7 +80,10 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           product={featured}
           messages={messages}
           locale={locale}
-          // A plain shop (the team, 2026-11-23): no login offer or Seeds beside it; the Seeds are at checkout.
+          // In the Hedera build, a plain shop (the team, 2026-11-23): no login offer or Seeds beside
+          // it; the Seeds are at checkout. HEDERA BUILD ONLY (the human, 2026-11-26): off, the store
+          // is as it was - signed out the login offer, signed in their points (`StoreAside`).
+          aside={HEDERA_ON ? undefined : <StoreAside messages={messages} locale={locale} />}
         />
         ) : null}
 

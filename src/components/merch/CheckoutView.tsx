@@ -195,7 +195,10 @@ export function CheckoutView({
   const discount = code
     ? { pct: code.discountPct, cap: tiers.data?.find((tier) => tier.discountPct === code.discountPct)?.capNaira ?? null }
     : null;
-  // No code yet, but Seeds enough for one: point to the rewards under the summary.
+  // No code yet, but Seeds enough for one: say where codes come from. Switch off only: in the
+  // Hedera build the summary's YOUR SEEDS box does that job.
+  const cheapest = tiers.data?.[0]?.cost;
+  const codeHint = !HEDERA_ON && !usableCodes.length && cheapest !== undefined && (seeds.data?.calabash ?? 0) >= cheapest;
   // A reward redeemed from the summary's YOUR SEEDS; each opening is one attempt (`key`).
   const [redeeming, setRedeeming] = useState<{ tier: RewardTier; attempt: number } | null>(null);
 
@@ -422,7 +425,9 @@ export function CheckoutView({
         }}
         discount={discount}
         // The player's Seeds, in the summary (moved off the store page, the team, 2026-11-23).
-        seeds={status === "signed-in" ? (seeds.data ?? null) : null}
+        // HEDERA BUILD ONLY (the human, 2026-11-26): off, they stay on the store page.
+        seeds={HEDERA_ON && status === "signed-in" ? (seeds.data ?? null) : null}
+        codeHint={codeHint}
         tiers={tiers.data ?? []}
         onRedeem={(tier) => setRedeeming((r) => ({ tier, attempt: (r?.attempt ?? 0) + 1 }))}
         busy={busy}
