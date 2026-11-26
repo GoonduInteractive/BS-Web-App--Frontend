@@ -622,6 +622,10 @@
       "tabs": {
         "core": "Core Team",
         "contributors": "Contributors"
+      },
+      "note": {
+        "hint": "Psst…",
+        "open": "About {name}"
       }
     },
     "partners": {

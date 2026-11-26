@@ -26,6 +26,8 @@ export type TeamMember = {
   /** As it appears on the card, e.g. MICHAEL APELI. */
   name: string;
   role: string;
+  /** A line or two of personality, on a torn note over the portrait. Absent: no note. */
+  bio?: string;
   image: string;
   portraitAlt: string;
   group: TeamGroup;

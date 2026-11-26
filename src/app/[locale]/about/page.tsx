@@ -8,6 +8,7 @@ import { TeamSection } from "@/components/about/TeamSection";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { getPartners } from "@/lib/api/partners";
 import { getTeam } from "@/lib/api/team";
+import { handFont } from "@/lib/hand-font";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -36,7 +37,10 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     <main>
       <AboutHero messages={messages} />
       <StudioStory messages={messages} />
-      <TeamSection members={team} messages={messages} />
+      {/* The team cards' torn notes are in the wall's handwriting (`lib/hand-font.ts`). */}
+      <div className={handFont.variable}>
+        <TeamSection members={team} messages={messages} />
+      </div>
       <PartnersSection partners={partners} messages={messages} />
 
       <div className="pt-37.25">

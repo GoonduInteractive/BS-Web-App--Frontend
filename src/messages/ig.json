@@ -622,6 +622,10 @@
       "tabs": {
         "core": "TODO ig: Core Team",
         "contributors": "TODO ig: Contributors"
+      },
+      "note": {
+        "hint": "TODO ig: Psst…",
+        "open": "TODO ig: About {name}"
       }
     },
     "partners": {

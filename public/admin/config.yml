@@ -471,6 +471,15 @@ collections:
         widget: string
         hint: e.g. Lead Technical Environment Artist.
         i18n: true
+      # The personality line (2026-11-26): a torn note that slides up over the portrait
+      # when someone hovers, taps or tabs to the card. Optional; without it the card
+      # is just the portrait, name and role.
+      - label: A little about them
+        name: bio
+        widget: text
+        required: false
+        hint: "Optional. One or two playful sentences, shown on a torn note over their portrait. e.g. She built the frontend of this breathtaking website you're on right now. Go explore, there's cool stuff hidden in it. Under about 200 characters reads best."
+        i18n: true
       - label: Group
         name: group
         widget: select
