@@ -1,7 +1,7 @@
 ---
 name: "SOPHIA AHUOYIZA"
 role: "Product Engineering Lead"
-bio: "Decides what gets built, in what order, and why. If something on this site made you smile, Sophia probably fought for it."
+bio: "Resident fine girl. Decides what gets built, in what order, and why. If anything on this site and in the game made you smile, Sophia probably fought for it."
 group: core
 order: 5
 visible: true
