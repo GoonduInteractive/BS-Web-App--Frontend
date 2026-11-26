@@ -15,6 +15,8 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- Signing up from an invite link: the region now starts on the invite's region but can be
+  changed, for a friend who lives somewhere else. The referral code stays fixed.
 - INVITE FRIENDS on the Active Player Map now hands out your own invite link: Create Account with
   your username as the referral code and a region. It invites to the region you pick on the map,
   or your own, and its heading says which. Without a username, it asks you to set one.
@@ -101,6 +103,17 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- Team members on the About page can have a line of personality. Hover over or tap their portrait
+  and a handwritten torn note slides up over it; a small "Psst…" note hints it is there. Editors
+  write it in the CMS under "A little about them". Cards without one are unchanged.
+- Every current team member has a starter note: Leslie, Goodness, Moses, Michael, Sophia and
+  Glory. Each person can rewrite their own in the CMS.
+- A torn-banner news cover has a Cover fit choice. Fill suits a designed banner: it fills the
+  cover with no dark bars, trimmed from the left where the band covers it. Show whole is for a
+  character cut-out, as before.
+- News has four more categories: Team, Gameplay, Community and Event, alongside News and
+  Announcement. Editors can now add their own under News categories in /admin. A new one shows
+  on articles as soon as it's published, with no developer needed.
 - Your invite link on your profile, with COPY LINK: the same link the map hands out for your region.
 - Notes on the community wall are checked before they're sent. A note that breaks a community
   rule (strong language, threats, hate speech, contact details and links, scams, betting,
@@ -257,6 +270,14 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Fixed
 
+- A long title on a news cover with the torn band no longer runs over the author line. The
+  title now shrinks to fit the band's height as well as its width.
+- The profile's Tournament Rankings lists every tournament a player is in, not just one. Running
+  tournaments come first. Pick a name to see that tournament's rank, points and win rate.
+- See Details on the profile now opens the tournament's page, with a proper arrow icon. A finished
+  tournament has no page, so it shows no See Details.
+- The profile no longer shows "points away from next rank" under a tournament. That figure came
+  from the public leaderboard, not from the tournament.
 - The menu fits a laptop screen: on a shorter window its links and spacing shrink so all five
   links and Comics, News and Merch Store show without zooming out. A window too short even for
   that, such as a phone on its side, scrolls the menu. The page behind it no longer scrolls
