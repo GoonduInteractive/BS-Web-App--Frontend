@@ -15,6 +15,10 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- The plain merch store, the Your Seeds box in the checkout summary, the Calabash tabs on the
+  profile, the seed mark and a finished tournament's page are now part of the Hedera preview only.
+  With the preview off, the store, checkout, profile and tournaments are as they were. The new
+  dropdowns are the one change everyone gets.
 - The merch store is a plain shop. Beside the featured product there is now its name, price,
   description and a View Product button, in place of the Seeds and the sign-in offer. A
   signed-in player's Seeds, rewards and codes are at checkout instead, under the order summary,
