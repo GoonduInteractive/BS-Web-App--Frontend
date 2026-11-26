@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 
+import { Dropdown } from "@/components/ui/Dropdown";
 import type { Place } from "@/lib/api/geo";
 import type { DeliveryMethod, Lga } from "@/lib/api/shipping";
 import type { Messages } from "@/lib/utils/messages";
@@ -225,20 +226,33 @@ function Field({
   );
 }
 
-/** The dial code sits inside the field, divided from the number by a hairline. */
+/**
+ * The dial code sits inside the field, divided from the number by a hairline.
+ * It is the site's dropdown too (the human, 2026-11-23: every dropdown the
+ * same), so the frame's caret opens a list rather than nothing. Delivery is
+ * Nigeria only, so +234 is the one choice for now.
+ */
 function PhoneField({ messages, value, onChange }: { messages: Messages; value: string; onChange: (value: string) => void }) {
   const t = messages.merch.checkout;
   const id = useId();
+  const [dial, setDial] = useState(t.dialCode);
   return (
     <div>
-      <label htmlFor={id} className="text-menu-fg/70 font-body block text-[0.8125rem] leading-none">
+      <label htmlFor={id} id={`${id}-label`} className="text-menu-fg/70 font-body block text-[0.8125rem] leading-none">
         {t.phone}
       </label>
       <div className="border-menu-fg/33 focus-within:border-menu-fg/70 mt-3 flex h-12 items-center border">
-        <span className="text-menu-fg font-body text-body flex items-center gap-1.5 pr-3.5 pl-4.5">
-          {t.dialCode}
-          <Caret />
-        </span>
+        <div className="w-28 shrink-0">
+          <Dropdown
+            labelledBy={`${id}-label`}
+            options={[{ value: t.dialCode, label: t.dialCode }]}
+            value={dial}
+            onChange={setDial}
+            placeholder={t.dialCode}
+            triggerClassName="text-menu-fg font-body text-body focus-visible:outline-signal h-11.5 w-full bg-transparent pr-3.5 pl-4.5 focus-visible:outline-2 focus-visible:-outline-offset-2"
+            caret={<Caret />}
+          />
+        </div>
         <span aria-hidden className="bg-menu-fg/33 h-6 w-px" />
         <input
           id={id}
@@ -270,7 +284,6 @@ function SelectField({
   value,
   onChange,
   disabled = false,
-  autoComplete,
 }: {
   label: string;
   placeholder: string;
@@ -278,36 +291,30 @@ function SelectField({
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  /** Kept for the callers; the site dropdown takes no autofill. */
   autoComplete?: string;
 }) {
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="text-menu-fg/70 font-body block text-[0.8125rem] leading-none">
+      <label htmlFor={id} id={`${id}-label`} className="text-menu-fg/70 font-body block text-[0.8125rem] leading-none">
         {label}
       </label>
-      <div className="relative mt-3.25">
-        <select
+      {/* The site's dropdown (`ui/Dropdown`) in this form's border: no browser select (the human, 2026-11-23). */}
+      <div className="mt-3.25">
+        <Dropdown
           id={id}
+          labelledBy={`${id}-label`}
+          options={options.map((option) => ({ value: option.code, label: option.name }))}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
-          disabled={disabled}
+          onChange={onChange}
+          placeholder={placeholder}
           required
-          autoComplete={autoComplete}
-          className="border-menu-fg/33 text-menu-fg font-body focus-visible:border-menu-fg/70 focus-visible:outline-signal invalid:text-menu-fg/40 h-12 w-full appearance-none border bg-transparent px-4.5 pr-11 text-body focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60 [&>option]:bg-ash [&>option]:text-menu-fg"
-        >
-          <option value="" disabled>
-            {placeholder}
-          </option>
-          {options.map((option) => (
-            <option key={option.code} value={option.code}>
-              {option.name}
-            </option>
-          ))}
-        </select>
-        <span aria-hidden className="pointer-events-none absolute top-1/2 right-4.5 -translate-y-1/2">
-          <Caret />
-        </span>
+          disabled={disabled}
+          triggerClassName="border-menu-fg/33 text-menu-fg font-body focus-visible:border-menu-fg/70 focus-visible:outline-signal h-12 w-full border bg-transparent px-4.5 text-body focus-visible:outline-2 focus-visible:outline-offset-2"
+          placeholderClassName="text-menu-fg/40"
+          caret={<Caret />}
+        />
       </div>
     </div>
   );

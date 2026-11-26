@@ -1,7 +1,9 @@
 "use client";
 
-import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useId, useState, type ComponentPropsWithoutRef } from "react";
+
+import { Dropdown } from "@/components/ui/Dropdown";
 
 type InputProps = Omit<ComponentPropsWithoutRef<"input">, "id" | "className">;
 
@@ -50,44 +52,54 @@ export function PasswordField({
 }
 
 /**
- * A choice from a list, in the same box. Native, so the keyboard, screen
- * readers and the phone's own picker come free. No frame draws one: it follows
- * the fields above it. The placeholder is the empty first option, so
- * `required` holds until a real one is picked.
+ * A choice from a list, in the same box: the site's dropdown (`ui/Dropdown`;
+ * the human, 2026-11-23: no browser selects) in this field's border and
+ * height. No frame draws one: it follows the fields above it. `required`
+ * holds until a real choice is made. `onChange` hands back
+ * `{ target: { value } }` as the native one did, so the forms' setters work unchanged.
  */
 export function AuthSelect({
   label,
   placeholder,
   options,
-  ...select
-}: { label: string; placeholder: string; options: readonly { value: string; label: string }[] } & Omit<
-  ComponentPropsWithoutRef<"select">,
-  "id" | "className" | "children"
->) {
+  value,
+  onChange,
+  required,
+  disabled,
+}: {
+  label: string;
+  placeholder: string;
+  options: readonly { value: string; label: string }[];
+  value: string;
+  onChange: (event: { target: { value: string } }) => void;
+  required?: boolean;
+  disabled?: boolean;
+}) {
   const id = useId();
   return (
     <div>
-      <Label htmlFor={id}>{label}</Label>
-      <div className="relative">
-        <select id={id} {...select} className={`${INPUT} cursor-pointer appearance-none pr-12 invalid:text-white/60`}>
-          <option value="" disabled className="bg-pitch">
-            {placeholder}
-          </option>
-          {options.map((o) => (
-            <option key={o.value} value={o.value} className="bg-pitch text-white">
-              {o.label}
-            </option>
-          ))}
-        </select>
-        <ChevronDown aria-hidden className="text-white/70 pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2" strokeWidth={1.75} />
-      </div>
+      <Label htmlFor={id} id={`${id}-label`}>
+        {label}
+      </Label>
+      <Dropdown
+        id={id}
+        labelledBy={`${id}-label`}
+        options={options}
+        value={value}
+        onChange={(next) => onChange({ target: { value: next } })}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        triggerClassName={INPUT}
+        placeholderClassName="text-white/60"
+      />
     </div>
   );
 }
 
-function Label({ htmlFor, children }: { htmlFor: string; children: string }) {
+function Label({ htmlFor, id, children }: { htmlFor: string; id?: string; children: string }) {
   return (
-    <label htmlFor={htmlFor} className="text-white font-body mb-2 block text-[0.8125rem] leading-[1.2]">
+    <label htmlFor={htmlFor} id={id} className="text-white font-body mb-2 block text-[0.8125rem] leading-[1.2]">
       {children}
     </label>
   );
