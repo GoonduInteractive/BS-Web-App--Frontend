@@ -1,6 +1,7 @@
 ---
-name: LESLIE OSINACHI-OKOK
+name: LESLIE OSINACHI-OKOH
+group: core
 order: 1
 visible: true
-image: /assets/about/leslie.png
+image: /assets/about/leslie.jpg
 ---

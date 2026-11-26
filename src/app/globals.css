@@ -203,7 +203,13 @@
   --text-story-title: clamp(3.4375rem, 2.946rem + 2.178vw, 4.90625rem);
   --text-story-title--line-height: clamp(3.375rem, 2.83rem + 2.41vw, 5rem);
 
-  --text-menu-link: clamp(2.75rem, 5.4vw, 4.8625rem);
+  /* The menu's links also shrink with the viewport's HEIGHT, so all five and the
+     utility row fit a short laptop screen (1366x768 leaves ~630px). 7.1875rem is
+     what the panel cannot shrink (each rule's 12px, the utility line, a 32px
+     floor gap); 0.0976 is the frame's 77.8px over the 797px that does shrink.
+     The same pair drives the panel's paddings, in MenuOverlay. From ~912px tall
+     up, the frame's 77.8px holds. */
+  --text-menu-link: clamp(2.75rem, min(5.4vw, calc((100svh - 7.1875rem) * 0.0976)), 4.8625rem);
   --text-menu-link--line-height: 1;
 
   /* The character detail page's name - the largest type on the site.

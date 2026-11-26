@@ -17,7 +17,7 @@ import { toast } from "@/components/ui/Toaster";
 import { useWallCheck } from "@/hooks/useWallCheck";
 import { ApiError } from "@/lib/api/client";
 import { WALL } from "@/lib/api/community";
-import { postNote } from "@/lib/api/notes";
+import { postNote, reportBlockedNote } from "@/lib/api/notes";
 import type { WallRule } from "@/lib/community/filter";
 import { placeNote } from "@/lib/community/place";
 import { authHref } from "@/lib/utils/auth-links";
@@ -76,7 +76,6 @@ export function CommunityBoard({
   hotspots,
   activeTotal,
   regionCounts,
-  invite,
   messages,
   locale,
 }: {
@@ -87,8 +86,6 @@ export function CommunityBoard({
   activeTotal: number | null;
   /** Every region's active count, for the invite nudge. */
   regionCounts: ActivePlayers["regions"];
-  /** The viewer's invite link, for the map's INVITE FRIENDS block. */
-  invite: string;
   messages: Messages;
   locale: Locale;
 }) {
@@ -97,6 +94,13 @@ export function CommunityBoard({
   // The frame opens on its busiest place (Lagos); live, the busiest pinned region, or none
   // at all while no region has a pin. A pin or a search moves it.
   const [spot, setSpot] = useState<PlayerHotspot | null>(hotspots[0] ?? null);
+  // Whether the visitor chose that place (a pin or a search) rather than being shown the busiest:
+  // only a chosen one is what INVITE FRIENDS invites to; until then it's their own region.
+  const [picked, setPicked] = useState(false);
+  const pick = (place: PlayerHotspot) => {
+    setSpot(place);
+    setPicked(true);
+  };
   const [notes, setNotes] = useState<readonly CommunityNote[]>(initial);
   const [writing, setWriting] = useState(false);
   const [fresh, setFresh] = useState<string | null>(null);
@@ -160,10 +164,12 @@ export function CommunityBoard({
       ? messages.auth.errors.network
       : messages.auth.errors.unknown;
 
-  // What the filter refused, by rule. NOT YET SENT ANYWHERE (FLAGGED): the guide
-  // reports self_harm and underage attempts to the API and logs every other
-  // block as `wall_post_blocked` with the rule key only, and neither has a
-  // destination yet - no report endpoint, no analytics on the site.
+  // What the filter refused, by rule. A self-harm or underage refusal is reported
+  // to the API (`reportBlockedNote`), so it reaches the admin's queue for a
+  // personal follow-up. NOT SENT (FLAGGED): the guide's `wall_post_blocked`
+  // analytics for every other rule - the site has no analytics yet - and the
+  // personal_info notes that ASK for age, school, location or pictures, which the
+  // list doesn't tell apart from ones that share.
   const wall = useWallCheck();
   const [blocked, setBlocked] = useState<WallRule | null>(null);
   const [checking, setChecking] = useState(false);
@@ -204,6 +210,10 @@ export function CommunityBoard({
     setChecking(false);
     if (verdict?.rule) {
       setBlocked(verdict.rule);
+      // Sent in the background: the warning doesn't wait on it, and a failed send changes nothing for the player.
+      if (verdict.rule === "self_harm" || verdict.rule === "underage") {
+        reportBlockedNote(body, verdict.hits.map((h) => h.category)).catch(() => {});
+      }
       return false;
     }
     try {
@@ -278,7 +288,7 @@ export function CommunityBoard({
                 {t.hero.cta}
               </BracketButton>
             ) : (
-              <MapSearch hotspots={hotspots} onSelect={setSpot} messages={messages} className="my-1" />
+              <MapSearch hotspots={hotspots} onSelect={pick} messages={messages} className="my-1" />
             )}
           </Reveal>
         </div>
@@ -316,9 +326,10 @@ export function CommunityBoard({
               selected={spot}
               activeTotal={activeTotal}
               regionCounts={regionCounts}
-              onSelect={setSpot}
-              invite={invite}
+              onSelect={pick}
+              inviteTo={picked ? spot : null}
               messages={messages}
+              locale={locale}
             />
           ) : null}
         </div>

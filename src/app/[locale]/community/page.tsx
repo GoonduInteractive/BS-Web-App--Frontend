@@ -1,34 +1,17 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CommunityBoard } from "@/components/community/CommunityBoard";
 import { GatePage } from "@/components/gates/GatePage";
 import { getWallNotes } from "@/lib/api/community";
-import { getActivePlayers, getInviteLink } from "@/lib/api/players";
+import { getActivePlayers } from "@/lib/api/players";
+import { handFont } from "@/lib/hand-font";
 import { pageMetadata } from "@/lib/seo";
 import { isLocale } from "@/lib/utils/locales";
 import { getMessages } from "@/lib/utils/messages";
 
-/**
- * THE WALL'S HANDWRITING, loaded on this route alone. Bradley Hand ITC, from
- * the file the human dropped in (moved from `public/font/` to `src/app/fonts/`
- * so Next bundles and hashes it rather than serving the raw TTF). Scoped here
- * rather than in the layout so no other page preloads a 160KB face it never
- * draws; `--font-hand` in globals.css reads the variable this sets.
- *
- * LICENCE - FLAGGED. Bradley Hand ITC is a Monotype face, not an open one like
- * Teko and Host Grotesk. Serving it from the site is web-font embedding and
- * needs a licence that covers it. A one-line swap to a Google face (Kalam is
- * the nearest) is the alternative if none is bought.
- */
-const bradley = localFont({
-  src: "../../fonts/BRADHI.ttf",
-  variable: "--font-bradley",
-  display: "swap",
-  preload: false,
-});
+// The wall's handwriting: one definition for every page that draws it (`lib/hand-font.ts`).
 
 /**
  * Ọnụ Ụzọ 3 - Community. Figma: `context/design/02-gates/` for the gate,
@@ -63,13 +46,12 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   return (
     <GatePage id="community" params={params}>
-      <div className={bradley.variable}>
+      <div className={handFont.variable}>
         <CommunityBoard
           notes={notes}
           hotspots={players.hotspots}
           activeTotal={players.active}
           regionCounts={players.regions}
-          invite={getInviteLink(locale)}
           messages={messages}
           locale={locale}
         />

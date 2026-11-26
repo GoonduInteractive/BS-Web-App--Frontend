@@ -131,9 +131,15 @@ const SPACED = new RegExp(`(^|[^${ALNUM}])((?:\\p{L}[\\s${escapeRegex(MASKS)}]{1
 const joinSpaced = (text: string) =>
   text.replace(SPACED, (_, before: string, run: string) => before + run.replace(new RegExp(`[^${ALNUM}]`, "gu"), ""));
 
-/** Step 10's two versions, and step 11's. */
+/**
+ * Step 10's two versions, and a third: only the stretched runs (three or more)
+ * cut to one, real doubles kept. Without it a phrase with a double letter of
+ * its own can't be caught stretched: "mkpuuuru mmiri" is "mkpuuru mmiri" cut to
+ * two and "mkpuru miri" cut to one, and neither is "mkpuru mmiri". Then step 11's.
+ */
 const collapseToTwo = (text: string) => text.replace(/(.)\1{2,}/gu, "$1$1");
 const collapseToOne = (text: string) => text.replace(/(.)\1+/gu, "$1");
+const collapseStretched = (text: string) => text.replace(/(.)\1{2,}/gu, "$1");
 const readAsU = (text: string) => text.replace(/ph/g, "f").replace(/v/g, "u");
 
 /** A word with a masking character inside it: "f*ck", "sh.t", "f-u-c-k", "fu**". */
@@ -162,7 +168,7 @@ function secondPass(stepSix: string, vocabulary: readonly string[]): string[] {
   const out = new Set<string>();
   for (const version of [mapped, ...unmask(mapped, vocabulary)]) {
     const joined = joinSpaced(version);
-    for (const v of [joined, collapseToTwo(joined), collapseToOne(joined)]) {
+    for (const v of [joined, collapseToTwo(joined), collapseToOne(joined), collapseStretched(joined)]) {
       out.add(v);
       out.add(readAsU(v));
     }

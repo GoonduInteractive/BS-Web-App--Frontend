@@ -11,7 +11,8 @@ import { test } from "node:test";
 
 import { checkNote, compileWallFilter } from "./filter.ts";
 
-const list = JSON.parse(readFileSync(new URL("../../../public/community-wall-filter.json", import.meta.url), "utf8"));
+// Product's v1.0.3 as delivered: a fixed list, so the table tests the engine, not whatever the API serves today.
+const list = JSON.parse(readFileSync(new URL("./fixtures/community-wall-filter.json", import.meta.url), "utf8"));
 const filter = compileWallFilter(list);
 
 /** [note, the warning it should get, or null to pass] */
@@ -60,6 +61,13 @@ const READINGS = [
   ["beyondservicegame.com.evil.xyz", "contact"],
   ["I want to die", "self_harm"],
   ["kill myself and fuck it", "self_harm"],
+  // Stretched letters in a phrase that has a real double letter of its own.
+  ["mkpuuuru mmiri dey sell", "drugs"],
+  ["kiss my aaaass", "profanity"],
+  // Stretching an ordinary word stays ordinary.
+  ["sooooo good, I loooove this game", null],
+  // A misspelling isn't the entry: the list has "mkpuru mmiri" (the human's test, 2026-11-20).
+  ["mmpuru mmiri", null],
 ];
 
 for (const [note, rule] of [...GUIDE, ...READINGS]) {

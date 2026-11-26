@@ -87,6 +87,9 @@ export function TeamSection({ members, messages }: { members: readonly TeamMembe
                   <TeamCard
                     name={member.name}
                     role={member.role}
+                    bio={member.bio}
+                    noteHint={t.note.hint}
+                    noteLabel={t.note.open.replace("{name}", member.name)}
                     image={member.image}
                     imageAlt={member.portraitAlt}
                     portraitClass={portraitFraming(member.image)}

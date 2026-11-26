@@ -9,6 +9,12 @@ import { TEAM_GROUPS } from "@/types/team";
 export const teamFrontmatter = z.object({
   name: z.string().trim().min(1),
   role: z.string().trim().min(1),
+  /** The line on their card's torn note; blank (as Decap may write it) is none. */
+  bio: z
+    .string()
+    .trim()
+    .optional()
+    .transform((v) => v || undefined),
   portraitAlt: z.string().trim().min(1),
   image: z.string().trim().min(1),
   group: z.enum(TEAM_GROUPS).default("core"),
