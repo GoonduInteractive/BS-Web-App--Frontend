@@ -10,8 +10,12 @@ import type { Locale } from "@/lib/utils/locales";
  * writes it, not a developer.
  */
 
-/** Keys into `messages.news.tags`. The frame draws two. */
-export type ArticleTag = "news" | "announcement";
+/**
+ * One of an article's categories: its slug, and its name as printed. The
+ * categories are the CMS's own (`lib/api/categories.ts`), so editors add them;
+ * the frame draws two, News and Announcement.
+ */
+export type ArticleTag = { slug: string; name: string };
 
 /**
  * The band colours an admin may choose for a torn cover. These are the names
@@ -46,7 +50,13 @@ export type BandColour = (typeof BAND_COLOURS)[number];
  */
 export type ArticleCover =
   | { kind: "image"; src: string }
-  | { kind: "torn"; src: string; band: BandColour; volume?: string; title: string };
+  /**
+   * `fit`: how the picture sits behind the band. `whole` shows all of it, never
+   * trimmed, on the dark field - for a character cut-out. `fill` fills the cover
+   * and trims from the left first, the side under the band - for a designed banner
+   * made on the 2142 x 1156 template (2026-11-26).
+   */
+  | { kind: "torn"; src: string; band: BandColour; volume?: string; title: string; fit: "whole" | "fill" };
 
 export type Article = {
   slug: string;

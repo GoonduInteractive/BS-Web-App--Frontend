@@ -25,8 +25,11 @@ export const articleFrontmatter = z.object({
     .union([z.string(), z.date()])
     .transform((v) => (v instanceof Date ? v.toISOString().slice(0, 10) : v))
     .pipe(z.string().regex(/^\d{4}-\d{2}-\d{2}/, "published must be a date, YYYY-MM-DD")),
-  tags: z.array(z.enum(["news", "announcement"])).min(1),
+  /** Category slugs, from the CMS's News categories (`lib/api/categories.ts`), so not a fixed list. */
+  tags: z.array(z.string().trim().min(1)).min(1),
   coverStyle: z.enum(["full", "torn"]).default("full"),
+  /** A torn cover's picture: shown whole (a cut-out) or filling the cover (a designed banner). */
+  coverFit: z.enum(["whole", "fill"]).default("whole"),
   image: z.string().trim().min(1),
   imageAlt: z.string().trim().min(1),
   band: z.enum(BAND_COLOURS).default("dusk"),

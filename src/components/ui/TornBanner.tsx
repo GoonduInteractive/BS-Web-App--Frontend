@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import TornSurface from "@/components/ui/TornSurface";
 
@@ -46,6 +46,16 @@ const BAND_WIDTH = "w-[clamp(41%,215px,55%)]";
  * keeps a pathological word legible and `break-words` on the heading stops
  * even that from bleeding out.
  *
+ * AND THEN TO ITS HEIGHT (the human, 2026-11-26: a long title - "Beyond Service
+ * beta launches at Aniwe Xchange Abuja" - wrapped to eight lines and ran over
+ * the author). Width alone can't know how many lines a title will take, so the
+ * banner measures it in the browser: starting from the width's size, it steps
+ * down the table until the title's foot clears the author line (or, without
+ * one, the banner's foot) by 3% of the height. It measures again when the
+ * banner changes size and once the display face has loaded, since Teko's
+ * fallback sets wider. The table runs on below the width's floor for this: a
+ * long title on the short wide card can need 2.6cqw.
+ *
  * WHY 11.8cqw IS ONLY A CAP. It is the frame's own title size, read off the
  * card, and it holds for a short title - but the frame's face sets narrower
  * than Teko at the same cap height, so at 11.8 a seven-letter word already runs
@@ -64,13 +74,21 @@ const TITLE_SIZE = [
   "text-[5.4cqw]", // 12
   "text-[5.0cqw]", // 13
   "text-[4.6cqw]", // 14
-  "text-[4.3cqw]", // 15 or more: the floor, with break-words behind it
+  "text-[4.3cqw]", // 15 or more: the width's floor, with break-words behind it
+  // Below here only for height: a title of many lines (see above).
+  "text-[4.0cqw]",
+  "text-[3.7cqw]",
+  "text-[3.4cqw]",
+  "text-[3.1cqw]",
+  "text-[2.8cqw]",
+  "text-[2.6cqw]",
 ] as const;
 
-function titleSize(title: string): string {
+/** The longest word's step: the largest size at which no word overflows the band. */
+const WIDTH_FLOOR = 10;
+function widthStep(title: string): number {
   const longest = title.split(/\s+/).reduce((n, word) => Math.max(n, word.length), 0);
-  if (longest <= 5) return TITLE_SIZE[0];
-  return TITLE_SIZE[Math.min(longest - 5, TITLE_SIZE.length - 1)];
+  return longest <= 5 ? 0 : Math.min(longest - 5, WIDTH_FLOOR);
 }
 
 /**
@@ -137,7 +155,35 @@ export function TornBanner({
   priority?: boolean;
 }) {
   const panel = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const byline = useRef<HTMLParagraphElement>(null);
   const [box, setBox] = useState({ width: 300, height: 235 });
+  const [fontsReady, setFontsReady] = useState(false);
+
+  // The title's size: the width's step, then smaller until it clears the author line.
+  // `fit.key` names what it was fitted for; anything else starts again from the width's step.
+  const fitKey = `${title}|${volume ?? ""}|${author ?? ""}|${box.width}x${box.height}|${fontsReady}`;
+  const [fit, setFit] = useState({ key: "", step: widthStep(title) });
+  const step = fit.key === fitKey ? fit.step : widthStep(title);
+
+  useEffect(() => {
+    let live = true;
+    void document.fonts?.ready.then(() => live && setFontsReady(true));
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    const h = heading.current;
+    const r = root.current?.getBoundingClientRect();
+    if (!h || !r || r.height === 0) return;
+    const limit = (byline.current?.getBoundingClientRect().top ?? r.bottom - r.height * 0.05) - r.height * 0.03;
+    const over = h.getBoundingClientRect().bottom > limit && step < TITLE_SIZE.length - 1;
+    if (fit.key !== fitKey) setFit({ key: fitKey, step: over ? step + 1 : step });
+    else if (over) setFit({ key: fitKey, step: step + 1 });
+  }, [fitKey, fit.key, step]);
 
   useEffect(() => {
     const el = panel.current;
@@ -154,7 +200,7 @@ export function TornBanner({
   }, []);
 
   return (
-    <div className={`@container relative h-full w-full overflow-hidden ${fieldClass}`}>
+    <div ref={root} className={`@container relative h-full w-full overflow-hidden ${fieldClass}`}>
       {/* The picture, on the field, filling the banner. The band then covers its
           left part, so what reads is the art to the right of the tear. */}
       <Image
@@ -204,7 +250,8 @@ export function TornBanner({
             12% of the band's fixed 215px - both measured off the frame. The size
             is whatever fits the band; see TITLE_SIZE. */}
         <h3
-          className={`font-display text-menu-fg leading-[0.8] font-semibold tracking-[-0.03em] break-words uppercase ${titleSize(title)} ${volume ? "mt-[12%]" : ""}`}
+          ref={heading}
+          className={`font-display text-menu-fg leading-[0.8] font-semibold tracking-[-0.03em] break-words uppercase ${TITLE_SIZE[step]} ${volume ? "mt-[12%]" : ""}`}
         >
           {title.split("\n").map((line, i) => (
             <span key={`${i}-${line}`} className="block">
@@ -215,7 +262,7 @@ export function TornBanner({
       </div>
 
       {author ? (
-        <p className="text-menu-fg/80 font-body absolute bottom-[5%] left-[4.4cqw] z-1 text-[max(1.9cqw,0.5rem)] leading-none">
+        <p ref={byline} className="text-menu-fg/80 font-body absolute bottom-[5%] left-[4.4cqw] z-1 text-[max(1.9cqw,0.5rem)] leading-none">
           {author}
         </p>
       ) : null}

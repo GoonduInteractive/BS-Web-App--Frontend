@@ -847,11 +847,7 @@
     },
     "byline": "TODO ig: By Goondu Staff",
     "relativeDays": "TODO ig: {n} DAYS AGO",
-    "relativeToday": "TODO ig: TODAY",
-    "tags": {
-      "news": "TODO ig: NEWS",
-      "announcement": "TODO ig: ANNOUNCEMENT"
-    }
+    "relativeToday": "TODO ig: TODAY"
   },
   "profile": {
     "meta": {

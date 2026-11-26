@@ -847,11 +847,7 @@
     },
     "byline": "By Goondu Staff",
     "relativeDays": "{n} DAYS AGO",
-    "relativeToday": "TODAY",
-    "tags": {
-      "news": "NEWS",
-      "announcement": "ANNOUNCEMENT"
-    }
+    "relativeToday": "TODAY"
   },
   "profile": {
     "meta": {

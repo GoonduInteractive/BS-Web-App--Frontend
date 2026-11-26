@@ -86,12 +86,12 @@ collections:
     summary: '{{title}} ({{published}})'
     sortable_fields: [published, title]
     view_filters:
-      - label: News
-        field: tags
-        pattern: news
-      - label: Announcements
-        field: tags
-        pattern: announcement
+      - { label: News, field: tags, pattern: news }
+      - { label: Announcements, field: tags, pattern: announcement }
+      - { label: Team, field: tags, pattern: team }
+      - { label: Gameplay, field: tags, pattern: gameplay }
+      - { label: Community, field: tags, pattern: community }
+      - { label: Events, field: tags, pattern: event }
     fields:
       - label: Title
         name: title
@@ -109,14 +109,20 @@ collections:
         date_format: YYYY-MM-DD
         time_format: false
         i18n: duplicate
-      - label: Tags
+      # Picked from the News categories collection (below), so an editor who
+      # needs a new one adds it there - no developer. Stored as the category's
+      # slug; the site prints its name (src/lib/api/categories.ts).
+      - label: Categories
         name: tags
-        widget: select
+        widget: relation
+        collection: categories
+        search_fields: [name]
+        value_field: '{{slug}}'
+        display_fields: [name]
         multiple: true
-        options:
-          - { label: News, value: news }
-          - { label: Announcement, value: announcement }
+        min: 1
         default: [news]
+        hint: One or more. Missing the one you need? Add it under News categories in the sidebar and publish it, then pick it here.
         i18n: duplicate
       # The cover: the picture full bleed, or the torn banner. The banner is a
       # coloured band on the left with a volume tag, a title and an author
@@ -128,7 +134,7 @@ collections:
           - { label: "Full image: the picture on its own", value: full }
           - { label: "Torn banner: a coloured band with the volume tag, title and author, torn down its edge, with the picture beside it", value: torn }
         default: full
-        hint: Choose Torn banner to get the tear. The three fields named "Torn banner" below do nothing while this says Full image.
+        hint: Choose Torn banner to get the tear. The fields named "Torn banner" below do nothing while this says Full image.
         i18n: duplicate
       - label: Picture
         name: image
@@ -140,6 +146,15 @@ collections:
         widget: string
         hint: What the picture shows, for screen readers and search.
         i18n: true
+      - label: 'Torn banner: cover fit'
+        name: coverFit
+        widget: select
+        options:
+          - { label: "Show whole: a character cut-out on a transparent background", value: whole }
+          - { label: "Fill: a designed banner made on the 2142 x 1156 template", value: fill }
+        default: whole
+        hint: "Fill for a designed banner: it fills the cover and is trimmed from the left, under the band, so keep the subject in the right 30% of the picture. Show whole for a cut-out: nothing is trimmed, and any space around it shows the dark background."
+        i18n: duplicate
       - label: 'Torn banner: band colour'
         name: band
         widget: select
@@ -184,6 +199,34 @@ collections:
       - label: Body
         name: body
         widget: markdown
+        i18n: true
+
+  # ---------------------------------------------------------------------------
+  # NEWS CATEGORIES, the pills on each article (2026-11-26). Editors add their
+  # own here; an article picks from them (its Categories field above).
+  # src/lib/api/categories.ts reads these files at build. Only the name is
+  # translated; the slug, taken from the English name, is what articles store,
+  # so renaming a category later keeps every article that uses it.
+  # ---------------------------------------------------------------------------
+  - name: categories
+    label: News categories
+    label_singular: Category
+    description: The categories an article can be filed under, shown as pills on the article. Add one when an article needs a category that isn't here, publish it, then pick it in the article. On the Igbo tab click "Fill in from another locale", then publish.
+    folder: src/content/categories
+    create: true
+    delete: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    slug: '{{slug}}'
+    summary: '{{name}}'
+    sortable_fields: [name]
+    fields:
+      - label: Name
+        name: name
+        widget: string
+        hint: As readers see it on the pill, e.g. Patch notes. It is set in capitals on the page.
         i18n: true
 
   # ---------------------------------------------------------------------------
