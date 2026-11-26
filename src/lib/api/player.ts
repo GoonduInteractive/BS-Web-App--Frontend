@@ -1,19 +1,20 @@
 import { z } from "zod";
 
-import type { Profile, StandingStat } from "@/types/profile";
+import type { Profile, StandingStat, TournamentStanding } from "@/types/profile";
 
 import { apiSeeds } from "./seeds";
 import { authedRequest } from "./session";
 
 /**
  * The signed-in player's own data, read and written in the browser as them
- * (\`authedRequest\`): \`/v1/player/profile\`, \`/v1/player/avatar\`, their row
- * on the leaderboard (\`/v1/leaderboards/me\`) for the points to the next rank,
- * and the heartbeat that counts them as active (\`/v1/player/heartbeat\`).
+ * (\`authedRequest\`): \`/v1/player/profile\`, \`/v1/player/avatar\`, and the
+ * heartbeat that counts them as active (\`/v1/player/heartbeat\`).
  *
- * What the profile frames show and the API doesn't send: a main champion (the
- * standing strip's CHAMPION reads a dash) and, for a player in no tournament,
- * anything for the strip at all (the frame's empty state). FLAGGED.
+ * What the profile frames show and the API doesn't send (FLAGGED): a main
+ * champion (the standing strip's CHAMPION reads a dash), and the points to the
+ * next rank in a tournament. That line used to come from
+ * \`/v1/leaderboards/me\`, but that is the public board's distance, not the
+ * tournament's, and it ranks by Seeds, so it was dropped (2026-11-20).
  */
 
 /** The avatar the profile frames draw, Soma's render, until the player sets their own. */
@@ -48,8 +49,6 @@ const apiProfile = z.object({
   tournament_rankings: z.array(ranking).default([]),
 });
 
-const leaderboardMe = z.object({ points_to_next_rank: z.number().nullish() }).nullish();
-
 /** The profile, plus what the edit form starts from. */
 export type PlayerProfile = Profile & {
   firstName: string;
@@ -63,7 +62,27 @@ export type PlayerProfile = Profile & {
 
 const count = (n: number) => new Intl.NumberFormat("en-NG").format(n);
 
-/** The strip under STANDING, for the tournament the player is in now (or was in last). */
+/** Statuses the site has a page for (`statusOf` in `lib/api/tournaments.ts`); running ones list first. */
+const WITH_PAGE = ["active", "registration_open", "coming_soon"];
+
+/**
+ * Every tournament the player is in, for TOURNAMENT RANKINGS: running ones
+ * first, then the rest in the API's order. A cancelled one is left out, since
+ * a rank in it means nothing.
+ */
+function standings(rankings: readonly z.output<typeof ranking>[]): TournamentStanding[] {
+  const kept = rankings.filter((r) => r.tournament.status !== "cancelled");
+  const running = (r: z.output<typeof ranking>) => WITH_PAGE.includes(r.tournament.status);
+  return [...kept.filter(running), ...kept.filter((r) => !running(r))].map((r) => ({
+    name: r.tournament.title,
+    slug: r.tournament.slug,
+    hasPage: running(r),
+    stats: standingStats(r),
+    toNextRank: null,
+  }));
+}
+
+/** The strip under a tournament's name. */
 function standingStats(r: z.output<typeof ranking>): StandingStat[] {
   return [
     { labelKey: "rank", value: r.rank != null ? `#${r.rank}` : "—", glyph: "/assets/player-profile/nsibidi-rank.svg" },
@@ -75,13 +94,7 @@ function standingStats(r: z.output<typeof ranking>): StandingStat[] {
 }
 
 export async function getMyProfile(): Promise<PlayerProfile> {
-  const [p, me] = await Promise.all([
-    authedRequest("GET", "/v1/player/profile", apiProfile),
-    // Not ranked yet answers an error; that only means no "points to next rank".
-    authedRequest("GET", "/v1/leaderboards/me", leaderboardMe).catch(() => null),
-  ]);
-  const live = (s: string) => s === "active" || s === "registration_open";
-  const current = p.tournament_rankings.find((r) => live(r.tournament.status)) ?? p.tournament_rankings[0];
+  const p = await authedRequest("GET", "/v1/player/profile", apiProfile);
   const first = p.first_name ?? "";
   const last = p.last_name ?? "";
 
@@ -97,9 +110,7 @@ export async function getMyProfile(): Promise<PlayerProfile> {
     gamePoints: p.game_points,
     seeds: p.seeds ?? { calabash: 0, legacy: 0, pending: 0 },
     playGamesId: p.game_player_id ?? null,
-    standing: current
-      ? { name: current.tournament.title, stats: standingStats(current), toNextRank: me?.points_to_next_rank ?? null }
-      : null,
+    standings: standings(p.tournament_rankings),
     firstName: first,
     lastName: last,
     username: p.username ?? "",
