@@ -13,12 +13,11 @@ export function relativeDate(published: string, messages: Messages): string {
 
 export function TagPills({
   tags,
-  messages,
   className = "",
   outline = "menu",
 }: {
+  /** Named already: the categories are the CMS's (`lib/api/categories.ts`). */
   tags: readonly ArticleTag[];
-  messages: Messages;
   className?: string;
   /**
    * The ring. The index frame draws it in the page's white at 40%; the two
@@ -30,10 +29,10 @@ export function TagPills({
     <ul className={`flex flex-wrap gap-2.5 ${className}`}>
       {tags.map((tag) => (
         <li
-          key={tag}
-          className={`${outline === "linen" ? "border-linen" : "border-menu-fg/40"} text-menu-fg font-body inline-flex h-6.5 items-center rounded-full border px-3 text-[0.625rem] leading-none tracking-[0.06em]`}
+          key={tag.slug}
+          className={`${outline === "linen" ? "border-linen" : "border-menu-fg/40"} text-menu-fg font-body inline-flex h-6.5 items-center rounded-full border px-3 text-[0.625rem] leading-none tracking-[0.06em] uppercase`}
         >
-          {messages.news.tags[tag]}
+          {tag.name}
         </li>
       ))}
     </ul>
