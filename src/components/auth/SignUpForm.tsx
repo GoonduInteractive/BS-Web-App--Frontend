@@ -40,22 +40,27 @@ export const PASSWORD_MIN = 8;
  *
  * FROM AN INVITE (`lib/utils/invite.ts`, 2026-11-19): `?ref=` is the inviting
  * player's referral code and `?region=` the region they're bringing friends
- * to. Both show FIXED - a read-only Referral Code, and the region as text in
- * place of the picker - so the new player only gives their name, email and
- * password, and the code goes with the account as `referral_code`. A code
- * that isn't a username, or a region that isn't offered, is ignored and the
- * form is the ordinary one.
+ * to. The code shows FIXED, a read-only Referral Code, and goes with the
+ * account as `referral_code`. The region STARTS on the invite's and stays a
+ * choice (the team, 2026-11-23: a friend may live elsewhere). A code that
+ * isn't a username, or a region that isn't offered, is ignored and the form
+ * is the ordinary one.
  */
 export function SignUpForm({ messages, locale, regions }: { messages: Messages; locale: string; regions: readonly SignUpRegion[] }) {
   const t = messages.auth;
   const params = useSearchParams();
   const next = params.get("next");
   const referral = readReferral(params.get("ref"));
-  const invitedRegion = readInviteRegion(params.get("region"), regions);
   const { navigate } = usePageTransition();
   const { pending, error, run } = useAuthSubmit();
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", regionId: "", password: "" });
-  const regionId = invitedRegion?.id ?? form.regionId;
+  // The invite's region is where the picker starts; the player can change it.
+  const [form, setForm] = useState(() => ({
+    firstName: "",
+    lastName: "",
+    email: "",
+    regionId: readInviteRegion(params.get("region"), regions)?.id ?? "",
+    password: "",
+  }));
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const terms = useRef<HTMLInputElement>(null);
   const strengthId = useId();
@@ -69,7 +74,6 @@ export function SignUpForm({ messages, locale, regions }: { messages: Messages; 
     const result = await run(() =>
       signUp({
         ...form,
-        regionId,
         ...(referral && { referralCode: referral }),
         termsAcceptedAt: new Date().toISOString(),
         marketingOptIn,
@@ -109,19 +113,14 @@ export function SignUpForm({ messages, locale, regions }: { messages: Messages; 
               required
             />
           </div>
-          {/* From an invite the region is the inviter's choice, shown as text: a select can't be read-only. */}
-          {invitedRegion ? (
-            <AuthField label={t.fields.region} value={invitedRegion.name} readOnly aria-readonly />
-          ) : (
-            <AuthSelect
-              label={t.fields.region}
-              placeholder={t.placeholders.region}
-              options={regions.map((r) => ({ value: r.id, label: r.name }))}
-              value={form.regionId}
-              onChange={set("regionId")}
-              required
-            />
-          )}
+          <AuthSelect
+            label={t.fields.region}
+            placeholder={t.placeholders.region}
+            options={regions.map((r) => ({ value: r.id, label: r.name }))}
+            value={form.regionId}
+            onChange={set("regionId")}
+            required
+          />
           {referral ? <AuthField label={t.fields.referral} value={referral} readOnly aria-readonly /> : null}
           <div className="sm:col-span-2">
             <PasswordField
