@@ -2,10 +2,10 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 
 import { BracketButton } from "@/components/ui/BracketButton";
+import { SeedIcon } from "@/components/ui/CurrencyIcons";
 import { TornDialog } from "@/components/ui/TornDialog";
 import { toast } from "@/components/ui/Toaster";
 import { MY_PROFILE } from "@/hooks/useMyProfile";
@@ -92,7 +92,7 @@ export function RedeemDialog({
         </span>
       ) : (
         <span aria-hidden className="bg-gild grid size-31 shrink-0 place-items-center rounded-full">
-          <Image src="/assets/merch/nsibidi-black.svg" alt="" width={22} height={22} className="size-14 select-none" />
+          <SeedIcon className="text-ink size-14" />
         </span>
       )}
 

@@ -1,22 +1,28 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/AuthProvider";
 import { PinGlyph } from "@/components/profile/ProfileGlyphs";
 import { BracketButton } from "@/components/ui/BracketButton";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { toast } from "@/components/ui/Toaster";
 import { MY_PROFILE, useMyProfile } from "@/hooks/useMyProfile";
 import { ApiError } from "@/lib/api/client";
 import { updateMyProfile, uploadMyAvatar, type PlayerProfile } from "@/lib/api/player";
 import type { SignUpRegion } from "@/lib/api/regions";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import { cn } from "@/lib/utils/cn";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import { isRemoteImage } from "@/lib/utils/remote-image";
+
+/** Loaded only while the Hedera section is on: off, the form carries none of its code. */
+const LinkedWalletSettings = dynamic(() => import("@/components/hedera/LinkedWalletSettings").then((m) => m.LinkedWalletSettings));
 
 /**
  * Edit profile. Figma: `context/design/12-player-profile/Edit profile.png`.
@@ -251,6 +257,9 @@ function ProfileForm({
           />
         </div>
       </form>
+
+      {/* The linked Hedera wallet, only while the section is on (`lib/hedera/mode.ts`). */}
+      {HEDERA_ON ? <LinkedWalletSettings messages={messages} locale={locale} /> : null}
     </div>
   );
 }
@@ -344,35 +353,34 @@ function SelectField({
   onChange: (value: string) => void;
   trailing?: ReactNode;
 }) {
+  const id = useId();
   return (
-    <label className="block">
-      <span className="text-menu-fg/85 font-body text-body-sm leading-none">{label}</span>
-      <span className="relative mt-2.5 block">
-        <select
+    <div>
+      <label htmlFor={id} id={`${id}-label`} className="text-menu-fg/85 font-body text-body-sm block leading-none">
+        {label}
+      </label>
+      {/* The site's dropdown (`ui/Dropdown`) in this form's rounded box: no browser select (the human, 2026-11-23). */}
+      <div className="mt-2.5">
+        <Dropdown
+          id={id}
+          labelledBy={`${id}-label`}
+          options={options}
           value={value}
-          data-empty={value === "" || undefined}
-          onChange={(event) => onChange(event.target.value)}
-          className="border-menu-fg/25 text-menu-fg font-body text-body focus-visible:outline-signal data-empty:text-menu-fg/45 h-12.5 w-full appearance-none rounded-md border bg-transparent px-4 pr-11 leading-none focus-visible:outline-2 focus-visible:-outline-offset-1 [&>option]:bg-ash [&>option]:text-menu-fg"
-        >
-          <option value="" disabled>
-            {placeholder}
-          </option>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {trailing ? (
-          <span aria-hidden className="text-menu-fg/60 pointer-events-none absolute inset-y-0 right-4 grid place-items-center">
-            {trailing}
-          </span>
-        ) : (
-          <svg aria-hidden viewBox="0 0 12 8" className="text-menu-fg/60 pointer-events-none absolute top-1/2 right-4 h-2 w-3 -translate-y-1/2" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <path d="M1 1.5L6 6.5L11 1.5" />
-          </svg>
-        )}
-      </span>
-    </label>
+          onChange={onChange}
+          placeholder={placeholder}
+          triggerClassName="border-menu-fg/25 text-menu-fg font-body text-body focus-visible:outline-signal h-12.5 w-full rounded-md border bg-transparent px-4 leading-none focus-visible:outline-2 focus-visible:-outline-offset-1"
+          placeholderClassName="text-menu-fg/45"
+          caret={
+            trailing ? (
+              <span className="text-menu-fg/60 grid place-items-center">{trailing}</span>
+            ) : (
+              <svg viewBox="0 0 12 8" className="text-menu-fg/60 h-2 w-3" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <path d="M1 1.5L6 6.5L11 1.5" />
+              </svg>
+            )
+          }
+        />
+      </div>
+    </div>
   );
 }

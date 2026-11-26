@@ -17,7 +17,8 @@
  * ENDS and offers details, an OPEN one prints when it STARTS and offers
  * registration, and a COMING SOON one has no dates yet and no call to action.
  */
-export type TournamentStatus = "registrationOpen" | "active" | "open" | "comingSoon";
+/** `completed`: only on its own page, reached from a prize won in it; the lists leave it out. */
+export type TournamentStatus = "registrationOpen" | "active" | "open" | "comingSoon" | "completed";
 
 export type Tournament = {
   /** The API's id - what an entry fee is paid against. */

@@ -1,14 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import dynamic from "next/dynamic";
+
 import { LogOutButton } from "@/components/profile/LogOutButton";
 import { PlayGamesPanel } from "@/components/profile/PlayGamesPanel";
 import { EditGlyph, NigeriaFlag } from "@/components/profile/ProfileGlyphs";
+import { Calabash } from "@/components/calabash/Calabash";
+import { LazyCalabashHbar } from "@/components/hedera/lazy";
 import { SupportNote } from "@/components/ui/SupportNote";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
 import { isRemoteImage } from "@/lib/utils/remote-image";
+
+/** Loaded only while the Hedera section is on: off, the profile carries none of its code. */
+const ProfileWalletBadge = dynamic(() => import("@/components/hedera/ProfileWalletBadge").then((m) => m.ProfileWalletBadge));
 
 /**
  * The player profile card. Figma: `context/design/12-player-profile/`,
@@ -63,6 +71,7 @@ export function ProfileCard({
               <p className="text-menu-fg/85 font-body text-body mt-3 leading-none">
                 {profile.handle}
               </p>
+              {HEDERA_ON ? <ProfileWalletBadge messages={messages} locale={locale} /> : null}
             </div>
 
             <Link
@@ -99,20 +108,19 @@ export function ProfileCard({
 
       <hr className="border-menu-fg/9 mt-8 md:mt-16.5" />
 
-      <div className="mt-8 grid grid-cols-1 gap-5.5 md:mt-[3.875rem] lg:grid-cols-[30.9%_67.7%] lg:justify-between lg:gap-0">
-        <div className="flex flex-col gap-5.5">
-          {/* Seeds, the community's own points: the game keeps a separate economy, so its points
-              aren't shown here (the team, 2026-11-17). The usable Seeds are what's in the Calabash,
-              the wallet, with any on hold under them; the Legacy is everything ever earned. */}
-          <PointsTile
-            label={t.usableSeeds}
-            value={profile.seeds.calabash}
-            note={profile.seeds.pending > 0 ? t.pendingNote.replace("{count}", count(profile.seeds.pending)) : undefined}
-          />
-          <PointsTile label={t.legacySeeds} value={profile.seeds.legacy} note={t.legacyNote} />
-        </div>
+      {/* The Calabash, the same as on the Hedera hub (the human, 2026-11-23): Usable Seeds,
+          Legacy Seeds and, while the Hedera section runs, HBAR, each on its own tab saying what it
+          is. Seeds are the community's own points: the game keeps a separate economy, so its
+          points aren't shown here (the team, 2026-11-17). Full width, then the rankings under it. */}
+      <Calabash
+        messages={messages}
+        locale={locale}
+        hbar={HEDERA_ON ? <LazyCalabashHbar messages={messages} locale={locale} /> : undefined}
+        className="mt-8 md:mt-14"
+      />
 
-        <section className="bg-ash rounded-lg px-6.5 pt-4.5 pb-4 lg:h-full">
+      <div className="mt-8 md:mt-10">
+        <section className="bg-ash rounded-lg px-6.5 pt-4.5 pb-4">
           <div className="flex items-start justify-between gap-4">
             <h2 className="text-menu-fg font-body text-body leading-none tracking-[0.01em]">
               {t.rankings.title}
@@ -197,33 +205,3 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-
-/** `note` is a quiet line under the figure; with one, the tile grows to hold it. */
-function PointsTile({ label, value, note }: { label: string; value: number; note?: string }) {
-  return (
-    <div className="bg-ash flex min-h-28 flex-col justify-between gap-3 rounded-lg px-6 pt-5.5 pb-5.5">
-      <div className="flex items-start justify-between gap-4">
-        <p className="text-menu-fg font-body text-body leading-none">{label}</p>
-        <span className="bg-gild grid size-8 shrink-0 place-items-center rounded-sm">
-          <Image
-            src="/assets/merch/nsibidi-black.svg"
-            alt=""
-            aria-hidden
-            width={22}
-            height={22}
-            className="size-4.5 select-none"
-          />
-        </span>
-      </div>
-
-      <div>
-        <p className="font-display text-menu-fg text-[1.9375rem] leading-none font-semibold tracking-[-0.02em]">
-          {value.toLocaleString("en-NG")}
-        </p>
-        {note ? <p className="text-menu-fg/60 font-body mt-2 text-[0.8125rem] leading-snug">{note}</p> : null}
-      </div>
-    </div>
-  );
-}
-
-const count = (n: number) => n.toLocaleString("en-NG");

@@ -9,7 +9,6 @@ import Link from "next/link";
 import { CartButton } from "@/components/merch/CartButton";
 import { ComicCover } from "@/components/merch/ComicCover";
 import { ProductCard } from "@/components/merch/ProductCard";
-import { StoreAside } from "@/components/merch/StoreAside";
 import { StoreHero } from "@/components/merch/StoreHero";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { getComics, getFeaturedProduct, getListing } from "@/lib/api/merch";
@@ -79,8 +78,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           product={featured}
           messages={messages}
           locale={locale}
-          // Signed out, the login offer; signed in, their points. Decided in the browser (`StoreAside`).
-          aside={<StoreAside messages={messages} locale={locale} />}
+          // A plain shop (the team, 2026-11-23): no login offer or Seeds beside it; the Seeds are at checkout.
         />
         ) : null}
 

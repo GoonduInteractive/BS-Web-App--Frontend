@@ -35,7 +35,7 @@ function ago(iso: string, locale: string, justNow: string): string {
 }
 
 /** The website's own sections a notification may open. */
-const SITE_SECTIONS = new Set(["the-game", "characters", "community", "competition", "about", "news", "comics", "merch", "profile", "terms", "privacy"]);
+const SITE_SECTIONS = new Set(["the-game", "characters", "community", "competition", "about", "news", "comics", "merch", "profile", "terms", "privacy", "hedera"]);
 
 /**
  * Where a notification leads ON THIS WEBSITE, in the page's language, or null.

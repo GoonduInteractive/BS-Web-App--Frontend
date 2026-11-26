@@ -1,6 +1,9 @@
 import { Scene } from "@/components/competition/Scene";
+import { LazyTournamentHbarPrizes } from "@/components/hedera/lazy";
 import { TornDivider } from "@/components/ui/TornDivider";
+import { getTournamentPrize } from "@/lib/api/hedera";
 import { daysUntil } from "@/lib/api/tournaments";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { Tournament } from "@/types/tournament";
@@ -62,6 +65,9 @@ export function TournamentFacts({
     });
   }
   if (tournament.format) facts.push({ label: f.format, value: tournament.format });
+  // Cash, HBAR or both, per tournament (the Hedera doc), only while the Hedera section is on.
+  const prize = HEDERA_ON ? getTournamentPrize(tournament.slug) : null;
+  if (prize) facts.push({ label: messages.hedera.tournament.label, value: messages.hedera.tournament.fact[prize.type] });
 
   return (
     <section>
@@ -82,6 +88,8 @@ export function TournamentFacts({
           </div>
         ))}
       </Scene>
+      {/* Loaded only while the Hedera section is on (`components/hedera/lazy.tsx`). */}
+      {prize && prize.type !== "cash" ? <LazyTournamentHbarPrizes hbar={prize.hbar} messages={messages} locale={locale} /> : null}
     </section>
   );
 }

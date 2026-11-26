@@ -9,7 +9,7 @@ import { LIBRARY } from "@/components/comics/ReadButton";
 import { CART, useCart } from "@/components/merch/CartProvider";
 import { EmptyCart } from "@/components/merch/CartView";
 import { CheckoutForm, type CheckoutDetails } from "@/components/merch/CheckoutForm";
-import { CheckoutSummary } from "@/components/merch/CheckoutSummary";
+import { CheckoutSummary, type PayWith } from "@/components/merch/CheckoutSummary";
 import { OrderConfirmed, type ConfirmState, type OrderSummary } from "@/components/merch/OrderConfirmed";
 import { MY_CODES, MY_SEEDS, useMyRewardCodes, useMySeeds, useRewardTiers } from "@/hooks/useSeeds";
 import { ApiError } from "@/lib/api/client";
@@ -28,6 +28,10 @@ import {
   type PlacedOrder,
   type ShippingDetails,
 } from "@/lib/api/store";
+import { HEDERA_ON } from "@/lib/hedera/mode";
+import { useHbarDiscount } from "@/hooks/useHbarDiscount";
+import { RedeemDialog } from "@/components/merch/RedeemDialog";
+import type { RewardTier } from "@/types/seeds";
 import { authHref } from "@/lib/utils/auth-links";
 import { entryTotal, resolveCartLines } from "@/lib/utils/cart-entry";
 import { needsShipping } from "@/lib/utils/comic-sales";
@@ -172,6 +176,9 @@ export function CheckoutView({
   // On the way to Paystack: the page is still here until the browser has left it.
   const [leaving, setLeaving] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
+  // HBAR beside Paystack (the Hedera doc), only while the Hedera section is on.
+  const [payWith, setPayWith] = useState<PayWith>("paystack");
+  const hbarDiscountPct = useHbarDiscount();
 
   // Online chapters ship nothing; only a garment or a printed comic needs a delivery method and address.
   const { lines, clear } = useCart();
@@ -188,9 +195,9 @@ export function CheckoutView({
   const discount = code
     ? { pct: code.discountPct, cap: tiers.data?.find((tier) => tier.discountPct === code.discountPct)?.capNaira ?? null }
     : null;
-  // No code yet, but Seeds enough for one: say where codes come from.
-  const cheapest = tiers.data?.[0]?.cost;
-  const codeHint = !usableCodes.length && cheapest !== undefined && (seeds.data?.calabash ?? 0) >= cheapest;
+  // No code yet, but Seeds enough for one: point to the rewards under the summary.
+  // A reward redeemed from the summary's YOUR SEEDS; each opening is one attempt (`key`).
+  const [redeeming, setRedeeming] = useState<{ tier: RewardTier; attempt: number } | null>(null);
 
   const savedInfo = useQuery({ queryKey: SHIPPING_INFO, queryFn: getShippingInfo, enabled: status === "signed-in" });
   const prefill = toSaved(savedInfo.data ?? null, lgasByState);
@@ -244,6 +251,14 @@ export function CheckoutView({
       if (discountCode) {
         void queries.invalidateQueries({ queryKey: MY_CODES });
         void queries.invalidateQueries({ queryKey: MY_SEEDS });
+      }
+      // HBAR: the order is placed as ever, then paid on the Hedera checkout instead of Paystack.
+      // MOCK ONLY for now: the API never hears of the HBAR payment, so the order stays unpaid. FLAGGED.
+      if (HEDERA_ON && payWith === "hbar") {
+        clear();
+        setLeaving(true);
+        router.push(`/${locale}/hedera/checkout?order=${encodeURIComponent(order.id)}`);
+        return;
       }
       pay.mutate(order.id, {
         // The order exists now and the cart is gone: only its payment needs trying again.
@@ -406,13 +421,22 @@ export function CheckoutView({
           setPlaceError(null);
         }}
         discount={discount}
-        codeHint={codeHint}
+        // The player's Seeds, in the summary (moved off the store page, the team, 2026-11-23).
+        seeds={status === "signed-in" ? (seeds.data ?? null) : null}
+        tiers={tiers.data ?? []}
+        onRedeem={(tier) => setRedeeming((r) => ({ tier, attempt: (r?.attempt ?? 0) + 1 }))}
         busy={busy}
+        payWith={HEDERA_ON ? payWith : undefined}
+        onPayWithChange={HEDERA_ON ? setPayWith : undefined}
+        hbarDiscountPct={hbarDiscountPct}
         onPlaceOrder={() => {
           setPlaceError(null);
           submit();
         }}
       />
+      {redeeming ? (
+        <RedeemDialog key={redeeming.attempt} tier={redeeming.tier} messages={messages} locale={locale} onClose={() => setRedeeming(null)} />
+      ) : null}
 
       <OrderConfirmed
         messages={messages}

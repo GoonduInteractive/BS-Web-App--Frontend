@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { BracketButton } from "@/components/ui/BracketButton";
 import { TornPlate } from "@/components/ui/TornPlate";
 import { formatPrice } from "@/lib/utils/price";
 import { isRemoteImage } from "@/lib/utils/remote-image";
@@ -23,6 +24,12 @@ const FIELD: Record<TileField, string> = {
  * 453 of a 1280 container. The aside is a slot because all three store frames
  * share this row and differ only in what fills it: the login offer when signed
  * out, the points panels when signed in.
+ *
+ * WITHOUT AN ASIDE, A PLAIN SHOP (the team, 2026-11-23): the store was busy
+ * with the Seeds and the login offer, so they went (the Seeds to checkout,
+ * `CheckoutSeeds`) and the right column is the product itself: its name,
+ * price, description and a way in. The caption under the tile goes, as the
+ * column says it. No frame draws this; it is the product page's own type.
  */
 export function StoreHero({
   product,
@@ -33,7 +40,7 @@ export function StoreHero({
   product: Product;
   messages: Messages;
   locale: Locale;
-  aside: ReactNode;
+  aside?: ReactNode;
 }) {
   const t = messages.merch;
   const copy = product.copy;
@@ -63,19 +70,39 @@ export function StoreHero({
           />
         </div>
 
-        <div className="mt-5.25 flex items-baseline justify-between gap-4 px-3">
-          <h2 className="font-display text-menu-fg text-[2rem] leading-none font-semibold tracking-[-0.065em] uppercase">
-            {copy.name}
-          </h2>
-          <p className="font-display text-menu-fg text-[2rem] leading-none font-semibold tracking-[-0.065em]">
-            {formatPrice(product.price, locale, t.price)}
-          </p>
-        </div>
+        {aside ? (
+          <div className="mt-5.25 flex items-baseline justify-between gap-4 px-3">
+            <h2 className="font-display text-menu-fg text-[2rem] leading-none font-semibold tracking-[-0.065em] uppercase">
+              {copy.name}
+            </h2>
+            <p className="font-display text-menu-fg text-[2rem] leading-none font-semibold tracking-[-0.065em]">
+              {formatPrice(product.price, locale, t.price)}
+            </p>
+          </div>
+        ) : null}
       </Link>
 
       {/* The torn login card overhangs the tile's top by 5px in the frame; the
           ash panels do not, so the offset belongs to the card and not here. */}
-      <aside>{aside}</aside>
+      {aside ? (
+        <aside>{aside}</aside>
+      ) : (
+        <div className="lg:self-center">
+          <p className="text-menu-fg/70 font-body text-body-sm leading-none tracking-wider uppercase">{t.featured.label}</p>
+          <h2 className="font-display text-menu-fg mt-4 text-[2.75rem] leading-[0.9] font-semibold tracking-[-0.065em] uppercase lg:text-[3.5rem]">
+            {copy.name}
+          </h2>
+          <p className="font-display text-menu-fg mt-5 text-[2rem] leading-none font-semibold tracking-[-0.065em]">
+            {formatPrice(product.price, locale, t.price)}
+          </p>
+          {copy.description ? (
+            <p className="text-menu-fg/85 font-body text-body mt-6 line-clamp-5 max-w-[30rem]">{copy.description}</p>
+          ) : null}
+          <BracketButton href={`/${locale}/merch/${product.slug}`} className="mt-9 px-3.75 py-[1.15rem] tracking-normal">
+            {t.featured.cta}
+          </BracketButton>
+        </div>
+      )}
     </div>
   );
 }

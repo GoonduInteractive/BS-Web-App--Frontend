@@ -25,8 +25,9 @@ import { ApiError, apiGet, fromMinor, publicHandle } from "./client";
  *
  * WHAT THE SITE SHOWS OF THE API'S STATUSES: registration open, active and
  * coming soon. Drafts are an admin's; COMPLETED AND CANCELLED ONES ARE LEFT OUT
- * of the lists and have no page - no frame draws a finished tournament, and
- * there is no copy for one. FLAGGED.
+ * of the lists. A completed one keeps its page (COMPLETED, no registration),
+ * since a prize won in it links there (2026-11-23); a cancelled one has none.
+ * No frame draws a finished tournament. FLAGGED.
  *
  * WHICH ONE IS FEATURED: the one an admin marked `featured`, else the first
  * with registration open, else the first listed. An open tournament reads
@@ -131,6 +132,10 @@ function statusOf(status: string, slot: Slot): TournamentStatus | null {
       return "active";
     case "coming_soon":
       return "comingSoon";
+    // A finished one keeps its page, so a prize won in it can lead there (the human,
+    // 2026-11-23); the lists and the featured slot still leave it out.
+    case "completed":
+      return slot === "page" ? "completed" : null;
     default:
       return null;
   }

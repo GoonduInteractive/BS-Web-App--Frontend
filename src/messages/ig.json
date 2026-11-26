@@ -20,7 +20,8 @@
     "account": "TODO ig: Account",
     "comics": "TODO ig: Comics",
     "news": "TODO ig: News",
-    "merch": "TODO ig: Merch Store"
+    "merch": "TODO ig: Merch Store",
+    "hedera": "Hedera"
   },
   "menu": {
     "label": "TODO ig: Main menu",
@@ -206,7 +207,8 @@
       "registrationOpen": "TODO ig: REGISTRATION OPEN",
       "active": "TODO ig: ACTIVE",
       "open": "TODO ig: OPEN",
-      "comingSoon": "TODO ig: COMING SOON"
+      "comingSoon": "TODO ig: COMING SOON",
+      "completed": "TODO ig: COMPLETED"
     },
     "regions": {
       "global": "TODO ig: Global",
@@ -649,7 +651,9 @@
       "cartCount": "TODO ig: items in cart"
     },
     "featured": {
-      "exclusive": "TODO ig: EXCLUSIVE"
+      "exclusive": "TODO ig: EXCLUSIVE",
+      "label": "TODO ig: FEATURED",
+      "cta": "TODO ig: VIEW PRODUCT"
     },
     "login": {
       "pitch": "TODO ig: LOGIN TO ENJOY UP TO 20% OFF\nAND ACCESS TO EXCLUSIVE MERCH",
@@ -798,7 +802,9 @@
       "codeOption": "TODO ig: {pct}% off",
       "codeHint": "TODO ig: You have enough Seeds for a discount. Redeem them for a code in the store.",
       "codeHintLink": "TODO ig: Go to rewards",
-      "codeRefused": "TODO ig: That Seeds code can't be used any more. Choose another, or place the order without one."
+      "codeRefused": "TODO ig: That Seeds code can't be used any more. Choose another, or place the order without one.",
+      "seedsTitle": "TODO ig: Your Seeds",
+      "seedsCalabash": "TODO ig: See your Calabash"
     },
     "confirmed": {
       "title": "TODO ig: ORDER CONFIRMED",
@@ -930,7 +936,29 @@
     "usableSeeds": "TODO ig: USABLE SEEDS",
     "legacySeeds": "TODO ig: LEGACY SEEDS",
     "legacyNote": "TODO ig: Total Seeds you've accumulated in your lifetime.",
-    "pendingNote": "TODO ig: {count} on hold"
+    "pendingNote": "TODO ig: {count} on hold",
+    "calabash": {
+      "title": "TODO ig: CALABASH",
+      "intro": "TODO ig: Your wallet on Beyond Service: the Seeds you can spend, and every Seed you've ever earned.",
+      "introHbar": "TODO ig: Your wallet on Beyond Service. Seeds and HBAR sit here side by side but stay apart: one never turns into the other.",
+      "tabs": {
+        "usable": "TODO ig: Usable Seeds",
+        "legacy": "TODO ig: Legacy Seeds",
+        "hbar": "HBAR"
+      },
+      "usableAbout": "TODO ig: The Seeds you can spend. Redeem them for a discount code, then use the code on a merch order.",
+      "legacyAbout": "TODO ig: Every Seed you've ever earned, including the ones you've spent. Spending never lowers it: it's the record of all you've done in the community.",
+      "codesNote": "TODO ig: Use a code at merch checkout. Each one works once.",
+      "earnTitle": "TODO ig: HOW YOU EARN SEEDS",
+      "earn": {
+        "read": "TODO ig: Read the comics",
+        "share": "TODO ig: Share a comic",
+        "invite": "TODO ig: Invite friends who join",
+        "leaderboard": "TODO ig: Place on the leaderboard",
+        "events": "TODO ig: Mini-games and hunts, when they're running"
+      },
+      "earnNote": "TODO ig: Seeds are community points, not money. They can't be bought, sold or turned into HBAR."
+    }
   },
   "comics": {
     "meta": {
@@ -1077,5 +1105,457 @@
     "error": "TODO ig: Couldn't load your notifications. Try again in a moment.",
     "justNow": "TODO ig: Just now",
     "markFailed": "TODO ig: Couldn’t mark that as read. Try again in a moment."
+  },
+  "hedera": {
+    "chip": "TODO ig: HEDERA",
+    "nav": {
+      "label": "TODO ig: Hedera pages",
+      "hub": "TODO ig: Hub",
+      "store": "TODO ig: Game Store",
+      "exclusives": "TODO ig: My Exclusives",
+      "activity": "TODO ig: Activity"
+    },
+    "hbar": "TODO ig: {amount} HBAR",
+    "approx": "TODO ig: ≈ {amount}",
+    "usd": "TODO ig: ${amount}",
+    "publicNote": "TODO ig: Your wallet's account ID and everything it holds are public on the Hedera network. Anyone can look them up.",
+    "viewOnHashscan": "TODO ig: View on HashScan",
+    "error": "TODO ig: Something went wrong. Try again in a moment.",
+    "retry": "TODO ig: TRY AGAIN",
+    "down": {
+      "title": "TODO ig: HEDERA ISN'T ANSWERING",
+      "body": "TODO ig: We can't reach Hedera right now, so balances and exclusives may be out of date. Your matches aren't affected. Try again in a few minutes."
+    },
+    "family": {
+      "skin": "TODO ig: Skin",
+      "weapon": "TODO ig: Weapon",
+      "character": "TODO ig: Character"
+    },
+    "families": {
+      "skin": "TODO ig: Skins",
+      "weapon": "TODO ig: Weapons",
+      "character": "TODO ig: Characters"
+    },
+    "rarity": {
+      "common": "TODO ig: Common",
+      "rare": "TODO ig: Rare",
+      "epic": "TODO ig: Epic",
+      "legendary": "TODO ig: Legendary"
+    },
+    "explainer": {
+      "meta": {
+        "title": "TODO ig: Hedera Exclusives | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Link a Hedera wallet to claim free Beyond Service exclusives, buy more in the game store and receive HBAR tournament prizes."
+      },
+      "title": "TODO ig: HEDERA EXCLUSIVES",
+      "intro": "TODO ig: Skins, weapons and characters that live in your own Hedera wallet and unlock in Beyond Service. Link a wallet once, here on the website, and the game sees what you own.",
+      "optional": "TODO ig: You can play the whole game without any of this.",
+      "stepsTitle": "TODO ig: WHAT YOU CAN DO",
+      "steps": {
+        "link": {
+          "title": "TODO ig: LINK A WALLET",
+          "body": "TODO ig: Connect HashPack, or create a wallet with Google or email. No app to install, no seed phrase."
+        },
+        "claim": {
+          "title": "TODO ig: CLAIM FREE EXCLUSIVES",
+          "body": "TODO ig: Some exclusives are free to every player who links a wallet."
+        },
+        "buy": {
+          "title": "TODO ig: BUY IN THE GAME STORE",
+          "body": "TODO ig: Pay in HBAR for skins, weapons and characters. Prices are set in naira and quoted in HBAR at checkout."
+        },
+        "prizes": {
+          "title": "TODO ig: RECEIVE HBAR PRIZES",
+          "body": "TODO ig: Some tournaments pay prizes in HBAR, straight to your linked wallet."
+        }
+      },
+      "rulesTitle": "TODO ig: GOOD TO KNOW",
+      "rules": {
+        "optional": "TODO ig: It's optional. A player without a wallet plays the full game.",
+        "cosmetic": "TODO ig: Exclusives change how you look, never how you play. No advantage in a match.",
+        "separate": "TODO ig: Seeds and HBAR are separate. Seeds can't be bought with HBAR or turned into HBAR.",
+        "keys": "TODO ig: Your keys stay with you. Goondu never holds them.",
+        "adults": "TODO ig: Wallets, payments and prizes are for players 18 and over, like the rest of the community."
+      },
+      "signIn": "TODO ig: SIGN IN TO START",
+      "connect": "TODO ig: LINK A WALLET",
+      "hub": "TODO ig: GO TO YOUR HUB",
+      "store": "TODO ig: BROWSE THE STORE",
+      "faq": {
+        "what": {
+          "question": "TODO ig: WHAT IS HEDERA?",
+          "answer": "TODO ig: A public network for payments and digital items. Transfers settle in seconds for a fraction of a cent, and what you own sits in your own wallet, not on our servers."
+        },
+        "questions": {
+          "optional": "TODO ig: DO I NEED A WALLET TO PLAY?",
+          "cosmetic": "TODO ig: DO EXCLUSIVES GIVE ME AN ADVANTAGE?",
+          "separate": "TODO ig: ARE SEEDS AND HBAR THE SAME THING?",
+          "keys": "TODO ig: WHO HOLDS MY WALLET'S KEYS?",
+          "adults": "TODO ig: WHO CAN USE WALLETS, PAYMENTS AND PRIZES?"
+        },
+        "intro": "TODO ig: Short answers to what players ask before they link a wallet."
+      }
+    },
+    "hub": {
+      "meta": {
+        "title": "TODO ig: Hedera Hub | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Your linked wallet, your Calabash and your exclusives."
+      },
+      "title": "TODO ig: HEDERA HUB",
+      "hbar": "TODO ig: HBAR",
+      "hbarNote": "TODO ig: In your linked wallet",
+      "hbarNone": "TODO ig: Link a wallet to see your HBAR.",
+      "wallet": "TODO ig: LINKED WALLET",
+      "linkedWith": "TODO ig: Linked with {provider} on {date}",
+      "manage": "TODO ig: Change or unlink in account settings",
+      "noWallet": {
+        "title": "TODO ig: NO WALLET LINKED",
+        "body": "TODO ig: Link a Hedera wallet to claim free exclusives, buy in the game store and receive HBAR prizes.",
+        "cta": "TODO ig: LINK A WALLET"
+      },
+      "exclusives": "TODO ig: MY EXCLUSIVES",
+      "exclusivesCount": "TODO ig: {owned} in your wallet · {claimable} free to claim",
+      "prizes": "TODO ig: PRIZES",
+      "prizesEmpty": "TODO ig: No HBAR prizes yet. They show up here after a tournament that pays in HBAR.",
+      "activity": "TODO ig: RECENT ACTIVITY",
+      "activityEmpty": "TODO ig: Nothing yet. Claims, purchases and prizes show up here.",
+      "seeAll": "TODO ig: See all",
+      "hbarAbout": "TODO ig: HBAR is real money: the currency of the Hedera network, held in your own linked wallet. You pay for game-store exclusives with it, and some tournaments pay prizes in it.",
+      "identityNudge": "TODO ig: Your {amount} prize from {tournament} is waiting for a quick identity check.",
+      "identityCta": "TODO ig: CONFIRM IT'S YOU",
+      "store": "TODO ig: Browse the game store"
+    },
+    "connect": {
+      "meta": {
+        "title": "TODO ig: Link a Wallet | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Link a Hedera wallet to your Beyond Service account."
+      },
+      "title": "TODO ig: LINK A WALLET",
+      "intro": "TODO ig: You only do this once. After that, you sign only when HBAR leaves your wallet.",
+      "replaces": "TODO ig: You already have {account} linked. Linking another wallet replaces it; exclusives already sent stay where they are.",
+      "back": "TODO ig: Back",
+      "existing": {
+        "title": "TODO ig: I HAVE A HEDERA WALLET",
+        "body": "TODO ig: Connect HashPack and sign one message to prove the wallet is yours.",
+        "cta": "TODO ig: CONNECT HASHPACK"
+      },
+      "embedded": {
+        "title": "TODO ig: I'M NEW TO HEDERA",
+        "body": "TODO ig: Create a wallet with Google or email. No app to install, no seed phrase.",
+        "cta": "TODO ig: CREATE A WALLET"
+      },
+      "pairing": {
+        "title": "TODO ig: CONNECT HASHPACK",
+        "scan": "TODO ig: Scan this code with HashPack on your phone.",
+        "code": "TODO ig: Pairing code for HashPack",
+        "open": "TODO ig: OPEN HASHPACK",
+        "openBody": "TODO ig: Open HashPack on this phone and approve the connection.",
+        "waiting": "TODO ig: Waiting for HashPack…",
+        "signing": "TODO ig: Approve the message in HashPack to prove the wallet is yours.",
+        "checking": "TODO ig: Signed. Checking it…",
+        "rejected": "TODO ig: The message wasn't signed, so the wallet isn't linked. Try again when you're ready.",
+        "timeout": "TODO ig: HashPack didn't answer in time. Check the app is open, then try again."
+      },
+      "create": {
+        "title": "TODO ig: CREATE A WALLET",
+        "body": "TODO ig: The wallet is yours: its keys stay with you through the wallet provider, never with Goondu.",
+        "google": "TODO ig: CONTINUE WITH GOOGLE",
+        "email": "TODO ig: CONTINUE WITH EMAIL",
+        "emailLabel": "TODO ig: Email address",
+        "emailPlaceholder": "TODO ig: you@example.com",
+        "or": "TODO ig: or",
+        "creating": "TODO ig: Creating your wallet…",
+        "failed": "TODO ig: We couldn't create the wallet this time. Try again."
+      },
+      "confirm": {
+        "title": "TODO ig: IS THIS YOUR WALLET?",
+        "body": "TODO ig: Check the account ID before you link it. It's where your exclusives and HBAR prizes will go.",
+        "account": "TODO ig: Account ID",
+        "wallet": "TODO ig: Wallet",
+        "yes": "TODO ig: YES, LINK IT",
+        "no": "TODO ig: No, start again"
+      },
+      "done": {
+        "title": "TODO ig: WALLET LINKED",
+        "body": "TODO ig: Free exclusives are ready to claim, and the game sees what you own on its next sync.",
+        "claim": "TODO ig: CLAIM FREE EXCLUSIVES",
+        "hub": "TODO ig: Go to your hub",
+        "continue": "TODO ig: CONTINUE"
+      }
+    },
+    "store": {
+      "meta": {
+        "title": "TODO ig: Game Store | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Hedera exclusives for Beyond Service: skins, weapons and characters, paid for in HBAR."
+      },
+      "title": "TODO ig: GAME STORE",
+      "intro": "TODO ig: Hedera exclusives for Beyond Service, paid for in HBAR. Prices are set in naira; the HBAR shown is an estimate until checkout.",
+      "signedOut": "TODO ig: Anyone can browse. Sign in and link a wallet to buy.",
+      "filterFamily": "TODO ig: Type",
+      "filterRarity": "TODO ig: Rarity",
+      "all": "TODO ig: All",
+      "free": "TODO ig: FREE",
+      "freeNote": "TODO ig: Free with a linked wallet",
+      "soldOut": "TODO ig: SOLD OUT",
+      "owned": "TODO ig: OWNED",
+      "left": "TODO ig: {remaining} of {total} left",
+      "until": "TODO ig: On sale until {date}",
+      "empty": {
+        "title": "TODO ig: NOTHING HERE",
+        "body": "TODO ig: No exclusives match those filters."
+      }
+    },
+    "asset": {
+      "back": "TODO ig: Back to the store",
+      "games": "TODO ig: Unlocks in",
+      "collection": "TODO ig: Collection",
+      "serial": "TODO ig: Serial #{n}",
+      "buy": "TODO ig: BUY WITH HBAR",
+      "signInToBuy": "TODO ig: SIGN IN TO BUY",
+      "linkToBuy": "TODO ig: LINK A WALLET TO BUY",
+      "claim": "TODO ig: CLAIM IT FREE",
+      "signInToClaim": "TODO ig: SIGN IN TO CLAIM",
+      "linkToClaim": "TODO ig: LINK A WALLET TO CLAIM",
+      "owned": "TODO ig: It's in your wallet and unlocked in the game.",
+      "minting": "TODO ig: On its way to your wallet…",
+      "soldOut": "TODO ig: Every one of this edition has been sold.",
+      "estimate": "TODO ig: Quoted in HBAR when you check out."
+    },
+    "exclusives": {
+      "meta": {
+        "title": "TODO ig: My Exclusives | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: The Hedera exclusives in your linked wallet."
+      },
+      "title": "TODO ig: MY EXCLUSIVES",
+      "intro": "TODO ig: What's in your linked wallet, and the free exclusives waiting for you.",
+      "owned": "TODO ig: IN YOUR WALLET",
+      "claimable": "TODO ig: FREE TO CLAIM",
+      "failed": "TODO ig: Couldn't be sent",
+      "empty": {
+        "title": "TODO ig: NO EXCLUSIVES YET",
+        "body": "TODO ig: Claim a free one, or find one in the game store.",
+        "cta": "TODO ig: BROWSE THE STORE"
+      }
+    },
+    "claim": {
+      "label": "TODO ig: Claim an exclusive",
+      "close": "TODO ig: Close",
+      "title": "TODO ig: CLAIM {name}",
+      "intro": "TODO ig: Free to every player with a linked wallet. It goes straight to {account}.",
+      "go": "TODO ig: CLAIM IT",
+      "associateTitle": "TODO ig: ALLOW THIS COLLECTION",
+      "associateBody": "TODO ig: Before your wallet can receive Beyond Service {family}, approve the collection in HashPack. It's a one-time step per collection, and Hedera charges a small network fee for it.",
+      "associate": "TODO ig: APPROVE IN HASHPACK",
+      "associating": "TODO ig: Waiting for HashPack…",
+      "rejected": "TODO ig: The collection wasn't approved, so nothing was sent. Try again when you're ready.",
+      "minting": "TODO ig: Sending it to your wallet…",
+      "doneTitle": "TODO ig: IT'S YOURS",
+      "doneBody": "TODO ig: {name} is in your wallet. It unlocks in the game on its next sync.",
+      "done": "TODO ig: DONE",
+      "failed": "TODO ig: It couldn't be sent this time. Try again."
+    },
+    "checkout": {
+      "meta": {
+        "title": "TODO ig: HBAR Checkout | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Pay in HBAR."
+      },
+      "title": "TODO ig: PAY WITH HBAR",
+      "item": "TODO ig: ITEM",
+      "order": "TODO ig: Order {id}",
+      "price": "TODO ig: Price",
+      "youPay": "TODO ig: You pay",
+      "quoting": "TODO ig: Getting your HBAR quote…",
+      "expiresIn": "TODO ig: Quote holds for {time}",
+      "payTo": "TODO ig: Paid to",
+      "memo": "TODO ig: Memo",
+      "from": "TODO ig: From",
+      "balance": "TODO ig: Your wallet holds {amount}.",
+      "low": "TODO ig: That's less than this quote. Add HBAR to your wallet, then pay.",
+      "pay": "TODO ig: PAY {amount}",
+      "payNote": "TODO ig: Your wallet asks you to approve one payment to Goondu, carrying the memo above.",
+      "paying": "TODO ig: Approve the payment in your wallet…",
+      "rejected": "TODO ig: The payment wasn't approved, so nothing left your wallet.",
+      "awaiting": "TODO ig: Payment sent. Waiting for it to be confirmed…",
+      "expired": {
+        "title": "TODO ig: QUOTE EXPIRED",
+        "body": "TODO ig: HBAR's price moves, so a quote only holds for 10 minutes. Get a new one to carry on.",
+        "cta": "TODO ig: GET A NEW QUOTE"
+      },
+      "underpaid": {
+        "title": "TODO ig: PAYMENT SHORT",
+        "body": "TODO ig: We received {paid}, less than the {quote} quoted, so the order didn't go through. Your HBAR is going back to your wallet."
+      },
+      "failed": "TODO ig: The payment couldn't be completed. Try again.",
+      "noWallet": {
+        "title": "TODO ig: LINK A WALLET FIRST",
+        "body": "TODO ig: HBAR payments come from your own wallet. Link one, then come back to pay.",
+        "cta": "TODO ig: LINK A WALLET"
+      },
+      "unavailable": "TODO ig: This exclusive can't be bought right now.",
+      "nothing": "TODO ig: There's nothing to pay for here."
+    },
+    "order": {
+      "meta": {
+        "title": "TODO ig: Receipt | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Your HBAR payment."
+      },
+      "receipt": "TODO ig: RECEIPT",
+      "confirmedTitle": "TODO ig: PAYMENT CONFIRMED",
+      "unlocked": "TODO ig: {name} is in your wallet and now unlocked in the game.",
+      "minting": "TODO ig: {name} is on its way to your wallet…",
+      "orderPaid": "TODO ig: Your order is paid.",
+      "failedTitle": "TODO ig: IT COULDN'T BE SENT",
+      "failedBody": "TODO ig: Your payment went through, but {name} couldn't be sent to your wallet, so your HBAR is going back to you.",
+      "refundPending": "TODO ig: Refund on its way",
+      "refundSent": "TODO ig: Refunded to your wallet",
+      "awaitingTitle": "TODO ig: WAITING FOR YOUR PAYMENT",
+      "awaitingBody": "TODO ig: This order isn't paid yet.",
+      "continue": "TODO ig: CONTINUE TO PAYMENT",
+      "paid": "TODO ig: Paid",
+      "quote": "TODO ig: Quote",
+      "memo": "TODO ig: Memo",
+      "date": "TODO ig: Date",
+      "payment": "TODO ig: Payment",
+      "refund": "TODO ig: Refund",
+      "nft": "TODO ig: NFT",
+      "hub": "TODO ig: GO TO YOUR HUB",
+      "store": "TODO ig: Back to the store",
+      "missing": "TODO ig: We couldn't find that order."
+    },
+    "prize": {
+      "meta": {
+        "title": "TODO ig: HBAR Prize | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Your HBAR tournament prize."
+      },
+      "title": "TODO ig: HBAR PRIZE",
+      "place": "TODO ig: Place {n}",
+      "verify": {
+        "title": "TODO ig: CONFIRM IT'S YOU",
+        "body": "TODO ig: A prize this size needs a quick identity check before it's paid. We use it for this payout and our tax records, nothing else.",
+        "fullName": "TODO ig: Full name, as on your ID",
+        "dob": "TODO ig: Date of birth",
+        "idType": "TODO ig: ID type",
+        "idTypes": {
+          "nin": "TODO ig: NIN",
+          "passport": "TODO ig: International passport",
+          "drivers": "TODO ig: Driver's licence",
+          "voters": "TODO ig: Voter's card (PVC)"
+        },
+        "idNumber": "TODO ig: ID number",
+        "submit": "TODO ig: SUBMIT",
+        "missing": "TODO ig: Fill in every field."
+      },
+      "pending": {
+        "title": "TODO ig: WAITING FOR APPROVAL",
+        "body": "TODO ig: Every payout is checked by our team before it's sent. We'll email you the HashScan link when it goes."
+      },
+      "sent": {
+        "title": "TODO ig: PRIZE SENT",
+        "body": "TODO ig: {amount} went to your linked wallet, {account}."
+      },
+      "failed": {
+        "title": "TODO ig: THE PAYOUT DIDN'T GO THROUGH",
+        "body": "TODO ig: Our team has been told and will send it again. There's nothing you need to do."
+      },
+      "noWallet": {
+        "title": "TODO ig: LINK A WALLET TO RECEIVE IT",
+        "body": "TODO ig: HBAR prizes go only to a verified linked wallet.",
+        "cta": "TODO ig: LINK A WALLET"
+      },
+      "status": {
+        "verify": "TODO ig: Identity check needed",
+        "pending": "TODO ig: Waiting for approval",
+        "sent": "TODO ig: Sent",
+        "failed": "TODO ig: Payout failed",
+        "reviewing": "TODO ig: Checking your ID",
+        "resubmit": "TODO ig: Send your ID again"
+      },
+      "missing": "TODO ig: We couldn't find that prize.",
+      "reviewing": {
+        "title": "TODO ig: CHECKING YOUR ID",
+        "body": "TODO ig: Thanks. Our team is checking it now. We'll email you, and tell you here and in your notifications, as soon as it's done."
+      },
+      "resubmit": {
+        "title": "TODO ig: SEND YOUR ID AGAIN",
+        "body": "TODO ig: Our team couldn't confirm your identity check. Here's what to fix:"
+      },
+      "steps": {
+        "send": "TODO ig: Send your ID",
+        "check": "TODO ig: We check it",
+        "approve": "TODO ig: Approval",
+        "sent": "TODO ig: Sent"
+      },
+      "details": {
+        "title": "TODO ig: THE TOURNAMENT",
+        "region": "TODO ig: Region",
+        "played": "TODO ig: Played",
+        "players": "TODO ig: Players",
+        "place": "TODO ig: Your place",
+        "prize": "TODO ig: Your prize",
+        "view": "TODO ig: VIEW TOURNAMENT"
+      }
+    },
+    "activity": {
+      "meta": {
+        "title": "TODO ig: Hedera Activity | Beyond Service: Trial of the Gods",
+        "description": "TODO ig: Your purchases, claims and prizes on Hedera."
+      },
+      "title": "TODO ig: ACTIVITY",
+      "intro": "TODO ig: Purchases, claims, prizes and refunds, each with its HashScan link.",
+      "kinds": {
+        "purchase": "TODO ig: Purchase",
+        "claim": "TODO ig: Claim",
+        "payout": "TODO ig: Prize",
+        "refund": "TODO ig: Refund"
+      },
+      "empty": {
+        "title": "TODO ig: NO ACTIVITY YET",
+        "body": "TODO ig: Claims, purchases and prizes show up here.",
+        "cta": "TODO ig: BROWSE THE STORE"
+      }
+    },
+    "settings": {
+      "title": "TODO ig: LINKED WALLET",
+      "none": "TODO ig: No Hedera wallet linked.",
+      "link": "TODO ig: LINK A WALLET",
+      "change": "TODO ig: Change wallet",
+      "unlink": "TODO ig: Unlink",
+      "unlinkLabel": "TODO ig: Unlink your wallet",
+      "unlinkTitle": "TODO ig: UNLINK THIS WALLET?",
+      "unlinkBody": "TODO ig: Exclusives already sent stay in {account}. To claim, buy or receive HBAR prizes again, you'll need to link a wallet.",
+      "unlinkConfirm": "TODO ig: UNLINK",
+      "keep": "TODO ig: Keep it",
+      "unlinked": "TODO ig: Your wallet is unlinked."
+    },
+    "profile": {
+      "linked": "TODO ig: Wallet linked",
+      "hub": "TODO ig: Hedera hub"
+    },
+    "payWith": {
+      "title": "TODO ig: Pay with",
+      "paystack": "TODO ig: Card, bank or transfer",
+      "paystackNote": "TODO ig: Through Paystack.",
+      "hbar": "TODO ig: HBAR",
+      "hbarNote": "TODO ig: From your Hedera wallet. You'll get a quote that holds for 10 minutes.",
+      "logoAlt": "Hedera",
+      "discount": "TODO ig: {pct}% off when you pay in HBAR",
+      "discountRow": "TODO ig: HBAR discount ({pct}%)",
+      "discountNote": "TODO ig: {pct}% off {amount} for paying in HBAR"
+    },
+    "tournament": {
+      "label": "TODO ig: PRIZES",
+      "fact": {
+        "cash": "TODO ig: Cash",
+        "hbar": "HBAR",
+        "both": "TODO ig: Cash + HBAR"
+      },
+      "hbarPrizes": "TODO ig: HBAR prizes",
+      "linkPrompt": "TODO ig: This tournament pays prizes in HBAR. Link a wallet to receive yours.",
+      "linkCta": "TODO ig: Link a wallet"
+    },
+    "seedsFlag": {
+      "label": "TODO ig: Not real money",
+      "tip": "TODO ig: Seeds are community points, not money. They can't be bought, sold or turned into HBAR."
+    }
   }
 }

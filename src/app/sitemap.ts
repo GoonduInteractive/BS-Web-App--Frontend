@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { getCatalogue } from "@/lib/api/hedera";
 import { getComics, getProducts } from "@/lib/api/merch";
 import { getCharacters } from "@/lib/api/characters";
 import { getArticles } from "@/lib/api/news";
@@ -22,13 +23,14 @@ import { DEFAULT_LOCALE, LOCALES } from "@/lib/utils/locales";
  * they are the Coming Soon page for now, and `noindex`).
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, characters, products, comics, tournaments] = await Promise.all([
+  const [articles, characters, products, comics, tournaments, exclusives] = await Promise.all([
     // An entry exists when its English file does; the path is the same in both locales.
     getArticles(DEFAULT_LOCALE),
     getCharacters(DEFAULT_LOCALE),
     getProducts(),
     getComics(),
     getTournamentSlugs(),
+    getCatalogue(),
   ]);
 
   const paths: { path: string; priority: number; lastModified?: string }[] = [
@@ -45,6 +47,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...comics.map((c) => ({ path: `/merch/comics/${c.slug}`, priority: 0.5 })),
     ...products.map((p) => ({ path: `/merch/${p.slug}`, priority: 0.5 })),
     ...tournaments.map((slug) => ({ path: `/competition/${slug}`, priority: 0.7 })),
+    // The Hedera section's public pages; dropped below while the section is hidden.
+    { path: "/hedera", priority: 0.6 },
+    { path: "/hedera/store", priority: 0.6 },
+    ...exclusives.map((a) => ({ path: `/hedera/store/${a.id}`, priority: 0.4 })),
   ];
 
   const absolute = (p: string) => new URL(p, SITE_URL).toString();

@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 
 import { MenuRule } from "@/components/chrome/NavRules";
 import { GATES, gateHref } from "@/lib/gates";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import type { Messages } from "@/lib/utils/messages";
 import { cn } from "@/lib/utils/cn";
 
@@ -168,6 +169,8 @@ export function MenuOverlay({
           <UtilityLink href={`/${locale}/comics`}>{t.comics}</UtilityLink>
           <UtilityLink href={`/${locale}/news`}>{t.news}</UtilityLink>
           <UtilityLink href={`/${locale}/merch`}>{t.merch}</UtilityLink>
+          {/* Only while the Hedera section is on (`lib/hedera/mode.ts`). */}
+          {HEDERA_ON ? <UtilityLink href={`/${locale}/hedera`}>{t.hedera}</UtilityLink> : null}
         </div>
       </div>
     </div>

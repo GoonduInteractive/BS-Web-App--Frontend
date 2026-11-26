@@ -1,5 +1,6 @@
 "use client";
 
+import { Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -7,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { useAuth } from "@/components/auth/AuthProvider";
 import { LogOutGlyph, LoginGlyph, PersonGlyph } from "@/components/profile/ProfileGlyphs";
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import type { Messages } from "@/lib/utils/messages";
 import type { Profile } from "@/types/profile";
 import { isRemoteImage } from "@/lib/utils/remote-image";
@@ -139,6 +141,22 @@ export function AccountMenu({
                   ›
                 </span>
               </Link>
+
+              {/* The Hedera hub, only while the section is on (`lib/hedera/mode.ts`). */}
+              {HEDERA_ON ? (
+                <Link
+                  href={`/${locale}/hedera/hub`}
+                  role="menuitem"
+                  onClick={() => setOpen(false)}
+                  className="text-menu-fg font-body text-body-sm focus-visible:outline-signal hover:bg-menu-fg/6 flex items-center gap-3 px-4 py-3.5 leading-none transition-colors duration-150 ease-gate focus-visible:outline-2 focus-visible:-outline-offset-2"
+                >
+                  <Wallet aria-hidden className="size-5" strokeWidth={1.5} />
+                  <span className="flex-1">{messages.hedera.profile.hub}</span>
+                  <span aria-hidden className="text-menu-fg/60">
+                    ›
+                  </span>
+                </Link>
+              ) : null}
 
               <hr className="border-menu-fg/12" />
 

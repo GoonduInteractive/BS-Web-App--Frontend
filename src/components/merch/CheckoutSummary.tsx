@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
 import { useCart } from "@/components/merch/CartProvider";
+import { CALABASH_ID } from "@/components/calabash/id";
+import { SeedsFlag } from "@/components/hedera/SeedsFlag";
+import { nextRewardAt } from "@/components/merch/PointsPanel";
+import { hbarDiscountOff } from "@/hooks/useHbarDiscount";
 import { SupportNote } from "@/components/ui/SupportNote";
 import { formatPrice } from "@/lib/utils/price";
 import type { Locale } from "@/lib/utils/locales";
@@ -13,7 +16,12 @@ import { colourLabel, sizeLabel } from "@/lib/utils/merch-copy";
 import { isRemoteImage } from "@/lib/utils/remote-image";
 import { promoLive, shipsFree, type FreeShippingPromo } from "@/lib/api/shipping";
 import type { ComicIssue, Product } from "@/types/merch";
-import type { RewardCode } from "@/types/seeds";
+import type { RewardCode, RewardTier, SeedsBalance } from "@/types/seeds";
+
+const count = (n: number) => new Intl.NumberFormat("en-NG").format(n);
+
+/** Paystack, or HBAR from the player's Hedera wallet (only offered while the Hedera section is on). */
+export type PayWith = "paystack" | "hbar";
 
 /**
  * The checkout's right column: what is being bought, then what it costs.
@@ -41,8 +49,13 @@ export function CheckoutSummary({
   codeId = null,
   onCodeChange,
   discount = null,
-  codeHint = false,
+  seeds = null,
+  tiers = [],
+  onRedeem,
   busy = false,
+  payWith,
+  onPayWithChange,
+  hbarDiscountPct = 0,
   onPlaceOrder,
 }: {
   products: readonly Product[];
@@ -66,15 +79,46 @@ export function CheckoutSummary({
   onCodeChange?: (id: string | null) => void;
   /** The chosen code's percent off the items, and the most it takes off (null: no cap known). */
   discount?: { pct: number; cap: number | null } | null;
-  /** No code, but Seeds enough for one: a line pointing to the store's rewards. */
-  codeHint?: boolean;
+  /** The signed-in player's Seeds; null signed out or still loading (no YOUR SEEDS box). */
+  seeds?: SeedsBalance | null;
+  /** The rewards, cheapest first: the ones the Seeds reach get a REDEEM here. */
+  tiers?: readonly RewardTier[];
+  onRedeem?: (tier: RewardTier) => void;
   /** The order is on its way to the API: PLACE ORDER waits. */
   busy?: boolean;
+  /** How it's paid, when there's a choice: HBAR beside Paystack while the Hedera section is on. */
+  payWith?: PayWith;
+  onPayWithChange?: (payWith: PayWith) => void;
+  /** Percent off the whole order when it's paid in HBAR (the admin's Treasury setting); 0 for none. */
+  hbarDiscountPct?: number;
   onPlaceOrder: () => void;
 }) {
   const { lines } = useCart();
   const t = messages.merch;
   const c = t.checkout;
+  const p = t.points;
+  const reachable = seeds ? tiers.filter((tier) => tier.cost <= seeds.calabash) : [];
+  const nextAt = seeds ? nextRewardAt(tiers, seeds.calabash) : undefined;
+  // The codes to use, as a choice; the discount line under it follows.
+  // A wrapper carries the spacing and any rule: a fieldset's own top border runs through its legend.
+  const codeChoice = (className: string) => (
+    <div className={className}>
+    <fieldset>
+      <legend className="font-body text-body leading-none font-bold">{c.codeTitle}</legend>
+      <div className="mt-3.5 flex flex-wrap gap-2">
+        <CodeChip name="seeds-code" checked={!codeId} onChange={() => onCodeChange?.(null)}>
+          {c.codeNone}
+        </CodeChip>
+        {codes.map((code) => (
+          <CodeChip key={code.id} name="seeds-code" checked={codeId === code.id} onChange={() => onCodeChange?.(code.id)}>
+            {c.codeOption.replace("{pct}", String(code.discountPct))}
+            <span className="font-display ml-2 text-[1.0625rem] leading-none tracking-[0.04em] uppercase">{code.code}</span>
+          </CodeChip>
+        ))}
+      </div>
+    </fieldset>
+    </div>
+  );
 
   const resolved = resolveCartLines({ lines, products, comics, messages, locale });
   const itemTotal = resolved.reduce((sum, entry) => sum + entryTotal(entry), 0);
@@ -88,6 +132,9 @@ export function CheckoutSummary({
   const shipping = !ships || free ? 0 : rate;
   const gap = ships && !free && promoLive(promo) ? promo.minimumOrder - itemTotal : 0;
   const total = subtotal + (shipping ?? 0);
+  // Paid in HBAR, a little off the whole order (the team, 2026-11-23: ₦20,000 by card, ₦19,500 in HBAR).
+  const hbarOff = payWith === "hbar" ? hbarDiscountOff(total, hbarDiscountPct) : 0;
+  const pct = String(hbarDiscountPct);
 
   return (
     <div>
@@ -142,32 +189,54 @@ export function CheckoutSummary({
       <section className="bg-gild text-ink mt-8 px-6.5 pt-6 pb-5.75">
         <Row label={c.itemTotal} value={formatPrice(itemTotal, locale, t.price)} />
 
-        {/* The player's Seeds codes, as a choice; the discount line under it follows. */}
-        {codes.length > 0 ? (
-          <fieldset className="mt-6.25">
-            <legend className="font-body text-body leading-none font-bold">{c.codeTitle}</legend>
-            <div className="mt-3.5 flex flex-wrap gap-2">
-              <CodeChip name="seeds-code" checked={!codeId} onChange={() => onCodeChange?.(null)}>
-                {c.codeNone}
-              </CodeChip>
-              {codes.map((code) => (
-                <CodeChip key={code.id} name="seeds-code" checked={codeId === code.id} onChange={() => onCodeChange?.(code.id)}>
-                  {c.codeOption.replace("{pct}", String(code.discountPct))}
-                  <span className="font-display ml-2 text-[1.0625rem] leading-none tracking-[0.04em] uppercase">{code.code}</span>
-                </CodeChip>
-              ))}
+        {/* YOUR SEEDS, compact, inside the summary (the human, 2026-11-23: the full card under it
+            left a tall empty column). The balance; a REDEEM for each reward it reaches, so a code
+            can be made and used on this order; otherwise how far the next one is, and the way to
+            the Calabash, where the full rewards and codes live. The codes to use are under it. */}
+        {seeds ? (
+          <div className="border-ink/25 mt-6.25 border px-4.5 pt-4 pb-4.5">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <p className="font-body text-body leading-none font-bold">{c.seedsTitle}</p>
+                {payWith ? <SeedsFlag messages={messages} tone="ink" /> : null}
+              </div>
+              <p className="font-display text-[1.625rem] leading-none font-semibold tracking-[-0.02em]">
+                {count(seeds.calabash)} <span className="text-[1.0625rem]">{p.unit}</span>
+              </p>
             </div>
-          </fieldset>
-        ) : codeHint ? (
-          <p className="font-body text-body-sm mt-6.25 leading-snug">
-            {c.codeHint}{" "}
-            <Link
-              href={`/${locale}/merch`}
-              className="focus-visible:outline-signal font-semibold underline underline-offset-4 transition-opacity duration-150 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {c.codeHintLink}
-            </Link>
-          </p>
+            {reachable.length ? (
+              <ul className="mt-4 flex flex-col gap-2.5">
+                {reachable.map((tier) => (
+                  <li key={`${tier.discountPct}-${tier.cost}`} className="flex items-center justify-between gap-3">
+                    <span className="font-body text-body-sm leading-snug">
+                      {tier.name} <span className="text-ink/60">· {p.cost.replace("{count}", count(tier.cost))}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onRedeem?.(tier)}
+                      aria-label={p.redeemLabel.replace("{reward}", tier.name).replace("{count}", count(tier.cost))}
+                      className="border-ink font-body hover:bg-ink hover:text-gild focus-visible:outline-signal h-8 shrink-0 cursor-pointer border px-3 text-[0.8125rem] leading-none font-semibold tracking-wider transition-colors duration-150 ease-gate focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                      {p.redeem}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : nextAt != null ? (
+              <p className="font-body text-body-sm mt-3 leading-snug">
+                {p.next.replace("{count}", count(nextAt - seeds.calabash))}.{" "}
+                <a
+                  href={`/${locale}/profile#${CALABASH_ID}`}
+                  className="focus-visible:outline-signal font-semibold underline underline-offset-4 transition-opacity duration-150 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  {c.seedsCalabash}
+                </a>
+              </p>
+            ) : null}
+            {codes.length > 0 ? codeChoice("border-ink/20 mt-4.5 border-t pt-4") : null}
+          </div>
+        ) : codes.length > 0 ? (
+          codeChoice("mt-6.25")
         ) : null}
 
         <Row
@@ -194,9 +263,17 @@ export function CheckoutSummary({
             {t.summary.freeShippingGap.replace("{amount}", formatPrice(gap, locale, t.price))}
           </p>
         ) : null}
+        {hbarOff > 0 ? (
+          <Row
+            label={messages.hedera.payWith.discountRow.replace("{pct}", pct)}
+            value={`−${formatPrice(hbarOff, locale, t.price)}`}
+            bold
+            className="mt-5.5"
+          />
+        ) : null}
         <Row
           label={c.total}
-          value={formatPrice(total, locale, t.price)}
+          value={formatPrice(total - hbarOff, locale, t.price)}
           className="mt-6"
           valueClass="font-display text-[2.0625rem] leading-none font-semibold tracking-[-0.04em]"
         />
@@ -209,6 +286,50 @@ export function CheckoutSummary({
           <p className="font-body text-body leading-none font-semibold">{c.secureTitle}</p>
           <p className="font-body text-body-sm mt-2.5 leading-none">{c.secureBody}</p>
         </div>
+
+        {/* HBAR beside Paystack (the Hedera doc's changed screens). No frame draws the
+            choice: the secure box's own rule and type, with a native radio. */}
+        {payWith && onPayWithChange ? (
+          <fieldset className="mt-9">
+            <legend className="font-body text-body leading-none font-semibold">{messages.hedera.payWith.title}</legend>
+            <div className="mt-4 flex flex-col gap-3">
+              {(["paystack", "hbar"] as const).map((option) => (
+                <label
+                  key={option}
+                  className={`flex cursor-pointer gap-3.5 border px-4.5 py-4 ${payWith === option ? "border-ink" : "border-ink/25"}`}
+                >
+                  <input
+                    type="radio"
+                    name="pay-with"
+                    value={option}
+                    checked={payWith === option}
+                    onChange={() => onPayWithChange(option)}
+                    className="accent-ink mt-0.5 size-4 shrink-0"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="font-body text-body flex flex-wrap items-center gap-2.5 leading-none font-semibold">
+                      {option === "paystack" ? messages.hedera.payWith.paystack : messages.hedera.payWith.hbar}
+                      {/* Hedera's mark beside HBAR (the team, 2026-11-23). The delivered logo is white, so it sits on ink. */}
+                      {option === "hbar" ? (
+                        <span className="bg-ink inline-flex h-6 items-center rounded-sm px-2">
+                          <Image src="/assets/partners/hedera-logo.webp" alt={messages.hedera.payWith.logoAlt} width={214} height={60} className="h-3.5 w-auto select-none" />
+                        </span>
+                      ) : null}
+                    </span>
+                    <span className="font-body text-body-sm mt-2 block leading-snug">
+                      {option === "paystack" ? messages.hedera.payWith.paystackNote : messages.hedera.payWith.hbarNote}
+                    </span>
+                    {option === "hbar" && hbarDiscountPct > 0 ? (
+                      <span className="font-body text-body-sm mt-1.5 block leading-snug font-semibold">
+                        {messages.hedera.payWith.discount.replace("{pct}", pct)}
+                      </span>
+                    ) : null}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ) : null}
 
         <button
           type="button"
@@ -226,7 +347,7 @@ export function CheckoutSummary({
           </p>
         ) : null}
         {/* One button: Paystack's own window offers every way to pay. */}
-        <p className="font-body text-body-sm mt-3 leading-snug">{c.payWith}</p>
+        {payWith !== "hbar" ? <p className="font-body text-body-sm mt-3 leading-snug">{c.payWith}</p> : null}
       </section>
 
       <SupportNote messages={messages} layout="stacked" className="mt-9" />

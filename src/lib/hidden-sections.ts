@@ -1,15 +1,17 @@
+import { HEDERA_ON } from "@/lib/hedera/mode";
 import type { Messages } from "@/lib/utils/messages";
 
 /** The sections that can be held back behind the Coming Soon page. */
 // export type HiddenSectionName = "news" | "merch" | "comics" | "competition";
-export type HiddenSectionName = "merch" | "comics" | "competition";
+export type HiddenSectionName = "merch" | "comics" | "competition" | "hedera";
 
 /**
- * EMPTY: every section is public while the API is being connected (human,
- * 2026-10-26, on `feature/auth-and-api-integration`). To hide one again, put
- * its name back here; its pages, the sitemap and robots follow.
+ * Every section is public while the API is being connected (human,
+ * 2026-10-26, on `feature/auth-and-api-integration`), except Hedera while it
+ * runs on nothing real (`lib/hedera/mode.ts`). To hide one again, put its name
+ * here; its pages, the sitemap and robots follow.
  */
-export const HIDDEN_SECTIONS: readonly HiddenSectionName[] = [];
+export const HIDDEN_SECTIONS: readonly HiddenSectionName[] = HEDERA_ON ? [] : ["hedera"];
 
 export function isHidden(section: HiddenSectionName): boolean {
   return HIDDEN_SECTIONS.includes(section);
@@ -36,5 +38,7 @@ export function hiddenSectionLabel(section: HiddenSectionName, messages: Message
       return messages.nav.comics;
     case "competition":
       return messages.gates.competition.title;
+    case "hedera":
+      return messages.nav.hedera;
   }
 }
