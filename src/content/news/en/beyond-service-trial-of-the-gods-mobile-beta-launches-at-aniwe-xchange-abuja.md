@@ -10,8 +10,8 @@ coverStyle: torn
 image: /assets/news/events-aniwe-xchange-abuja-mobile-beta-launch-1x.png
 imageAlt: "ANiWE XCHANGE Abuja banner: Beyond Service: Trial of the Gods mobile
   beta launch, 5 December 2026"
-band: abyss
-coverTitle: "Beyond Service: Trial of the Gods Mobile Beta Launches at ANiWE XCHANGE Abuja"
+band: oxblood
+coverTitle: " Beyond Service Beta Launches at ANiWE XCHANGE Abuja"
 author: Beyond Service Game
 ---
 Goondu Games is bringing Beyond Service: Trial of the Gods to ANiWE XCHANGE, and this time players can take it home on their phones. On 5 December 2026 at UN House, Abuja, the Beyond Service mobile beta will be available to download and play for the first time.
