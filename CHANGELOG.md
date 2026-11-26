@@ -15,6 +15,17 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- Team members on the About page can have a line of personality. Hover over or tap their portrait
+  and a handwritten torn note slides up over it; a small "Psst…" note hints it is there. Editors
+  write it in the CMS under "A little about them". Cards without one are unchanged.
+- Every current team member has a starter note: Leslie, Goodness, Moses, Michael, Sophia and
+  Glory. Each person can rewrite their own in the CMS.
+- A torn-banner news cover has a Cover fit choice. Fill suits a designed banner: it fills the
+  cover with no dark bars, trimmed from the left where the band covers it. Show whole is for a
+  character cut-out, as before.
+- News has four more categories: Team, Gameplay, Community and Event, alongside News and
+  Announcement. Editors can now add their own under News categories in /admin. A new one shows
+  on articles as soon as it's published, with no developer needed.
 - On a character's page, the left and right edges of the opening section now lead to the
   previous and next character. With a mouse, the pointer turns into a torn cream plate that
   names who is next; click and the page wipes across to them. The roster wraps, so the last
@@ -114,6 +125,11 @@ blockers live in local working notes and are deliberately not repeated here.
   longer reached from the checkout.
 - The bank transfer page itself (`/merch/checkout/transfer`) is gone. Every payment goes
   through Paystack, which offers bank transfer itself.
+
+### Fixed
+
+- A long title on a news cover with the torn band no longer runs over the author line. The
+  title now shrinks to fit the band's height as well as its width.
 
 ---
 
