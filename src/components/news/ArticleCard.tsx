@@ -77,7 +77,7 @@ export function ArticleCard({
           </p>
         </div>
 
-        <TagPills tags={article.tags} messages={messages} className="mt-4.5" />
+        <TagPills tags={article.tags} className="mt-4.5" />
 
         {/* The frame clips the excerpt rather than wrapping it indefinitely -
             three lines on the lead card, two on the others. */}
@@ -115,9 +115,10 @@ export function CoverView({
         <TornBanner
           figure={cover.src}
           alt={alt}
-          // Whole, on the dark field, as the frame shows its renders - a picture
-          // with its own dark ground reads the same; a padded render sits smaller.
-          figureClass="object-contain object-[76%_center]"
+          // Show whole: the picture whole, on the dark field, as the frame shows its renders -
+          // a padded render sits smaller. Fill: a designed banner fills the cover, trimmed from
+          // the left (under the band) so its right-hand subject always shows (2026-11-26).
+          figureClass={cover.fit === "fill" ? "object-cover object-right" : "object-contain object-[76%_center]"}
           seamClass={band.seam}
           fieldClass={BAND_FIELD}
           chipClass={band.chip}

@@ -134,6 +134,8 @@ export type ComicIssue = {
   volume: number;
   /** Its place in the volume: Chapter 1, 2… */
   chapter: number;
+  /** The chapter's own id, which reading progress and share links are filed under. */
+  chapterId?: string;
   cover: {
     /**
      * A live chapter's cover, a FILE an admin uploaded. Titled (below), it is
@@ -195,20 +197,6 @@ export type CartLine = {
   quantity: number;
   /** Live only: the variant the API's cart holds. */
   variantId?: string;
-};
-
-/**
- * The community points balance shown to a signed-in visitor.
- *
- * `nextTierAt` is what the frame's "Next price is 500 points away" is computed
- * from, so the copy takes a number rather than baking one into a sentence.
- */
-export type PointsBalance = {
-  points: number;
-  /** The next tier's threshold. Absent: the API has no tiers, so no progress bar. */
-  nextTierAt?: number;
-  /** Keys into `messages.merch.points.perks`. */
-  perkKeys: readonly string[];
 };
 
 /**

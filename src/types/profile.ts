@@ -1,3 +1,5 @@
+import type { SeedsBalance } from "@/types/seeds";
+
 /**
  * The player profile: the signed-in player's, from `GET /v1/player/profile`
  * (`lib/api/player.ts`).
@@ -14,9 +16,16 @@ export type StandingStat = {
 
 export type TournamentStanding = {
   /** The tournament's name, as the API gives it. */
-  name?: string;
+  name: string;
+  /** Its slug, for See Details. */
+  slug: string;
+  /** Whether the site has a page for it: a finished one has none (`lib/api/tournaments.ts`). */
+  hasPage: boolean;
   stats: readonly StandingStat[];
-  /** Points to the next rank. Rendered as a sentence beneath the strip; null when unknown. */
+  /**
+   * Points to the next rank IN THIS TOURNAMENT, rendered as a sentence beneath
+   * the strip. The API sends no such figure per tournament yet, so it is null.
+   */
   toNextRank: number | null;
 };
 
@@ -32,9 +41,15 @@ export type Profile = {
   rank?: number;
   location: string;
   gamePoints: number;
-  claimablePoints: number;
-  /** Null when the player is in no tournament - the frame's first state. */
-  standing: TournamentStanding | null;
+  /** Their Seeds: the Calabash is what the CALABASH tile shows. */
+  seeds: SeedsBalance;
+  /** The Play Games player ID their account is linked to; null until they connect one. */
+  playGamesId: string | null;
+  /**
+   * Every tournament the player is in, running ones first. Empty when they are
+   * in none - the frame's first state.
+   */
+  standings: readonly TournamentStanding[];
 };
 
 /**

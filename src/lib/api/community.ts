@@ -39,10 +39,14 @@ export const WALL: WallBounds = {
  *
  * Who wrote it is the note's `author` (since 2026-10-27): their name, else
  * their username. WHAT A NOTE DOESN'T CARRY (FLAGGED): how many likes it has,
- * or whether this player liked it (the count starts at 0 on every visit). The
- * public list is approved notes only; a status, where one is still sent, is
- * checked anyway.
+ * or whether this player liked it (the count starts at 0 on every visit).
+ *
+ * A NOTE IS LIVE UNTIL IT IS TAKEN DOWN (the filter guide, 2026-11-17): pending
+ * and approved notes are on the wall, rejected and flagged ones are not. The
+ * public list shouldn't carry those; a status, where one is sent, is checked
+ * anyway.
  */
+const OFF_THE_WALL = new Set(["rejected", "flagged"]);
 const apiNote = z.object({
   id: z.string(),
   content: z.string(),
@@ -74,7 +78,7 @@ const SLOTS = (() => {
 
 export async function getWallNotes(): Promise<readonly CommunityNote[]> {
   const notes = (await apiGet("/v1/notes", z.array(apiNote)))
-    .filter((n) => !n.moderation_status || n.moderation_status === "approved")
+    .filter((n) => !OFF_THE_WALL.has(n.moderation_status ?? ""))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
   const free = [...SLOTS];
   return notes.flatMap((n) => {

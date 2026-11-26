@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "cms": "decap-server",
-    "translate": "node scripts/translate/translate.mjs"
+    "translate": "node scripts/translate/translate.mjs",
+    "test:filter": "node --test src/lib/community/filter.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.104.5",

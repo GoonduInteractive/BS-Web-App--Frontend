@@ -2,8 +2,9 @@
 
 The official web app for **Beyond Service: Trial of the Gods**, a game by
 **Goondu Games Studio**. The frontend only: game data comes from Goondu's Beyond Service API,
-through the typed adapters in `src/lib/api/`. One thing keeps sample data: the Active Player Map
-on Community, until the API has player locations.
+through the typed adapters in `src/lib/api/`. Nothing runs on sample data: the Active Player Map
+on Community reads each region's pin and active players from the API, and admins set the pins in
+the admin's Regions page.
 
 ## Getting started
 

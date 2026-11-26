@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 import { MenuRule } from "@/components/chrome/NavRules";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { GATES, gateHref } from "@/lib/gates";
 import type { Messages } from "@/lib/utils/messages";
 import { cn } from "@/lib/utils/cn";
@@ -34,15 +35,16 @@ export function MenuOverlay({
 
   }, [pathname]);
 
-  // Escape to close, focus trap, and scroll lock.
+  // The page behind holds still; the panel itself scrolls (data-lenis-prevent)
+  // when a screen is too short even for the height-scaled links.
+  useScrollLock(open);
+
+  // Escape to close, and the focus trap.
   useEffect(() => {
     if (!open) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
     closeRef.current?.focus();
-
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -72,7 +74,6 @@ export function MenuOverlay({
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = overflow;
       previouslyFocused?.focus();
     };
   }, [open, onClose]);
@@ -105,13 +106,18 @@ export function MenuOverlay({
         )}
       />
 
+      {/* --menu-room is the height the panel can share out (see --text-menu-link
+          in globals.css): the top and bottom paddings and the gap under each link
+          take the frame's share of it, capped at the frame's own values. */}
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={messages.menu.label}
+        data-lenis-prevent
         className={cn(
-          "bg-menu absolute inset-y-0 left-0 flex w-full flex-col transition-transform duration-400 ease-gate md:w-[45.2%]",
+          "bg-menu absolute inset-y-0 left-0 flex w-full flex-col overflow-y-auto overscroll-contain transition-transform duration-400 ease-gate md:w-[45.2%]",
+          "[--menu-room:calc(100svh_-_7.1875rem)]",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -132,7 +138,7 @@ export function MenuOverlay({
           />
         </button>
 
-        <nav className="flex flex-col pt-24 pl-8 md:pt-32 md:pl-14 lg:pl-20 xl:pt-41.5 xl:pl-29.5">
+        <nav className="flex flex-col pt-[min(6rem,calc(var(--menu-room)*0.2083))] pl-8 md:pt-[min(8rem,calc(var(--menu-room)*0.2083))] md:pl-14 lg:pl-20 xl:pt-[min(10.375rem,calc(var(--menu-room)*0.2083))] xl:pl-29.5">
           {links.map((link, i) => (
             <Link
               key={link.href}
@@ -142,7 +148,7 @@ export function MenuOverlay({
                 "text-menu-fg font-display text-menu-link focus-visible:outline-signal group w-fit leading-none font-semibold transition-[opacity,transform] duration-400 ease-gate focus-visible:outline-6 focus-visible:outline-offset-4",
                 // The span under this carries 12 of the gap (its rule lives there); these
                 // make up the rest, so the pitch is the frame's.
-                "pb-2 tracking-tighter md:pb-3 xl:pb-4.5",
+                "pb-[min(0.5rem,calc(var(--menu-room)*0.0226))] tracking-tighter md:pb-[min(0.75rem,calc(var(--menu-room)*0.0226))] xl:pb-[min(1.125rem,calc(var(--menu-room)*0.0226))]",
                 open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
               )}
             >
@@ -161,7 +167,7 @@ export function MenuOverlay({
         <div
           style={{ transitionDelay: open ? `${120 + links.length * STAGGER_MS}ms` : "0ms" }}
           className={cn(
-            "mt-auto flex gap-9 pb-16 pl-8 transition-[opacity,transform] duration-400 ease-gate md:pl-14 md:pb-24 lg:pl-20 xl:pb-38 xl:pl-29.5",
+            "mt-auto flex gap-9 pt-8 pb-[min(4rem,calc(var(--menu-room)*0.1907))] pl-8 transition-[opacity,transform] duration-400 ease-gate md:pl-14 md:pb-[min(6rem,calc(var(--menu-room)*0.1907))] lg:pl-20 xl:pb-[min(9.5rem,calc(var(--menu-room)*0.1907))] xl:pl-29.5",
             open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
           )}
         >

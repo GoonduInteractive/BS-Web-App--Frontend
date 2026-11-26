@@ -485,14 +485,14 @@
       "hoursAgo": "{n} hours ago",
       "daysAgo": "{n} days ago",
       "you": "You",
-      "posted": "Your note is posted. Everyone else sees it once it’s approved."
+      "posted": "Your note is posted."
     },
     "map": {
       "title": "ACTIVE PLAYER MAP",
       "searchPlaceholder": "Search a Location",
       "searchLabel": "Search a location",
       "results": "Locations",
-      "noResults": "No players there yet",
+      "noResults": "No region by that name on the map",
       "location": "LOCATION",
       "activePlayers": "ACTIVE PLAYERS",
       "mapLabel": "World map of active players — drag to move, scroll to zoom",
@@ -500,14 +500,19 @@
       "zoomIn": "Zoom in",
       "zoomOut": "Zoom out",
       "place": "{city}, {country}",
-      "unavailable": "The map needs WebGL, which is switched off in this browser."
+      "unavailable": "The map needs WebGL, which is switched off in this browser.",
+      "everywhere": "All regions"
     },
     "invite": {
       "title": "INVITE FRIENDS",
-      "body": "You earn community points when friends join the community through your link.",
+      "body": "You earn Seeds when friends join the community through your link.",
       "linkLabel": "Your invite link",
       "copy": "COPY LINK",
-      "copied": "Invite link copied"
+      "copied": "Invite link copied",
+      "nudge": "{region} needs more players. Invite friends so we can run tournaments in {region}.",
+      "titleRegion": "INVITE FRIENDS TO {region}",
+      "setUsername": "Set a username to get your own invite link. Friends who join with it count as yours.",
+      "setUsernameCta": "Set a username"
     },
     "form": {
       "label": "Drop your feedback",
@@ -515,8 +520,28 @@
       "sub": "Let others know what you feel about the game.",
       "placeholder": "Input text",
       "field": "Your feedback",
+      "count": "{n}/{max} characters",
       "submit": "SUBMIT",
       "close": "Close"
+    },
+    "filter": {
+      "self_harm": "It sounds like you might be carrying something heavy right now. You don't have to carry it alone. Please talk to someone you trust, or reach out to a helpline near you. You can also write to us at {email}.",
+      "underage": "This note can't go up because it breaks our community rules. Our team will take a look.",
+      "personal_info": "Hold up. Never share your address, bank details, BVN, passwords or OTPs. Not here, not anywhere. Take it out and try again.",
+      "violence_threats": "Battle talk belongs in the arena. Threats against real people don't fly here. Rewrite your note and try again.",
+      "hate_slurs": "No room for that on the wall. This space is for every player, whatever their tribe, background or identity. Rewrite your note without it.",
+      "sexual_content": "That's not wall material. Keep your note clean and try again.",
+      "scam_fraud": "This looks like a scam or cheat offer, so it can't go up. Goondu will never ask for your password, OTP or money on the wall.",
+      "impersonation": "Only the official Goondu team speaks for Beyond Service. Rewrite your note without claiming to be staff.",
+      "drugs": "Drug talk isn't allowed on the wall. Edit your note and try again.",
+      "gambling_betting": "Betting talk isn't allowed on the wall. Keep your note about the game.",
+      "contact": "For your safety, contact details and links can't go on the wall. Take them out and try again.",
+      "profanity": "Easy there, warrior. Keep it clean on the wall. Take out the strong language and try again.",
+      "political": "No politics on the wall. Keep your note about Beyond Service and try again.",
+      "religious": "We keep religion off the wall so every player feels welcome. Rewrite your note without it.",
+      "marketing_spam": "The wall is for fans, not ads. Take out the promo and post again.",
+      "competitor_brands": "Let's keep the wall about Beyond Service. Try again without naming other games.",
+      "other": "This note can't go up because it breaks our community rules."
     },
     "meta": {
       "title": "Community Wall | Beyond Service: Trial of the Gods",
@@ -611,6 +636,10 @@
       "tabs": {
         "core": "Core Team",
         "contributors": "Contributors"
+      },
+      "note": {
+        "hint": "Psst…",
+        "open": "About {name}"
       }
     },
     "partners": {
@@ -644,16 +673,36 @@
     },
     "price": "₦{amount}",
     "points": {
-      "claimable": "CLAIMABLE POINTS",
-      "unit": "PTS",
-      "next": "Next price is {count} points away",
-      "perksTitle": "POINT PERKS",
-      "perks": {
-        "discount": "5% off all Goondu originals",
-        "featured": "Access to featured products"
-      },
-      "more": "Gather more points to get even better rewards.",
-      "none": "No points yet, read comics, top leaderboard, and engage with community features to win more points."
+      "claimable": "USABLE SEEDS",
+      "unit": "SEEDS",
+      "next": "Next reward is {count} Seeds away",
+      "perksTitle": "SEED REWARDS",
+      "more": "Gather more Seeds to unlock better rewards.",
+      "none": "No Seeds yet. Read comics, climb the leaderboard and join in on the community to earn them.",
+      "legacy": "Legacy seeds: {count}, all you've earned",
+      "pending": "{count} on hold",
+      "cost": "{count} Seeds",
+      "cap": "Up to {amount} off",
+      "redeem": "REDEEM",
+      "redeemLabel": "Redeem {reward} for {count} Seeds",
+      "codesTitle": "YOUR CODES",
+      "codeOff": "{pct}% off",
+      "codeReady": "Ready to use",
+      "codeUsed": "Used",
+      "copy": "Copy code",
+      "copied": "Code copied",
+      "dialog": {
+        "label": "Redeem a reward",
+        "close": "Close",
+        "title": "REDEEM {reward}?",
+        "body": "This spends {count} Seeds from your Calabash. You'll get a single-use code for {pct}% off one order, up to {amount}.",
+        "confirm": "REDEEM",
+        "cancel": "Not now",
+        "doneTitle": "CODE READY",
+        "doneBody": "Use it at checkout for {pct}% off one order, up to {amount}. You have {count} Seeds left in your Calabash.",
+        "done": "DONE",
+        "short": "You don't have enough Seeds for this reward yet."
+      }
     },
     "detail": {
       "selectColour": "SELECT COLOUR",
@@ -686,7 +735,7 @@
     "summary": {
       "title": "ORDER SUMMARY",
       "itemTotal": "Item Total",
-      "pointDiscount": "Point Discount",
+      "pointDiscount": "Seeds Discount",
       "shipping": "Shipping",
       "free": "FREE",
       "total": "Total",
@@ -732,7 +781,7 @@
       "bankTransfer": "Bank Transfer",
       "orderSummary": "ORDER SUMMARY",
       "itemTotal": "Item Total",
-      "pointDiscount": "Community Point Discount",
+      "pointDiscount": "Seeds Discount",
       "shippingRow": "Shipping",
       "free": "FREE",
       "total": "Total",
@@ -750,7 +799,13 @@
       "nothingToShip": "Nothing to ship: online chapters open in the reader once paid.",
       "noRate": "We don't deliver to this place yet. Choose another local government or state.",
       "needDetails": "Fill in the details above so your order can reach you.",
-      "cartGone": "We couldn't find the items in this cart. Refresh the page and try again."
+      "cartGone": "We couldn't find the items in this cart. Refresh the page and try again.",
+      "codeTitle": "Use a Seeds code",
+      "codeNone": "None",
+      "codeOption": "{pct}% off",
+      "codeHint": "You have enough Seeds for a discount. Redeem them for a code in the store.",
+      "codeHintLink": "Go to rewards",
+      "codeRefused": "That Seeds code can't be used any more. Choose another, or place the order without one."
     },
     "confirmed": {
       "title": "ORDER CONFIRMED",
@@ -812,11 +867,7 @@
     },
     "byline": "By Goondu Staff",
     "relativeDays": "{n} DAYS AGO",
-    "relativeToday": "TODAY",
-    "tags": {
-      "news": "NEWS",
-      "announcement": "ANNOUNCEMENT"
-    }
+    "relativeToday": "TODAY"
   },
   "profile": {
     "meta": {
@@ -833,8 +884,6 @@
       "loss": "LOSS",
       "rank": "RANK"
     },
-    "gamePoints": "GAME POINTS",
-    "claimablePoints": "CLAIMABLE POINTS",
     "pointsGlyphAlt": "",
     "rankings": {
       "title": "TOURNAMENT RANKINGS",
@@ -869,7 +918,22 @@
       "viewProfile": "View Profile",
       "login": "Login",
       "menuLabel": "Account menu"
-    }
+    },
+    "play": {
+      "title": "BEYOND SERVICE GAME ACCOUNT",
+      "body": "Connect your Beyond Service game account to sync your data. It's how we know this community account and your game account are the same player, so the Seeds you earn from playing reach you here.",
+      "connect": "CONNECT GAME ACCOUNT",
+      "connected": "Connected as {id}",
+      "disconnect": "Disconnect",
+      "linked": "Game account connected",
+      "unlinked": "Game account disconnected",
+      "cancelled": "Connecting your game account was cancelled.",
+      "failed": "Couldn't connect your game account. Try again in a moment."
+    },
+    "usableSeeds": "USABLE SEEDS",
+    "legacySeeds": "LEGACY SEEDS",
+    "legacyNote": "Total Seeds you've accumulated in your lifetime.",
+    "pendingNote": "{count} on hold"
   },
   "comics": {
     "meta": {
@@ -907,7 +971,7 @@
       },
       "pageAlt": "{title}, page {n}",
       "shareHeading": "SHARE THIS COMIC",
-      "shareSub": "Gain claimable community points\nby sharing this comic with friends.",
+      "shareSub": "Earn Seeds when friends read\nthis comic through your link.",
       "shielded": "Reading paused. Come back to this window to keep reading."
     }
   },
@@ -936,7 +1000,8 @@
       "password": "Password",
       "newPassword": "Enter New Password",
       "confirmPassword": "Re-enter New Password",
-      "region": "Region"
+      "region": "Region",
+      "referral": "Referral Code"
     },
     "placeholders": {
       "firstName": "john",
@@ -1006,5 +1071,15 @@
       "good": "Good",
       "strong": "Strong"
     }
+  },
+  "notifications": {
+    "open": "Notifications",
+    "unread": "{n} unread",
+    "title": "Notifications",
+    "markAll": "Mark all as read",
+    "empty": "Nothing new yet. Your orders, tournaments and Seeds will show up here.",
+    "error": "Couldn't load your notifications. Try again in a moment.",
+    "justNow": "Just now",
+    "markFailed": "Couldn’t mark that as read. Try again in a moment."
   }
 }

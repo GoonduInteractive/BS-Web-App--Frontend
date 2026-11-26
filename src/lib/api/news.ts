@@ -1,5 +1,6 @@
 import { cache } from "react";
 
+import { categoryName, categoryNames } from "@/lib/api/categories";
 import { contentSlugs, readEntries, type Entry } from "@/lib/content";
 import { articleFrontmatter, type ArticleFrontmatter } from "@/lib/schemas/news";
 import type { Locale } from "@/lib/utils/locales";
@@ -33,7 +34,7 @@ export class ArticleNotFoundError extends Error {
 function toArticle(locale: Locale, { slug, data: fm, body }: Entry<ArticleFrontmatter>): Article {
   const cover: ArticleCover =
     fm.coverStyle === "torn"
-      ? { kind: "torn", src: fm.image, band: fm.band, volume: fm.volume, title: fm.coverTitle ?? fm.title }
+      ? { kind: "torn", src: fm.image, band: fm.band, volume: fm.volume, title: fm.coverTitle ?? fm.title, fit: fm.coverFit }
       : { kind: "image", src: fm.image };
 
   return {
@@ -46,7 +47,7 @@ function toArticle(locale: Locale, { slug, data: fm, body }: Entry<ArticleFrontm
     cover,
     bodyImage: fm.bodyImage,
     body,
-    tags: fm.tags,
+    tags: fm.tags.map((slug) => ({ slug, name: categoryName(categoryNames(locale), slug) })),
     published: fm.published,
   };
 }

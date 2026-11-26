@@ -161,6 +161,7 @@ const apiProduct = z.object({
   deleted: z.boolean().optional(),
   chapter: z
     .object({
+      id: z.string().nullish(),
       number: z.number().nullish(),
       description: z.string().nullish(),
       cover_image_url: z.string().nullish(),
@@ -273,6 +274,7 @@ function toIssue(d: ApiProduct, image: string): ComicIssue {
     stock: { ...(online && { online: online.stock ?? null }), ...(print && { physical: print.stock ?? null }) },
     volume: 0,
     chapter: d.chapter?.number ?? 0,
+    ...(c?.id && { chapterId: c.id }),
     // Read in the reader by whoever owns it (`/v1/comics/{slug}`), not from here.
     cover: {
       image,

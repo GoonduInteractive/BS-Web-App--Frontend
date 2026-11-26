@@ -15,6 +15,7 @@ import { useRedirectIfSignedIn } from "@/hooks/useRedirectIfSignedIn";
 import { signUp } from "@/lib/api/auth";
 import type { SignUpRegion } from "@/lib/api/regions";
 import { authHref } from "@/lib/utils/auth-links";
+import { readInviteRegion, readReferral } from "@/lib/utils/invite";
 import type { Messages } from "@/lib/utils/messages";
 
 /** Minimum password length until the backend states its own rule. FLAGGED. */
@@ -33,16 +34,33 @@ export const PASSWORD_MIN = 8;
  * marketing cannot be assumed. Both links open in a new tab so the form is not
  * lost. FLAGGED: no frame draws the boxes.
  *
- * GAMER ID AND REGION ARE THE API'S, NOT THE FRAME'S (2026-10-23): `/v1/auth/create`
- * requires both. They sit side by side under the email, drawn like the fields
- * around them; the regions are the ones admins manage. FLAGGED: no frame.
+ * REGION IS THE API'S, NOT THE FRAME'S (2026-10-23): `/v1/auth/create`
+ * requires it. It sits under the email, drawn like the fields around it; the
+ * regions are the ones admins manage. FLAGGED: no frame.
+ *
+ * FROM AN INVITE (`lib/utils/invite.ts`, 2026-11-19): `?ref=` is the inviting
+ * player's referral code and `?region=` the region they're bringing friends
+ * to. The code shows FIXED, a read-only Referral Code, and goes with the
+ * account as `referral_code`. The region STARTS on the invite's and stays a
+ * choice (the team, 2026-11-23: a friend may live elsewhere). A code that
+ * isn't a username, or a region that isn't offered, is ignored and the form
+ * is the ordinary one.
  */
 export function SignUpForm({ messages, locale, regions }: { messages: Messages; locale: string; regions: readonly SignUpRegion[] }) {
   const t = messages.auth;
-  const next = useSearchParams().get("next");
+  const params = useSearchParams();
+  const next = params.get("next");
+  const referral = readReferral(params.get("ref"));
   const { navigate } = usePageTransition();
   const { pending, error, run } = useAuthSubmit();
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", regionId: "", password: "" });
+  // The invite's region is where the picker starts; the player can change it.
+  const [form, setForm] = useState(() => ({
+    firstName: "",
+    lastName: "",
+    email: "",
+    regionId: readInviteRegion(params.get("region"), regions)?.id ?? "",
+    password: "",
+  }));
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const terms = useRef<HTMLInputElement>(null);
   const strengthId = useId();
@@ -54,7 +72,12 @@ export function SignUpForm({ messages, locale, regions }: { messages: Messages; 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const result = await run(() =>
-      signUp({ ...form, termsAcceptedAt: new Date().toISOString(), marketingOptIn }),
+      signUp({
+        ...form,
+        ...(referral && { referralCode: referral }),
+        termsAcceptedAt: new Date().toISOString(),
+        marketingOptIn,
+      }),
     );
     if (result.ok) navigate(`/${locale}/confirm-email?email=${encodeURIComponent(form.email.trim())}`);
   };
@@ -98,6 +121,7 @@ export function SignUpForm({ messages, locale, regions }: { messages: Messages; 
             onChange={set("regionId")}
             required
           />
+          {referral ? <AuthField label={t.fields.referral} value={referral} readOnly aria-readonly /> : null}
           <div className="sm:col-span-2">
             <PasswordField
               label={t.fields.password}

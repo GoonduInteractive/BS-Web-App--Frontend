@@ -58,7 +58,7 @@ export function ArticleDetail({
             </p>
           </div>
 
-          <TagPills tags={article.tags} messages={messages} outline="linen" className="mt-[1.9375rem] lg:mt-5" />
+          <TagPills tags={article.tags} outline="linen" className="mt-[1.9375rem] lg:mt-5" />
         </header>
 
         {/* ---- The cover: under the header on the phone; the full-width first row from lg ---- */}

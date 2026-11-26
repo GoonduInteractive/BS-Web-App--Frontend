@@ -75,6 +75,24 @@ export async function authedRequest<S extends z.ZodType>(
   }
 }
 
+/**
+ * A call as the signed-in player that outlives the page: `fetch` with
+ * `keepalive`, for a report sent as a tab closes or navigates away, which
+ * cancels an ordinary request. Nothing waits for the answer and there's no
+ * refresh-and-retry: there may be no page left to retry from.
+ */
+export function authedKeepalive(method: "POST" | "PATCH" | "PUT", path: string, body: unknown): void {
+  const tokens = readTokens();
+  const base = process.env.NEXT_PUBLIC_API_URL;
+  if (!tokens || !base) return;
+  fetch(new URL(path, base), {
+    method,
+    keepalive: true,
+    headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${tokens.access}` },
+    body: JSON.stringify(body),
+  }).catch(() => {});
+}
+
 /** Storage can be missing or throw (private windows, blocked site data). */
 function read<T>(key: string): T | null {
   try {

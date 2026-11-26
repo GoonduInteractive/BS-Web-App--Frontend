@@ -7,10 +7,11 @@ import { authedRequest } from "./session";
  * `POST /v1/notes/{id}/toggle-like`. The wall itself is read on the server
  * (`lib/api/community.ts`).
  *
- * A POSTED NOTE WAITS FOR MODERATION: the API holds it as `pending` and the
- * public wall shows approved ones only. The poster sees it on their wall for
- * the visit; after a reload it is gone until an admin approves it. FLAGGED:
- * no frame or copy says so.
+ * A POSTED NOTE GOES UP AT ONCE (product's filter guide, 2026-11-17). The
+ * sheet runs it through the community wall filter before it is sent
+ * (`lib/community/filter.ts`); the API runs the same check behind it and takes
+ * a note that fails offline (flagged) for an admin to restore or delete, and
+ * emails the player.
  */
 
 /** The API's bounds for a note, which the sheet enforces before sending. */
@@ -22,6 +23,19 @@ export async function postNote(content: string): Promise<{ id: string; postedAt:
     content,
   });
   return { id: note.id, postedAt: note.created_at ?? new Date().toISOString() };
+}
+
+/**
+ * A note the sheet refused for a rule the team follows up personally -
+ * self-harm, underage (the filter guide) - sent to the API so it reaches the
+ * admin's queue (`POST /v1/notes/moderation-reports`, spec of 2026-11-20). The
+ * note itself is never posted. `categories` are the filter's rule keys.
+ */
+export async function reportBlockedNote(content: string, categories: readonly string[]): Promise<void> {
+  await authedRequest("POST", "/v1/notes/moderation-reports", z.unknown(), {
+    content,
+    categories: [...new Set(categories)].slice(0, 20),
+  });
 }
 
 /** Likes the note, or takes the like back: the API keeps which. */

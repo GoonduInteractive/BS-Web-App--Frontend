@@ -14,16 +14,18 @@ import { Reveal } from "@/components/motion/Reveal";
 import { BracketButton } from "@/components/ui/BracketButton";
 import { PanelTabs } from "@/components/ui/PanelTabs";
 import { toast } from "@/components/ui/Toaster";
+import { useWallCheck } from "@/hooks/useWallCheck";
 import { ApiError } from "@/lib/api/client";
 import { WALL } from "@/lib/api/community";
-import { postNote } from "@/lib/api/notes";
+import { postNote, reportBlockedNote } from "@/lib/api/notes";
+import type { WallRule } from "@/lib/community/filter";
 import { placeNote } from "@/lib/community/place";
 import { authHref } from "@/lib/utils/auth-links";
 import { cn } from "@/lib/utils/cn";
 import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
 import type { CommunityNote } from "@/types/community";
-import type { PlayerHotspot } from "@/types/players";
+import type { ActivePlayers, PlayerHotspot } from "@/types/players";
 
 export type CommunityView = "wall" | "map";
 /** Tab order - a swap slides towards the tab you chose. */
@@ -63,25 +65,42 @@ const VIEWS: readonly CommunityView[] = ["wall", "map"];
  * SHARE YOUR THOUGHTS posts as the signed-in player (`lib/api/notes.ts`)
  * and a signed-out visitor is sent to Sign In and back; the note is signed with
  * the player's name. Liking works the same way, on the wall.
+ *
+ * EVERY NOTE IS CHECKED FIRST (`lib/community/filter.ts`, product's filter
+ * guide of 2026-11-17). A note that breaks a rule is not sent: the sheet keeps
+ * it and shows that rule's warning, never the word that tripped it. One that
+ * passes goes up at once; the API checks it again behind it.
  */
 export function CommunityBoard({
   notes: initial,
   hotspots,
-  invite,
+  activeTotal,
+  regionCounts,
   messages,
   locale,
 }: {
   notes: readonly CommunityNote[];
+  /** The regions with a pin, busiest first. */
   hotspots: readonly PlayerHotspot[];
-  /** The viewer's invite link, for the map's INVITE FRIENDS block. */
-  invite: string;
+  /** Everyone active, every region; null when the API couldn't say. */
+  activeTotal: number | null;
+  /** Every region's active count, for the invite nudge. */
+  regionCounts: ActivePlayers["regions"];
   messages: Messages;
   locale: Locale;
 }) {
   const t = messages.community;
   const [view, setView] = useState<CommunityView>("wall");
-  // The frame opens on Lagos; a pin or a search moves it.
-  const [spot, setSpot] = useState<PlayerHotspot>(hotspots[0]);
+  // The frame opens on its busiest place (Lagos); live, the busiest pinned region, or none
+  // at all while no region has a pin. A pin or a search moves it.
+  const [spot, setSpot] = useState<PlayerHotspot | null>(hotspots[0] ?? null);
+  // Whether the visitor chose that place (a pin or a search) rather than being shown the busiest:
+  // only a chosen one is what INVITE FRIENDS invites to; until then it's their own region.
+  const [picked, setPicked] = useState(false);
+  const pick = (place: PlayerHotspot) => {
+    setSpot(place);
+    setPicked(true);
+  };
   const [notes, setNotes] = useState<readonly CommunityNote[]>(initial);
   const [writing, setWriting] = useState(false);
   const [fresh, setFresh] = useState<string | null>(null);
@@ -145,6 +164,37 @@ export function CommunityBoard({
       ? messages.auth.errors.network
       : messages.auth.errors.unknown;
 
+  // What the filter refused, by rule. A self-harm or underage refusal is reported
+  // to the API (`reportBlockedNote`), so it reaches the admin's queue for a
+  // personal follow-up. NOT SENT (FLAGGED): the guide's `wall_post_blocked`
+  // analytics for every other rule - the site has no analytics yet - and the
+  // personal_info notes that ASK for age, school, location or pictures, which the
+  // list doesn't tell apart from ones that share.
+  const wall = useWallCheck();
+  const [blocked, setBlocked] = useState<WallRule | null>(null);
+  const [checking, setChecking] = useState(false);
+  const warning = blocked && blocked !== "self_harm" ? t.filter[blocked] : null;
+  const [beforeEmail, afterEmail] = t.filter.self_harm.split("{email}");
+  const support =
+    blocked === "self_harm" ? (
+      <>
+        {beforeEmail}
+        <a
+          href={`mailto:${messages.support.email}`}
+          className="focus-visible:outline-signal underline underline-offset-2 focus-visible:outline-2"
+        >
+          {messages.support.email}
+        </a>
+        {afterEmail}
+      </>
+    ) : null;
+
+  const write = () => {
+    if (signedOut) return signIn();
+    wall.prepare();
+    setWriting(true);
+  };
+
   const add = (id: string, body: string, postedAt: string) => {
     setNotes((current) =>
       placeNote(current, { id, author, body, likes: 0, postedAt, tint: "cream" }, wallView.current, WALL),
@@ -153,10 +203,22 @@ export function CommunityBoard({
     setWriting(false);
   };
   const post = async (body: string): Promise<boolean> => {
+    setBlocked(null);
+    send.reset();
+    setChecking(true);
+    const verdict = await wall.check(body);
+    setChecking(false);
+    if (verdict?.rule) {
+      setBlocked(verdict.rule);
+      // Sent in the background: the warning doesn't wait on it, and a failed send changes nothing for the player.
+      if (verdict.rule === "self_harm" || verdict.rule === "underage") {
+        reportBlockedNote(body, verdict.hits.map((h) => h.category)).catch(() => {});
+      }
+      return false;
+    }
     try {
       const note = await send.mutateAsync(body);
       add(note.id, body, note.postedAt);
-      // It pops onto this wall at once, but the public wall lists approved notes only.
       toast(t.wall.posted);
       return true;
     } catch {
@@ -220,13 +282,13 @@ export function CommunityBoard({
           <Reveal key={`slot-${view}`} delay={160} className="mt-12 flex justify-center lg:mt-12.5">
             {view === "wall" ? (
               <BracketButton
-                onClick={() => (signedOut ? signIn() : setWriting(true))}
+                onClick={write}
                 className="px-5 py-4.75 leading-none tracking-normal"
               >
                 {t.hero.cta}
               </BracketButton>
             ) : (
-              <MapSearch hotspots={hotspots} onSelect={setSpot} messages={messages} className="my-1" />
+              <MapSearch hotspots={hotspots} onSelect={pick} messages={messages} className="my-1" />
             )}
           </Reveal>
         </div>
@@ -259,7 +321,16 @@ export function CommunityBoard({
           onAnimationEnd={settle("map")}
         >
           {view === "map" || leaving === "map" ? (
-            <MapPanel hotspots={hotspots} selected={spot} onSelect={setSpot} invite={invite} messages={messages} />
+            <MapPanel
+              hotspots={hotspots}
+              selected={spot}
+              activeTotal={activeTotal}
+              regionCounts={regionCounts}
+              onSelect={pick}
+              inviteTo={picked ? spot : null}
+              messages={messages}
+              locale={locale}
+            />
           ) : null}
         </div>
       </div>
@@ -268,11 +339,13 @@ export function CommunityBoard({
         open={writing}
         onClose={() => {
           setWriting(false);
+          setBlocked(null);
           send.reset();
         }}
         onSubmit={post}
-        busy={send.isPending}
-        error={sendFailed}
+        busy={checking || send.isPending}
+        error={warning ?? sendFailed}
+        support={support}
         messages={messages}
       />
     </>

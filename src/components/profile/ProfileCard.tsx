@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { LogOutButton } from "@/components/profile/LogOutButton";
+import { PlayGamesPanel } from "@/components/profile/PlayGamesPanel";
+import { ProfileInvite } from "@/components/profile/ProfileInvite";
+import { TournamentRankings } from "@/components/profile/TournamentRankings";
 import { EditGlyph, NigeriaFlag } from "@/components/profile/ProfileGlyphs";
 import { SupportNote } from "@/components/ui/SupportNote";
 import type { Locale } from "@/lib/utils/locales";
@@ -14,8 +17,8 @@ import { isRemoteImage } from "@/lib/utils/remote-image";
  * `Player profile.png` and `Player profile (1).png`.
  *
  * ONE COMPONENT, TWO STATES, AND THE DATA DECIDES. The two frames are the same
- * card with and without a tournament: `standing` null gives the empty rankings
- * panel and drops RANK from the stats row; populated gives the strip. No flag.
+ * card with and without a tournament: no `standings` gives the empty rankings
+ * panel; any gives the strip (`TournamentRankings`). No flag.
  *
  * Measured at 1440 - card 904 x 698 on `--color-pitch`, inner panels on
  * `--color-ash`, avatar 96 circle with a `--color-signal` ring, points column
@@ -100,72 +103,23 @@ export function ProfileCard({
 
       <div className="mt-8 grid grid-cols-1 gap-5.5 md:mt-[3.875rem] lg:grid-cols-[30.9%_67.7%] lg:justify-between lg:gap-0">
         <div className="flex flex-col gap-5.5">
-          <PointsTile label={t.gamePoints} value={profile.gamePoints} />
-          <PointsTile label={t.claimablePoints} value={profile.claimablePoints} />
+          {/* Seeds, the community's own points: the game keeps a separate economy, so its points
+              aren't shown here (the team, 2026-11-17). The usable Seeds are what's in the Calabash,
+              the wallet, with any on hold under them; the Legacy is everything ever earned. */}
+          <PointsTile
+            label={t.usableSeeds}
+            value={profile.seeds.calabash}
+            note={profile.seeds.pending > 0 ? t.pendingNote.replace("{count}", count(profile.seeds.pending)) : undefined}
+          />
+          <PointsTile label={t.legacySeeds} value={profile.seeds.legacy} note={t.legacyNote} />
         </div>
 
-        <section className="bg-ash rounded-lg px-6.5 pt-4.5 pb-4 lg:h-full">
-          <div className="flex items-start justify-between gap-4">
-            <h2 className="text-menu-fg font-body text-body leading-none tracking-[0.01em]">
-              {t.rankings.title}
-            </h2>
-
-            {profile.standing ? (
-              <span className="text-menu-fg/85 font-body inline-flex items-center gap-2 text-[0.8125rem] leading-none">
-                {t.rankings.seeDetails}
-                <span aria-hidden>→</span>
-              </span>
-            ) : null}
-          </div>
-
-          {profile.standing ? (
-            <>
-              <p className="text-menu-fg font-body text-body-sm mt-6 flex items-center gap-2.5 leading-none">
-                <span className="bg-gild size-1.5 rounded-full" aria-hidden />
-                {profile.standing.name}
-              </p>
-
-              <dl className="border-menu-fg/15 mt-4 grid grid-cols-2 rounded-lg border sm:grid-cols-4">
-                {profile.standing.stats.map((stat, i) => (
-                  <div
-                    key={stat.labelKey}
-                    className={`flex flex-col items-center px-4 py-5 ${
-                      i ? "sm:border-menu-fg/15 sm:border-l" : ""
-                    }`}
-                  >
-                    <span className="bg-gild grid size-6.5 place-items-center rounded-sm">
-                      <Image
-                        src={stat.glyph}
-                        alt=""
-                        aria-hidden
-                        width={22}
-                        height={22}
-                        className="size-3.5 select-none"
-                      />
-                    </span>
-                    <dt className="text-menu-fg/85 font-body mt-3 text-[0.8125rem] leading-none tracking-[0.02em]">
-                      {t.standing[stat.labelKey]}
-                    </dt>
-                    <dd className="font-display text-menu-fg mt-2.5 text-[1.0625rem] leading-none font-semibold">
-                      {stat.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-
-              {profile.standing.toNextRank !== null ? (
-                <p className="text-menu-fg/70 font-body mt-3.5 text-[0.8125rem] leading-none">
-                  {t.rankings.toNextRank.replace("{n}", String(profile.standing.toNextRank))}
-                </p>
-              ) : null}
-            </>
-          ) : (
-            <p className="text-menu-fg/85 font-body text-body-sm mt-6.5 leading-none">
-              {t.rankings.empty}
-            </p>
-          )}
-        </section>
+        <TournamentRankings standings={profile.standings} messages={messages} locale={locale} />
       </div>
+
+      <ProfileInvite messages={messages} locale={locale} />
+
+      <PlayGamesPanel playGamesId={profile.playGamesId} messages={messages} />
 
       {/* Support on the left, Log Out moved to the right (`new-updates/Player
           profile.png`, 2026-09-26). A stack on the phone, Log Out last. */}
@@ -188,9 +142,10 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function PointsTile({ label, value }: { label: string; value: number }) {
+/** `note` is a quiet line under the figure; with one, the tile grows to hold it. */
+function PointsTile({ label, value, note }: { label: string; value: number; note?: string }) {
   return (
-    <div className="bg-ash flex h-28 flex-col justify-between rounded-lg px-6 pt-5.5 pb-5.5">
+    <div className="bg-ash flex min-h-28 flex-col justify-between gap-3 rounded-lg px-6 pt-5.5 pb-5.5">
       <div className="flex items-start justify-between gap-4">
         <p className="text-menu-fg font-body text-body leading-none">{label}</p>
         <span className="bg-gild grid size-8 shrink-0 place-items-center rounded-sm">
@@ -205,9 +160,14 @@ function PointsTile({ label, value }: { label: string; value: number }) {
         </span>
       </div>
 
-      <p className="font-display text-menu-fg text-[1.9375rem] leading-none font-semibold tracking-[-0.02em]">
-        {value.toLocaleString("en-NG")}
-      </p>
+      <div>
+        <p className="font-display text-menu-fg text-[1.9375rem] leading-none font-semibold tracking-[-0.02em]">
+          {value.toLocaleString("en-NG")}
+        </p>
+        {note ? <p className="text-menu-fg/60 font-body mt-2 text-[0.8125rem] leading-snug">{note}</p> : null}
+      </div>
     </div>
   );
 }
+
+const count = (n: number) => n.toLocaleString("en-NG");

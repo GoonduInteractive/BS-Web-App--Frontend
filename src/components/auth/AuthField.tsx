@@ -5,8 +5,10 @@ import { useId, useState, type ComponentPropsWithoutRef } from "react";
 
 type InputProps = Omit<ComponentPropsWithoutRef<"input">, "id" | "className">;
 
+// A box given rather than asked (an invite's referral code and region) sits on the coal fill. The attribute, not
+// `:read-only`, which a <select> also matches.
 const INPUT =
-  "border-smoke text-white font-body placeholder:text-white/60 focus-visible:border-white/70 focus-visible:outline-signal h-12 w-full rounded-[0.1875rem] border bg-transparent px-4 text-[0.9375rem] focus-visible:outline-2 focus-visible:outline-offset-2";
+  "border-smoke text-white font-body placeholder:text-white/60 focus-visible:border-white/70 focus-visible:outline-signal [&[readonly]]:bg-coal [&[readonly]]:text-white/80 [&[readonly]]:cursor-default h-12 w-full rounded-[0.1875rem] border bg-transparent px-4 text-[0.9375rem] focus-visible:outline-2 focus-visible:outline-offset-2";
 
 /** Label over a smoke-bordered box, as every auth frame draws its fields. */
 export function AuthField({ label, ...input }: { label: string } & InputProps) {

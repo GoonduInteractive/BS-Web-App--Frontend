@@ -39,12 +39,15 @@ type Mark = { key: string; label: string; src: string; ratio?: number; action: (
 export function ShareMarks({
   title,
   labels,
+  url,
   className,
   markClassName = "size-10",
 }: {
   /** What the share is about - the post's text where a service takes one. */
   title: string;
   labels: ShareLabels;
+  /** The address to share. Absent: the page's own (a player's comic link is set by `ComicShareMarks`). */
+  url?: string;
   /** The row: gap and alignment. */
   className?: string;
   /** Each mark's slot. */
@@ -52,11 +55,11 @@ export function ShareMarks({
 }) {
   const copy = () => {
     void navigator.clipboard
-      ?.writeText(window.location.href)
+      ?.writeText(url ?? window.location.href)
       .then(() => toast(labels.copied))
       .catch(() => {});
   };
-  const share = (network: ShareNetwork) => () => openShare(network, title);
+  const share = (network: ShareNetwork) => () => openShare(network, title, url);
 
   const marks: Mark[] = [
     { key: "facebook", label: labels.facebook, src: "/assets/social/facebook.svg", action: share("facebook") },

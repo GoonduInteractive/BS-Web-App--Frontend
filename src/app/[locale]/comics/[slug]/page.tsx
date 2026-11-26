@@ -71,7 +71,7 @@ export default async function Page({
       <ComicReader issue={issue} title={copy.title} messages={messages} locale={locale} />
 
       <div className="pt-2.75 md:pt-20.5">
-        <ShareComic title={copy.title} messages={messages} />
+        <ShareComic title={copy.title} chapterId={issue.chapterId} messages={messages} />
       </div>
 
       {related.length > 0 ? (

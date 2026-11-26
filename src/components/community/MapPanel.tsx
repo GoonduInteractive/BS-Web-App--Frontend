@@ -5,9 +5,11 @@ import { useEffect, useId, useRef, useState } from "react";
 
 import { InviteFriends } from "@/components/community/InviteFriends";
 import { Reveal } from "@/components/motion/Reveal";
+import { useMyProfile } from "@/hooks/useMyProfile";
 import { cn } from "@/lib/utils/cn";
+import type { Locale } from "@/lib/utils/locales";
 import type { Messages } from "@/lib/utils/messages";
-import type { PlayerHotspot } from "@/types/players";
+import type { ActivePlayers, PlayerHotspot } from "@/types/players";
 
 /**
  * The Active Player Map panel: the search, the copy column and the disc.
@@ -45,32 +47,61 @@ import type { PlayerHotspot } from "@/types/players";
  * Leaflet, the land data and the pins are ~70KB gzipped the wall's visitors
  * never need, and a map is nothing a crawler reads.
  *
- * The search is a combobox over the hotspots - the places that have players -
- * because that is what a visitor is looking for here, and a place with none
- * has nothing to show. Choosing one selects it: the copy column reads it and
- * the map flies there. A pin does the same.
+ * The search is a combobox over the hotspots - the regions with a pin on the
+ * map. Choosing one selects it: the copy column reads it and the map flies
+ * there. A pin does the same. With no region pinned (or none chosen), the
+ * column reads ALL REGIONS and everyone active (`activeTotal`).
  */
 const ActiveMap = dynamic(() => import("@/components/community/ActiveMap").then((m) => m.ActiveMap), {
   ssr: false,
   loading: () => <div aria-hidden className="bg-globe aspect-square w-full rounded-full" />,
 });
 
+/**
+ * Below this many active players a signed-in player's region asks them to
+ * invite friends, so tournaments can run there (the team, 2026-11-17).
+ * FLAGGED: the number is ours; the meeting named the idea, not a threshold.
+ */
+const FEW_PLAYERS = 50;
+
 export function MapPanel({
   hotspots,
   selected,
+  activeTotal,
+  regionCounts,
   onSelect,
-  invite,
+  inviteTo,
   messages,
+  locale,
 }: {
   hotspots: readonly PlayerHotspot[];
-  selected: PlayerHotspot;
+  /** The chosen region; null for none, while no region has a pin. */
+  selected: PlayerHotspot | null;
+  /** Everyone active, every region: what the readout says with nothing chosen. Null: unknown. */
+  activeTotal: number | null;
+  /** Every region's active count, pinned or not: the nudge reads the viewer's own. */
+  regionCounts: ActivePlayers["regions"];
   onSelect: (spot: PlayerHotspot) => void;
-  /** The viewer's invite link, for the phone frame's INVITE FRIENDS block. */
-  invite: string;
+  /** The region the visitor picked (a pin or a search), which INVITE FRIENDS invites to; null for none. */
+  inviteTo: PlayerHotspot | null;
   messages: Messages;
+  locale: Locale;
 }) {
   const t = messages.community.map;
-  const place = t.place.replace("{city}", selected.city).replace("{country}", selected.country);
+
+  // A signed-in player whose region is short of players is asked to bring more in.
+  const me = useMyProfile();
+  const mine = me.data?.regionSlug ? regionCounts.find((r) => r.slug === me.data?.regionSlug) : undefined;
+  // INVITE FRIENDS invites to the region picked on the map, else the player's own (the backend, 2026-11-19).
+  const inviteRegion = inviteTo ? { slug: inviteTo.slug, name: inviteTo.city } : mine ? { slug: mine.slug, name: mine.name } : null;
+  const nudge =
+    mine && mine.active < FEW_PLAYERS && (!inviteTo || inviteTo.slug === mine.slug)
+      ? messages.community.invite.nudge.replaceAll("{region}", mine.name)
+      : undefined;
+  // With nothing chosen the readout is the whole map: every region's active players.
+  const place = selected ? t.place.replace("{city}", selected.city).replace("{country}", selected.country) : t.everywhere;
+  const count = selected ? selected.active : activeTotal;
+  const placeId = selected?.id ?? "everywhere";
 
   // A new place re-deals the readout: the name and the count rise in
   // (`readout-in`), as the leaderboard's rows do on a filter. Keyed on the
@@ -78,15 +109,15 @@ export function MapPanel({
   // the first place - the Reveal brings the column up. CSS, not GSAP, for the
   // panel's reason: the flight it coincides with keeps the main thread busy
   // and a JS tween started beside it arrived already finished.
-  const [firstPlace] = useState(selected.id);
-  const redeal = selected.id !== firstPlace;
+  const [firstPlace] = useState(placeId);
+  const redeal = placeId !== firstPlace;
 
   return (
     <section className="w-full px-5 pb-[8.5625rem] lg:pl-[11.4%] lg:pr-[12.8%] lg:pb-[13.625rem]">
       <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         {/* ---- LOCATION / ACTIVE PLAYERS ---- */}
-        <Reveal className="mt-[6.375rem] lg:mt-0 lg:pt-17 lg:pr-8">
-          <div key={selected.id}>
+        <Reveal className="mt-[6.375rem] lg:col-start-1 lg:row-start-1 lg:mt-0 lg:pt-17 lg:pr-8">
+          <div key={placeId}>
             <p className="text-menu-fg font-body text-body">{t.location}</p>
             <p
               data-readout-value
@@ -105,14 +136,14 @@ export function MapPanel({
                 redeal && "readout-in [animation-delay:70ms]",
               )}
             >
-              {new Intl.NumberFormat("en-NG").format(selected.active)}
+              {count === null ? "—" : new Intl.NumberFormat("en-NG").format(count)}
             </p>
           </div>
         </Reveal>
 
         {/* ---- The disc: full-bleed and wider than the screen on a phone, the
             frame's 732 at the right of the copy from lg ---- */}
-        <Reveal delay={80} className="order-first -mx-5 lg:order-none lg:mx-0 lg:w-[50.8vw] lg:max-w-[45.75rem]">
+        <Reveal delay={80} className="order-first -mx-5 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:w-[50.8vw] lg:max-w-[45.75rem]">
           <ActiveMap
             hotspots={hotspots}
             selected={selected}
@@ -122,9 +153,11 @@ export function MapPanel({
           />
         </Reveal>
 
-        {/* ---- INVITE FRIENDS: the phone frame's, and only its ---- */}
-        <Reveal delay={40} className="lg:hidden">
-          <InviteFriends link={invite} messages={messages} className="mt-[4.875rem]" />
+        {/* ---- INVITE FRIENDS: the phone frame's under the readout; from lg in the same
+            column, under the count (the 1440 frame ends at the disc; shown there too, per
+            the human, 2026-11-17) ---- */}
+        <Reveal delay={40} className="lg:col-start-1 lg:row-start-2 lg:pr-8">
+          <InviteFriends region={inviteRegion} body={nudge} messages={messages} locale={locale} className="mt-[4.875rem] lg:mt-16" />
         </Reveal>
       </div>
     </section>
