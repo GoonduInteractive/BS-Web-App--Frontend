@@ -15,6 +15,42 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Changed
 
+- The merch store is a plain shop. Beside the featured product there is now its name, price,
+  description and a View Product button, in place of the Seeds and the sign-in offer. A
+  signed-in player's Seeds, rewards and codes are at checkout instead, under the order summary,
+  so a reward can be redeemed and used on the same order.
+- In the Hedera preview, after the team's review:
+  - The Calabash shows Seeds and HBAR on separate tabs, each saying what it is. Seeds carry a
+    "Not real money" tag, on the hub, the profile and at checkout.
+  - The explainer's Good to Know is a list of questions that open, starting with what Hedera is.
+  - Linking a wallet leads with Connect HashPack. Creating a new wallet is the smaller choice
+    beside it.
+  - A big HBAR prize's identity check is a full flow. The player is told in the bell and on their
+    hub, sends their ID, sees it being checked, and either moves on to approval or is asked to
+    send it again with the team's note. Steps across the prize page show where it stands.
+  - A prize's page shows its whole tournament: region, dates, number of players, place and prize.
+  - Paying for merch in HBAR shows Hedera's logo and takes a small discount off the order, 2.5% to
+    start (₦20,000 by card, ₦19,500 in HBAR).
+- The Calabash is now the same on the profile and the Hedera hub. Usable Seeds, Legacy Seeds and
+  (in the Hedera preview) HBAR each have a tab that says what it is and what you can do with it.
+  Usable Seeds holds the rewards to redeem and your codes. Legacy Seeds shows everything you've
+  earned and how Seeds are earned. HBAR shows your balance and the linked wallet.
+- Checkout no longer has the Seeds card under the order summary. A compact Your Seeds box inside
+  the summary shows the balance, a Redeem for each reward you can afford and the codes to use, or
+  how far the next reward is with a link to your Calabash.
+- Good to Know on the Hedera explainer sits in two columns, the heading beside numbered
+  questions, with the first one open.
+- A Voter's card can be used for a prize's identity check.
+- Every dropdown on the site is the site's own: Region on sign-up, the ID type on a prize, Location
+  on Edit Profile, and the checkout's dial code, country, state and local government. Each opens a
+  dark list in the site's type, marks the choice with a gold check, works from the keyboard
+  (arrows, Enter, Escape, and typing to jump, which helps with the long state and local
+  government lists), and still stops the form when a required one is empty.
+- Seeds have a seed for their mark, in place of the Nsibidi glyph, and HBAR has HBAR's own mark.
+- A prize's page has a View Tournament button to the tournament it was won in, and a finished
+  tournament keeps its page, marked Completed, with no registration.
+- The "Not real money" tip is readable on the gold checkout summary.
+- The Hedera explainer shows its own art beside the title: Soma sitting on the Hedera "H".
 - Posting a note on the community wall now says only that it's posted: a note goes up straight
   away rather than waiting for approval.
 
@@ -96,6 +132,21 @@ blockers live in local working notes and are deliberately not repeated here.
 
 ### Added
 
+- A Hedera section, not public yet: it only appears where the `NEXT_PUBLIC_HEDERA_MOCK` preview
+  switch is on, and runs on sample data until the Hedera services exist. Everywhere else the
+  Hedera pages show Coming Soon and nothing else on the site changes. In the preview:
+  - A public page explaining Hedera exclusives, and a game store anyone can browse: skins, weapons
+    and characters priced in HBAR with the naira they're set in, filtered by type and rarity.
+  - A hub with the Calabash showing Seeds and HBAR side by side, the linked wallet, exclusives,
+    prizes and recent activity.
+  - Linking a wallet once: HashPack, or a new wallet made with Google or email, then confirming
+    the account ID.
+  - Claiming free exclusives, buying exclusives with an HBAR quote that holds for 10 minutes, a
+    receipt with HashScan links, and the refund path when a paid item can't be sent.
+  - HBAR tournament prizes with an identity check above a threshold, and a full activity list.
+  - A wallet badge on the profile, the linked wallet in account settings (change or unlink), HBAR
+    beside Paystack at the merch and comics checkout, and each tournament's prize type, with a
+    prompt to link a wallet on HBAR tournaments.
 - Notes on the community wall are checked before they're sent. A note that breaks a community
   rule (strong language, threats, hate speech, contact details and links, scams, betting,
   politics, religion, ads, other games and the rest) stays in the box with a short message saying
