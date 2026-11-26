@@ -22,6 +22,7 @@ function toMember(locale: Locale, { slug, data }: Entry<TeamFrontmatter>): TeamM
     locale,
     name: data.name,
     role: data.role,
+    ...(data.bio && { bio: data.bio }),
     image: data.image,
     portraitAlt: data.portraitAlt,
     group: data.group,
